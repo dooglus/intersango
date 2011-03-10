@@ -37,4 +37,9 @@ do_query($query);
 $query = "INSERT INTO orderbook(uid, amount, type, want_amount, want_type) VALUES ('".$uid."', '".$amount."', '".$type."', '".$want_amount."', '".$want_type."');";
 $result = do_query($query);
 ?>
+<div class='content_box'><h3>Order placed</h3>
+<p>
+<?php echo "Your order offering {$_POST['amount']} {$_POST['type']} for {$_POST['want_amount']} {$_POST['want_type']} has been placed."; ?>
+</p>
+</div>
 

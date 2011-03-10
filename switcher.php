@@ -33,6 +33,7 @@ function switcher($page, $loggedin)
                     include("$abspath/place_order.php");
                 else
                     report();
+                break;
             case '':
                 include("$abspath/index.php");
                 break;  
