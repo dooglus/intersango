@@ -48,9 +48,11 @@ input[type=text]:focus {
     border: 2px solid #f2a800;
     background-color: #ffa938;
     margin-bottom: 20px;
+    margin-left: 100px;
 }
 .display_data th, .display_data td {
     padding: 10px;
+    padding-right: 30px;
     text-align: left;
 }
 
@@ -100,13 +102,22 @@ input[type=text]:focus {
     width: 980px;
     background-color: #52514e;
     min-height: 700px;
+    position: absolute;
+    left: 0px;
+    top: 430px; 
 }
 #content_sideshadow {
     background: url('images/panel_border.png') repeat-y top right;
+    height: 100%;
     border-radius: 8px;
     width: 770px;
+    min-height: 700px;
 }
 .content_box {
+    z-index: 1;
+    position: relative;
+    left: 0;
+    top: 0; 
     padding: 10px;
     width: 740px;
     background: url('images/panel_tile.png') repeat;
@@ -133,7 +144,14 @@ input[type=text]:focus {
 .content_box a:hover {
     color: #017d4d;
 }
-#last_content_stretch {
+#content_bg_stretch {
+    z-index: 0;
+    position: absolute;
+    left: 0;
+    top: 0; 
+    width: 760px;
+    height: 700px;
+    background: url('images/panel_tile.png') repeat;
 }
 
 #links {

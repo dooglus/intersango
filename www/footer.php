@@ -4,6 +4,7 @@ if (isset($_SESSION['uid']) && $_SESSION['uid'])
 else
     $loggedin = false;
 ?>
+            <div id='content_bg_stretch'></div>
         </div>
     </div>
     <div id='links'>

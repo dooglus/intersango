@@ -32,9 +32,6 @@ if($page == 'logout') {
   header('Location: index.php');
   exit();
 }
-#else if($page == 'login') {
-#    #... process login here
-#}
 else {
     require 'header.php';
     include "$abspath/switcher.php";
