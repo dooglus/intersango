@@ -48,7 +48,8 @@ input[type=text]:focus {
     border: 2px solid #f2a800;
     background-color: #ffa938;
     margin-bottom: 20px;
-    margin-left: 100px;
+    margin-top: 10px;
+    margin-left: 40px;
 }
 .display_data th, .display_data td {
     padding: 10px;
@@ -127,7 +128,7 @@ input[type=text]:focus {
     border-radius: 2px;
 }
 .content_box p {
-    margin: 0 0 10px 0;
+    margin: 0 0 10px 10px;
 }
 .content_box h3 {
     background: url('images/panel_tile_header.png') repeat;
