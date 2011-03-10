@@ -21,8 +21,6 @@ else
 <?php } ?>
             <li><a href='?page=show_orders'>Orderbook</a>
             Show orders</li>
-            <li><a href='google.com'>Account history</a>
-            Recent history</li>
             <li><a href='google.com'>Add funds</a>
             Top up your account</li>
             <li><a href='google.com'>Withdraw</a>

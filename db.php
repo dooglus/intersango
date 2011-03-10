@@ -1,5 +1,5 @@
 <?php
-require 'les/db.intersango.inc';
+require '/var/db.intersango.inc';
 
 function escapestr($str)
 {
@@ -12,7 +12,7 @@ function do_query($query)
 }
 function has_results($result)
 {
-    if (mysql_num_rows($result))
+    if (mysql_num_rows($result) > 0)
         return true;
     else
         return false;
