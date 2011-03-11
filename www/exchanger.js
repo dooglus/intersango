@@ -41,10 +41,12 @@ function set_currency_out(currency)
 function rolldown(cs, ic)
 {
     if (cs.css('visibility') == 'hidden') {
+        cs.position({
+            my: "left top",
+            at: "left bottom",
+            of: ic
+        });
         cs.css('visibility', 'visible');
-        offset = ic.offset();
-        cs.css('top', offset.top + 26);
-        cs.css('left', offset.left);
     }
     else
         cs.css('visibility', 'hidden');
@@ -55,12 +57,12 @@ function hide_rolldown(cs)
 }
 function rolldown_in()
 {
-    rolldown($('#currsel_in'), $('#incurrency'));
+    rolldown($('#currsel_in'), '#incurrency');
     hide_rolldown($('#currsel_out'));
 }
 function rolldown_out()
 {
-    rolldown($('#currsel_out'), $('#outcurrency'));
+    rolldown($('#currsel_out'), '#outcurrency');
     hide_rolldown($('#currsel_in'));
 }
 function select_currency_in(caller)

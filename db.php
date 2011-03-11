@@ -62,5 +62,13 @@ function internal_to_numstr($internal)
     $numstr = rtrim($numstr, '.');
     return $numstr;
 }
+
+function clean_sql_numstr($numstr)
+{
+    $numstr = rtrim($numstr, '0');
+    $numstr = rtrim($numstr, '.');
+    return $numstr;
+}
+
 ?>
 

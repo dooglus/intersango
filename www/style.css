@@ -8,24 +8,27 @@ body {
     font-family: verdana, arial, sans-serif;
 }
 
+.currbox_wrapper {
+    margin: 10px;
+}
 .currbox {
     width: 300px;
     height: 20px;
     padding: 6px 0 0 10px;
-    margin: 10px;
+    margin: 0;
     background-color: #ffc06f;
 }
 input[type=text] {
-    margin: 10px;
+    margin: 8px;
     padding: 6px 0 0 10px;
     background-color: #ffc06f;
     border: 0;
     color: #52514e;
     font-weight: bold;
     font-size: 18px;
+    border: 2px solid #f28900;
 }
 input[type=text]:focus {
-    /*border: 2px solid #fe7300;*/
     border: 2px solid #52514e;
     margin: 8px;
 }
@@ -40,25 +43,9 @@ input[type=text]:focus {
 #exchanger td {
     padding: 10px;
 }
-.display_data {
-    font-size: inherit;
-    color: inherit;
-    font-weight: inherit;
-    background-color: inherit;
-    border: 2px solid #f2a800;
-    background-color: #ffa938;
-    margin-bottom: 20px;
-    margin-top: 10px;
-    margin-left: 40px;
-}
-.display_data th, .display_data td {
-    padding: 10px;
-    padding-right: 30px;
-    text-align: left;
-}
-
 .currbox p {
     margin: 0;
+    padding: 0;
 }
 .currbox:hover {
     background-color: #ddd;
@@ -86,17 +73,10 @@ input[type=text]:focus {
 .currsel_entry:hover {
     background-color: #ddd;
 }
-#header {
-    margin: 0;
-    padding: 0;
-    display: block;
-    vertical-align: bottom;
-}
-#skyline {
-    position: absolute;
-    left: 978px;
-    top: 290px;
-}
+
+/*---------------------------------
+CONTENT
+-----------------------------------*/
 #content {
     margin: 0;
     padding: 0;
@@ -145,6 +125,23 @@ input[type=text]:focus {
 .content_box a:hover {
     color: #017d4d;
 }
+.display_data {
+    font-size: inherit;
+    color: inherit;
+    font-weight: inherit;
+    background-color: inherit;
+    border: 2px solid #f2a800;
+    background-color: #ffa938;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-left: 40px;
+}
+.display_data th, .display_data td {
+    padding: 10px;
+    padding-right: 30px;
+    text-align: left;
+}
+
 #content_bg_stretch {
     z-index: 0;
     position: absolute;
@@ -154,6 +151,10 @@ input[type=text]:focus {
     height: 700px;
     background: url('images/panel_tile.png') repeat;
 }
+
+/*---------------------------------
+LINKS
+-----------------------------------*/
 
 #links {
     width: 160px;
@@ -193,10 +194,24 @@ input[type=text]:focus {
     float: right;
 }
 
+/*---------------------------------
+FLUFF
+-----------------------------------*/
 #flower {
     position: absolute;
     z-index: 1;
     top: 320px;
     left: 750px;
+}
+#header {
+    margin: 0;
+    padding: 0;
+    display: block;
+    vertical-align: bottom;
+}
+#skyline {
+    position: absolute;
+    left: 978px;
+    top: 290px;
 }
 
