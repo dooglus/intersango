@@ -17,7 +17,7 @@ try {
         <input type='submit' value='Submit' />
     </form>
 </p>
-<p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a>.
+<p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a>.</p>
 <?php
     }
     else if ($openid->mode == 'cancel') {

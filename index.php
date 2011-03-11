@@ -83,41 +83,40 @@
             </tr>
 
         </tr>
+    <?php
+    if ($loggedin) { ?>
         <tr><td></td><td>
                     <input type='hidden' name='type' value='' />
                     <input type='hidden' name='want_type' value='' />
                     <input type='submit' onclick='return buy_clicked();' value='Buy' />
         </td></tr>
+    <?php } ?>
         </table>
         </form>
 
+    <?php
+    if ($loggedin) { ?>
             <p>
             Use the above to give you an indication of the current exchange rates.
             </p>
             <p>
             Select the currency you wish to buy on the left, then click Buy.
             </p>
+    <?php }
+    else { ?>
             <p>
-            Click the image below to see a graph of Bitcoin prices.
+            To begin trading you will need an OpenID account.
             </p>
-            <p>
-            <a class='image_right' target='_new' href='images/test/all_time.png'><img src='images/test/all_time_thumb.png' /></a>
-            </p>
-
+            <p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a>.
+    <?php } ?>
         </div>
         </div>
 
         <div class='content_box'>
         <div class='content_sideshadow'>
-            <h3>Currency converter</h3>
+            <h3>What is this</h3>
             <p>
-            hello
-            </p>
-            <p>
-            If one of the values above are missing, e.g. "list-style:circle inside;", the default value for the missing property will be inserted, if any.
-            </p>
-            <p>
-            If one of the values above are missing, e.g. "list-style:circle inside;", the default value for the missing property will be inserted, if any.
+            <a href='http://bitcoin.org'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities.
             </p>
         </div>
         </div>

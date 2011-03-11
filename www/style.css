@@ -75,9 +75,16 @@ input[type=text]:focus {
 }
 
 input[type=submit]{
-    padding: 2px 10px;
+    padding: 5px 20px;
     min-width: 80px;
     margin-left: 30px;
+    color: #42603e;
+    background: none;
+    border: 3px solid #f28100;
+}
+input[type=submit]:hover {
+    color: #017d4d;
+    cursor: pointer;
 }
 
 /*---------------------------------
@@ -96,7 +103,6 @@ CONTENT
 .content_sideshadow {
     background: url('images/panel_border.png') repeat-y top right;
     height: 100%;
-    border-radius: 8px;
     padding: 10px;
     border-bottom: 1px dashed #52514e;
 }
@@ -139,9 +145,6 @@ CONTENT
     padding: 10px;
     padding-right: 30px;
     text-align: left;
-}
-
-.content_box table {
 }
 
 /*---------------------------------

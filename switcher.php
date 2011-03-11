@@ -25,6 +25,15 @@ function switcher($page, $loggedin)
                 else
                     report();
                 break;
+            case 'deposit':
+                include("$abspath/deposit.php");
+                break;
+            case 'withdraw':
+                include("$abspath/withdraw.php");
+                break;
+            case 'help':
+                include("$abspath/help.php");
+                break;
             case 'orderbook':
                 include("$abspath/orderbook.php");
                 break;

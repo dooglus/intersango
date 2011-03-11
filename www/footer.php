@@ -21,12 +21,12 @@ else
             <li><a href='?page=orderbook'>Orderbook</a>
             Show orders</li>
 <?php if ($loggedin) { ?>
-            <li><a href='google.com'>Deposit</a>
+            <li><a href='?page=deposit'>Deposit</a>
             Top up your account</li>
-            <li><a href='google.com'>Withdraw</a>
+            <li><a href='?page=withdraw'>Withdraw</a>
             Take out money</li>
 <?php } ?>
-            <li><a href='google.com'>Help</a>
+            <li><a href='?page=help'>Help</a>
             How it works</li>
         </ul>
     </div>
