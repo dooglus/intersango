@@ -25,8 +25,8 @@ function switcher($page, $loggedin)
                 else
                     report();
                 break;
-            case 'show_orders':
-                include("$abspath/show_orders.php");
+            case 'orderbook':
+                include("$abspath/orderbook.php");
                 break;
             case 'place_order':
                 if ($loggedin)

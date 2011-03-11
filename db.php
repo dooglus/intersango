@@ -70,5 +70,18 @@ function clean_sql_numstr($numstr)
     return $numstr;
 }
 
+function calc_exchange_rate($curr_a, $curr_b)
+{
+    $query = "SELECT total_amount, total_wanted, total_wanted/total_amount AS rate FROM (SELECT SUM(amount) AS total_amount, SUM(want_amount) as total_wanted FROM orderbook WHERE type='$curr_a' AND want_type='$curr_b') AS tbl;";
+    $total_result = do_query($query);
+    list($total_amount, $total_want_amount, $rate) = mysql_fetch_array($total_result);
+    if (!isset($total_amount) || !isset($total_want_amount) || !isset($rate)) 
+        return NULL;
+    $total_amount = internal_to_numstr($total_amount);
+    $total_want_amount = internal_to_numstr($total_want_amount);
+    $rate = clean_sql_numstr($rate);
+    return array($total_amount, $total_want_amount, $rate);
+}
+
 ?>
 

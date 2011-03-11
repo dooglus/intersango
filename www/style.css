@@ -74,6 +74,12 @@ input[type=text]:focus {
     background-color: #ddd;
 }
 
+input[type=submit]{
+    padding: 2px 10px;
+    min-width: 80px;
+    margin-left: 30px;
+}
+
 /*---------------------------------
 CONTENT
 -----------------------------------*/
@@ -87,25 +93,18 @@ CONTENT
     left: 0px;
     top: 430px; 
 }
-#content_sideshadow {
+.content_sideshadow {
     background: url('images/panel_border.png') repeat-y top right;
     height: 100%;
     border-radius: 8px;
-    width: 770px;
-    min-height: 700px;
+    padding: 10px;
+    border-bottom: 1px dashed #52514e;
 }
 .content_box {
-    z-index: 1;
-    position: relative;
-    left: 0;
-    top: 0; 
-    padding: 10px;
-    width: 740px;
+    width: 770px;
     background: url('images/panel_tile.png') repeat;
     font-size: 12px;
     color: #42413e;
-    border-bottom: 1px dashed #52514e;
-    border-radius: 2px;
 }
 .content_box p {
     margin: 0 0 10px 10px;
@@ -113,7 +112,7 @@ CONTENT
 .content_box h3 {
     background: url('images/panel_tile_header.png') repeat;
     padding: 10px 0 10px 10px;
-    margin: 0 0 20px 0;
+    margin: 0 10px 20px 0;
     font-variant: small-caps;
     font-size: 15px;
     border-radius: 4px;
@@ -142,14 +141,7 @@ CONTENT
     text-align: left;
 }
 
-#content_bg_stretch {
-    z-index: 0;
-    position: absolute;
-    left: 0;
-    top: 0; 
-    width: 760px;
-    height: 700px;
-    background: url('images/panel_tile.png') repeat;
+.content_box table {
 }
 
 /*---------------------------------
@@ -180,9 +172,9 @@ LINKS
 }
 
 .image_left img, .image_right img {
-    float: left;
     margin: 5px 15px 0px 0px;
     padding: 5px;
+    margin-left: 30px;
     border: 1px solid #f28900;
     border-radius: 5px;
 }
@@ -191,7 +183,6 @@ LINKS
     background: none;
 }
 .image_right img{
-    float: right;
 }
 
 /*---------------------------------

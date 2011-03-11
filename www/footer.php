@@ -4,8 +4,6 @@ if (isset($_SESSION['uid']) && $_SESSION['uid'])
 else
     $loggedin = false;
 ?>
-            <div id='content_bg_stretch'></div>
-        </div>
     </div>
     <div id='links'>
         <ul>
@@ -20,12 +18,14 @@ else
             <li><a href='?page=login'>Login</a>
             Begin here</li>
 <?php } ?>
-            <li><a href='?page=show_orders'>Orderbook</a>
+            <li><a href='?page=orderbook'>Orderbook</a>
             Show orders</li>
-            <li><a href='google.com'>Add funds</a>
+<?php if ($loggedin) { ?>
+            <li><a href='google.com'>Deposit</a>
             Top up your account</li>
             <li><a href='google.com'>Withdraw</a>
             Take out money</li>
+<?php } ?>
             <li><a href='google.com'>Help</a>
             How it works</li>
         </ul>

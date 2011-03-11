@@ -1,6 +1,6 @@
 <?php
 require 'openid.php';
-echo "        <div class='content_box'>";
+echo "        <div class='content_box'>\n<div class='content_sideshadow'>";
 try {
     $openid = new LightOpenID;
     if (!$openid->mode) {
@@ -58,5 +58,5 @@ catch (ErrorException $e) {
     echo '<p>'.$e->getMessage().'</p>';
 }
 # close content box
-echo '        </div>';
+echo '        </div></div>';
 ?>

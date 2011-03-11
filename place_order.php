@@ -15,8 +15,10 @@ $want_type = $_POST['want_type'];
 
 # convert for inclusion into database
 $amount = numstr_to_internal($amount);
+$type = strtoupper($type);
 $type = escapestr($type);
 $want_amount = numstr_to_internal($want_amount);
+$want_type = strtoupper($want_type);
 $want_type = escapestr($want_type);
 
 # make it grok'able
@@ -41,5 +43,6 @@ $result = do_query($query);
 <p>
 <?php echo "Your order offering {$_POST['amount']} {$_POST['type']} for {$_POST['want_amount']} {$_POST['want_type']} has been placed."; ?>
 </p>
+<p>You may visit the <a href='?page=show_orders'>orderbook</a>.
 </div>
 
