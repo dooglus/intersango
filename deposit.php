@@ -1,10 +1,22 @@
-<div class='content_box'><div class='content_sideshadow'>
+<div class='content_box'>
 <h3>Deposit GBP</h3>
-<p>Blaa</p>
-</div></div>
+<p>Depositing is free by bank deposit for this month of March. Email sdlkssdsd for details.</p>
+</div>
 
-<div class='content_box'><div class='content_sideshadow'>
-<h3>Deposit BTC</h3>
-<p>Blaa</p>
-</div></div>
+<?php
+require 'jsonRPCClient.php';
+try {
+    $bitcoin = new jsonRPCClient('http://user:password@127.0.0.1:8332/');
+    $addy = $bitcoin->agetaccountaddress('');
+    ?>
+    <div class='content_box'>
+    <h3>Deposit BTC</h3>
+    <p>You can deposit to <?php echo $addy; ?></p>
+    <?php
+}
+catch (Exception $e) {
+    // ... no option to deposit BTC
+}
+?>
+</div>
 

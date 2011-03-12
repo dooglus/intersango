@@ -1,6 +1,6 @@
         <div class='content_box'>
-        <div class='content_sideshadow'>
             <h3>Currency converter</h3>
+            <p><b>This site is strictly alpha.</b> We are currently in talks with legal professionals and gaining international licenses. The software is new. Use at your own risk. We will do our best to prevent problems, but mistakes can happen. Please see the <a href='?page=help'>help</a> page for more info and our terms &amp; conditions.</p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
@@ -110,14 +110,11 @@
             <p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a>.
     <?php } ?>
         </div>
-        </div>
 
         <div class='content_box'>
-        <div class='content_sideshadow'>
-            <h3>What is this</h3>
+            <h3>What this is</h3>
             <p>
             <a href='http://bitcoin.org'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities.
             </p>
-        </div>
         </div>
 

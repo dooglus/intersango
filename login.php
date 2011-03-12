@@ -1,6 +1,6 @@
 <?php
 require 'openid.php';
-echo "        <div class='content_box'>\n<div class='content_sideshadow'>";
+echo "        <div class='content_box'>\n";
 try {
     $openid = new LightOpenID;
     if (!$openid->mode) {
@@ -38,7 +38,10 @@ try {
             if (has_results($result))
                 echo '<p>Welcome back commander. Welcome back.</p>';
             else {
-                echo '<p>Nice to finally see you here, <i>new</i> user.</p>';
+                ?>
+    <p>Nice to finally see you here, <i>new</i> user.</p>
+    <p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>
+                <?php
                 $insq = "INSERT INTO users(oidlogin) VALUES ('".$oidlogin."');";
                 do_query($insq);
                 # reperform query so we can store new uid
@@ -58,5 +61,5 @@ catch (ErrorException $e) {
     echo '<p>'.$e->getMessage().'</p>';
 }
 # close content box
-echo '        </div></div>';
+echo '        </div>';
 ?>

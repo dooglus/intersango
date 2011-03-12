@@ -40,4 +40,7 @@
     <img id='flower' src='images/flower.png' />
     <img id='header' src='images/header.png' />
     <img id='skyline' src='images/skyline.png' />
-    <div id='content'>
+    <div id='main_pane'>
+        <div id='links_bg'>
+            <div id='content'>
+                <div id='content_sideshadow'>

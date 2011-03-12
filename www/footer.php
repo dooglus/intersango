@@ -4,6 +4,9 @@ if (isset($_SESSION['uid']) && $_SESSION['uid'])
 else
     $loggedin = false;
 ?>
+                </div>
+            </div>
+        </div>
     </div>
     <div id='links'>
         <ul>

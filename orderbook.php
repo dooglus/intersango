@@ -4,13 +4,13 @@ require 'db.php';
 function display_double_entry($curr_a, $curr_b)
 {
     
-    echo "<div class='content_box'><div class='content_sideshadow'>\n";
+    echo "<div class='content_box'>\n";
     echo "<h3>People offering $curr_a for $curr_b</h3>\n";
 
     $exchange_fields = calc_exchange_rate($curr_a, $curr_b);        
     if (!$exchange_fields) {
         echo "<p>Nobody is selling $curr_a for $curr_b.</p>";
-        echo "</div></div>";
+        echo "</div>";
         return;
     }
     list($total_amount, $total_want_amount, $rate) = $exchange_fields; 
@@ -44,7 +44,7 @@ function display_double_entry($curr_a, $curr_b)
     echo "        <td>$total_amount $curr_a</td>\n";
     echo "        <td>$total_want_amount $curr_b</td>\n";
     echo "    </tr>\n";
-    echo "</table></div></div>";
+    echo "</table></div>";
 }
 display_double_entry('BTC', 'GBP');
 display_double_entry('GBP', 'BTC');

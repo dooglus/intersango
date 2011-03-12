@@ -1,6 +1,6 @@
 <?php
 require 'openid.php';
-echo "        <div class='content_box'><div class='content_sideshadow'>";
+echo "        <div class='content_box'>";
 
 echo '<h3>Private user info</h3>';
 if (isset($_SESSION['uid'])) {
@@ -21,5 +21,5 @@ if (isset($_SESSION['uid'])) {
 else
     echo '<h3>Denied</h3><p>Go away.</p>';
 
-echo '        </div></div>';
+echo '        </div>';
 ?>
