@@ -1,6 +1,5 @@
 <?php
 require 'openid.php';
-echo "        <div class='content_box'>\n";
 try {
     $openid = new LightOpenID;
     if (!$openid->mode) {
@@ -9,6 +8,7 @@ try {
             header('Location: '.$openid->authUrl());
         }
 ?>
+<div class='content_box'>
 <h3>Login</h3>
 <p>Enter your OpenID login below:</p>
 <p>
@@ -21,12 +21,13 @@ try {
 <?php
     }
     else if ($openid->mode == 'cancel') {
-        echo '<h3>Login problem</h3><p>:(</p>';
+        throw new Problem(":(", "Login was cancelled.");
     }
     else {
         if ($openid->validate()) {
             require 'db.php';
 
+            echo "<div class='content_box'>";
             echo '<h3>Successful login!</h3>';
             # protect against session hijacking now we've escalated privilege level
             session_regenerate_id(true);
@@ -53,12 +54,12 @@ try {
             $_SESSION['uid'] = $row['uid'];
         }
         else {
-            echo '<h3>Login problem</h3><p>:(</p>';
+            throw new Problem(":(", "Unable to login.");
         }
     }
 }
 catch (ErrorException $e) {
-    echo '<p>'.$e->getMessage().'</p>';
+    throw new Problem(":(", $e->getMessage());
 }
 # close content box
 echo '        </div>';
