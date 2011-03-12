@@ -25,6 +25,10 @@ $amount = numstr_to_internal($amount);
 $want_amount = $_POST['want_amount'];
 $want_amount = numstr_to_internal($want_amount);
 
+$min = numstr_to_internal("0.05");
+if ($amount < $min || $want_amount < $min)
+    throw new Problem("Try again...", "Your order size is too small.");
+
 # make it grok'able
 $amount = gmp_strval($amount);
 $want_amount = gmp_strval($want_amount);
