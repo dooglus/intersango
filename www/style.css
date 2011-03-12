@@ -133,6 +133,9 @@ CONTENT
 .content_box a:hover {
     color: #017d4d;
 }
+.indent {
+    padding-left: 10px;
+}
 .display_data {
     font-size: inherit;
     color: inherit;

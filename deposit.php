@@ -4,10 +4,11 @@
 </div>
 
 <?php
-require 'jsonRPCClient.php';
+require 'util.php';
+$uid = $_SESSION['uid'];
 try {
-    $bitcoin = new jsonRPCClient('http://user:password@127.0.0.1:8332/');
-    $addy = $bitcoin->agetaccountaddress('');
+    $bitcoin = connect_bitcoin();
+    $addy = $bitcoin->getaccountaddress($uid);
     ?>
     <div class='content_box'>
     <h3>Deposit BTC</h3>
@@ -15,7 +16,8 @@ try {
     <?php
 }
 catch (Exception $e) {
-    // ... no option to deposit BTC
+    # ... no option to deposit BTC
+    # send email to self.
 }
 ?>
 </div>

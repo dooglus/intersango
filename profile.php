@@ -1,5 +1,7 @@
 <?php
 require 'openid.php';
+require 'util.php';
+
 echo "        <div class='content_box'>";
 
 echo '<h3>Private user info</h3>';
@@ -9,14 +11,7 @@ if (isset($_SESSION['uid'])) {
     $oidlogin = $_SESSION['oidlogin'];
     echo '<p>User ID: '.$uid.'</p>';
     echo '<p>OpenID: '.$oidlogin.'</p>';
-    require 'db.php';
-    $query = "SELECT amount, type FROM purses WHERE uid='".$uid."';";
-    $result = do_query($query);
-    while ($row = mysql_fetch_array($result)) {
-        $amount = internal_to_numstr($row['amount']);
-        $type = $row['type'];
-        echo '<p>You have '.$amount.' '.$type.'</p>';
-    }
+    show_balances();
 }
 else
     echo '<h3>Denied</h3><p>Go away.</p>';

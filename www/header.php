@@ -8,7 +8,7 @@
     <script type='text/javascript' src='jquery-1.4.4.min.js'></script>
     <script type='text/javascript' src='exchanger.js'></script>
     <?php 
-        require "$abspath/db.php";
+        require "$abspath/util.php";
         $currencies = array('BTC', 'GBP');
         $rates = array();
         foreach ($currencies as $curr_a) {
