@@ -12,7 +12,7 @@ try {
 <h3>Login</h3>
 <p>Enter your OpenID login below:</p>
 <p>
-    <form action='' method='post'>
+    <form action='' class='indent_form' method='post'>
         <input type='text' name='openid_identifier' />
         <input type='submit' value='Submit' />
     </form>

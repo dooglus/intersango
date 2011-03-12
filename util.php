@@ -7,6 +7,7 @@ class BASE_CURRENCY
     const A = 0;
     const B = 1;
 }
+
 function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::B)
 {
     # how is the rate calculated? is it a/b or b/a?
@@ -25,6 +26,22 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::B)
     return array($total_amount, $total_want_amount, $rate);
 }
 
+function user_id()
+{
+    if (!isset($_SESSION['uid'])) {
+        # grave error. This should never happen and should be reported as an urgent breach.
+        throw new Error('Login 404', "You're not logged in. Proceed to the <a href='?login.php'>login</a> form.");
+    }
+    return $_SESSION['uid'];
+}
+
+function post($key)
+{
+    if (!isset($_POST[$key]))
+        throw new Error('Ooops!', "Missing posted value $key!");
+    return escapestr($_POST[$key]);
+}
+
 function connect_bitcoin()
 {
     $bitcoin = new jsonRPCClient('http://user:password@127.0.0.1:8332/');
@@ -32,7 +49,7 @@ function connect_bitcoin()
 }
 function bitcoin_balance()
 {
-    $uid = $_SESSION['uid'];
+    $uid = user_id();
     #try {
         $bitcoin = connect_bitcoin();
         return $bitcoin->getbalance($uid);
@@ -43,7 +60,7 @@ function bitcoin_balance()
 }
 function bitcoin_deduct_funds($amount)
 {
-    $uid = $_SESSION['uid'];
+    $uid = user_id();
     #try {
         $bitcoin = connect_bitcoin();
         $bitcoin->move($uid, '', $amount);
@@ -56,17 +73,16 @@ function bitcoin_deduct_funds($amount)
 function fetch_balances()
 {
     $balances = array();
-    if (isset($_SESSION['uid'])) {
-        $uid = $_SESSION['uid'];
-        $query = "SELECT amount, type FROM purses WHERE uid='$uid';";
-        $result = do_query($query);
-        while ($row = mysql_fetch_array($result)) {
-            $amount = $row['amount'];
-            $type = $row['type'];
-            $balances[$type] = $amount;
-        }
-        $balances['BTC'] = bitcoin_balance();
+    $uid = user_id();
+    $query = "SELECT amount, type FROM purses WHERE uid='$uid';";
+    $result = do_query($query);
+    while ($row = mysql_fetch_array($result)) {
+        $amount = $row['amount'];
+        $type = $row['type'];
+        $balances[$type] = $amount;
     }
+    # don't forget the ugly duckling
+    $balances['BTC'] = bitcoin_balance();
     return $balances;
 }
 
@@ -85,7 +101,7 @@ function show_balances($indent=false)
 
 function has_enough($amount, $curr_type)
 {
-    $uid = $_SESSION['uid'];
+    $uid = user_id();
     if ($curr_type == 'BTC') {
         if (gmp_cmp($amount, bitcoin_balance()) != 1)
             return true;
@@ -93,7 +109,7 @@ function has_enough($amount, $curr_type)
             return false;
     }
     else {
-        $query = "SELECT amount FROM purses WHERE uid='$uid' AND type='$curr_type' AND amount > '$amount';";
+        $query = "SELECT 1 FROM purses WHERE uid='$uid' AND type='$curr_type' AND amount > '$amount' LIMIT 1;";
         $result = do_query($query);
         return has_results($result);
     }
@@ -101,13 +117,32 @@ function has_enough($amount, $curr_type)
 
 function deduct_funds($amount, $curr_type)
 {
-    $uid = $_SESSION['uid'];
+    $uid = user_id();
     if ($curr_type == 'BTC')
         bitcoin_deduct_funds($amount);
     else {
         $query = "UPDATE purses SET amount = amount -'".$amount."' WHERE uid='".$uid."' AND type='".$curr_type."';";
         do_query($query);
     }
+}
+
+function curr_supported_check($curr_type)
+{
+    $supported_currencies = array('GBP', 'BTC');
+    if (!in_array($curr_type, $supported_currencies))
+        throw new Error('Ooops!', 'Bad currency supplied.');
+}
+function order_worthwhile_check($amount)
+{
+    $min_str = '0.05';
+    $min = numstr_to_internal($min_str);
+    if ($amount < $min)
+        throw new Problem("Try again...", "Your order size is too small. The minimum is $min_str.");
+}
+function enough_money_check($amount, $curr_type)
+{
+    if (!has_enough($amount, $curr_type))
+        throw new Problem("Where's the gold?", "You don't have enough $curr_type.");
 }
 
 ?>
