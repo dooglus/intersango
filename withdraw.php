@@ -1,5 +1,6 @@
 <?php
 require 'util.php';
+
 if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     $amount = $_POST['amount'];
     $curr_type = $_POST['curr_type'];
@@ -19,7 +20,8 @@ else {
     <p>Enter an amount below to submit a withdrawal request.</p>
     <p>
         <form action='' method='post'>
-            <input type='text' name='amount' />
+            <label for='input_amount'>Amount</label>
+            <input type='text' id='input_amount' name='amount' />
             <input type='hidden' name='curr_type' value='GBP' />
             <input type='submit' value='Submit' />
         </form>
@@ -31,7 +33,11 @@ else {
     <p>Enter an amount below to withdraw.</p>
     <p>
         <form action='' method='post'>
-            <input type='text' name='amount' />
+            <label for='input_amount'>Amount</label>
+            <input type='text' id='input_amount' name='amount' />
+
+            <label for='input_address'>Address</label>
+            <input type='text' id='input_address' name='address' />
             <input type='hidden' name='curr_type' value='BTC' />
             <input type='submit' value='Submit' />
         </form>

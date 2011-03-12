@@ -118,6 +118,18 @@ CONTENT
 .content_box p {
     margin: 0 0 8px 20px;
 }
+.content_box label {
+    display: block;
+    width: 35%;
+    min-width: 5em;
+    margin: 0 0 0px 30px;
+}
+.content_box input[type=text] {
+    margin-left: 30px;
+    margin-top: 0;
+    width: 250px;
+    display: block;
+}
 .content_box h3 {
     background: url('images/panel_tile_header.png') repeat;
     padding: 10px 0 10px 10px;
@@ -125,6 +137,9 @@ CONTENT
     font-variant: small-caps;
     font-size: 15px;
     border-radius: 4px;
+}
+.content_box form {
+    margin-bottom: 10px;
 }
 .content_box a {
     color: #42603e;
