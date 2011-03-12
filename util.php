@@ -41,6 +41,17 @@ function bitcoin_balance()
         # I should be emailed/warned.
     #}
 }
+function bitcoin_deduct_funds($amount)
+{
+    $uid = $_SESSION['uid'];
+    #try {
+        $bitcoin = connect_bitcoin();
+        $bitcoin->move($uid, '', $amount);
+    #}
+    #catch (Exception $e) {
+        # I should be emailed/warned.
+    #}
+}
 
 function fetch_balances()
 {
@@ -92,9 +103,9 @@ function deduct_funds($amount, $curr_type)
 {
     $uid = $_SESSION['uid'];
     if ($curr_type == 'BTC')
-        return;
+        bitcoin_deduct_funds($amount);
     else {
-        $query = "UPDATE purses SET amount = amount -'".$amount."' WHERE uid='".$uid."' AND type='".$type."';";
+        $query = "UPDATE purses SET amount = amount -'".$amount."' WHERE uid='".$uid."' AND type='".$curr_type."';";
         do_query($query);
     }
 }
