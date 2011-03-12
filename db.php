@@ -36,6 +36,8 @@ function numstr_to_internal($numstr)
             $num_decimals = strlen($decimals);
         }        
         $numstr = $significand . $decimals;
+        # GMP doesn't like leading 0s
+        $numstr = ltrim($numstr, '0');
         $num = gmp_init($numstr);
         $num = gmp_mul($numstr, pow(10, 8 - $num_decimals));
     }
