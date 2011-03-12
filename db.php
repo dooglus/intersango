@@ -20,49 +20,18 @@ function has_results($result)
 
 function numstr_to_internal($numstr)
 {
-    $slen = strlen($numstr);
-    $dotpos = strrpos($numstr, '.');
-    if ($dotpos === false) {
-        $num = gmp_init($numstr);
-        $num = gmp_mul($numstr, pow(10, 8));
-    }
-    else {
-        # remove the dot from the string
-        $significand = substr($numstr, 0, $dotpos);
-        $decimals = substr($numstr, $dotpos + 1, $slen);
-        $num_decimals = strlen($decimals);
-        if ($num_decimals > 8) {
-            $decimals = substr($decimals, 0, 8);
-            $num_decimals = strlen($decimals);
-        }        
-        $numstr = $significand . $decimals;
-        # GMP doesn't like leading 0s
-        $numstr = ltrim($numstr, '0');
-        $num = gmp_init($numstr);
-        $num = gmp_mul($numstr, pow(10, 8 - $num_decimals));
-    }
-    return $num;
+    return bcmul($numstr, pow(10, 8), 0);
 }
-
-function internal_to_numstr($internal)
+function internal_to_numstr($num, $precision=8)
 {
-    $inrepr = gmp_strval($internal);
-    $inrlen = strlen($inrepr);
-    if (gmp_cmp($internal, pow(10, 8)) < 0) {
-        $numstr = '0.' . str_repeat('0', 8 - $inrlen) . $inrepr;
-        $numstr = rtrim($numstr, '0');
-    }
-    else {
-        $dotpos = $inrlen - 8;
-        $decimals = substr($inrepr, $dotpos, 8);
-        $decimals = rtrim($decimals, '0');
-        $significand = substr($inrepr, 0, $dotpos);
-        $numstr = $significand . '.' . $decimals;
-    }
-    # if there's no 0's after the . then it will clip it
-    # otherwise the decimal remains
-    $numstr = rtrim($numstr, '.');
-    return $numstr;
+    $repr = gmp_strval($num);
+    $repr = bcdiv($repr, pow(10, 8), $precision);
+    # now tidy output...
+    # trim trailing 0s
+    $repr = rtrim($repr, '0');
+    # and a trailing . if it exists
+    $repr = rtrim($repr, '.');
+    return $repr;
 }
 
 function clean_sql_numstr($numstr)
