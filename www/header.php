@@ -16,7 +16,7 @@
             foreach ($currencies as $curr_b) {
                 if ($curr_a == $curr_b)
                     continue;
-                $exchange_fields = calc_exchange_rate($curr_b, $curr_a);        
+                $exchange_fields = calc_exchange_rate($curr_a, $curr_b);        
                 if ($exchange_fields) {
                     $curr_b = strtolower($curr_b);
                     $rates_a[$curr_b] = (float)$exchange_fields[2];
