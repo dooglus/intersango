@@ -47,7 +47,7 @@ function report($message, $severity)
     endlog();
     # do this last because it's the most risky operation, and we at least want some logs first.
     if ($severity == SEVERITY::ERROR) {
-        echo exec("echo 'A fatal error has occured. Time is now $time.' | mutt -s INTERSANGO_ERROR genjix@gmail.com -a $filename");
+        #echo exec("echo 'A fatal error has occured. Time is now $time.' | mutt -s INTERSANGO_ERROR genjix@gmail.com -a $filename");
     }
 }
 function log_badpage($page)
