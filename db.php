@@ -17,6 +17,13 @@ function has_results($result)
     else
         return false;
 }
+function get_row($result)
+{
+    $row = mysql_fetch_array($result);
+    if (!$row)
+        throw new Error('Ooops!', "Seems there's a missing value here.");
+    return $row;
+}
 
 function numstr_to_internal($numstr)
 {
