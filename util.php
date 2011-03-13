@@ -76,7 +76,11 @@ function fetch_balances()
 {
     $balances = array();
     $uid = user_id();
-    $query = "SELECT amount, type FROM purses WHERE uid='$uid';";
+    $query = "
+        SELECT amount, type
+        FROM purses
+        WHERE uid='$uid';
+    ";
     $result = do_query($query);
     while ($row = mysql_fetch_array($result)) {
         $amount = $row['amount'];
