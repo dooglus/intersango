@@ -32,26 +32,48 @@ try {
             # protect against session hijacking now we've escalated privilege level
             session_regenerate_id(true);
             $oidlogin = escapestr($openid->identity);
-            # fetch record from db
-            $query = "SELECT * FROM users WHERE oidlogin='".$oidlogin."';";
+            # is this OpenID known to us?
+            $query = "
+                SELECT 1
+                FROM users
+                WHERE oidlogin='$oidlogin'
+                LIMIT 1;
+            ";
             $result = do_query($query);
 
-            if (has_results($result))
+            if (has_results($result)) {
+                # need that uid
+                $query = "
+                    SELECT uid
+                    FROM users
+                    WHERE oidlogin='$oidlogin';
+                ";
+                $result = do_query($query);
+                $row = get_rows($result);
+                $uid = $row['uid'];
                 echo '<p>Welcome back commander. Welcome back.</p>';
+            }
             else {
-                ?>
-    <p>Nice to finally see you here, <i>new</i> user.</p>
-    <p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>
-                <?php
-                $insq = "INSERT INTO users(oidlogin) VALUES ('".$oidlogin."');";
-                do_query($insq);
+                $query = "
+                    INSERT INTO users(oidlogin)
+                    VALUES ('$oidlogin');
+                ";
+                do_query($query);
+                $uid = mysql_insert_id();
+                # generate random str for deposit reference
+                $query = "
+                    UPDATE users
+                    SET deposref=SUBSTR(MD5(RAND()), 8)
+                    WHERE uid='$uid';
+                ";
                 # reperform query so we can store new uid
                 $result = do_query($query);
+                echo "<p>Nice to finally see you here, <i>new</i> user.</p>\n";
+                echo "<p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>\n";
             }
-            $row = mysql_fetch_array($result);
             # store for later
             $_SESSION['oidlogin'] = $oidlogin;
-            $_SESSION['uid'] = $row['uid'];
+            $_SESSION['uid'] = $uid;
         }
         else {
             throw new Problem(":(", "Unable to login.");
