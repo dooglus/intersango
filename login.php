@@ -46,7 +46,8 @@ try {
                 $query = "
                     SELECT uid
                     FROM users
-                    WHERE oidlogin='$oidlogin';
+                    WHERE oidlogin='$oidlogin'
+                    LIMIT 1;
                 ";
                 $result = do_query($query);
                 $row = get_row($result);
