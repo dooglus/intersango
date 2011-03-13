@@ -1,6 +1,7 @@
         <div class='content_box'>
             <h3>Currency converter</h3>
             <p><b>This site is strictly alpha.</b> We are currently in talks with legal professionals and gaining international licenses. The software is new. Use at your own risk. We will do our best to prevent problems, but mistakes can happen. Only deposit small amounts. Please see the <a href='?page=help'>help</a> page for more info and our terms &amp; conditions.</p>
+            <p>Every day the site will be down between 0100-0500 at night as we analyse the site for any potential issues.</p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
