@@ -15,9 +15,22 @@ function switcher($page, $loggedin)
                     log_badpage($page);
                 break;
 
+            case 'view_order':
+                if ($loggedin)
+                    include("$abspath/view_order.php");
+                else
+                    log_badpage($page);
+                break;
+
+            case 'view_request':
+                if ($loggedin)
+                    include("$abspath/view_request.php");
+                else
+                    log_badpage($page);
+                break;
+
             case 'login':
                 if (!$loggedin)
-                    # first force logout
                     include("$abspath/login.php");
                 else
                     log_badpage($page);
