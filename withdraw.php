@@ -1,30 +1,88 @@
 <?php
 require 'util.php';
 
-function save_details($amount, $curr_type)
+function uk_withdraw($uid, $amount, $curr_type)
+{
+    $name = post('name_holder');
+    $bank = post('name_bank');
+    $acc_num = post('account_number');
+    $sort_code = post('sort_code');
+    syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code");
+    endlog();
+
+    $query = "
+        INSERT INTO requests (req_type, uid, amount, curr_type)
+        VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
+    ";
+    do_query($query);
+    $reqid = mysql_insert_id();
+    $query = "
+        INSERT INTO uk_requests (reqid, name, bank, acc_num, sort_code)
+        VALUES ('$reqid', '$name', '$bank', '$acc_num', '$sort_code');
+    ";
+    do_query($query);
+}
+
+function international_withdraw($uid, $amount, $curr_type)
+{
+    $iban = post('iban');
+    $swift = post('swift');
+    syslog(LOG_NOTICE, "iban=$iban,swift=$swift");
+    endlog();
+
+    $query = "
+        INSERT INTO requests (req_type, uid, amount, curr_type)
+        VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
+    ";
+    do_query($query);
+    $reqid = mysql_insert_id();
+    $query = "
+        INSERT INTO international_requests (reqid, iban, swift)
+        VALUES ('$reqid', '$iban', '$swift');
+    ";
+    do_query($query);
+}
+
+function bitcoin_withdraw($uid, $amount, $curr_type)
+{
+    $addy = post('address');
+    $bitcoin = connect_bitcoin();
+    $validaddy = $bitcoin->validateaddress($addy);
+    if (!$validaddy['isvalid'])
+        throw new Problem('Bitcoin says no', 'That address you supplied was invalid.');
+    syslog(LOG_NOTICE, "address=$addy");
+    endlog();
+
+    $query = "
+        INSERT INTO requests (req_type, uid, amount, curr_type)
+        VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
+    ";
+    do_query($query);
+    $reqid = mysql_insert_id();
+    $query = "
+        INSERT INTO bitcoin_requests (reqid, addy)
+        VALUES ('$reqid', '$addy');
+    ";
+    do_query($query);
+}
+
+function save_details($uid, $amount, $curr_type)
 {
     beginlog();
     syslog(LOG_NOTICE, "Withdrawing $amount $curr_type:");
     if ($curr_type == 'GBP') {
         $is_international = post('is_international') == 'true';
         if (!$is_international) {
-            $name = post('name_holder');
-            $bank = post('name_bank');
-            $acc_num = post('account_number');
-            $sort_code = post('sort_code');
-            syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code");
-            endlog();
+            uk_withdraw($uid, $amount, $curr_type);
             return true;
         }
         else {
-            $iban = post('iban');
-            $swift = post('swift');
-            syslog(LOG_NOTICE, "iban=$iban,swift=$swift");
-            endlog();
+            international_withdraw($uid, $amount, $curr_type);
             return true;
         }
     }
     else if ($curr_type == 'BTC') {
+        bitcoin_withdraw($uid, $amount, $curr_type);
         return true;
     }
     else {
@@ -41,13 +99,14 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     $amount = numstr_to_internal($amount_disp);
 
     curr_supported_check($curr_type);
-    order_worthwhile_check($amount);
+    order_worthwhile_check($amount, $amount_disp);
     enough_money_check($amount, $curr_type);
 
-    if (!save_details($amount, $curr_type))
+    if (!save_details($uid, $amount, $curr_type))
         throw Error('We had to admit it sometime...', 'Stop trading on thie site. Contact the admin FAST.');
     # actually take the money now
     deduct_funds($amount, $curr_type);
+    # request is submitted to the queue for the cron job to actually execute
 
     echo "<div class='content_box'>\n";
     echo "<h3>Withdraw $curr_type</h3>\n";
@@ -58,7 +117,7 @@ else {
 ?>
     <div class='content_box'>
     <h3>Withdraw GBP (UK residents)</h3>
-    <p>Enter an amount below to submit a withdrawal request.</p>
+    <p>Enter an amount below to submit a withdrawal request. We charge no fee.</p>
     <p>
         <form action='' class='indent_form' method='post'>
             <label for='input_name_holder'>Name of account holder</label>

@@ -20,7 +20,7 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
         FROM (
             SELECT SUM(amount) AS total_amount, SUM(want_amount) as total_wanted
             FROM orderbook
-            WHERE type='$curr_a' AND want_type='$curr_b'
+            WHERE type='$curr_a' AND want_type='$curr_b' AND status='OPEN'
             ) AS tbl;
     ";
     $total_result = do_query($query);
@@ -59,24 +59,14 @@ function connect_bitcoin()
 function bitcoin_balance()
 {
     $uid = user_id();
-    #try {
-        $bitcoin = connect_bitcoin();
-        return $bitcoin->getbalance($uid);
-    #}
-    #catch (Exception $e) {
-        # I should be emailed/warned.
-    #}
+    $bitcoin = connect_bitcoin();
+    return $bitcoin->getbalance($uid);
 }
 function bitcoin_deduct_funds($amount)
 {
     $uid = user_id();
-    #try {
-        $bitcoin = connect_bitcoin();
-        $bitcoin->move($uid, '', $amount);
-    #}
-    #catch (Exception $e) {
-        # I should be emailed/warned.
-    #}
+    $bitcoin = connect_bitcoin();
+    $bitcoin->move($uid, '', $amount);
 }
 
 function fetch_balances()
@@ -122,7 +112,12 @@ function has_enough($amount, $curr_type)
             return false;
     }
     else {
-        $query = "SELECT 1 FROM purses WHERE uid='$uid' AND type='$curr_type' AND amount > '$amount' LIMIT 1;";
+        $query = "
+            SELECT 1
+            FROM purses
+            WHERE uid='$uid' AND type='$curr_type' AND amount > '$amount'
+            LIMIT 1;
+        ";
         $result = do_query($query);
         return has_results($result);
     }
@@ -134,7 +129,11 @@ function deduct_funds($amount, $curr_type)
     if ($curr_type == 'BTC')
         bitcoin_deduct_funds($amount);
     else {
-        $query = "UPDATE purses SET amount = amount -'".$amount."' WHERE uid='".$uid."' AND type='".$curr_type."';";
+        $query = "
+            UPDATE purses
+            SET amount = amount - '$amount'
+            WHERE uid='$uid' AND type='$curr_type';
+        ";
         do_query($query);
     }
 }
@@ -145,8 +144,10 @@ function curr_supported_check($curr_type)
     if (!in_array($curr_type, $supported_currencies))
         throw new Error('Ooops!', 'Bad currency supplied.');
 }
-function order_worthwhile_check($amount)
+function order_worthwhile_check($amount, $amount_disp)
 {
+    if (!is_numeric($amount_disp))
+        throw new Problem('Numbers. Numbers.', 'The value you entered was not a number.');
     $min_str = '0.05';
     $min = numstr_to_internal($min_str);
     if ($amount < $min)
@@ -156,6 +157,50 @@ function enough_money_check($amount, $curr_type)
 {
     if (!has_enough($amount, $curr_type))
         throw new Problem("Where's the gold?", "You don't have enough $curr_type.");
+}
+
+function translate_order_code($code)
+{
+    # OPEN CANCEL CLOSED
+    switch ($code)
+    {
+        case 'OPEN':
+            return 'Open';
+        case 'CANCEL':
+            return 'Cancelled';
+        case 'PROG':
+            return 'In progress';
+        case 'CLOSED':
+            return 'Completed';
+        default:
+            throw new Error('No such order', 'This order is wrong...');
+    }
+}
+
+function translate_request_type($type)
+{
+    switch ($type)
+    {
+        case 'WITHDR':
+            return 'Withdraw';
+        default:
+            throw new Error('No such request type', 'This request is wrong...');
+    }
+}
+function translate_request_code($code)
+{
+    # VAL VERIF PRO OK FIN NO RET
+    # jei verifies payments
+    # I verify (process) payments
+    # we both confirm (OK) them
+    # they either complete (SENT, FIN) or deny (NO, RET)
+    switch ($code)
+    {
+        case 'VERIFY':
+            return 'Verifying';
+        default:
+            throw new Error('No such request', 'This request is wrong...');
+    }
 }
 
 ?>

@@ -17,8 +17,8 @@ $amount = numstr_to_internal($amount_disp);
 $want_amount_disp = post('want_amount');
 $want_amount = numstr_to_internal($want_amount_disp);
 
-order_worthwhile_check($amount);
-order_worthwhile_check($want_amount);
+order_worthwhile_check($amount, $amount_disp);
+order_worthwhile_check($want_amount, $want_amount_disp);
 
 enough_money_check($amount, $type);
 
@@ -33,11 +33,11 @@ $query = "
 $result = do_query($query);
 ?>
 
-<div class='content_box'><div class='content_sideshadow'>
+<div class='content_box'>
     <h3>Order placed</h3>
     <p>
     <?php echo "Your order offering $amount_disp $type for $want_amount_disp $want_type has been placed."; ?>
     </p>
-    <p>You may visit the <a href='?page=orderbook'>orderbook</a>.
+    <p>You may visit the <a href='?page=orderbook'>orderbook</a>.</p>
 </div>
 
