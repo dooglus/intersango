@@ -27,8 +27,22 @@ deduct_funds($amount, $type);
 
 # add the money to the order book
 $query = "
-    INSERT INTO orderbook(uid, amount, type, want_amount, want_type)
-    VALUES ('$uid', '$amount', '$type', '$want_amount', '$want_type');
+    INSERT INTO orderbook (
+        uid,
+        initial_amount,
+        amount,
+        type,
+        initial_want_amount,
+        want_amount,
+        want_type)
+    VALUES (
+        '$uid',
+        '$amount',
+        '$amount',
+        '$type',
+        '$want_amount',
+        '$want_amount',
+        '$want_type');
     ";
 $result = do_query($query);
 ?>
