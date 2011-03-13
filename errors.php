@@ -53,6 +53,7 @@ function report($message, $severity)
 function log_badpage($page)
 {
     report($page, SEVERITY::BAD_PAGE);
+    throw new Problem('Invisible', 'You have gone to a wrong page. Go somewhere else.');
 }
 function report_exception($e, $severity)
 {
