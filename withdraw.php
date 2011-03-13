@@ -3,6 +3,8 @@ require 'util.php';
 
 function save_details($amount, $curr_type)
 {
+    beginlog();
+    syslog(LOG_NOTICE, "Withdrawing $amount $curr_type:");
     if ($curr_type == 'GBP') {
         $is_international = post('is_international') == 'true';
         if (!$is_international) {
@@ -10,13 +12,15 @@ function save_details($amount, $curr_type)
             $bank = post('name_bank');
             $acc_num = post('account_number');
             $sort_code = post('sort_code');
-            echo "<p>$name $bank $acc_num $sort_code local</p>";
+            syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code");
+            endlog();
             return true;
         }
         else {
             $iban = post('iban');
             $swift = post('swift');
-            echo "<p>$iban $swift non local</p>";
+            syslog(LOG_NOTICE, "iban=$iban,swift=$swift");
+            endlog();
             return true;
         }
     }
