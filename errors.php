@@ -1,4 +1,12 @@
 <?php
+function beginlog()
+{
+    openlog("intersango", LOG_PID, LOG_LOCAL0);
+}
+function endlog()
+{
+    closelog();
+}
 
 class SEVERITY
 {
@@ -34,6 +42,9 @@ function report($message, $severity)
     }
 
     error_log("$message\n", 3, $filename);
+    beginlog();
+    syslog(LOG_CRIT, $message);
+    endlog();
     # do this last because it's the most risky operation, and we at least want some logs first.
     if ($severity == SEVERITY::ERROR) {
         echo exec("echo 'A fatal error has occured. Time is now $time.' | mutt -s INTERSANGO_ERROR genjix@gmail.com -a $filename");
@@ -75,7 +86,7 @@ function reporting_error_handler($errno, $errstr, $errfile, $errline)
         break;
     }
     # Don't execute PHP internal error handler
-    return true;
+    return false;
 }                                
 function reporting_shutdown() { 
     $error = error_get_last();
