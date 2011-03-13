@@ -49,7 +49,7 @@ try {
                     WHERE oidlogin='$oidlogin';
                 ";
                 $result = do_query($query);
-                $row = get_rows($result);
+                $row = get_row($result);
                 $uid = $row['uid'];
                 echo '<p>Welcome back commander. Welcome back.</p>';
             }
