@@ -30,7 +30,11 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
             <th>Wanted</th>
         </tr><?php
 
-    $query = "SELECT *, amount/want_amount AS rate FROM orderbook WHERE type='$curr_a' AND want_type='$curr_b';";
+    $query = "
+        SELECT *, amount/want_amount AS rate
+        FROM orderbook
+        WHERE type='$curr_a' AND want_type='$curr_b';
+    ";
     $result = do_query($query);
     while ($row = mysql_fetch_array($result)) {
         $amount = internal_to_numstr($row['amount']);
