@@ -2,7 +2,7 @@
 require 'util.php';
 $uid = user_id();
 $bitcoin = connect_bitcoin();
-$addy = $bitcoin->getaccountaddress($uid);
+$addy = $bitcoin->getaccountaddress((string)$uid);
 
 $query = "
     SELECT deposref
