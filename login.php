@@ -51,7 +51,7 @@ try {
                 ";
                 $result = do_query($query);
                 $row = get_row($result);
-                $uid = $row['uid'];
+                $uid = (string)$row['uid'];
                 echo '<p>Welcome back commander. Welcome back.</p>';
             }
             else {
@@ -65,7 +65,7 @@ try {
                     );
                 ";
                 do_query($query);
-                $uid = mysql_insert_id();
+                $uid = (string)mysql_insert_id();
                 # generate random str for deposit reference
                 $query = "
                     INSERT INTO purses
