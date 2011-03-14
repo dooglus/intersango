@@ -60,13 +60,13 @@ function bitcoin_balance()
 {
     $uid = user_id();
     $bitcoin = connect_bitcoin();
-    return $bitcoin->getbalance($uid);
+    return $bitcoin->getbalance((string)$uid);
 }
 function bitcoin_deduct_funds($amount)
 {
     $uid = user_id();
     $bitcoin = connect_bitcoin();
-    $bitcoin->move($uid, '', $amount);
+    $bitcoin->move((string)$uid, '', $amount);
 }
 
 function fetch_balances()
