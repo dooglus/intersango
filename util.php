@@ -56,23 +56,24 @@ function connect_bitcoin()
     $bitcoin = new jsonRPCClient('http://user:password@127.0.0.1:8332/');
     return $bitcoin;
 }
-function bitcoin_balance()
+function sync_to_bitcoin($uid)
 {
-    $uid = user_id();
     $bitcoin = connect_bitcoin();
-    return $bitcoin->getbalance((string)$uid);
-}
-function bitcoin_deduct_funds($amount)
-{
-    $uid = user_id();
-    $bitcoin = connect_bitcoin();
-    $bitcoin->move((string)$uid, '', $amount);
+    $balance = $bitcoin->getbalance($uid);
+    $query = "
+        UPDATE purses
+        SET amount = amount + '$balance'
+        WHERE uid='$uid' AND type='BTC';
+    ";
+    do_query($query);
+    $bitcoin->move($uid, '', $balance);
 }
 
 function fetch_balances()
 {
     $balances = array();
     $uid = user_id();
+    sync_to_bitcoin($uid);
     $query = "
         SELECT amount, type
         FROM purses
@@ -84,8 +85,6 @@ function fetch_balances()
         $type = $row['type'];
         $balances[$type] = $amount;
     }
-    # don't forget the ugly duckling
-    $balances['BTC'] = bitcoin_balance();
     return $balances;
 }
 
@@ -105,37 +104,26 @@ function show_balances($indent=false)
 function has_enough($amount, $curr_type)
 {
     $uid = user_id();
-    if ($curr_type == 'BTC') {
-        if (gmp_cmp($amount, bitcoin_balance()) != 1)
-            return true;
-        else
-            return false;
-    }
-    else {
-        $query = "
-            SELECT 1
-            FROM purses
-            WHERE uid='$uid' AND type='$curr_type' AND amount > '$amount'
-            LIMIT 1;
-        ";
-        $result = do_query($query);
-        return has_results($result);
-    }
+    sync_to_bitcoin($uid);
+    $query = "
+        SELECT 1
+        FROM purses
+        WHERE uid='$uid' AND type='$curr_type' AND amount > '$amount'
+        LIMIT 1;
+    ";
+    $result = do_query($query);
+    return has_results($result);
 }
 
 function deduct_funds($amount, $curr_type)
 {
     $uid = user_id();
-    if ($curr_type == 'BTC')
-        bitcoin_deduct_funds($amount);
-    else {
-        $query = "
-            UPDATE purses
-            SET amount = amount - '$amount'
-            WHERE uid='$uid' AND type='$curr_type';
-        ";
-        do_query($query);
-    }
+    $query = "
+        UPDATE purses
+        SET amount = amount - '$amount'
+        WHERE uid='$uid' AND type='$curr_type';
+    ";
+    do_query($query);
 }
 
 function curr_supported_check($curr_type)

@@ -73,8 +73,14 @@ try {
                     VALUES
                         (LAST_INSERT_ID(), 0, 'GBP');
                 ";
-                # reperform query so we can store new uid
-                $result = do_query($query);
+                do_query($query);
+                $query = "
+                    INSERT INTO purses
+                        (uid, amount, type)
+                    VALUES
+                        (LAST_INSERT_ID(), 0, 'BTC');
+                ";
+                do_query($query);
                 echo "<p>Nice to finally see you here, <i>new</i> user.</p>\n";
                 echo "<p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>\n";
             }
