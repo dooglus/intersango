@@ -56,16 +56,22 @@ try {
             }
             else {
                 $query = "
-                    INSERT INTO users(oidlogin)
-                    VALUES ('$oidlogin');
+                    INSERT INTO users (
+                        oidlogin,
+                        deposref
+                    ) VALUES (
+                        '$oidlogin',
+                        SUBSTR(MD5(RAND()), 8)
+                    );
                 ";
                 do_query($query);
                 $uid = mysql_insert_id();
                 # generate random str for deposit reference
                 $query = "
-                    UPDATE users
-                    SET deposref=SUBSTR(MD5(RAND()), 8)
-                    WHERE uid='$uid';
+                    INSERT INTO purses
+                        (uid, amount, type)
+                    VALUES
+                        (LAST_INSERT_ID(), 0, 'GBP');
                 ";
                 # reperform query so we can store new uid
                 $result = do_query($query);
