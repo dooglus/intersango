@@ -63,7 +63,7 @@ CREATE TABLE `orderbook` (
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(6) NOT NULL DEFAULT 'OPEN',
   PRIMARY KEY (`orderid`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +96,25 @@ CREATE TABLE `requests` (
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(6) NOT NULL DEFAULT 'VERIFY',
   PRIMARY KEY (`reqid`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `transactions`
+--
+
+DROP TABLE IF EXISTS `transactions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `transactions` (
+  `txid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `a_orderid` int(10) unsigned NOT NULL,
+  `a_amount` bigint(20) NOT NULL,
+  `b_orderid` int(10) unsigned NOT NULL,
+  `b_amount` bigint(20) NOT NULL,
+  `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`txid`)
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,10 +146,11 @@ CREATE TABLE `users` (
   `oidlogin` varchar(100) NOT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   `deposref` varchar(8) NOT NULL DEFAULT '',
+  `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `oidlogin` (`oidlogin`),
   UNIQUE KEY `deposref` (`deposref`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -143,4 +162,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-03-13 23:49:18
+-- Dump completed on 2011-03-15  1:05:20
