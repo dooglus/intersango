@@ -136,7 +136,7 @@ function order_worthwhile_check($amount, $amount_disp)
 {
     if (!is_numeric($amount_disp))
         throw new Problem('Numbers. Numbers.', 'The value you entered was not a number.');
-    $min_str = '0.05';
+    $min_str = '0.5';
     $min = numstr_to_internal($min_str);
     if ($amount < $min)
         throw new Problem("Try again...", "Your order size is too small. The minimum is $min_str.");
