@@ -1,10 +1,4 @@
         <div class='content_box'>
-        <h4>Test</h4>
-        <p><ul>
-            <li>testing</li>
-            <li>testing</li>
-            <li>testing</li>
-        </ul></p>
             <h3>Currency converter</h3>
             <p><b>This site is strictly alpha.</b> We are currently in talks with legal professionals and gaining international licenses. The software is new. Use at your own risk. We will do our best to prevent problems, but mistakes can happen. Only deposit small amounts. Please see the <a href='?page=help'>help</a> page for more info and our terms &amp; conditions.</p>
             <p>Every day the site will be down between 0100-0500 at night as we analyse the site for any potential issues. We are carefully monitoring our system.</p>
