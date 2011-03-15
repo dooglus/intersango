@@ -26,7 +26,7 @@ function display_transactions($uid, $orderid)
     $row = mysql_fetch_assoc($result);
     if ($row) { ?>
         <div class='content_box'>
-        <h3>Your requests <?php if ($orderid != -1) echo 'for this order'; ?></h3>
+        <h3>Your trades <?php if ($orderid != -1) echo 'for this order'; ?></h3>
         <table class='display_data'>
             <tr>
                 <th>Description</th>
