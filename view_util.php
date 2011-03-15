@@ -35,13 +35,14 @@ function display_transactions($uid, $orderid)
             </tr><?php
         do {
             $who = $row['who'];
+            $a_amount = $row['a_amount'];
+            $b_amount = $row['b_amount'];
             if ($who == 'A')
                 list($a_amount, $b_amount) = array($b_amount, $a_amount);
-            $b_amount = $row['b_amount'];
             # skip cancelled orders since we already show those
             if ($b_amount == -1)
                 continue;
-            $a_amount = internal_to_numstr($row['a_amount']);
+            $a_amount = internal_to_numstr($a_amount);
             $b_amount = internal_to_numstr($b_amount);
             $type = $row['type'];
             $want_type = $row['want_type'];
