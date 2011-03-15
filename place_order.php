@@ -1,5 +1,6 @@
 <?php
 require 'util.php';
+require 'fulfill_order.php';
 
 $uid = user_id();
 
@@ -45,6 +46,8 @@ $query = "
         '$want_type');
     ";
 $result = do_query($query);
+$orderid = mysql_insert_id();
+fulfill_order($orderid);
 ?>
 
 <div class='content_box'>
