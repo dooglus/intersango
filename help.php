@@ -18,10 +18,13 @@
 
 <div class='content_box'>
 <h3>Terms and conditions</h3>
-<p>1. This site is an early public-alpha. Be prepared for problems. We are currently at this stage not liable for mistakes made but this will change in the future. We will do our best to resolve issues.</p>
-<p>2. We do not intervene in trading disputes. Completed trades are irrevocable.</p>
+<p><b>NOTICE.</b> This web site is offered to you conditioned on your acceptance without modification of the terms, conditions and notices contained herein. Your use of the site constitutes your agreement to comply with these terms and conditions.</p>
+<p>1. This site is an early public-alpha. Be prepared for problems. We are currently at this stage not liable for mistakes made but this will change in the future. We will do our best to resolve issues. In no part are we liable.</p>
+<p>2. In the case of a dispute between parties, we will not intervene to settle the matter. Once an order has been filled, and funds appear in the parties accounts, that trade should be consider irrevocable. Trades are irreversible.</p>
 <p>3. As login security is handled off-site by your OpenID provider, you are responsible for securing and recovering stolen or cracked logins.</p>
-<p>4. Any attempt at this site's security will be met with immediate seizure of involved accounts and funds. Victims of fraud will not receive refunds but we will do our best to notify you and prevent future problems.</p>
+<p>4. Any attempt at this site's security will be met with immediate seizure of involved accounts and funds. Victims of fraud will not receive refunds, but are notified and adviced on how to prevent future problems.</p>
+<p>5. We do not claim ownership of any materials you provide to us (including feedback and suggestions). However, you are granting us and our agents permission to use your submissions in connection with the operation of this web site and it's other businesses, including without limitation, the right to copy, distribute, transmit, publicly display, reproduce and edit your submission all without payment of compensation to you for any such usage.</p>
+<p>6. The information contained on here has no regard to the specific investment objective, financial situation or particular needs of any specific recipient. We do not endorse any particular financial products. Posted content is solely for informational purposes. Please consult appropriate professionals for specific advice tailored to your situation.</p>
 </div>
 
 <div class='content_box'>
