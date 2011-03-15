@@ -103,7 +103,7 @@ function return_remaining($orderid, $uid, $amount, $type)
 
 class OrderInfo
 {
-    public $orderid, $uid, $initial_amount, $amount, $type, $initial_want_amount, $want_amount, $want_type, $status;
+    public $orderid, $uid, $initial_amount, $amount, $type, $initial_want_amount, $want_amount, $want_type, $status, $timest;
 
     public function __construct($row)
     {
@@ -116,6 +116,7 @@ class OrderInfo
         $this->want_amount = $row['want_amount'];
         $this->want_type = $row['want_type'];
         $this->status = $row['status'];
+        $this->timest = $row['timest'];
     }
 }
 
