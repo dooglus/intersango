@@ -55,13 +55,16 @@ else {
         Made <?php echo $timest; ?>
         </p>
         <p>
+        <?php echo translate_order_code($status); ?>
+        </p>
         <?php if ($status == 'OPEN') { ?>
+        <p>
             <form action='' class='indent_form' method='post'>
                 <input type='hidden' name='cancel_order' value='true' />
                 <input type='submit' value='Cancel order' />
             </form>
-        <?php } ?>
         </p>
+        <?php } ?>
     </div> <?php
     display_transactions($uid, $orderid);
 }
