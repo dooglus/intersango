@@ -156,8 +156,6 @@ function translate_order_code($code)
             return 'Open';
         case 'CANCEL':
             return 'Cancelled';
-        case 'PROG':
-            return 'In progress';
         case 'CLOSED':
             return 'Completed';
         default:
