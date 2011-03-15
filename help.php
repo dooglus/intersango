@@ -1,11 +1,17 @@
 <div class='content_box'>
 <h3>Help</h3>
 <p>For safety, please keep funds off-site when not trading.</p>
+<p>The source code for this website is available online at <a href="http://gitorious.org/intersango/">Gitorious</a>. We believe hiding the workings of a website is a poor substitute for good security.</p>
 </div>
 
 <div class='content_box'>
 <h3>Contact info</h3>
-<p>foo@intersango.com Blaa company</p>
+<?php if ($loggedin) { ?>
+<p>genjix@riseup.net</p>
+<p>Intersango is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
+<?php } else { ?>
+<p>Sign in to view these details.</p>
+<?php } ?>
 </div>
 
 <div class='content_box'>
@@ -13,6 +19,6 @@
 <p>1. This site is an early public-alpha. Be prepared for problems. We are currently at this stage not liable for mistakes made but this will change in the future. We will do our best to resolve issues.</p>
 <p>2. We do not intervene in trading disputes. Completed trades are irrevocable.</p>
 <p>3. As login security is handled off-site by your OpenID provider, you are responsible for securing and recovering stolen or cracked logins.</p>
-<p>4. Any attempt at this site's security will be met with immediate seizure of involved accounts and funds. Victims will not receive refunds but we will do our best to notify you and prevent future problems.</p>
+<p>4. Any attempt at this site's security will be met with immediate seizure of involved accounts and funds. Victims of fraud will not receive refunds but we will do our best to notify you and prevent future problems.</p>
 </div>
 
