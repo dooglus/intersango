@@ -115,7 +115,10 @@ CONTENT
     /* WTFFF??? */
     padding-top: 1px;
 }
-.content_box p {
+.content_box ul {
+    margin: 0 0 8px 40px;
+}
+.content_box p, .content_box h4 {
     margin: 0 0 8px 20px;
 }
 .content_box label {
