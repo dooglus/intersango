@@ -14,6 +14,25 @@ function add_funds($uid, $amount, $type)
     do_query($query);
 }
 
+function create_record($our_orderid, $our_amount, $them_orderid, $them_amount)
+{
+    # record keeping
+    $query = "
+        INSERT INTO transactions (
+            a_orderid,
+            a_amount,
+            b_orderid,
+            b_amount
+        ) VALUES (
+            '$our_orderid',
+            '$our_amount',
+            '$them_orderid',
+            '$them_amount'
+        );
+    ";
+    do_query($query);
+}
+
 function pacman($our_orderid, $our_uid, $our_amount, $our_type, $them_orderid, $them_uid, $them_amount, $them_type)
 {
     # close order that's being absorbed
@@ -72,26 +91,14 @@ function pacman($our_orderid, $our_uid, $our_amount, $our_type, $them_orderid, $
     add_funds($our_uid, $them_amount, $them_type);
     add_funds($them_uid, $our_amount, $our_type);
 
-    # record keeping
-    $query = "
-        INSERT INTO transactions (
-            a_orderid,
-            a_amount,
-            b_orderid,
-            b_amount
-        ) VALUES (
-            '$our_orderid',
-            '$our_amount',
-            '$them_orderid',
-            '$them_amount'
-        );
-    ";
-    do_query($query);
+    create_record($our_orderid, $our_amount, $them_orderid, $them_amount);
 }
 
-function return_remaining($uid, $amount, $type)
+function return_remaining($orderid, $uid, $amount, $type)
 {
     add_funds($uid, $amount, $type);
+    # these records indicate returned funds.
+    create_record($orderid, $amount, -1, 0);
 }
 
 class OrderInfo
@@ -165,7 +172,7 @@ function fulfill_order($our_orderid)
             pacman($them->orderid, $them->uid, $them->amount, $them->type, $our->orderid, $our->uid, $them_new_want, $our->type);
             # return remaining amount... little freebie
             if (gmp_cmp($them_return, 0) != 0)
-                return_remaining($them->uid, $them_return, $them->type);
+                return_remaining($them->orderid, $them->uid, $them_return, $them->type);
             # re-update as still haven't finished...
             $our = fetch_order_info($our->orderid);
             # order was closed and our job is done.
