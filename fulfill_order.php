@@ -98,7 +98,7 @@ function return_remaining($orderid, $uid, $amount, $type)
 {
     add_funds($uid, $amount, $type);
     # these records indicate returned funds.
-    create_record($orderid, $amount, -1, 0);
+    create_record($orderid, $amount, 0, -1);
 }
 
 class OrderInfo

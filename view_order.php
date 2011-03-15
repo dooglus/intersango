@@ -1,6 +1,8 @@
 <?php
 require 'util.php';
+require 'view_util.php';
 require 'fulfill_order.php';
+
 if (!isset($_GET['orderid']))
     throw new Problem('No order selected', 'Hit back and select an order.');
 $orderid = $_GET['orderid'];
@@ -23,7 +25,7 @@ if (isset($_POST['cancel_order'])) {
 
     add_funds($info->uid, $info->amount, $info->type);
     # these records indicate returned funds.
-    create_record($orderid, $info->amount, -1, 0);
+    create_record($orderid, $info->amount, 0, -1);
     ?><div class='content_box'>
         <h3>Cancelled!</h3>
         <p>Order <?php echo $orderid; ?> is no more.</p>
@@ -46,9 +48,9 @@ else {
         <p>
         When the order was placed: <?php echo "$initial_amount $type"; ?> for <?php echo "$initial_want_amount $want_type"; ?>
         </p>
-        <p>
-        <?php echo "$amount $type"; ?> for <?php echo "$want_amount $want_type"; ?> remaining.
-        </p>
+        <?php if ($status == 'OPEN') {
+            echo "<p>$amount $type for $want_amount $want_type remaining.</p>";
+        } ?>
         <p>
         Made <?php echo $timest; ?>
         </p>
@@ -61,6 +63,7 @@ else {
         <?php } ?>
         </p>
     </div> <?php
+    display_transactions($uid, $orderid);
 }
 ?>
 
