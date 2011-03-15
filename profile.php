@@ -28,7 +28,7 @@ $query = "
         status
     FROM orderbook
     WHERE uid='$uid'
-    ORDER BY timest ASC;
+    ORDER BY timest DESC;
 ";
 $result = do_query($query);
 $row = mysql_fetch_assoc($result);
@@ -76,7 +76,7 @@ $query = "
         status
     FROM requests
     WHERE uid='$uid' AND req_type='WITHDR'
-    ORDER BY timest ASC;
+    ORDER BY timest DESC;
 ";
 $result = do_query($query);
 $row = mysql_fetch_assoc($result);
