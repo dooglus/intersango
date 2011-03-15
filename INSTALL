@@ -14,3 +14,7 @@ ln -s /path/to/this/dir/www www
 
 4. open /var/www/config.php and edit $abspath to point to this dir (/path/to/this/dir)
 
+5. enable MySQL logging in /etc/mysql/my.cnf:
+log = /var/log/mysql/mysql.log
+
+6. import DATABASE into mysql
