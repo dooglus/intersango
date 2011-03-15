@@ -24,6 +24,10 @@ $deposref = $row['deposref'];
             <td>Mr Taaki</td>
         </tr>
         <tr>
+            <td>Bank:</td>
+            <td>Llyods TSB</td>
+        </tr>
+        <tr>
             <td>Account number:</td>
             <td>22939560</td>
         </tr>
