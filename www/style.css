@@ -118,6 +118,14 @@ CONTENT
 .content_box p {
     margin: 0 0 8px 20px;
 }
+.content_box h4 {
+    margin: 0 0 8px 20px;
+}
+.content_box li ul {
+    margin-left: 60px;
+    padding-left: 60px;
+    margin: 0 0 8px 30px;
+}
 .content_box label {
     display: block;
     width: 35%;
