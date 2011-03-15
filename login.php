@@ -3,7 +3,7 @@ require 'openid.php';
 try {
     $openid = new LightOpenID;
     if (!$openid->mode) {
-        if (isset($_POST['openid_identifier'])) {
+        if (isset($_GET['openid_identifier'])) {
             $openid->identity = $_POST['openid_identifier'];
             header('Location: '.$openid->authUrl());
         }
@@ -12,12 +12,13 @@ try {
 <h3>Login</h3>
 <p>Enter your OpenID login below:</p>
 <p>
-    <form action='' class='indent_form' method='post'>
+    <form action='' class='indent_form' method='get'>
         <input type='text' name='openid_identifier' />
         <input type='submit' value='Submit' />
     </form>
 </p>
 <p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a>.</p>
+<p>Alternatively you may sign in using <a href="?openid_identifier=https://www.google.com/accounts/o8/id">Google</a> or <a href="?openid_identifier=me.yahoo.com">Yahoo</a>.</p>
 <?php
     }
     else if ($openid->mode == 'cancel') {
