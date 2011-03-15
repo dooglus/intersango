@@ -14,7 +14,7 @@
    height="1052.3622047"
    id="svg2"
    version="1.1"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.0 r9654"
    sodipodi:docname="drawing.svg">
   <defs
      id="defs4">
@@ -645,6 +645,39 @@
          offset="1"
          id="stop4126-9-0" />
     </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4122-1-1"
+       id="radialGradient4350-3"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.19510309,0.25627589,-0.26628289,0.20272143,780.3558,2235.6084)"
+       cx="-1342.5002"
+       cy="2904.4651"
+       fx="-1342.5002"
+       fy="2904.4651"
+       r="181.61424" />
+    <linearGradient
+       id="linearGradient4122-1-1">
+      <stop
+         style="stop-color:#01b972;stop-opacity:1;"
+         offset="0"
+         id="stop4124-4-10" />
+      <stop
+         style="stop-color:#00a563;stop-opacity:1;"
+         offset="1"
+         id="stop4126-9-34" />
+    </linearGradient>
+    <radialGradient
+       r="181.61424"
+       fy="2904.4651"
+       fx="-1342.5002"
+       cy="2904.4651"
+       cx="-1342.5002"
+       gradientTransform="matrix(0.19510309,0.25627589,-0.26628289,0.20272143,540.54376,1707.9139)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3483"
+       xlink:href="#linearGradient4122-1-1"
+       inkscape:collect="always" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -653,16 +686,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="-336.21835"
-     inkscape:cy="-1526.3848"
+     inkscape:zoom="0.7"
+     inkscape:cx="-599.78978"
+     inkscape:cy="-1012.0991"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="964"
-     inkscape:window-x="-4"
-     inkscape:window-y="-3"
+     inkscape:window-width="1020"
+     inkscape:window-height="745"
+     inkscape:window-x="0"
+     inkscape:window-y="19"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true" />
@@ -1518,5 +1551,21 @@
          id="tspan4430"
          x="-1477.1429"
          y="3255.2192">394x261</tspan></text>
+    <rect
+       style="fill:#e0e0df;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       id="rect3502"
+       width="325.71429"
+       height="325.71429"
+       x="-697.14288"
+       y="1845.2194"
+       inkscape:export-filename="/home/genjix/src/intersango/www/favicon.png"
+       inkscape:export-xdpi="4.4099998"
+       inkscape:export-ydpi="4.4099998" />
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:url(#radialGradient3483);fill-opacity:1;stroke:none"
+       d="m -840.44764,2140.9163 192.32241,-167.8388 47.66167,63.943 75.15582,-70.1067 -84.08245,0 47.87903,-50.0914 119.10165,0 0,123.982 -49.65663,48.3531 0,-84.8605 -70.04029,69.9153 -48.9357,48.9357 -49.46055,-65.0407 -142.44573,118.3663 -37.49923,-35.5573 z"
+       id="path3192-2-0"
+       sodipodi:nodetypes="ccccccccccccccc" />
   </g>
 </svg>
