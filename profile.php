@@ -3,10 +3,10 @@ require 'openid.php';
 require 'util.php';
 require 'view_util.php';
 
-echo "   <div class='content_box'>";
 if (!isset($_SESSION['uid']))
     throw new Error('Denied', 'Go away.');
 
+echo "   <div class='content_box'>";
 echo '<h3>Private user info</h3>';
 # main info
 echo '<p>You are logged in.</p>';
