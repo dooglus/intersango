@@ -14,11 +14,12 @@ try {
 <p>
     <form action='' class='indent_form' method='get'>
         <input type='text' name='openid_identifier' />
+        <input type='hidden' name='page' value='login' />
         <input type='submit' value='Submit' />
     </form>
 </p>
 <p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a>.</p>
-<p>Alternatively you may sign in using <a href="?openid_identifier=https://www.google.com/accounts/o8/id">Google</a> or <a href="?openid_identifier=me.yahoo.com">Yahoo</a>.</p>
+<p>Alternatively you may sign in using <a href="?page=login&openid_identifier=https://www.google.com/accounts/o8/id">Google</a> or <a href="?page=login&openid_identifier=me.yahoo.com">Yahoo</a>.</p>
 <?php
     }
     else if ($openid->mode == 'cancel') {
