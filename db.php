@@ -19,7 +19,7 @@ function has_results($result)
 }
 function get_row($result)
 {
-    $row = mysql_fetch_array($result);
+    $row = mysql_fetch_array($result, MYSQL_ASSOC);
     if (!$row)
         throw new Error('Ooops!', "Seems there's a missing value here.");
     return $row;
