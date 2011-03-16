@@ -48,7 +48,7 @@ function post($key)
         throw new Error('Ooops!', "Missing posted value $key!");
     $val = $_POST[$key];
     $val = preg_replace('[^A-Za-z0-9 ]', '', $val);
-    return $val;
+    return mysql_real_escape_string($val);
 }
 
 function connect_bitcoin()
