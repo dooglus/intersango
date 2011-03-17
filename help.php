@@ -10,7 +10,7 @@
 <h3>Contact info</h3>
 <?php if ($loggedin) { ?>
 <p>genjix@riseup.net</p>
-<p>Intersango is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
+<p>Britcoin is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
 <?php } else { ?>
 <p>Sign in to view these details.</p>
 <?php } ?>
@@ -31,7 +31,7 @@
 <h3>Privacy policy</h3>
 
 <h4>A. Policy statement</h4>
-<p>Intersango respects customer privacy. Users can visit most pages on our website and use all of the tools located without identifying themselves or providing personal or financial information. We collect the minimum information needed, which is all viewable from your profile. Normally we do not expunge records but will on request after careful consideration. We do not store cookies for privacy purposes. Our website may provide links to third-party websites for authentication, customer convenience and information. We do not control those third-party sites or their privacy practices.</p>
+<p>Britcoin respects customer privacy. Users can visit most pages on our website and use all of the tools located without identifying themselves or providing personal or financial information. We collect the minimum information needed, which is all viewable from your profile. Normally we do not expunge records but will on request after careful consideration. We do not store cookies for privacy purposes. Our website may provide links to third-party websites for authentication, customer convenience and information. We do not control those third-party sites or their privacy practices.</p>
 
 <h4>B. How we use personal information</h4>
 <p>We may use personal information as necessary to: complete bank deposits and withdrawals, effect transactions authorised by the user and maintain accounts.</p>
