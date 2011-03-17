@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Intersango</title>
+    <title>Britcoin</title>
     <?php if (!$page) { ?>
     <script type='text/javascript' src='jquery-1.4.4.min.js'></script>
     <script type='text/javascript' src='exchanger.js'></script>
