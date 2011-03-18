@@ -45,9 +45,7 @@ function display_request_info_intnl($reqid)
     echo "<p>BIC/SWIFT: {$row['swift']}</p>\n";
 }
 
-if (!isset($_GET['reqid']))
-    throw new Problem('No request selected', 'Hit back and select an order.');
-$reqid = $_GET['reqid'];
+$reqid = get('reqid');
 
 if (isset($_POST['cancel_request'])) {
     # cancel an order

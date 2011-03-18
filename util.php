@@ -42,13 +42,22 @@ function user_id()
     return $_SESSION['uid'];
 }
 
+function cleanup_string($val)
+{
+    $val = preg_replace('[^A-Za-z0-9 ]', '', $val);
+    return mysql_real_escape_string($val);
+}
 function post($key)
 {
     if (!isset($_POST[$key]))
         throw new Error('Ooops!', "Missing posted value $key!");
-    $val = $_POST[$key];
-    $val = preg_replace('[^A-Za-z0-9 ]', '', $val);
-    return mysql_real_escape_string($val);
+    return cleanup_string($_POST[$key]);
+}
+function get($key)
+{
+    if (!isset($_GET[$key]))
+        throw new Error('Ooops!', "Missing get value $key!");
+    return cleanup_string($_GET[$key]);
 }
 
 function connect_bitcoin()

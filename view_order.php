@@ -5,7 +5,7 @@ require 'fulfill_order.php';
 
 if (!isset($_GET['orderid']))
     throw new Problem('No order selected', 'Hit back and select an order.');
-$orderid = $_GET['orderid'];
+$orderid = get('orderid');
 $uid = user_id();
 $info = fetch_order_info($orderid);
 
