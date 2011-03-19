@@ -82,8 +82,6 @@
             <input id='outamount' name='want_amount' class='curramount' type="text" size="20" value="" onkeyup='typed_amount_out();'>
             </td>
             </tr>
-
-        </tr>
     <?php
     if ($loggedin) { ?>
         <tr><td></td><td>
