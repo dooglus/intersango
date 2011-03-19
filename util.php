@@ -60,11 +60,6 @@ function get($key)
     return cleanup_string($_GET[$key]);
 }
 
-function connect_bitcoin()
-{
-    $bitcoin = new jsonRPCClient('http://user:password@127.0.0.1:8332/');
-    return $bitcoin;
-}
 function sync_to_bitcoin($uid)
 {
     $bitcoin = connect_bitcoin();
