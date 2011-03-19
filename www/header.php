@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <title>Britcoin</title>
     <?php if (!$page) { ?>
     <script type='text/javascript' src='jquery-1.4.4.min.js'></script>
