@@ -44,7 +44,7 @@ function user_id()
 
 function cleanup_string($val)
 {
-    $val = preg_replace('/[^A-Za-z0-9 ]/', '', $val);
+    $val = preg_replace('/[^A-Za-z0-9 .]/', '', $val);
     return mysql_real_escape_string($val);
 }
 function post($key)
