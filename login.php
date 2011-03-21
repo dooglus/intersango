@@ -4,7 +4,7 @@ try {
     $openid = new LightOpenID;
     if (!$openid->mode) {
         if (isset($_GET['openid_identifier'])) {
-            $openid->identity = $_GET['openid_identifier'];
+            $openid->identity = htmlspecialchars($_GET['openid_identifier'], ENT_QUOTES);
             header('Location: '.$openid->authUrl());
         }
 ?>
