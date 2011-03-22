@@ -51,6 +51,6 @@ $deposref = $row['deposref'];
 
 <div class='content_box'>
     <h3>Deposit PokerStars USD</h3>
-    <p>We do provide the option to deposit and withdraw at the current USD to GBP exchange rate. Contact genjix@riseup.net for more details.</p>
+    <p>We do provide the option to deposit and withdraw at the current USD to GBP exchange rate. Contact webmaster@britcoin.co.uk for more details.</p>
 </div>
 

@@ -8,12 +8,8 @@
 
 <div class='content_box'>
 <h3>Contact info</h3>
-<?php if ($loggedin) { ?>
-<p>genjix@riseup.net</p>
+<p>webmaster@britcoin.co.uk</p>
 <p>Britcoin is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
-<?php } else { ?>
-<p>Sign in to view these details.</p>
-<?php } ?>
 </div>
 
 <div class='content_box'>
