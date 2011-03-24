@@ -94,13 +94,6 @@ function pacman($our_orderid, $our_uid, $our_amount, $our_type, $them_orderid, $
     create_record($our_orderid, $our_amount, $them_orderid, $them_amount);
 }
 
-function return_remaining($orderid, $uid, $amount, $type)
-{
-    add_funds($uid, $amount, $type);
-    # these records indicate returned funds.
-    create_record($orderid, $amount, 0, -1);
-}
-
 class OrderInfo
 {
     public $orderid, $uid, $initial_amount, $amount, $type, $initial_want_amount, $want_amount, $want_type, $status, $timest;
@@ -167,14 +160,19 @@ function fulfill_order($our_orderid)
             #    rate = our_amount / our_want_amount
             #    them_new_want = them_amount * rate
             $them->new_want = gmp_mul($them->amount, $our->initial_amount);
-            list($them_new_want, $them_return) = gmp_div_qr($them->new_want, $our->initial_want_amount);
+            list($them_new_want, $them_remain) = gmp_div_qr($them->new_want, $our->initial_want_amount);
             $them_new_want = gmp_strval($them_new_want);
-            $them_return = gmp_strval($them_return);
             pacman($them->orderid, $them->uid, $them->amount, $them->type, $our->orderid, $our->uid, $them_new_want, $our->type);
-            # return remaining amount... little freebie
-            if (gmp_cmp($them_return, 0) != 0)
-                return_remaining($them->orderid, $them->uid, $them_return, $them->type);
+
+            # we ignore the disparity which is them_remain / initial_want_amount
+            # max(remain) = iwant - 1
+            # max(disp)   = (iwant - 1) / iwant
+            #             = 1 - 1/iwant
+            # disp < 1  ALWAYS
+            # Therefore it does not matter and is totally insignificant.
+
             # re-update as still haven't finished...
+            # info needed for any further transactions
             $our = fetch_order_info($our->orderid);
             # order was closed and our job is done.
             if ($our->status != 'OPEN')
