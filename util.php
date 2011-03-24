@@ -63,11 +63,16 @@ function get($key)
 function sync_to_bitcoin($uid)
 {
     $bitcoin = connect_bitcoin();
-    $balance = $bitcoin->getbalance($uid, 6);
+    $balance = $bitcoin->getbalance($uid, 1);
+    #$query = "
+    #    UPDATE purses
+    #    SET amount = amount + '$balance'
+    #    WHERE uid='$uid' AND type='BTC';
+    #";
+    #do_query($query);
     $query = "
-        UPDATE purses
-        SET amount = amount + '$balance'
-        WHERE uid='$uid' AND type='BTC';
+        INSERT INTO requests (req_type, uid, amount, curr_type)
+        VALUES ('DEPOS', '$uid', '$balance', 'BTC');
     ";
     do_query($query);
     $bitcoin->move($uid, '', $balance);
@@ -173,6 +178,8 @@ function translate_request_type($type)
     {
         case 'WITHDR':
             return 'Withdraw';
+        case 'DEPOS':
+            return 'Deposit';
         default:
             throw new Error('No such request type', 'This request is wrong...');
     }
@@ -188,6 +195,10 @@ function translate_request_code($code)
     {
         case 'VERIFY':
             return 'Verifying';
+        case 'PROCES':
+            return 'Processing';
+        case 'FINAL':
+            return 'Finished';
         default:
             throw new Error('No such request', 'This request is wrong...');
     }
