@@ -1,6 +1,5 @@
 <?php
 require 'util.php';
-require 'fulfill_order.php';
 
 $uid = user_id();
 
@@ -23,6 +22,7 @@ order_worthwhile_check($want_amount, $want_amount_disp);
 
 enough_money_check($amount, $type);
 
+do_query("START TRANSACTION");
 # deduct money from their account
 deduct_funds($amount, $type);
 
@@ -46,8 +46,8 @@ $query = "
         '$want_type');
     ";
 $result = do_query($query);
+do_query("COMMIT");
 $orderid = mysql_insert_id();
-fulfill_order($orderid);
 ?>
 
 <div class='content_box'>
