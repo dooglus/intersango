@@ -23,7 +23,7 @@ class Error extends Problem
 }
 
 if (isset($_GET['page']))
-    $page = htmlspecialchars($_GET['page'])
+    $page = htmlspecialchars($_GET['page']);
 else
     $page = '';
 
