@@ -31,3 +31,5 @@ ln -s /path/to/this/dir/www www
 log = /var/log/mysql/mysql.log
 
 6. import DATABASE into mysql
+
+7. edit crontab -e, mark /var/tmp/error-reports.log as rw for users
