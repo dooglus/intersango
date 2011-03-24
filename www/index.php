@@ -4,24 +4,6 @@ define('_we_are_one', 1);
 session_start();
 require 'config.php';
 
-class Problem extends Exception
-{
-    # PHP sucks!
-    public function __construct($title, $message)
-    {
-        parent::__construct($message);
-        $this->title = $title;
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
-    }
-}
-class Error extends Problem
-{
-}
-
 if (isset($_GET['page']))
     $page = htmlspecialchars($_GET['page']);
 else
