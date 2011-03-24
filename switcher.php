@@ -1,7 +1,6 @@
 <?php
 # security protection
 defined('_we_are_one') || die('Direct access not allowed.');
-require 'errors.php';
 
 function switcher($page, $loggedin)
 {
