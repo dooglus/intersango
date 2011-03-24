@@ -112,7 +112,7 @@ function has_enough($amount, $curr_type)
     $query = "
         SELECT 1
         FROM purses
-        WHERE uid='$uid' AND type='$curr_type' AND amount > '$amount'
+        WHERE uid='$uid' AND type='$curr_type' AND amount >= '$amount'
         LIMIT 1;
     ";
     $result = do_query($query);
