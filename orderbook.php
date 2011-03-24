@@ -25,16 +25,16 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
 
 ?><table class='display_data'>
         <tr>
-            <th>Rate / <?php echo $curr_a; ?></th>
+            <th>Cost / <?php echo $curr_a; ?></th>
             <th>Giving</th>
             <th>Wanted</th>
         </tr><?php
 
     $query = "
-        SELECT *, amount/want_amount AS rate
+        SELECT *, initial_want_amount/initial_amount AS rate
         FROM orderbook
         WHERE type='$curr_a' AND want_type='$curr_b' AND status='OPEN'
-        ORDER BY timest ASC;
+        ORDER BY rate ASC;
     ";
     $result = do_query($query);
     while ($row = mysql_fetch_array($result)) {
