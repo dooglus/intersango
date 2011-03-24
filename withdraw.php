@@ -102,10 +102,12 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     order_worthwhile_check($amount, $amount_disp);
     enough_money_check($amount, $curr_type);
 
+    do_query("START TRANSACTION");
     if (!save_details($uid, $amount, $curr_type))
         throw Error('We had to admit it sometime...', 'Stop trading on thie site. Contact the admin FAST.');
     # actually take the money now
     deduct_funds($amount, $curr_type);
+    do_query("COMMIT");
     # request is submitted to the queue for the cron job to actually execute
 
     echo "<div class='content_box'>\n";
