@@ -124,6 +124,39 @@ function has_enough($amount, $curr_type)
     return has_results($result);
 }
 
+class OrderInfo
+{
+    public $orderid, $uid, $initial_amount, $amount, $type, $initial_want_amount, $want_amount, $want_type, $status, $timest, $processed;
+
+    public function __construct($row)
+    {
+        $this->orderid = $row['orderid'];
+        $this->uid = $row['uid'];
+        $this->initial_amount = $row['initial_amount'];
+        $this->amount = $row['amount'];
+        $this->type = $row['type'];
+        $this->initial_want_amount = $row['initial_want_amount'];
+        $this->want_amount = $row['want_amount'];
+        $this->want_type = $row['want_type'];
+        $this->status = $row['status'];
+        $this->timest = $row['timest'];
+        $this->processed = (bool)$row['processed'];
+    }
+}
+
+function fetch_order_info($orderid)
+{
+    $query = "
+        SELECT *
+        FROM orderbook
+        WHERE orderid='$orderid';
+    ";
+    $result = do_query($query);
+    $row = get_row($result);
+    $info = new OrderInfo($row);
+    return $info;
+}
+
 function deduct_funds($amount, $curr_type)
 {
     $uid = user_id();

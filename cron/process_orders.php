@@ -1,5 +1,5 @@
 <?php
-require '../db.php';
+require '../util.php';
 require '../errors.php';
 
 function b_query($query)
@@ -100,39 +100,6 @@ function pacman($our_orderid, $our_uid, $our_amount, $our_type, $them_orderid, $
     add_funds($them_uid, $our_amount, $our_type);
 
     create_record($our_orderid, $our_amount, $them_orderid, $them_amount);
-}
-
-class OrderInfo
-{
-    public $orderid, $uid, $initial_amount, $amount, $type, $initial_want_amount, $want_amount, $want_type, $status, $timest, $processed;
-
-    public function __construct($row)
-    {
-        $this->orderid = $row['orderid'];
-        $this->uid = $row['uid'];
-        $this->initial_amount = $row['initial_amount'];
-        $this->amount = $row['amount'];
-        $this->type = $row['type'];
-        $this->initial_want_amount = $row['initial_want_amount'];
-        $this->want_amount = $row['want_amount'];
-        $this->want_type = $row['want_type'];
-        $this->status = $row['status'];
-        $this->timest = $row['timest'];
-        $this->processed = (bool)$row['processed'];
-    }
-}
-
-function fetch_order_info($orderid)
-{
-    $query = "
-        SELECT *
-        FROM orderbook
-        WHERE orderid='$orderid';
-    ";
-    $result = b_query($query);
-    $row = get_row($result);
-    $info = new OrderInfo($row);
-    return $info;
 }
 
 function fulfill_order($our_orderid)
