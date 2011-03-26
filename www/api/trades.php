@@ -3,7 +3,15 @@ require "../config.php";
 require "$abspath/util.php";
 
 echo '{"ticker": {';
-$query = "SELECT SUM(amount) AS vol FROM orderbook WHERE type='BTC' AND status='OPEN'";
+$query = "
+    SELECT
+        SUM(initial_amount - amount) AS vol
+    FROM
+        orderbook
+    WHERE
+        type='BTC'
+        AND timest BETWEEN NOW() - INTERVAL 1 DAY AND NOW()
+    ";
 $result = do_query($query);
 $row = get_row($result);
 if (isset($row['vol']))
