@@ -47,7 +47,7 @@ $deposref = $row['deposref'];
     <h3>Deposit BTC</h3>
     <p><b>Note that for now payments have to be authorised before being added to your balance for security reasons.</b></p>
     <p>You can deposit to <?php echo $addy; ?></p>
-    <p>It takes 6 confirmations before funds are added to your account.</p>
+    <p>It takes 6 confirmations before funds are added to your account. Funds are manually authorised for now.</p>
 </div>
 
 <div class='content_box'>
