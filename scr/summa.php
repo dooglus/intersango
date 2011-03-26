@@ -20,6 +20,15 @@ function summa($type)
     $result = do_query($query);
     $row = get_row($result);
     $v += $row['sum'];
+
+    $query = "
+        SELECT SUM(amount) AS sum
+        FROM requests
+        WHERE curr_type='$type' AND req_type='WITHDR' AND status='VERIFY'
+        ";
+    $result = do_query($query);
+    $row = get_row($result);
+    $v += $row['sum'];
     return $v;
 }
 
