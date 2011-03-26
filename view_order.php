@@ -1,7 +1,6 @@
 <?php
 require 'util.php';
 require 'view_util.php';
-require 'fulfill_order.php';
 
 if (!isset($_GET['orderid']))
     throw new Problem('No order selected', 'Hit back and select an order.');
