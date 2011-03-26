@@ -70,12 +70,14 @@ function sync_to_bitcoin($uid)
     #    WHERE uid='$uid' AND type='BTC';
     #";
     #do_query($query);
-    $query = "
-        INSERT INTO requests (req_type, uid, amount, curr_type)
-        VALUES ('DEPOS', '$uid', '$balance', 'BTC');
-    ";
-    do_query($query);
-    $bitcoin->move($uid, '', $balance);
+    if (gmp_cmp($balance, '0') == 1) {
+        $query = "
+            INSERT INTO requests (req_type, uid, amount, curr_type)
+            VALUES ('DEPOS', '$uid', '$balance', 'BTC');
+        ";
+        do_query($query);
+        $bitcoin->move($uid, '', $balance);
+    }
 }
 
 function fetch_balances()
