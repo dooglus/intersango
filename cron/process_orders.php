@@ -8,20 +8,6 @@ function b_query($query)
     return do_query($query);
 }
 
-function add_funds($uid, $amount, $type)
-{
-    # eventually plan to move these to prepared mysql statements once the queries become more mature.
-    $query = "
-        UPDATE purses
-        SET
-            amount = amount + '$amount'
-        WHERE
-            uid='$uid'
-            AND type='$type';
-        ";
-    b_query($query);
-}
-
 function create_record($our_orderid, $our_amount, $them_orderid, $them_amount)
 {
     # record keeping

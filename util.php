@@ -8,6 +8,20 @@ class BASE_CURRENCY
     const B = 1;
 }
 
+function add_funds($uid, $amount, $type)
+{
+    # eventually plan to move these to prepared mysql statements once the queries become more mature.
+    $query = "
+        UPDATE purses
+        SET
+            amount = amount + '$amount'
+        WHERE
+            uid='$uid'
+            AND type='$type';
+        ";
+    do_query($query);
+}
+
 function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
 {
     # how is the rate calculated? is it a/b or b/a?
