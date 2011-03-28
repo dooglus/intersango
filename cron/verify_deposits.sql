@@ -11,5 +11,8 @@ SET
 WHERE
     requests.status='VERIFY'
     AND requests.req_type='DEPOS'
-    AND requests.timest < NOW() - INTERVAL 1 DAY
+    AND (
+        requests.curr_type='BTC'
+        OR requests.timest < NOW() - INTERVAL 1 DAY
+        )
 ;
