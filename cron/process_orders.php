@@ -127,7 +127,7 @@ function fulfill_order($our_orderid)
         if ($them->type != $our->want_type || $our->type != $them->want_type)
             throw Error('Problem', 'Urgent problem. Contact the site owner IMMEDIATELY.');
         # $them_amount >= $our_want_amount
-        if (gmp_cmp($them->amount, $our->want_amount) != -1) {
+        if (gmp_cmp($them->amount, $our->want_amount) >= 0) {
             echo "They swallow us.\n";
             pacman($our->orderid, $our->uid, $our->amount, $our->type, $them->orderid, $them->uid, $our->want_amount, $our->want_type);
             # finished!
