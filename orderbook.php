@@ -25,13 +25,19 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
 
 ?><table class='display_data'>
         <tr>
-            <th>Cost / <?php echo $curr_a; ?></th>
+            <th>Cost / BTC</th>
             <th>Giving</th>
             <th>Wanted</th>
         </tr><?php
 
     $query = "
-        SELECT *, initial_want_amount/initial_amount AS rate
+        SELECT
+            *,
+            IF(
+                type='BTC',
+                initial_want_amount/initial_amount,
+                initial_amount/initial_want_amount
+            ) AS rate
         FROM orderbook
         WHERE type='$curr_a' AND want_type='$curr_b' AND status='OPEN'
         ORDER BY rate ASC;
