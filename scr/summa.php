@@ -49,7 +49,7 @@ function summa($type)
     $row = get_row($result);
     if (isset($row['sum'])) {
         $v = gmp_init($row['sum']);
-        $total_out = gmp_add($total_out, $v);
+        $total_out = gmp_sub($total_out, $v);
     }
     $total_out = gmp_strval($total_out);
 
