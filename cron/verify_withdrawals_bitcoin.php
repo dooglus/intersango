@@ -7,7 +7,9 @@ function update_req($reqid, $status)
     $query = "
         UPDATE requests
         SET status='$status'
-        WHERE reqid='$reqid'
+        WHERE
+            reqid='$reqid'
+            AND curr_type='BTC'
         ";
     do_query($query);
 }
