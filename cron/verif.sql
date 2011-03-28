@@ -10,5 +10,5 @@ SET
     purses.amount=requests.amount
 WHERE
     requests.status='VERIFY'
-    AND requests.timest < NOW() - INTERVAL 1 MINUTE
+    AND requests.timest < NOW() - INTERVAL 1 DAY
 ;
