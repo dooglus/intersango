@@ -8,25 +8,6 @@ function b_query($query)
     return do_query($query);
 }
 
-function create_record($our_orderid, $our_amount, $them_orderid, $them_amount)
-{
-    # record keeping
-    $query = "
-        INSERT INTO transactions (
-            a_orderid,
-            a_amount,
-            b_orderid,
-            b_amount
-        ) VALUES (
-            '$our_orderid',
-            '$our_amount',
-            '$them_orderid',
-            '$them_amount'
-        );
-    ";
-    b_query($query);
-}
-
 function pacman($our_orderid, $our_uid, $our_amount, $our_type, $them_orderid, $them_uid, $them_amount, $them_type)
 {
     # close order that's being absorbed

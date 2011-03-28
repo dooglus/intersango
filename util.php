@@ -8,6 +8,25 @@ class BASE_CURRENCY
     const B = 1;
 }
 
+function create_record($our_orderid, $our_amount, $them_orderid, $them_amount)
+{
+    # record keeping
+    $query = "
+        INSERT INTO transactions (
+            a_orderid,
+            a_amount,
+            b_orderid,
+            b_amount
+        ) VALUES (
+            '$our_orderid',
+            '$our_amount',
+            '$them_orderid',
+            '$them_amount'
+        );
+    ";
+    do_query($query);
+}
+
 function add_funds($uid, $amount, $type)
 {
     # eventually plan to move these to prepared mysql statements once the queries become more mature.
