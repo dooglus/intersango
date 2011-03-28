@@ -25,6 +25,18 @@ function summa($type)
         $v = gmp_init($row['sum']);
         $total_in = gmp_add($total_in, $v);
     }
+
+    $query = "
+        SELECT SUM(amount) AS sum
+        FROM requests
+        WHERE curr_type='$type' AND req_type='WITHDR' AND status='VERIFY'
+        ";
+    $result = do_query($query);
+    $row = get_row($result);
+    if (isset($row['sum'])) {
+        $v = gmp_init($row['sum']);
+        $total_in = gmp_add($total_in, $v);
+    }
     $total_in = gmp_strval($total_in);
 
     $total_out = gmp_init('0');
