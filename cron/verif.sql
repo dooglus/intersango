@@ -10,5 +10,6 @@ SET
     purses.amount = purses.amount + requests.amount
 WHERE
     requests.status='VERIFY'
+    AND requests.req_type='DEPOS'
     AND requests.timest < NOW() - INTERVAL 1 DAY
 ;
