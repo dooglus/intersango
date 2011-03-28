@@ -70,7 +70,7 @@ function sync_to_bitcoin($uid)
     #    WHERE uid='$uid' AND type='BTC';
     #";
     #do_query($query);
-    if (gmp_cmp($balance, '0') == 1) {
+    if (gmp_cmp($balance, '0') > 0) {
         $query = "
             INSERT INTO requests (req_type, uid, amount, curr_type)
             VALUES ('DEPOS', '$uid', '$balance', 'BTC');
