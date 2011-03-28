@@ -28,5 +28,6 @@ foreach ($lines as $line_num => $line) {
             deposref='$deposref';
         ";
     echo $query;
+    do_query($query);
 }
 
