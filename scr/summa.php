@@ -29,10 +29,21 @@ function summa($type)
     $result = do_query($query);
     $row = get_row($result);
     $v += $row['sum'];
-    return $v;
+
+    $query = "
+        SELECT SUM(amount) AS sum
+        FROM requests
+        WHERE curr_type='$type' AND req_type='DEPOS' AND status='FINAL'
+        ";
+    $result = do_query($query);
+    $row = get_row($result);
+    $u = $row['sum'];
+    echo "$type = $v\t  $u\n";
+    if ($u != $v)
+        echo "*********** MISMATCH ****************\n";
 }
 
-echo "BTC = " . summa('BTC') . "\n";    
-echo "GBP = " . summa('GBP') . "\n";    
+summa('BTC');    
+summa('GBP');    
 ?>
 
