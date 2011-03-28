@@ -3,6 +3,7 @@ require '../util.php';
 
 function summa($type)
 {
+    $total_in = gmp_init('0');
     $query = "
         SELECT SUM(amount) AS sum
         FROM purses
@@ -10,7 +11,8 @@ function summa($type)
         ";
     $result = do_query($query);
     $row = get_row($result);
-    $v = $row['sum'];
+    $v = gmp_init($row['sum']);
+    $total_in = gmp_add($total_in, $v);
 
     $query = "
         SELECT SUM(amount) AS sum
@@ -19,17 +21,13 @@ function summa($type)
         ";
     $result = do_query($query);
     $row = get_row($result);
-    $v += $row['sum'];
+    if (isset($row['sum'])) {
+        $v = gmp_init($row['sum']);
+        $total_in = gmp_add($total_in, $v);
+    }
+    $total_in = gmp_strval($total_in);
 
-    $query = "
-        SELECT SUM(amount) AS sum
-        FROM requests
-        WHERE curr_type='$type' AND req_type='WITHDR' AND status='VERIFY'
-        ";
-    $result = do_query($query);
-    $row = get_row($result);
-    $v += $row['sum'];
-
+    $total_out = gmp_init('0');
     $query = "
         SELECT SUM(amount) AS sum
         FROM requests
@@ -37,9 +35,26 @@ function summa($type)
         ";
     $result = do_query($query);
     $row = get_row($result);
-    $u = $row['sum'];
-    echo "$type = $v\t  $u\n";
-    if ($u != $v)
+    if (isset($row['sum'])) {
+        $v = gmp_init($row['sum']);
+        $total_out = gmp_add($total_out, $v);
+    }
+
+    $query = "
+        SELECT SUM(amount) AS sum
+        FROM requests
+        WHERE curr_type='$type' AND req_type='WITHDR' AND status='FINAL'
+        ";
+    $result = do_query($query);
+    $row = get_row($result);
+    if (isset($row['sum'])) {
+        $v = gmp_init($row['sum']);
+        $total_out = gmp_add($total_out, $v);
+    }
+    $total_out = gmp_strval($total_out);
+
+    echo "$type = $total_in\t  $total_out\n";
+    if (gmp_cmp($total_in, $total_out) != 0)
         echo "*********** MISMATCH ****************\n";
 }
 
