@@ -6,7 +6,7 @@ function enable_errors()
 }
 function disable_errors_if_not_me()
 {
-    if ($_SERVER["REMOTE_ADDR"] != "127.0.0.1") {
+    if (isset($_SERVER["REMOTE_ADDR"]) && $_SERVER["REMOTE_ADDR"] != "127.0.0.1") {
         error_reporting(-1);
         ini_set('display_errors', '0');
     }
