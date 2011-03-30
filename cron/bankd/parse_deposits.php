@@ -1,5 +1,5 @@
 <?php
-require '../util.php';
+require '../../util.php';
 if (count($argv) < 2) {
     echo "Need bank CSV\n";
     exit(-1);
