@@ -11,7 +11,7 @@ function uk_withdraw($uid, $amount, $curr_type)
     endlog();
 
     $query = "
-        INSERT INTO requests (req_type, uid, amount, curr_type)
+        INSERT INTO requests (req_type, uid, TRUNCATE(amount, 2), curr_type)
         VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
     ";
     do_query($query);
@@ -31,7 +31,7 @@ function international_withdraw($uid, $amount, $curr_type)
     endlog();
 
     $query = "
-        INSERT INTO requests (req_type, uid, amount, curr_type)
+        INSERT INTO requests (req_type, uid, TRUNCATE(amount, 2), curr_type)
         VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
     ";
     do_query($query);
@@ -54,7 +54,7 @@ function bitcoin_withdraw($uid, $amount, $curr_type)
     endlog();
 
     $query = "
-        INSERT INTO requests (req_type, uid, amount, curr_type)
+        INSERT INTO requests (req_type, uid, TRUNCATE(amount, 2), curr_type)
         VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
     ";
     do_query($query);
