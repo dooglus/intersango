@@ -49,11 +49,20 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
     else
         $rate_calc_str = 'total_amount/total_wanted';
     $query = "
-        SELECT total_amount, total_wanted, $rate_calc_str AS rate
+        SELECT
+            total_amount,
+            total_wanted,
+            $rate_calc_str AS rate
         FROM (
-            SELECT SUM(amount) AS total_amount, SUM(want_amount) as total_wanted
-            FROM orderbook
-            WHERE type='$curr_a' AND want_type='$curr_b' AND status='OPEN'
+            SELECT
+                SUM(amount) AS total_amount,
+                SUM(want_amount) as total_wanted
+            FROM
+                orderbook
+            WHERE
+                type='$curr_a'
+                AND want_type='$curr_b'
+                AND status='OPEN'
             ) AS tbl;
     ";
     $total_result = do_query($query);
