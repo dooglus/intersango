@@ -45,26 +45,21 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
 {
     # how is the rate calculated? is it a/b or b/a?
     if ($base_curr == BASE_CURRENCY::A)
-        $rate_calc_str = 'total_wanted/total_amount';
+        $invertor = '1/';
     else
-        $rate_calc_str = 'total_amount/total_wanted';
+        $invertor = '';
     $query = "
         SELECT
-            total_amount,
-            total_wanted,
-            $rate_calc_str AS rate
-        FROM (
-            SELECT
-                SUM(amount) AS total_amount,
-                SUM(want_amount) as total_wanted
-            FROM
-                orderbook
-            WHERE
-                type='$curr_a'
-                AND want_type='$curr_b'
-                AND status='OPEN'
-            ) AS tbl;
-    ";
+            SUM(amount) AS total_amount,
+            SUM(want_amount) as total_wanted,
+            {$invertor}MAX(initial_amount/initial_want_amount) AS rate
+        FROM
+            orderbook
+        WHERE
+            type='$curr_a'
+            AND want_type='$curr_b'
+            AND status='OPEN'
+        ";
     $total_result = do_query($query);
     list($total_amount, $total_want_amount, $rate) = mysql_fetch_array($total_result);
     if (!isset($total_amount) || !isset($total_want_amount) || !isset($rate)) 
