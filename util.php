@@ -52,11 +52,12 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
         SELECT
             SUM(amount) AS total_amount,
             SUM(want_amount) as total_wanted,
-            IF(
-                $invertor,
-                MIN(initial_want_amount/initial_amount),
-                MAX(initial_amount/initial_want_amount)
-            ) AS rate
+            ROUND(
+                IF(
+                    $invertor,
+                    MIN(initial_want_amount/initial_amount),
+                    MAX(initial_amount/initial_want_amount)
+                ), 4) AS rate
         FROM
             orderbook
         WHERE
