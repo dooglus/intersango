@@ -23,7 +23,6 @@ function display_transactions($uid, $orderid)
         ORDER BY transactions.timest DESC;
     ";
     $result = do_query($query);
-    $row = mysql_fetch_assoc($result);
     $first = true;
     while ($row = mysql_fetch_assoc($result)) {
         $who = $row['who'];
