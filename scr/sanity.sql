@@ -49,3 +49,20 @@ WHERE
     OR r > a_r
     OR r < b_r
     OR TRUE
+;
+
+SELECT
+    SUM(
+        IF(
+            req_type='DEPOS',
+            amount,
+            IF(
+                req_type='WITHDR',
+                -amount,
+                0
+            ))) AS total_GBP_deposits
+FROM
+    requests
+WHERE
+    curr_type='GBP'
+;
