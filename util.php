@@ -267,6 +267,8 @@ function translate_request_code($code)
             return 'Processing';
         case 'FINAL':
             return 'Finished';
+        case 'CANCEL':
+            return 'Cancelled';
         default:
             throw new Error('No such request', 'This request is wrong...');
     }

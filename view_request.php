@@ -6,7 +6,7 @@ function display_request_info_gbp($reqid)
     $query = "
         SELECT name, bank, acc_num, sort_code
         FROM uk_requests
-        WHERE reqid='$reqid';
+        WHERE reqid='$reqid'
     ";
     $result = do_query($query);
     $row = mysql_fetch_assoc($result);
@@ -22,7 +22,7 @@ function display_request_info_btc($reqid)
     $query = "
         SELECT addy
         FROM bitcoin_requests
-        WHERE reqid='$reqid';
+        WHERE reqid='$reqid'
     ";
     $result = do_query($query);
     $row = mysql_fetch_assoc($result);
@@ -35,7 +35,7 @@ function display_request_info_intnl($reqid)
     $query = "
         SELECT iban, swift
         FROM international_requests
-        WHERE reqid='$reqid';
+        WHERE reqid='$reqid'
     ";
     $result = do_query($query);
     $row = mysql_fetch_assoc($result);
@@ -46,13 +46,17 @@ function display_request_info_intnl($reqid)
 }
 
 $reqid = get('reqid');
+$uid = user_id();
 
 if (isset($_POST['cancel_request'])) {
     # cancel an order
     $query = "
         UPDATE requests
         SET status='CANCEL'
-        WHERE reqid='$reqid';
+        WHERE
+            reqid='$reqid'
+            AND uid='$uid'
+            AND status='VERIFY'
     ";
     do_query($query);
     ?><div class='content_box'>
@@ -69,9 +73,11 @@ else {
             DATE_FORMAT(timest, '%H%i %d/%m/%y') AS timest,
             status
         FROM requests
-        WHERE reqid='$reqid';
+        WHERE reqid='$reqid' AND uid='$uid'
     ";
     $result = do_query($query);
+    if (!has_results($result))
+        throw new Problem('No request here', "Don't have viewing permissions.");
     $row = get_row($result);
     $req_type = $row['req_type'];
     $amount = internal_to_numstr($row['amount']);
@@ -92,9 +98,9 @@ else {
         <p>
         <?php
         # only one of these will return a result
-        display_request_info_gbp($reqid);
-        display_request_info_btc($reqid);
-        display_request_info_intnl($reqid);
+        display_request_info_gbp($uid, $reqid);
+        display_request_info_btc($uid, $reqid);
+        display_request_info_intnl($uid, $reqid);
         ?>
         </p>
         <p>
@@ -103,7 +109,7 @@ else {
         <p>
         <?php echo translate_request_code($status); ?>
         </p>
-        <?php if ($status == 'OPEN') { ?>
+        <?php if ($status == 'VERIFY') { ?>
             <p>
             <form action='' class='indent_form' method='post'>
                 <input type='hidden' name='cancel_request' value='true' />
