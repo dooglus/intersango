@@ -14,7 +14,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
         return;
     }
     list($total_amount, $total_want_amount, $rate) = $exchange_fields; 
-    echo "<p>Total weighted exchange rate is ";
+    echo "<p>Best exchange rate is ";
     if ($base_curr == BASE_CURRENCY::A)
         echo "1 $curr_a is worth <b>$rate $curr_b</b>";
     else
