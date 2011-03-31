@@ -31,7 +31,7 @@ function display_transactions($uid, $orderid)
         if ($who == 'B')
             list($a_amount, $b_amount) = array($b_amount, $a_amount);
         # skip cancelled orders since we already show those
-        if ($b_amount == -1)
+        if ((int)$b_amount == -1)
             continue;
         if ($first) {
             $first = false;
