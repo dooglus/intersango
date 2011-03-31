@@ -112,7 +112,7 @@ function typed_amount(this_name, change_name)
             rate = a_curr_rates[b_curr];
             val = parseFloat(text_field);
             val *= rate;
-            change_obj.attr('value', val);
+            change_obj.attr('value', val.toFixed(2));
         }
         else {
             b_obj.attr('value', 'N/A');
