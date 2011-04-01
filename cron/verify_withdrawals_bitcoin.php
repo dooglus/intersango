@@ -18,7 +18,7 @@ $query = "
     SELECT
         requests.reqid AS reqid,
         uid,
-        TRUNCATE(amount, 2),
+        TRUNCATE(amount, -8),
         addy
     FROM requests
     JOIN bitcoin_requests
