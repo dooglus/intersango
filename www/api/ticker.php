@@ -36,29 +36,40 @@ echo '"sell": ' . $rate . ', ';
 
 $query = "
     SELECT
-        initial_amount,
-        initial_want_amount,
-        type,
-        want_type
+        a_amount,
+        ord_a.type AS a_type,
+        b_amount,
+        ord_b.type AS b_type
     FROM
-        orderbook
+        transactions AS t
+    JOIN
+        orderbook AS ord_a
+    ON
+        ord_a.orderid=a_orderid
+    JOIN
+        orderbook AS ord_b
+    ON
+        ord_b.orderid=b_orderid
+    WHERE
+        b_amount >= 0
     ORDER BY
-        timest DESC
+        t.timest
     LIMIT 1
     ";
 $result = do_query($query);
 if (has_results($result)) {
     $row = get_row($result);
-    $have = $row['initial_amount'];
-    $want = $row['initial_want_amount'];
-    $type = $row['type'];
-    $want_type = $row['want_type'];
-    if ($type == 'BTC' && $want_type == 'GBP') {
-        $rate = (float)$want / (float)$have;
+    $a_amount = $row['a_amount'];
+    $a_type = $row['a_type'];
+    $b_amount = $row['b_amount'];
+    $b_type = $row['b_type'];
+    if ($a_type == 'GBP') {
+        # swap them around so BTC is always the base currency
+        list($a_amount, $b_amount) = array($b_amount, $a_amount);
+        list($a_type, $b_type) = array($b_type, $a_type);
     }
-    else if ($type == 'GBP' && $want_type == 'BTC') {
-        $rate = (float)$have / (float)$want;
-    }
+    if ($a_type == 'BTC' && $b_type == 'GBP')
+        $rate = (float)$b_amount / (float)$a_amount;
     else
         $rate = 0;
     echo '"last": ' . $rate . '}}';
