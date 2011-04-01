@@ -24,7 +24,7 @@ $query = "
         transactions.a_orderid=orderbook.orderid
     WHERE
         b_amount >= 0
-        AND timest BETWEEN NOW() - INTERVAL 1 DAY AND NOW()
+        AND transactions.timest BETWEEN NOW() - INTERVAL 1 DAY AND NOW()
     ";
 $result = do_query($query);
 $first = true;
