@@ -12,7 +12,7 @@ function uk_withdraw($uid, $amount, $curr_type)
 
     $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type)
-        VALUES ('WITHDR', '$uid', TRUNCATE('$amount', 2), '$curr_type');
+        VALUES ('WITHDR', '$uid', TRUNCATE('$amount', -8), '$curr_type');
     ";
     do_query($query);
     $reqid = mysql_insert_id();
@@ -32,7 +32,7 @@ function international_withdraw($uid, $amount, $curr_type)
 
     $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type)
-        VALUES ('WITHDR', '$uid', TRUNCATE('$amount', 2), '$curr_type');
+        VALUES ('WITHDR', '$uid', TRUNCATE('$amount', -8), '$curr_type');
     ";
     do_query($query);
     $reqid = mysql_insert_id();
@@ -55,7 +55,7 @@ function bitcoin_withdraw($uid, $amount, $curr_type)
 
     $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type)
-        VALUES ('WITHDR', '$uid', TRUNCATE('$amount', 2), '$curr_type');
+        VALUES ('WITHDR', '$uid', TRUNCATE('$amount', -8), '$curr_type');
     ";
     do_query($query);
     $reqid = mysql_insert_id();
