@@ -11,6 +11,7 @@ $query = "
     WHERE
         type='BTC'
         AND want_type='GBP'
+        AND status='OPEN'
     ";
 $result = do_query($query);
 $first = true;
@@ -34,6 +35,7 @@ $query = "
     WHERE
         type='GBP'
         AND want_type='BTC'
+        AND status='OPEN'
     ";
 $result = do_query($query);
 $first = true;
