@@ -105,7 +105,7 @@ function get($key)
 function sync_to_bitcoin($uid)
 {
     $bitcoin = connect_bitcoin();
-    $balance = $bitcoin->getbalance($uid, 1);
+    $balance = $bitcoin->getbalance($uid, 4);
     #$query = "
     #    UPDATE purses
     #    SET amount = amount + '$balance'
