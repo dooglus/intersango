@@ -92,11 +92,17 @@ function save_details($uid, $amount, $curr_type)
     return false;
 }
 
+function truncate_num($num)
+{
+    return substr($num, 0, -6) . '000000';
+}
+
 if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     $uid = user_id();
     $amount_disp = post('amount');
     $curr_type = post('curr_type');
     $amount = numstr_to_internal($amount_disp);
+    $amount = truncate_num($amount);
 
     curr_supported_check($curr_type);
     order_worthwhile_check($amount, $amount_disp);
