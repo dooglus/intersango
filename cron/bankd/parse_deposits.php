@@ -22,6 +22,10 @@ while ($row = mysql_fetch_array($result)) {
     $line = $row[1];
     print "$line\n";
     $info = split(',', $line);
+    if ($info[5] != '') {
+        echo "Skipping payment out...\n";
+        continue;
+    }
     $acc = split('[.]', $info[4]);
     if (count($acc) < 2) {
         echo "\nProblem processing {$info[4]}...\n\n";
