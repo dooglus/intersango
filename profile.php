@@ -24,7 +24,7 @@ $query = "
         type,
         IF(status='OPEN', want_amount, initial_want_amount) AS want_amount,
         want_type,
-        DATE_FORMAT(timest, '%H%i %d/%m/%y') AS timest,
+        DATE_FORMAT(timest, '%H:%i %d/%m/%y') AS timest,
         status
     FROM orderbook
     WHERE uid='$uid'
@@ -72,7 +72,7 @@ $query = "
         req_type,
         amount,
         curr_type,
-        DATE_FORMAT(timest, '%H%i %d/%m/%y') AS timest,
+        DATE_FORMAT(timest, '%H:%i %d/%m/%y') AS timest,
         status
     FROM requests
     WHERE uid='$uid' AND (req_type='WITHDR' OR req_type='DEPOS')

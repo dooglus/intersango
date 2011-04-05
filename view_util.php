@@ -13,7 +13,7 @@ function display_transactions($uid, $orderid)
             transactions.b_amount AS b_amount,
             orderbook.type AS type,
             orderbook.want_type AS want_type,
-            DATE_FORMAT(transactions.timest, '%H%i %d/%m/%y') AS timest
+            DATE_FORMAT(transactions.timest, '%H:%i %d/%m/%y') AS timest
         FROM transactions
         JOIN orderbook
         ON

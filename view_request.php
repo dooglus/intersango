@@ -70,7 +70,7 @@ else {
             req_type,
             amount,
             curr_type,
-            DATE_FORMAT(timest, '%H%i %d/%m/%y') AS timest,
+            DATE_FORMAT(timest, '%H:%i %d/%m/%y') AS timest,
             status
         FROM requests
         WHERE reqid='$reqid' AND uid='$uid'

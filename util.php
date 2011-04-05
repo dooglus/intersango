@@ -183,7 +183,7 @@ class OrderInfo
         $this->want_amount = $row['want_amount'];
         $this->want_type = $row['want_type'];
         $this->status = $row['status'];
-        $this->timest = $row['timest'];
+        $this->timest = $row['timest_format'];
         $this->processed = (bool)$row['processed'];
     }
 }
@@ -191,7 +191,9 @@ class OrderInfo
 function fetch_order_info($orderid)
 {
     $query = "
-        SELECT *
+        SELECT
+            *,
+            DATE_FORMAT(timest, '%H:%i %d/%m/%y') AS timest_format
         FROM orderbook
         WHERE orderid='$orderid';
     ";
