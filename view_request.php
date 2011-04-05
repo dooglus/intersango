@@ -1,7 +1,7 @@
 <?php
 require 'util.php';
 
-function display_request_info_gbp($reqid)
+function display_request_info_gbp($uid, $reqid)
 {
     $query = "
         SELECT name, bank, acc_num, sort_code
@@ -17,7 +17,7 @@ function display_request_info_gbp($reqid)
     echo "<p>Account number: {$row['acc_num']}</p>\n";
     echo "<p>Sort code: {$row['sort_code']}</p>\n";
 }
-function display_request_info_btc($reqid)
+function display_request_info_btc($uid, $reqid)
 {
     $query = "
         SELECT addy
@@ -30,7 +30,7 @@ function display_request_info_btc($reqid)
         return;
     echo "<p>Bitcoin address: {$row['addy']}</p>\n";
 }
-function display_request_info_intnl($reqid)
+function display_request_info_intnl($uid, $reqid)
 {
     $query = "
         SELECT iban, swift
