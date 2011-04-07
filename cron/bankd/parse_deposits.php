@@ -7,6 +7,20 @@ function b_query($query)
     do_query($query);
 }
 
+function deposref_exists($deposref)
+{
+    $query = "
+        SELECT 1
+        FROM
+            users
+        WHERE
+            deposref='$deposref'
+        LIMIT 1
+        ";
+    $result = do_query($query);
+    return has_results($result);
+}
+
 $query = "
     SELECT
         bid, entry
@@ -38,11 +52,16 @@ while ($row = mysql_fetch_array($result)) {
         continue;
     }
     $acc = split('[.]', $info[4]);
-    if (count($acc) < 2) {
-        echo "\nProblem processing {$info[4]}...\n\n";
+    if (count($acc) < 2) 
+        $deposref = $info[4];
+    else 
+        $deposref = $acc[1];
+
+    $deposref = trim($deposref, " \"'\n");
+    if (!deposref_exists($deposref)) {
+        echo "\n$deposref deposref doesn't exist!\n\n";
         exit(-1);
     }
-    $deposref = trim($acc[1], " \"'\n");
     $amount = $info[6];
     $amount = numstr_to_internal($amount);
     print "$deposref <= $amount\n";
@@ -60,15 +79,15 @@ while ($row = mysql_fetch_array($result)) {
             'GBP'
         FROM users
         WHERE
-            deposref='$deposref';
+            deposref='$deposref'
         ";
     b_query($query);
     $query = "
         UPDATE
             bank_statement
         SET
-            reqid=LAST_INSERT_ID()
-            AND status='FINAL'
+            reqid=LAST_INSERT_ID(),
+            status='FINAL'
         WHERE
             bid='$bid'
         ";
