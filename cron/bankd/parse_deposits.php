@@ -47,7 +47,6 @@ while ($row = mysql_fetch_array($result)) {
     $amount = numstr_to_internal($amount);
     print "$deposref <= $amount\n";
 
-    b_query("START TRANSACTION");
     $query = "
         INSERT INTO requests (
             req_type,
@@ -74,6 +73,5 @@ while ($row = mysql_fetch_array($result)) {
             bid='$bid'
         ";
     b_query($query);
-    b_query("COMMIT");
 }
 
