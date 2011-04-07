@@ -14,11 +14,22 @@ $query = "
         bank_statement
     WHERE
         reqid IS NULL
+        AND status='VERIFY'
     ";
 $result = do_query($query);
 
 while ($row = mysql_fetch_array($result)) {
     $bid = $row[0];
+    $query = "
+        UPDATE
+            bank_statement
+        SET
+            status='PROC'
+        WHERE
+            bid='$bid'
+            AND status='VERIFY'
+        ";
+    b_query($query);
     $line = $row[1];
     print "$line\n";
     $info = split(',', $line);
@@ -58,6 +69,7 @@ while ($row = mysql_fetch_array($result)) {
             bank_statement
         SET
             reqid=LAST_INSERT_ID()
+            AND status='FINAL'
         WHERE
             bid='$bid'
         ";
