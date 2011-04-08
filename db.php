@@ -69,4 +69,3 @@ function clean_sql_numstr($numstr)
 }
 
 ?>
-
