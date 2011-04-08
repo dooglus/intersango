@@ -28,11 +28,11 @@ try {
     else {
         if ($openid->validate()) {
             require 'db.php';
+            session_regenerate_id(true);
 
             echo "<div class='content_box'>";
             echo '<h3>Successful login!</h3>';
             # protect against session hijacking now we've escalated privilege level
-            session_regenerate_id(true);
             $oidlogin = escapestr($openid->identity);
             # is this OpenID known to us?
             $query = "
