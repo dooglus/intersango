@@ -7,7 +7,6 @@ try {
             $openid->identity = htmlspecialchars($_GET['openid_identifier'], ENT_QUOTES);
             header('Location: '.$openid->authUrl());
         }
-require 'www/header.php';
 ?>
 <div class='content_box'>
 <h3>Login</h3>
@@ -24,11 +23,9 @@ require 'www/header.php';
 <?php
     }
     else if ($openid->mode == 'cancel') {
-        require 'www/header.php';
         throw new Problem(":(", "Login was cancelled.");
     }
     else {
-        require 'www/header.php';
         if ($openid->validate()) {
             require 'db.php';
 
@@ -99,7 +96,6 @@ require 'www/header.php';
     }
 }
 catch (ErrorException $e) {
-    require 'www/header.php';
     throw new Problem(":(", $e->getMessage());
 }
 # close content box

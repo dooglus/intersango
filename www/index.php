@@ -17,10 +17,6 @@ if($page == 'logout') {
   header('Location: index.php');
   exit();
 }
-else if ($page == 'login') {     
-    require "$abspath/login.php";
-    require 'footer.php';
-}   
 else {
     require 'header.php';
     include "$abspath/switcher.php";
