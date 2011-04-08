@@ -1,4 +1,6 @@
 <?php
+
+/* Run an sql script from the given file. Code taken adapted from elgg 1.7 */
 function run_sql_script($scriptlocation) {
         if ($script = file_get_contents($scriptlocation)) {
                 // global $CONFIG;
