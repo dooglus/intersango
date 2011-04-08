@@ -28,13 +28,6 @@ function switcher($page, $loggedin)
                     log_badpage($page);
                 break;
 
-            case 'login':
-                if (!$loggedin)
-                    include("$abspath/login.php");
-                else
-                    log_badpage($page);
-                break;
-
             case 'deposit':
                 include("$abspath/deposit.php");
                 break;
