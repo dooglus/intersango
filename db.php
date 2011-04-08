@@ -15,10 +15,10 @@ mysql_select_db($db_name) or die(mysql_error());
 
 function connect_bitcoin()
 {
-     disable_errors_if_not_me();
-     $bitcoin = new jsonRPCClient($btc_url);
-     enable_errors();
-     return $bitcoin;
+    disable_errors_if_not_me();
+    $bitcoin = new jsonRPCClient($btc_url);
+    enable_errors();
+    return $bitcoin;
 }
 
 function escapestr($str)
