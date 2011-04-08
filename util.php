@@ -286,4 +286,3 @@ function translate_request_code($code)
 }
 
 ?>
-
