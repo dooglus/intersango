@@ -2,7 +2,10 @@
 # this will be used to protect all subpages from being directly accessed.
 define('_we_are_one', 1);
 session_start();
-require 'config.php';
+
+$abspath = dirname(dirname(__FILE__));
+require "$abspath/errors.php";
+enable_errors();
 
 if (isset($_GET['page']))
     $page = htmlspecialchars($_GET['page']);
