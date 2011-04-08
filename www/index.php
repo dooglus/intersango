@@ -18,7 +18,8 @@ if($page == 'logout') {
   exit();
 }
 else {
-    require 'header.php';
+    if ($page != 'login')
+        require 'header.php';
     include "$abspath/switcher.php";
     if (isset($_SESSION['uid']) && $_SESSION['uid'])
         switcher($page, true);
