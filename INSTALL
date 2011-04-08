@@ -1,7 +1,5 @@
 1. create the database as instructed in the file DATABASE:
 CREATE DATABASE intersango;
-USE intersango;
-...
 
 2. modify config.php with your credentials for btc and mysql
 
