@@ -25,11 +25,9 @@ cd /var
 sudo rm -fr www
 ln -s /path/to/this/dir/www www
 
-4. open /var/www/config.php and edit $abspath to point to this dir (/path/to/this/dir)
-
-5. enable MySQL logging in /etc/mysql/my.cnf:
+4. enable MySQL logging in /etc/mysql/my.cnf:
 log = /var/log/mysql/mysql.log
 
-6. import DATABASE into mysql
+5. import DATABASE into mysql
 
-7. edit crontab -e, mark /var/tmp/error-reports.log as rw for users
+6. edit crontab -e, mark /var/tmp/error-reports.log as rw for users
