@@ -132,4 +132,3 @@ set_error_handler("reporting_error_handler");
 register_shutdown_function("reporting_shutdown");
 
 ?>
-
