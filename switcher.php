@@ -80,4 +80,3 @@ function switcher($page, $loggedin)
 }
 
 ?>
-

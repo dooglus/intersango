@@ -28,14 +28,14 @@ require 'www/header.php';
         throw new Problem(":(", "Login was cancelled.");
     }
     else {
-        require 'www/header.php';
         if ($openid->validate()) {
             require 'db.php';
+	    session_regenerate_id(true);
+            require 'www/header.php';
 
             echo "<div class='content_box'>";
             echo '<h3>Successful login!</h3>';
             # protect against session hijacking now we've escalated privilege level
-            session_regenerate_id(true);
             $oidlogin = escapestr($openid->identity);
             # is this OpenID known to us?
             $query = "
@@ -94,6 +94,7 @@ require 'www/header.php';
             $_SESSION['uid'] = $uid;
         }
         else {
+            require 'www/header.php';
             throw new Problem(":(", "Unable to login.");
         }
     }
