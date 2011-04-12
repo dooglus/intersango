@@ -51,11 +51,17 @@ $uid = user_id();
 if (isset($_POST['cancel_request'])) {
     # cancel an order
     $query = "
-        UPDATE requests
-        SET status='CANCEL'
+        UPDATE
+            requests,
+            purses
+        SET
+            requests.status='CANCEL',
+            purses.amount=purses.amount+requests.amount
         WHERE
             reqid='$reqid'
-            AND uid='$uid'
+            AND requests.uid='$uid'
+            AND requests.uid=purses.uid
+            AND purses.type=requests.curr_type
             AND status='VERIFY'
     ";
     do_query($query);
@@ -111,11 +117,10 @@ else {
         </p>
         <?php if ($status == 'VERIFY') { ?>
             <p>
-            Cancelling requests temporarily disabled.
-            <!--<form action='' class='indent_form' method='post'>
+            <form action='' class='indent_form' method='post'>
                 <input type='hidden' name='cancel_request' value='true' />
                 <input type='submit' value='Cancel request' />
-            </form> -->
+            </form> 
             </p>
         <?php } ?>
     </div> <?php
