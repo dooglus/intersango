@@ -111,10 +111,11 @@ else {
         </p>
         <?php if ($status == 'VERIFY') { ?>
             <p>
-            <form action='' class='indent_form' method='post'>
+            Cancelling requests temporarily disabled.
+            <!--<form action='' class='indent_form' method='post'>
                 <input type='hidden' name='cancel_request' value='true' />
                 <input type='submit' value='Cancel request' />
-            </form>
+            </form> -->
             </p>
         <?php } ?>
     </div> <?php
