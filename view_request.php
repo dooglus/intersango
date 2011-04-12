@@ -52,16 +52,18 @@ if (isset($_POST['cancel_request'])) {
     # cancel an order
     $query = "
         UPDATE
-            requests,
+            requests
+        JOIN
             purses
+        ON
+            purses.uid=requests.uid
+            AND purses.type=requests.curr_type
         SET
             requests.status='CANCEL',
             purses.amount=purses.amount+requests.amount
         WHERE
             reqid='$reqid'
             AND requests.uid='$uid'
-            AND requests.uid=purses.uid
-            AND purses.type=requests.curr_type
             AND status='VERIFY'
     ";
     do_query($query);
