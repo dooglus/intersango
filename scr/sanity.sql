@@ -65,4 +65,5 @@ FROM
     requests
 WHERE
     curr_type='GBP'
+    AND status='FINAL'
 ;
