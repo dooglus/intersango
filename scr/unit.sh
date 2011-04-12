@@ -1,4 +1,4 @@
 #!/bin/bash
-cat match_statements.sql sanity.sql | mysql -tu root intersango 
+mysql -tu root intersango < sanity.sql
 echo -en 'Bitcoin balance: ' && bitcoind getbalance ""
 php summa.php
