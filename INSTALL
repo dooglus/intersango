@@ -1,16 +1,35 @@
 1. create the database as instructed in the file DATABASE:
 CREATE DATABASE intersango;
+USE intersango;
+...
 
-2. modify config.php with your credentials for btc and mysql
+2. create /var/db.intersango.inc with the lines:
+--------------------------
+<?php
+ mysql_connect('localhost', 'login', 'pass') or die(mysql_error());
+ mysql_select_db('database_name') or die(mysql_error());
+
+function connect_bitcoin()
+{
+    disable_errors_if_not_me();
+    $bitcoin = new jsonRPCClient('http://login:pass@127.0.0.1:8332/');
+    enable_errors();
+    return $bitcoin;
+}
+
+?>
+---------------------------
 
 3.
 cd /var
 sudo rm -fr www
 ln -s /path/to/this/dir/www www
 
-4. enable MySQL logging in /etc/mysql/my.cnf:
+4. open /var/www/config.php and edit $abspath to point to this dir (/path/to/this/dir)
+
+5. enable MySQL logging in /etc/mysql/my.cnf:
 log = /var/log/mysql/mysql.log
 
-5. import DATABASE into mysql
+6. import DATABASE into mysql
 
-6. edit crontab -e, mark /var/tmp/error-reports.log as rw for users
+7. edit crontab -e, mark /var/tmp/error-reports.log as rw for users

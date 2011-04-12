@@ -1,26 +1,5 @@
 <?php
-
-# try to get the config file location from a config file,
-# in case virtual hosts want to share the code base.
-$config_file = getenv('intersango_config');
-
-# otherwise just open config.php on this directory
-if (empty($config_file)) {
-    $config_file = 'config.php';
-}
-require $config_file;
-
-mysql_connect($db_server, $db_user, $db_pass) or die(mysql_error());
-mysql_select_db($db_name) or die(mysql_error());
-
-function connect_bitcoin()
-{
-    global $btc_url;
-    disable_errors_if_not_me();
-    $bitcoin = new jsonRPCClient($btc_url);
-    enable_errors();
-    return $bitcoin;
-}
+require '/var/db.intersango.inc';
 
 function escapestr($str)
 {
@@ -70,3 +49,4 @@ function clean_sql_numstr($numstr)
 }
 
 ?>
+

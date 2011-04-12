@@ -2,10 +2,7 @@
 # this will be used to protect all subpages from being directly accessed.
 define('_we_are_one', 1);
 session_start();
-
-$abspath = dirname(dirname(__FILE__));
-require "$abspath/errors.php";
-enable_errors();
+require 'config.php';
 
 if (isset($_GET['page']))
     $page = htmlspecialchars($_GET['page']);
@@ -18,8 +15,7 @@ if($page == 'logout') {
   exit();
 }
 else {
-    if ($page != 'login')
-        require 'header.php';
+    require 'header.php';
     include "$abspath/switcher.php";
     if (isset($_SESSION['uid']) && $_SESSION['uid'])
         switcher($page, true);

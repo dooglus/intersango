@@ -276,8 +276,6 @@ function translate_request_code($code)
             return 'Verifying';
         case 'PROCES':
             return 'Processing';
-        case 'VALID':
-            return 'Validated';
         case 'FINAL':
             return 'Finished';
         case 'CANCEL':
@@ -288,3 +286,4 @@ function translate_request_code($code)
 }
 
 ?>
+
