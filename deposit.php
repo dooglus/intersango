@@ -52,8 +52,3 @@ is insufficient to cover bank fees then it will be denied.</p>
     <p>It takes 6 confirmations before funds are added to your account.</p>
 </div>
 
-<div class='content_box'>
-    <h3>Deposit PokerStars USD</h3>
-    <p>We do provide the option to deposit and withdraw at the current USD to GBP exchange rate. Contact webmaster@britcoin.co.uk for more details.</p>
-</div>
-
