@@ -47,7 +47,6 @@ is insufficient to cover bank fees then it will be denied.</p>
 
 <div class='content_box'>
     <h3>Deposit BTC</h3>
-    <p><b>Note that for now payments have to be authorised before being added to your balance for security reasons.</b></p>
     <p>You can deposit to <?php echo $addy; ?></p>
     <p>It takes 6 confirmations before funds are added to your account.</p>
 </div>
