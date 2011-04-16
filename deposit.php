@@ -27,7 +27,7 @@ is insufficient to cover bank fees then it will be denied.</p>
         </tr>
         <tr>
             <td>Bank:</td>
-            <td>Llyods TSB</td>
+            <td>Lloyds TSB</td>
         </tr>
         <tr>
             <td>Account number:</td>
