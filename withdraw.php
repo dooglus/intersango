@@ -156,6 +156,7 @@ else {
     <div class='content_box'>
     <h3>Withdraw GBP (international)</h3>
     <p>Enter an amount below to submit a withdrawal request. A fee of 20 GBP for amounts below 5000 GBP and 35 GBP otherwise, applies. Your bank may charge an additional processing fee on their end.</p>
+    <p>Please also contact webmaster@britcoin.co.uk</p>
     <p>
         <form action='' class='indent_form' method='post'>
             <div id='acc_details'>
