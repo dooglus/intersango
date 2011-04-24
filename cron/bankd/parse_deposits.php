@@ -58,6 +58,9 @@ while ($row = mysql_fetch_array($result)) {
         $deposref = $acc[1];
 
     $deposref = trim($deposref, " \"'\n");
+    # trim off the date
+    $deposref = split(' ', $deposref); 
+    $deposref = $deposref[0];
     if (!deposref_exists($deposref)) {
         echo "\n$deposref deposref doesn't exist!\n\n";
         exit(-1);
