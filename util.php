@@ -278,6 +278,8 @@ function translate_request_code($code)
             return 'Processing';
         case 'FINAL':
             return 'Finished';
+        case 'IGNORE':
+            return 'Ignored';
         case 'REJECT':
             return 'Rejected';
         case 'CANCEL':
