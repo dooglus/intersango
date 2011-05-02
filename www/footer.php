@@ -14,7 +14,7 @@ else
             Return home</li>
 <?php if ($loggedin) { ?>
             <li><a href='?page=logout'>Logout</a>
-            Remove this session</li>
+            End this session</li>
             <li><a href='?page=profile'>Profile</a>
             Dox on you</li>
 <?php } else { ?>
@@ -30,7 +30,7 @@ else
             Take out money</li>
 <?php } ?>
             <li><a href='?page=help'>Help</a>
-            How it works</li>
+            Seek support</li>
         </ul>
     </div>
     <!--<div id='languages'>
