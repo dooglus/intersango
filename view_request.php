@@ -100,7 +100,6 @@ else {
         </p>
         <?php
         if ($req_type == 'WITHDR') {
-            $req_type = translate_request_type($req_type);
             echo "<p>Withdrawing $amount $curr_type.</p>\n";
         }
         ?>
