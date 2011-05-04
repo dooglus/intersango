@@ -65,7 +65,7 @@ if (isset($_POST['cancel_request'])) {
             reqid='$reqid'
             AND requests.uid='$uid'
             AND status='VERIFY'
-            AND req_type='DEPOS'
+            AND req_type='WITHDR'
     ";
     do_query($query);
     ?><div class='content_box'>
@@ -118,7 +118,7 @@ else {
         <p>
         <?php echo translate_request_code($status); ?>
         </p>
-        <?php if ($status == 'VERIFY' && $req_type == 'DEPOS') { ?>
+        <?php if ($status == 'VERIFY' && $req_type == 'WITHDR') { ?>
             <p>
             <form action='' class='indent_form' method='post'>
                 <input type='hidden' name='cancel_request' value='true' />
