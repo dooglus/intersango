@@ -2,7 +2,7 @@
 <h3>Help</h3>
 <p>For safety, please keep funds off-site when not trading.</p>
 <p>To begin trading, navigate to the <a href="?page=">front page</a>, enter your desired amount and click buy. The trade will materialise in the orderbook and under your profile. You will not be able to view any information from other trader's accounts for privacy reasons.</p>
-<p>You may cancel an order by viewing the desired order (found under your profile). Click "Cancel" to revoke any current orders. You will not get a full refund on partially completed orders.</p>
+<p>You may cancel an order by viewing the desired order (found under your profile). Click "Cancel" to revoke any current orders.</p>
 <p>The source code for this website is available online at <a href="http://gitorious.org/intersango/">Gitorious</a>. We believe hiding the workings of a website is a poor substitute for good security.</p>
 </div>
 
