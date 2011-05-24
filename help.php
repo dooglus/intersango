@@ -7,6 +7,13 @@
 </div>
 
 <div class='content_box'>
+<h3>About us</h3>
+<p>My name is Amir Taaki. I have been involved in bitcoin development for the past 8 months and have been one of its few active developers. You can see my posts at the <a href="http://forum.bitcoin.org/">bitcoin forums</a> under the name genjix where I have a solid reputation. I have developed open source software for: this exchange, a bitcoin stock market exchange, a bitcoin client (Spesmilo) and others.</p>
+<p>For a list of my current projects please visit <a href="http://bitcoinconsultancy.com/wiki/index.php/Main_Page">Bitcoin Consulancy's wiki page</a>.</p>
+<p>Britcoin.co.uk is my decision to provide those living in the UK with a free exchange in order to promote awareness in the UK and allow UK residents to not miss out on the benefits of using bitcoins and being part of this great social change!</p>
+</div>
+
+<div class='content_box'>
 <h3>Contact info</h3>
 <p>webmaster@britcoin.co.uk</p>
 <p>Britcoin is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
