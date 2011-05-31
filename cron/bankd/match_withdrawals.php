@@ -44,9 +44,9 @@ while ($row = mysql_fetch_array($result)) {
     $name = $info[4];
     $name = trim($name, ' "');
     # trim off the BRITCOIN
-    $lastdot = strrpos($name, ' . ');
-    $name = substr($name, 0, $lastdot);
-    print_r($name);
+    #$lastdot = strrpos($name, ' . ');
+    #$name = substr($name, 0, $lastdot);
+    #print_r($name);
     $amount = $info[5];
     echo "We paid $amount to $name.\n";
     $amount = numstr_to_internal($amount);
@@ -64,7 +64,7 @@ while ($row = mysql_fetch_array($result)) {
             requests.req_type='WITHDR'
             AND requests.curr_type='GBP'
             AND requests.amount='$amount'
-            AND uk_requests.name='$name'
+            AND uk_requests.name LIKE '$name%'
         ";
     $result_lookup = do_query($query);
     if (!has_results($result_lookup)) {
