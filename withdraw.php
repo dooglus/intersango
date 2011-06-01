@@ -123,7 +123,9 @@ else {
 ?>
     <div class='content_box'>
     <h3>Withdraw GBP (UK residents)</h3>
-    <p>Enter an amount below to submit a withdrawal request. We charge no fee.</p>
+    <p>Enter an amount below to submit a withdrawal request. We charge no fee.
+    You are responsible for paying any incurred fees. If your deposit 
+    is insufficient to cover bank fees then it will be denied.</p>
     <p>
         <form action='' class='indent_form' method='post'>
             <label for='input_name_holder'>Name of account holder</label>
@@ -151,6 +153,7 @@ else {
             <input type='submit' value='Submit' />
         </form>
     </p>
+    <p>Allow 3-5 working days for payments to pass through clearing.</p>
     </div>
 
     <div class='content_box'>

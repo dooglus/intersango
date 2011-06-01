@@ -16,7 +16,7 @@ $deposref = $row['deposref'];
 
 <div class='content_box'>
     <h3>Deposit GBP</h3>
-    <p>Depositing is free by bank deposit until June.
+    <p>Depositing is free by bank deposit.
 You are responsible for paying any incurred fees. If your deposit 
 is insufficient to cover bank fees then it will be denied.</p>
     <p>You will need to quote <?php echo $deposref; ?> in the transaction's reference field.</p>
