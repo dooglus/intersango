@@ -17,9 +17,22 @@ if (isset($_POST['cancel_order'])) {
         SET status='CANCEL'
         WHERE
             orderid='$orderid'
-            AND uid='$uid';
+            AND uid='$uid'
+            AND status='OPEN'
     ";
     do_query($query);
+
+    if (mysql_affected_rows() != 1) {
+        if (mysql_affected_rows() > 1) 
+            throw new Error('Serious...', 'More rows updated than should be. Contact the sysadmin ASAP.');
+        else if (mysql_affected_rows() == 0) 
+            throw new Problem('Cannot...', 'Your order got bought up before you were able to cancel.');
+        else 
+            throw new Error('Serious...', 'Internal error. Contact sysadmin ASAP.');
+    }
+
+    // Refetch order in case something has happened.
+    $info = fetch_order_info($orderid);
 
     if ($uid != $info->uid)
         throw new Error('Permission...', '... Denied! Now GTFO.');
