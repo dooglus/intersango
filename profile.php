@@ -75,7 +75,10 @@ $query = "
         DATE_FORMAT(timest, '%H:%i %d/%m/%y') AS timest,
         status
     FROM requests
-    WHERE uid='$uid' AND (req_type='WITHDR' OR req_type='DEPOS')
+    WHERE
+        uid='$uid' 
+        AND (req_type='WITHDR' OR req_type='DEPOS') 
+        AND status!='IGNORE'
     ORDER BY requests.timest DESC;
 ";
 $result = do_query($query);
