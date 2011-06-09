@@ -78,7 +78,7 @@ function fulfill_order($our_orderid)
         throw new Error('Unprocessed', "Shouldn't be here for $our_orderid");
 
     $query = "
-        SELECT *
+        SELECT *, timest AS timest_format
         FROM orderbook
         WHERE
             status='OPEN'
