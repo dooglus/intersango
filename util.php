@@ -113,12 +113,12 @@ function sync_to_bitcoin($uid)
     #";
     #do_query($query);
     if (gmp_cmp($balance, '0') > 0) {
+        $bitcoin->move($uid, '', $balance);
         $query = "
             INSERT INTO requests (req_type, uid, amount, curr_type)
             VALUES ('DEPOS', '$uid', '$balance', 'BTC');
         ";
         do_query($query);
-        $bitcoin->move($uid, '', $balance);
     }
 }
 
