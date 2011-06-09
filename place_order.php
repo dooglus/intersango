@@ -17,10 +17,8 @@ $amount = numstr_to_internal($amount_disp);
 $want_amount_disp = post('want_amount');
 $want_amount = numstr_to_internal($want_amount_disp);
 
-/*
-order_worthwhile_check($amount, $amount_disp);
-order_worthwhile_check($want_amount, $want_amount_disp);
-*/
+order_worthwhile_check($amount, $amount_disp, '0.0005');
+order_worthwhile_check($want_amount, $want_amount_disp, '0.0005');
 
 enough_money_check($amount, $type);
 

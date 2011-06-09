@@ -220,11 +220,10 @@ function curr_supported_check($curr_type)
     if (!in_array($curr_type, $supported_currencies))
         throw new Error('Ooops!', 'Bad currency supplied.');
 }
-function order_worthwhile_check($amount, $amount_disp)
+function order_worthwhile_check($amount, $amount_disp, $min_str='0.5')
 {
     if (!is_numeric($amount_disp))
         throw new Problem('Numbers. Numbers.', 'The value you entered was not a number.');
-    $min_str = '0.5';
     $min = numstr_to_internal($min_str);
     if ($amount < $min)
         throw new Problem("Try again...", "Your order size is too small. The minimum is $min_str.");
