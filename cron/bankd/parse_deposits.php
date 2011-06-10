@@ -49,6 +49,16 @@ while ($row = mysql_fetch_array($result)) {
     $info = split(',', $line);
     if ($info[5] != '') {
         echo "Skipping payment out...\n";
+        $query = "
+            UPDATE
+                bank_statement
+            SET
+                status='PAYOUT'
+            WHERE
+                bid='$bid'
+                AND status='PROC'
+            ";
+        b_query($query);
         continue;
     }
     $acc = split('[.]', $info[4]);
@@ -63,7 +73,17 @@ while ($row = mysql_fetch_array($result)) {
     $deposref = $deposref[0];
     if (!deposref_exists($deposref)) {
         echo "\n$deposref deposref doesn't exist!\n\n";
-        exit(-1);
+        $query = "
+            UPDATE
+                bank_statement
+            SET
+                status='BADREF'
+            WHERE
+                bid='$bid'
+                AND status='PROC'
+            ";
+        b_query($query);
+        continue;
     }
     $amount = $info[6];
     $amount = numstr_to_internal($amount);
