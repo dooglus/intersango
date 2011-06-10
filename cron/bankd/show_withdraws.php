@@ -2,6 +2,16 @@
 require '../../util.php';
 
 $query = "
+    UPDATE requests
+    SET status='PROCES'
+    WHERE
+        req_type='WITHDR'
+        AND status='VERIFY'
+        AND curr_type='GBP'
+    ";
+do_query($query);
+
+$query = "
     SELECT 
         requests.reqid AS reqid,
         amount/100000000 AS amount,
@@ -17,23 +27,13 @@ $query = "
         uk_requests.reqid=requests.reqid
     WHERE
         req_type='WITHDR'
-        AND status='VERIFY'
+        AND status='PROCES'
         AND curr_type='GBP'
     ";
 $result = do_query($query);
 
 while ($row = mysql_fetch_array($result)) {
     $reqid = $row['reqid'];
-    $query = "
-        UPDATE requests
-        SET status='PROCES'
-        WHERE
-            reqid='$reqid'
-            AND req_type='WITHDR'
-            AND status='VERIFY'
-            AND curr_type='GBP'
-        ";
-    do_query($query);
 
     echo "javascript:function f(){";
     echo "document.forms[0]['Beneficiary'].value='{$row['name']}';";
