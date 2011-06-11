@@ -26,11 +26,31 @@ while ($row = mysql_fetch_assoc($result)) {
     echo "[$rate, $amount]";
 }
 echo '], "bids": [';
+
+// find exchange rate
+$query = "
+    SELECT
+        MIN(initial_want_amount / initial_amount) AS rate,
+        amount
+    FROM
+        orderbook
+    WHERE
+        type='BTC'
+        AND want_type='GBP'
+        AND status='OPEN'
+    ";
+$result = do_query($query);
+$row = get_row($result);
+$best_rate = $row['rate'];
+
 $query = "
     SELECT
         initial_amount / initial_want_amount AS rate,
-        amount
-    FROM
+        ROUND (
+            amount / $best_rate,
+            0
+        ) AS amount
+    FROM                        
         orderbook
     WHERE
         type='GBP'
@@ -45,7 +65,8 @@ while ($row = mysql_fetch_assoc($result)) {
     else
         echo ", ";
     $rate = $row['rate'];
-    $amount = internal_to_numstr($row['amount']);
+    $amount = clean_sql_numstr($row['amount']);
+    $amount = internal_to_numstr($amount);
     echo "[$rate, $amount]";
 }
 echo ']}';
