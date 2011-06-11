@@ -129,7 +129,7 @@ else {
     <p>
         <form action='' class='indent_form' method='post'>
             <label for='input_name_holder'>Name of account holder</label>
-            <input type='text' id='input_name_holder' name='name_holder' />
+            <input type='text' id='input_name_holder' name='name_holder' maxlength='18' />
 
             <label for='input_name_bank'>Name of the bank</label>
             <input type='text' id='input_name_bank' name='name_bank' />
@@ -156,6 +156,7 @@ else {
     <p>Allow 3-5 working days for payments to pass through clearing.</p>
     </div>
 
+<!-- DISABLED
     <div class='content_box'>
     <h3>Withdraw GBP (international)</h3>
     <p>Enter an amount below to submit a withdrawal request. A fee of 20 GBP for amounts below 5000 GBP and 35 GBP otherwise, applies. Your bank may charge an additional processing fee on their end.</p>
@@ -182,6 +183,7 @@ else {
         </form>
     </p>
     </div>
+-->
 
     <div class='content_box'>
     <h3>Withdraw BTC</h3>
