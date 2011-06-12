@@ -15,7 +15,7 @@
 
 <div class='content_box'>
 <h3>Contact info</h3>
-<p>webmaster@britcoin.co.uk</p>
+<p>support@britcoin.co.uk</p>
 <p>Britcoin is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
 </div>
 
