@@ -98,6 +98,11 @@ function truncate_num($num)
 }
 
 if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
+    if($csrf_token != $_POST['csrf_token'])
+    {
+        throw Error("csrf token mismatch!");
+    }
+    
     $uid = user_id();
     $amount_disp = post('amount');
     $curr_type = post('curr_type');
@@ -147,7 +152,8 @@ else {
 
             <label for='input_amount'>Amount</label>
             <input type='text' id='input_amount' name='amount' />
-
+            
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
             <input type='hidden' name='curr_type' value='GBP' />
             <input type='hidden' name='is_international' value='false' />
             <input type='submit' value='Submit' />
@@ -195,6 +201,8 @@ else {
 
             <label for='input_address'>Address</label>
             <input type='text' id='input_address' name='address' />
+            
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
             <input type='hidden' name='curr_type' value='BTC' />
             <input type='submit' value='Submit' />
         </form>

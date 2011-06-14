@@ -1,5 +1,11 @@
 <?php
 require 'util.php';
+require "errors.php";
+
+if($csrf_token != $_POST['csrf_token'])
+{
+    throw Error("csrf token mismatch!");
+}
 
 $uid = user_id();
 
