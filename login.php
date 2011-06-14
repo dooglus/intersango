@@ -1,9 +1,12 @@
 <?php
 require 'openid.php';
 
-if($csrf_token != $_POST['csrf_token'])
+if(isset($_POST['csrf_token']))
 {
-    throw Error("csrf token mismatch!");
+    if($csrf_token != $_POST['csrf_token'])
+    {
+        throw Error("csrf token mismatch!");
+    }
 }
 
 try {

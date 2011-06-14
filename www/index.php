@@ -2,6 +2,7 @@
 # this will be used to protect all subpages from being directly accessed.
 define('_we_are_one', 1);
 session_start();
+
 $csrf_token = '';
 
 if(isset($_SESSION['csrf_token']))
