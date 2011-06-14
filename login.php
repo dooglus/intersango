@@ -1,5 +1,11 @@
 <?php
 require 'openid.php';
+
+if($csrf_token != $_POST['csrf_token'])
+{
+    throw Error("csrf token mismatch!");
+}
+
 try {
     $openid = new LightOpenID;
     if (!$openid->mode) {
@@ -13,6 +19,7 @@ try {
 <p>Enter your OpenID login below:</p>
 <p>
     <form action='' class='indent_form' method='get'>
+        <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
         <input type='text' name='openid_identifier' />
         <input type='hidden' name='page' value='login' />
         <input type='submit' value='Submit' />

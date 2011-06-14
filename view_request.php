@@ -1,6 +1,11 @@
 <?php
 require 'util.php';
 
+if($csrf_token != $_POST['csrf_token'])
+{
+    throw Error("csrf token mismatch!");
+}
+
 function display_request_info_gbp($uid, $reqid)
 {
     $query = "
@@ -120,6 +125,7 @@ else {
         <?php if ($status == 'VERIFY' && $req_type == 'WITHDR') { ?>
             <p>
             <form action='' class='indent_form' method='post'>
+                <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
                 <input type='hidden' name='cancel_request' value='true' />
                 <input type='submit' value='Cancel request' />
             </form> 
