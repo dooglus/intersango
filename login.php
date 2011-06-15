@@ -7,12 +7,12 @@ if(isset($_GET['openid_identifier']))
     {
         if($csrf_token != $_GET['csrf_token'])
         {
-            throw new Error("csrf token mismatch!");
+            throw new Error("csrf","csrf token mismatch!");
         }
     }
     else
     {
-        throw new Error("csrf token missing");
+        throw new Error("csrf","csrf token missing");
     }
 }
 
