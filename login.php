@@ -36,7 +36,7 @@ try {
     </form>
 </p>
 <p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a>.</p>
-<p>Alternatively you may sign in using <a href="?page=login&openid_identifier=https://www.google.com/accounts/o8/id">Google</a> or <a href="?page=login&openid_identifier=me.yahoo.com">Yahoo</a>.</p>
+<p>Alternatively you may sign in using <a href="?page=login&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=<?php echo $_SESSION['csrf_token']; ?>">Google</a> or <a href="?page=login&openid_identifier=me.yahoo.com&csrf_token=<?php echo $_SESSION['csrf_token']; ?>">Yahoo</a>.</p>
 <?php
     }
     else if ($openid->mode == 'cancel') {
