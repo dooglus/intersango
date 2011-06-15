@@ -11,9 +11,9 @@ if(isset($_SESSION['csrf_token']))
 }
 
 $_SESSION['csrf_token'] = '';
-for($i=0;$i<64;$i++)
+for($i=0;$i<32;$i++)
 {
-    $_SESSION['csrf_token'] .= chr(mt_rand(0,255));
+    $_SESSION['csrf_token'] .= bin2hex(chr(mt_rand(0,255)));
 }
 require 'config.php';
 
