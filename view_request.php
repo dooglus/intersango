@@ -1,9 +1,20 @@
 <?php
 require 'util.php';
+require 'errors.php';
 
-if($csrf_token != $_POST['csrf_token'])
+if(isset($_POST['cancel_request']))
 {
-    throw Error("csrf token mismatch!");
+    if(isset($_POST['csrf_token']))
+    {
+        if($csrf_token != $_POST['csrf_token'])
+        {
+            throw Error("csrf token mismatch!");
+        }
+    }
+    else
+    {
+        throw Error("csrf token missing!");
+    }
 }
 
 function display_request_info_gbp($uid, $reqid)
