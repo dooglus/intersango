@@ -1,7 +1,7 @@
 <?php
-require 'openid.php';
-require 'util.php';
-require 'view_util.php';
+require_once 'openid.php';
+require_once 'util.php';
+require_once 'view_util.php';
 
 if (!isset($_SESSION['uid']))
     throw new Error('Denied', 'Go away.');

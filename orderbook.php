@@ -1,5 +1,5 @@
 <?php
-require 'util.php';
+require_once 'util.php';
 
 function display_double_entry($curr_a, $curr_b, $base_curr)
 {

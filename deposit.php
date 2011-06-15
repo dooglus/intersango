@@ -1,5 +1,5 @@
 <?php
-require 'util.php';
+require_once 'util.php';
 $uid = user_id();
 $bitcoin = connect_bitcoin();
 $addy = $bitcoin->getaccountaddress((string)$uid);

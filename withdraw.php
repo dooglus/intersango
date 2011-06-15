@@ -1,5 +1,20 @@
 <?php
-require 'util.php';
+require_once 'util.php';
+
+if (isset($_POST['amount']) && isset($_POST['curr_type']))
+{
+    if(isset($_POST['csrf_token']))
+    {
+        if($csrf_token != $_POST['csrf_token'])
+        {
+            throw new Error("csrf token mismatch!");
+        }
+    }
+    else
+    {
+        throw new Error("csrf token missing");
+    }
+}
 
 function uk_withdraw($uid, $amount, $curr_type)
 {
@@ -98,6 +113,7 @@ function truncate_num($num)
 }
 
 if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
+    
     $uid = user_id();
     $amount_disp = post('amount');
     $curr_type = post('curr_type');
@@ -147,7 +163,8 @@ else {
 
             <label for='input_amount'>Amount</label>
             <input type='text' id='input_amount' name='amount' />
-
+            
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
             <input type='hidden' name='curr_type' value='GBP' />
             <input type='hidden' name='is_international' value='false' />
             <input type='submit' value='Submit' />
@@ -160,7 +177,7 @@ else {
     <div class='content_box'>
     <h3>Withdraw GBP (international)</h3>
     <p>Enter an amount below to submit a withdrawal request. A fee of 20 GBP for amounts below 5000 GBP and 35 GBP otherwise, applies. Your bank may charge an additional processing fee on their end.</p>
-    <p>Please also contact webmaster@britcoin.co.uk</p>
+    <p>Please also contact support@britcoin.co.uk</p>
     <p>
         <form action='' class='indent_form' method='post'>
             <div id='acc_details'>
@@ -195,6 +212,8 @@ else {
 
             <label for='input_address'>Address</label>
             <input type='text' id='input_address' name='address' />
+            
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
             <input type='hidden' name='curr_type' value='BTC' />
             <input type='submit' value='Submit' />
         </form>

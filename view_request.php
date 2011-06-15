@@ -1,5 +1,21 @@
 <?php
-require 'util.php';
+require_once 'util.php';
+require_once 'errors.php';
+
+if(isset($_POST['cancel_request']))
+{
+    if(isset($_POST['csrf_token']))
+    {
+        if($csrf_token != $_POST['csrf_token'])
+        {
+            throw new Error("csrf token mismatch!");
+        }
+    }
+    else
+    {
+        throw new Error("csrf token missing!");
+    }
+}
 
 function display_request_info_gbp($uid, $reqid)
 {
@@ -120,6 +136,7 @@ else {
         <?php if ($status == 'VERIFY' && $req_type == 'WITHDR') { ?>
             <p>
             <form action='' class='indent_form' method='post'>
+                <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
                 <input type='hidden' name='cancel_request' value='true' />
                 <input type='submit' value='Cancel request' />
             </form> 

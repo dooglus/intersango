@@ -1,6 +1,22 @@
 <?php
-require 'util.php';
-require 'view_util.php';
+require_once 'util.php';
+require_once 'view_util.php';
+require_once 'errors.php';
+
+if(isset($_POST['cancel_order']))
+{
+    if(isset($_POST['csrf_token']))
+    {
+        if($csrf_token != $_POST['csrf_token'])
+        {
+            throw new Error("csrf token mismatch!");
+        }
+    }
+    else
+    {
+        throw new Error("csrf token missing!");
+    }
+}
 
 if (!isset($_GET['orderid']))
     throw new Problem('No order selected', 'Hit back and select an order.');
@@ -74,6 +90,7 @@ else {
         <?php if ($status == 'OPEN') { ?>
         <p>
             <form action='' class='indent_form' method='post'>
+                <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
                 <input type='hidden' name='cancel_order' value='true' />
                 <input type='submit' value='Cancel order' />
             </form>
