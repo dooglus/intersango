@@ -90,7 +90,9 @@ function report_exception($e, $severity)
 {
     $title = $e->getTitle();
     $message = $e->getMessage();
-    report("Exception:\n==== $title ====\n$message\n================", $severity);
+    $file = $e->getFile();
+    $line = $e->getLine();
+    report("Exception: $file $line\n==== $title ====\n$message\n================", $severity);
 }
 
 function reporting_error_handler($errno, $errstr, $errfile, $errline)
