@@ -5,7 +5,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type']))
 {
     if(isset($_POST['csrf_token']))
     {
-        if($csrf_token != $_POST['csrf_token'])
+        if($_SESSION['csrf_token'] != $_POST['csrf_token'])
         {
             throw new Error("csrf","csrf token mismatch!");
         }

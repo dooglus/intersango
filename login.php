@@ -5,8 +5,7 @@ if(isset($_GET['openid_identifier']))
 {
     if(isset($_GET['csrf_token']))
     {
-        global $csrf_token;
-        if($csrf_token != $_GET['csrf_token'])
+        if($_SESSION['csrf_token'] != $_GET['csrf_token'])
         {
             throw new Error("csrf","csrf token mismatch!");
         }

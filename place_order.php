@@ -4,7 +4,7 @@ require_once "errors.php";
 
 if(isset($_POST['csrf_token'))
 {
-    if($csrf_token != $_POST['csrf_token'])
+    if($_SESSION['csrf_token'] != $_POST['csrf_token'])
     {
         throw new Error("csrf","csrf token mismatch!");
     }
