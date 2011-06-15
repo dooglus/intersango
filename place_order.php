@@ -1,6 +1,6 @@
 <?php
-require 'util.php';
-require "errors.php";
+require_once 'util.php';
+require_once "errors.php";
 
 if($csrf_token != $_POST['csrf_token'])
 {

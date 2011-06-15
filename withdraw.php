@@ -1,5 +1,5 @@
 <?php
-require 'util.php';
+require_once 'util.php';
 
 function uk_withdraw($uid, $amount, $curr_type)
 {

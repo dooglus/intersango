@@ -1,6 +1,6 @@
 <?php
-require 'util.php';
-require 'errors.php';
+require_once 'util.php';
+require_once 'errors.php';
 
 if(isset($_POST['cancel_request']))
 {

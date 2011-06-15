@@ -1,6 +1,6 @@
 <?php
-require 'db.php';
-require 'jsonRPCClient.php';
+require_once 'db.php';
+require_once 'jsonRPCClient.php';
 
 class BASE_CURRENCY
 {

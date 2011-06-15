@@ -1,5 +1,5 @@
 <?php
-require '/var/db.intersango.inc';
+require_once '/var/db.intersango.inc';
 
 function escapestr($str)
 {

@@ -1,5 +1,5 @@
 <?php
-require 'openid.php';
+require_once 'openid.php';
 
 if(isset($_POST['csrf_token']))
 {
