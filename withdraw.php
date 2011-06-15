@@ -1,6 +1,21 @@
 <?php
 require_once 'util.php';
 
+if (isset($_POST['amount']) && isset($_POST['curr_type']))
+{
+    if(isset($_POST['csrf_token']))
+    {
+        if($csrf_token != $_POST['csrf_token'])
+        {
+            throw new Error("csrf token mismatch!");
+        }
+    }
+    else
+    {
+        throw new Error("csrf token missing");
+    }
+}
+
 function uk_withdraw($uid, $amount, $curr_type)
 {
     $name = post('name_holder');
@@ -98,10 +113,6 @@ function truncate_num($num)
 }
 
 if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
-    if($csrf_token != $_POST['csrf_token'])
-    {
-        throw Error("csrf token mismatch!");
-    }
     
     $uid = user_id();
     $amount_disp = post('amount');

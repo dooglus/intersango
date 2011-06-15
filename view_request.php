@@ -8,12 +8,12 @@ if(isset($_POST['cancel_request']))
     {
         if($csrf_token != $_POST['csrf_token'])
         {
-            throw Error("csrf token mismatch!");
+            throw new Error("csrf token mismatch!");
         }
     }
     else
     {
-        throw Error("csrf token missing!");
+        throw new Error("csrf token missing!");
     }
 }
 

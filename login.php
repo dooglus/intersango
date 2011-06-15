@@ -1,11 +1,18 @@
 <?php
 require_once 'openid.php';
 
-if(isset($_POST['csrf_token']))
+if(isset($_GET['openid_identifier']))
 {
-    if($csrf_token != $_POST['csrf_token'])
+    if(isset($_POST['csrf_token']))
     {
-        throw Error("csrf token mismatch!");
+        if($csrf_token != $_POST['csrf_token'])
+        {
+            throw new Error("csrf token mismatch!");
+        }
+    }
+    else
+    {
+        throw new Error("csrf token missing");
     }
 }
 
