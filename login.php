@@ -3,9 +3,9 @@ require_once 'openid.php';
 
 if(isset($_GET['openid_identifier']))
 {
-    if(isset($_POST['csrf_token']))
+    if(isset($_GET['csrf_token']))
     {
-        if($csrf_token != $_POST['csrf_token'])
+        if($csrf_token != $_GET['csrf_token'])
         {
             throw new Error("csrf token mismatch!");
         }
