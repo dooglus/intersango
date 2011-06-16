@@ -51,6 +51,12 @@ for reqid, amount, name, bank, acc_num, sort_code in withdrawals:
         break
     sort_code = sort_code[0:2], sort_code[2:4], sort_code[4:6]
 
+    if len(acc_num) != 8:
+        print 'Account number is not 8 digits'
+        print acc_num
+        print 'Request ID =\t', reqid
+        break
+
     form_info = "javascript:function f(){"
     form_info += "document.forms[0]['Beneficiary'].value='%s';"%(name,)
     form_info += "document.forms[0]['SortCode1'].value='%s';"%(sort_code[0],)
