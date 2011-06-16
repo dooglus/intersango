@@ -1,5 +1,8 @@
 import MySQLdb
 import gtk
+import decimal
+
+TWOPLACES = decimal.Decimal(10) ** -2
 
 def copy_to_clipboard(text):
     clipboard = gtk.clipboard_get()
@@ -35,8 +38,11 @@ for reqid, amount, name, bank, acc_num, sort_code in withdrawals:
     print
     count += 1
 
+    # truncate decimals to 2 places
+    amount = amount.quantize(TWOPLACES)
+
     print 'Name =\t\t', name
-    print 'Reference =\t', acc_num[0:5], acc_num[4:]
+    print 'Reference =\t', acc_num[0:4], acc_num[4:]
     print 'Amount =\t', amount
 
     if len(sort_code) != 6:
