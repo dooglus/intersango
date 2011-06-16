@@ -82,5 +82,12 @@ for reqid, amount, name, bank, acc_num, sort_code in withdrawals:
 
     print 'Second page.'
     raw_input()
+    cursor.execute("""
+        UPDATE requests
+        SET status='DONE'
+        WHERE
+            reqid='%s'
+            AND status='PROCES'
+    """, (reqid,))
     print "-----------------------------------"
 
