@@ -59,6 +59,10 @@ $query = "
     SET
         reqid=LAST_INSERT_ID(),
         status='FINAL'
+    WHERE
+        bid='$bid'
+        AND reqid is NULL
+        AND status='BADREF'
     ";
 do_query($query);
 echo "Done.\n";
