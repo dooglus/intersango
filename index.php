@@ -1,7 +1,7 @@
         <div class='content_box'>
             <h3>Currency converter</h3>
             <p><b>This site is strictly in alpha state.</b> We are currently negotiating with legal professionals in the pursuit of gaining international licensing. The software is new. Use at your own risk. We will do our best to prevent problems, but mistakes can happen. Only deposit amounts you feel comfortable with in regards to the aforementioned information. Please see the <a href='?page=help'>help</a> page for more info and our terms &amp; conditions.</p>
-            <p>Every day the site will be down between 01:00-05:00 (AM) GMT as we analyse the site for potential issues. We are carefully monitoring our system.</p>
+            <p>Users outside the UK may wish to use <a href='http://transferwise.com/'>TransferWise</a> in order to fund their accounts.</p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
