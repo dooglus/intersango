@@ -1,0 +1,64 @@
+==============================
+How does order matching work?
+==============================
+
+When you place an order, it goes into the orderbook. Every new order is umarked
+at first. It just gets filed to be processed.
+
+Every minute, cron kicks in and starts processing the orders. Each matched order
+is marked with a flag indicating that it's been processed.
+
+For each order that is processed, we look to find other equivalent orders which
+are open, want the currency we own, have the currency we want and have a rate
+equivalent to or better than us. Looping through the matching orders with no
+ordering (we plan to fix that) we try to fulfill our order with the opposing
+order. Each loop creates a new transaction that indicates a trade occured
+between two users.
+
+We keep doing this until the entire order is fullfilled (order is closed) or we
+run out of matching orders; the remaining amount stays in the orderbook (order
+is open).
+
+The fulfilling part checks to see if our order has a smaller depth than the
+other one. If so, our order is completed at their exchange rate and closed. The
+matching finishes up.
+
+The other case is where we have a larger depth, and want to fulfill ourself
+partly using their order.
+
+    ...
+    Order 14: We are offering 10 GBP for 1 BC
+    ...
+    Order 18: They are offering 2.5 BC for 5 GBP
+    ...
+
+We need to calculate how much of our order will be chipped off, while
+preserving their exchange rate.
+
+    ...
+    Order 14-1: We are offering 5 GBP for 2.5 BC
+    Order 14-2: We are offering 5 GBP for 2.5 BC
+    ...
+
+We fulfill our order and close their order.
+
+    ...
+    Order 14-2: We are offering 5 GBP for 2.5 BC
+    ...
+
+A new transaction is created for record keeping purposes and the users funds are
+updated accordingly.
+
+A better algorithm would firstly order the matching equivalent orders by best
+price first so we move up the orderbook, rather than select random matches.
+Secondly an improvement perform linear programming to find the optimised rate
+for two given orders given the constraints- although that isn't too important.
+
+One minor addition would be to never accept orders where the want / offer
+doesn't produce a perfectly divisible amount so we don't get these random
+remainders that are credited to a random account once the order matching is
+completed.
+
+* See process_orders.php. pacman does the order fulfillment once the new amounts
+  are computed.
+
