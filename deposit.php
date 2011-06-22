@@ -16,6 +16,7 @@ $deposref = $row['deposref'];
 
 <div class='content_box'>
     <h3>Deposit GBP</h3>
+    <p><b>NOTICE: Do not deposit into this bank account after 21<sup>st</sup> July. Our bank has asked us to take business elsewhere, and we will update this page with new bank details once the account is opened.</b></p>
     <p>Depositing is free by bank deposit.
 You are responsible for paying any incurred fees. If your deposit 
 is insufficient to cover bank fees then it will be denied.</p>
