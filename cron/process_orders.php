@@ -86,7 +86,7 @@ function fulfill_order($our_orderid)
             AND want_type='{$our->type}'
             AND initial_amount * '{$our->initial_amount}' >= initial_want_amount * '{$our->initial_want_amount}'
             AND uid!='{$our->uid}'
-        ORDER BY initial_want_amount / initial_amount, timest;
+        ORDER BY initial_want_amount / initial_amount ASC, timest ASC;
     ";
     $result = b_query($query);
     while ($row = mysql_fetch_array($result)) {
@@ -137,7 +137,7 @@ function process()
         SELECT orderid
         FROM orderbook
         WHERE processed=FALSE
-        ORDER BY timest
+        ORDER BY timest ASC
     ";
     $result = b_query($query);
     while ($row = mysql_fetch_array($result)) {
