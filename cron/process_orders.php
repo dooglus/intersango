@@ -136,6 +136,7 @@ function process()
         SELECT orderid
         FROM orderbook
         WHERE processed=FALSE
+        ORDER BY timest
     ";
     $result = b_query($query);
     while ($row = mysql_fetch_array($result)) {
