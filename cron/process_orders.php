@@ -85,7 +85,8 @@ function fulfill_order($our_orderid)
             AND type='{$our->want_type}'
             AND want_type='{$our->type}'
             AND initial_amount * '{$our->initial_amount}' >= initial_want_amount * '{$our->initial_want_amount}'
-            AND uid!='{$our->uid}';
+            AND uid!='{$our->uid}'
+        ORDER BY initial_want_amount / initial_amount, timest;
     ";
     $result = b_query($query);
     while ($row = mysql_fetch_array($result)) {
