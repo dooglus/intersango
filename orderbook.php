@@ -41,7 +41,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
         FROM orderbook
         WHERE type='$curr_a' AND want_type='$curr_b' AND status='OPEN'
         ORDER BY
-            IF(type='BTC', rate, -rate) ASC
+            IF(type='BTC', rate, -rate) ASC, timest ASC
     ";
     $result = do_query($query);
     while ($row = mysql_fetch_array($result)) {
