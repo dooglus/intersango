@@ -53,7 +53,7 @@ $query = "
     WHERE
         b_amount >= 0
     ORDER BY
-        t.timest
+        t.timest DESC
     LIMIT 1
     ";
 $result = do_query($query);
