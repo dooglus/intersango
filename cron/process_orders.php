@@ -85,7 +85,8 @@ function fulfill_order($our_orderid)
             AND type='{$our->want_type}'
             AND want_type='{$our->type}'
             AND initial_amount * '{$our->initial_amount}' >= initial_want_amount * '{$our->initial_want_amount}'
-            AND uid!='{$our->uid}';
+            AND uid!='{$our->uid}'
+        ORDER BY initial_want_amount / initial_amount ASC, timest ASC;
     ";
     $result = b_query($query);
     while ($row = mysql_fetch_array($result)) {
@@ -94,30 +95,9 @@ function fulfill_order($our_orderid)
         if ($them->type != $our->want_type || $our->type != $them->want_type)
             throw Error('Problem', 'Urgent problem. Contact the site owner IMMEDIATELY.');
         # $them_amount >= $our_want_amount
-        if (gmp_cmp($them->amount, $our->want_amount) >= 0) {
-            echo "They swallow us.\n";
-            pacman($our->orderid, $our->uid, $our->amount, $our->type, $them->orderid, $them->uid, $our->want_amount, $our->want_type);
-            # finished!
-            break;
-        }
-        else {
+        if (gmp_cmp($our->amount, $them->want_amount) >= 0) {
             echo "We swallow them.\n";
-            # so our amount is bigger than their's. we absorb them.
-            # we need to calculate a new want_amount for them based on our current exchange rate.
-            # we do this by constructing a new order:
-            #    rate = our_amount / our_want_amount
-            #    them_new_want = them_amount * rate
-            $them->new_want = gmp_mul($them->amount, $our->initial_amount);
-            list($them_new_want, $them_remain) = gmp_div_qr($them->new_want, $our->initial_want_amount);
-            $them_new_want = gmp_strval($them_new_want);
-            pacman($them->orderid, $them->uid, $them->amount, $them->type, $our->orderid, $our->uid, $them_new_want, $our->type);
-
-            # we ignore the disparity which is them_remain / initial_want_amount
-            # max(remain) = iwant - 1
-            # max(disp)   = (iwant - 1) / iwant
-            #             = 1 - 1/iwant
-            # disp < 1  ALWAYS
-            # Therefore it does not matter and is totally insignificant.
+            pacman($them->orderid, $them->uid, $them->amount, $them->type, $our->orderid, $our->uid, $them->want_amount, $our->type);
 
             # re-update as still haven't finished...
             # info needed for any further transactions
@@ -125,6 +105,28 @@ function fulfill_order($our_orderid)
             # order was closed and our job is done.
             if ($our->status != 'OPEN')
                 break;
+        }
+        else {
+            echo "They swallow us.\n";
+            # so their amount is bigger than ours. they absorb us.
+            # we need to calculate a new want_amount for us based on their exchange rate.
+            # we do this by constructing a new order:
+            #    rate = their_amount / their_want_amount
+            #    our_new_want = our_amount * rate
+            $our->new_want = gmp_mul($our->amount, $them->initial_amount);
+            list($our_new_want, $our_remain) = gmp_div_qr($our->new_want, $them->initial_want_amount);
+            $our_new_want = gmp_strval($our_new_want);
+            pacman($our->orderid, $our->uid, $our->amount, $our->type, $them->orderid, $them->uid, $our_new_want, $our->want_type);
+
+            # we ignore the disparity which is our_remain / initial_want_amount
+            # max(remain) = iwant - 1
+            # max(disp)   = (iwant - 1) / iwant
+            #             = 1 - 1/iwant
+            # disp < 1  ALWAYS
+            # Therefore it does not matter and is totally insignificant.
+
+            # finished!
+            break;
         }
     }
 }
@@ -136,6 +138,7 @@ function process()
         SELECT orderid
         FROM orderbook
         WHERE processed=FALSE
+        ORDER BY timest ASC
     ";
     $result = b_query($query);
     while ($row = mysql_fetch_array($result)) {
