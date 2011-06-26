@@ -62,10 +62,18 @@ while ($row = mysql_fetch_array($result)) {
         continue;
     }
     $acc = split('[.]', $info[4]);
-    if (count($acc) < 2) 
-        $deposref = $info[4];
-    else 
-        $deposref = $acc[1];
+    # transfer wise
+    if (trim($acc[0]) == '"EXCHANGE SOL')
+    {
+        $deposref = $acc[2];
+    }
+    else
+    {
+        if (count($acc) < 2) 
+            $deposref = $info[4];
+        else 
+            $deposref = $acc[1];
+    }
 
     $deposref = trim($deposref, " \"'\n");
     # trim off the date
