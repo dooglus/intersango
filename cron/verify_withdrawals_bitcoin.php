@@ -29,16 +29,20 @@ $query = "
         AND curr_type='BTC'
     ";
 $result = do_query($query);
+$bitcoin = connect_bitcoin();
 while ($row = mysql_fetch_assoc($result)) {
     $reqid = $row['reqid'];
     $uid = $row['uid'];
     $amount = $row['amount'];
     $addy = $row['addy'];
 
-    update_req($reqid, "PROCES");
-    $bitcoin = connect_bitcoin();
-    $bitcoin->sendfrom("", $addy, $amount);
-    update_req($reqid, "FINAL");
+    $reserve_needed = gmp_add($amount, '1000000000');
+    if (gmp_cmp($bitcoin->getbalance(""), $reserve_needed) >= 1)
+    {
+        update_req($reqid, "PROCES");
+        $bitcoin->sendfrom("", $addy, $amount);
+        update_req($reqid, "FINAL");
+    }
 }
 
 ?>
