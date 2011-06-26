@@ -36,8 +36,7 @@ while ($row = mysql_fetch_assoc($result)) {
     $amount = $row['amount'];
     $addy = $row['addy'];
 
-    $reserve_needed = gmp_add($amount, '1000000000');
-    if (gmp_cmp($bitcoin->getbalance(""), $reserve_needed) >= 1)
+    if (gmp_cmp($bitcoin->getbalance(""), $amount) >= 0)
     {
         update_req($reqid, "PROCES");
         $bitcoin->sendfrom("", $addy, $amount);
