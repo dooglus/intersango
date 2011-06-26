@@ -36,14 +36,14 @@ We need to calculate how much of our order will be chipped off, while
 preserving their exchange rate.
 
     ...
-    Order 14-1: We are offering 5 GBP for 2.5 BC
-    Order 14-2: We are offering 5 GBP for 2.5 BC
+    Order 14-1: We are offering 5 GBP for 0.5 BC
+    Order 14-2: We are offering 5 GBP for 0.5 BC
     ...
 
 We fulfill our order and close their order.
 
     ...
-    Order 14-2: We are offering 5 GBP for 2.5 BC
+    Order 14-2: We are offering 5 GBP for 0.5 BC
     ...
 
 A new transaction is created for record keeping purposes and the users funds are
