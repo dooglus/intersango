@@ -43,6 +43,8 @@ function internal_to_numstr($num, $precision=8)
 
 function clean_sql_numstr($numstr)
 {
+    if (strpos($numstr, '.') === false)
+        return $numstr;
     $numstr = rtrim($numstr, '0');
     $numstr = rtrim($numstr, '.');
     return $numstr;
