@@ -1,9 +1,6 @@
 import withdraw_helper
 import decimal
 
-def field_name_2(field, ben='Ben'):
-    return "document.forms[1]['" + field + "'].value='%s';"
-
 cursor = withdraw_helper.cursor()
 withdrawals = withdraw_helper.get_withdrawals(cursor, 'AWAIT')
 
@@ -38,7 +35,7 @@ for reqid, amount, name, bank, acc_num, sort_code in withdrawals:
         break
 
     form_info = "javascript:function f(){"
-    form_info += field_name_2('Name')%name
+    form_info += "document.forms[0]['frmMakePayment:amount'].value='%s';"%amount
     form_info += "}f();\n";
     withdraw_helper.copy_to_clipboard(form_info)
 
