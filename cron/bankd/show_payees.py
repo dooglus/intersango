@@ -17,7 +17,7 @@ for reqid, amount, name, bank, acc_num, sort_code in withdrawals:
     amount = withdraw_helper.quantize(amount)
 
     print 'Name =\t\t', name
-    print 'Account =\t', acc_num[0:4], acc_num[4:]
+    print 'Account =\t', acc_num
 
     if len(sort_code) != 6:
         print 'Sort code is wrong length'

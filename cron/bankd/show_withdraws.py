@@ -13,9 +13,8 @@ for reqid, amount, name, bank, acc_num, sort_code in withdrawals:
 
     # truncate decimals to 2 places
     amount = withdraw_helper.quantize(amount)
-    total += amount
 
-    print 'Search for: \t', acc_num[0:4], acc_num[4:]
+    print 'Search for: \t', acc_num
     print
     print 'Name =\t\t', name
 
@@ -33,6 +32,20 @@ for reqid, amount, name, bank, acc_num, sort_code in withdrawals:
         print acc_num
         print 'Request ID =\t', reqid
         break
+
+    withdraw_helper.copy_to_clipboard(acc_num)
+    while True:
+        cont = raw_input('Continue with this person? [y]/n ')
+        if cont == '' or cont == 'y' or cont == 'Y':
+            cont = True
+            break
+        elif cont == 'n' or cont == 'N':
+            cont = False
+            break
+    if not cont:
+        continue
+    # ok this person has been accepted
+    total += amount
 
     form_info = "javascript:function f(){"
     form_info += "document.forms[0]['frmMakePayment:amount'].value='%s';"%amount
@@ -52,6 +65,10 @@ for reqid, amount, name, bank, acc_num, sort_code in withdrawals:
     """, (reqid,))
     print "-----------------------------------"
 
+for reqid, amount, name, bank, acc_num, sort_code in withdrawals:
+    print name, '\t\t', withdraw_helper.quantize(amount)
+
+print
 print 'TOTAL SHOULD BE:'
 print '***********', total, '***********'
 
