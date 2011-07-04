@@ -14,7 +14,7 @@
    height="1052.3622047"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.0 r9654"
+   inkscape:version="0.48.1 r9760"
    sodipodi:docname="drawing.svg">
   <defs
      id="defs4">
@@ -483,7 +483,7 @@
        xlink:href="#linearGradient4122-1"
        id="radialGradient4350"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.19510309,0.25627589,-0.26628289,0.20272143,780.3558,2235.6084)"
+       gradientTransform="matrix(0.12425638,0.16321583,-0.16958905,0.12910831,663.1697,2527.1824)"
        cx="-1342.5002"
        cy="2904.4651"
        fx="-1342.5002"
@@ -678,6 +678,92 @@
        id="radialGradient3483"
        xlink:href="#linearGradient4122-1-1"
        inkscape:collect="always" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4122-1-9-2"
+       id="radialGradient4279-4-7"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.19510309,0.25627589,-0.26628289,0.20272143,780.3558,2235.6084)"
+       cx="-1342.5002"
+       cy="2904.4651"
+       fx="-1342.5002"
+       fy="2904.4651"
+       r="181.61424" />
+    <linearGradient
+       id="linearGradient4122-1-9-2">
+      <stop
+         style="stop-color:#01b972;stop-opacity:1;"
+         offset="0"
+         id="stop4124-4-0-1" />
+      <stop
+         style="stop-color:#00a563;stop-opacity:1;"
+         offset="1"
+         id="stop4126-9-9-7" />
+    </linearGradient>
+    <linearGradient
+       y2="3084.0625"
+       x2="-1479.6406"
+       y1="3012.8811"
+       x1="-1479.6406"
+       gradientTransform="matrix(1.0874575,0,0,1.0874575,1204.9323,-726.04871)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient4395-9"
+       xlink:href="#linearGradient4060-0-7-5"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient4060-0-7-5">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.33913043;"
+         offset="0"
+         id="stop4062-6-7-6" />
+      <stop
+         style="stop-color:#00a362;stop-opacity:1;"
+         offset="1"
+         id="stop4064-8-1-8" />
+    </linearGradient>
+    <linearGradient
+       y2="3084.0625"
+       x2="-1479.6406"
+       y1="3012.8811"
+       x1="-1479.6406"
+       gradientTransform="matrix(1.0874575,0,0,1.0874575,1204.9323,-726.04871)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3696"
+       xlink:href="#linearGradient4060-0-7-5"
+       inkscape:collect="always" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4122-1-15"
+       id="radialGradient4350-2"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.12425638,0.16321583,-0.16958905,0.12910831,663.1697,2527.1824)"
+       cx="-1342.5002"
+       cy="2904.4651"
+       fx="-1342.5002"
+       fy="2904.4651"
+       r="181.61424" />
+    <linearGradient
+       id="linearGradient4122-1-15">
+      <stop
+         style="stop-color:#01b972;stop-opacity:1;"
+         offset="0"
+         id="stop4124-4-99" />
+      <stop
+         style="stop-color:#00a563;stop-opacity:1;"
+         offset="1"
+         id="stop4126-9-16" />
+    </linearGradient>
+    <radialGradient
+       r="181.61424"
+       fy="2904.4651"
+       fx="-1342.5002"
+       cy="2904.4651"
+       cx="-1342.5002"
+       gradientTransform="matrix(0.12425638,0.16321583,-0.16958905,0.12910831,643.67273,2289.2301)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3742"
+       xlink:href="#linearGradient4122-1-15"
+       inkscape:collect="always" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -686,9 +772,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="-599.78978"
-     inkscape:cy="-1012.0991"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="-194.88573"
+     inkscape:cy="-1577.8412"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1163,56 +1249,26 @@
          d="m 1447.676,2256.9293 215.1624,0 -7.071,-8.0812 -4.0406,3.0304 -6.0609,-3.0304 -2.0204,4.0406 -7.071,-2.0203 -1.0102,-8.0812 -4.0406,10.1015 -3.0304,-2.0203 -8.0813,-2.0203 -10.1015,6.0609 -18.1827,-3.0305 -13.132,1.0102 -7.0711,-5.0508 -3.0304,4.0406 -6.061,-1.0101 -9.0913,3.0305 -8.0812,-6.061 -9.0914,6.061 -6.0609,-5.0508 -3.0305,3.0304 -10.1015,1.0102 -3.0305,-4.0406 -7.071,3.0304 -5.0508,0 -9.0914,-3.0304 -2.0203,3.0304 -5.0507,-1.0101 -2.0204,-3.0305 -9.0913,5.0508 -2.0203,-11.1117 -5.0508,9.0914 -8.0812,-6.0609 -17.1726,-2.0203 z"
          style="fill:#52514e;fill-opacity:1;stroke:none" />
     </g>
-    <path
-       style="fill:url(#radialGradient4350);fill-opacity:1;stroke:none;stroke-width:1.95742345000000006;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m -600.63559,2668.6108 192.32241,-167.8388 47.66167,63.943 75.15582,-70.1067 -84.08245,0 47.87903,-50.0914 119.10165,0 0,123.982 -49.65663,48.3531 0,-84.8605 -70.04029,69.9153 -48.9357,48.9357 -49.46055,-65.0407 -142.44573,118.3663 -37.49923,-35.5573 z"
-       id="path3192-2"
-       sodipodi:nodetypes="ccccccccccccccc" />
-    <g
-       id="g4256"
-       inkscape:export-filename="/var/www/mtcex/images/header.png"
-       inkscape:export-xdpi="89.834763"
-       inkscape:export-ydpi="89.834763">
-      <rect
-         ry="0.78388143"
-         y="2362.95"
-         x="-243.22575"
-         height="39.224461"
-         width="81.824295"
-         id="rect3999"
-         style="opacity:0.88924052;fill:none;stroke:none" />
-      <rect
-         inkscape:export-ydpi="89.709999"
-         inkscape:export-xdpi="89.709999"
-         inkscape:export-filename="/var/www/mtcex/images/header.png"
-         ry="0.65540963"
-         y="2654.4014"
-         x="-634.04205"
-         height="140.46954"
-         width="981.80255"
-         id="rect3834-6-4"
-         style="fill:#52514e;fill-opacity:1;stroke:none" />
-    </g>
     <text
        xml:space="preserve"
-       style="font-size:72.92220306px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
-       x="-375.1395"
-       y="2789.364"
+       style="font-size:58.07903671px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
+       x="-377.78827"
+       y="2854.5632"
        id="text3983-4"
        sodipodi:linespacing="125%"
-       transform="scale(1.0503118,0.95209824)"
+       transform="scale(1.0503118,0.95209823)"
        inkscape:export-filename="/var/www/mtcex/images/header.png"
        inkscape:export-xdpi="89.709999"
        inkscape:export-ydpi="89.709999"><tspan
          sodipodi:role="line"
          id="tspan3985-3"
-         x="-375.1395"
-         y="2789.364">$</tspan></text>
+         x="-377.78827"
+         y="2854.5632">$</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:70.99336243px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
-       x="-564.93024"
-       y="2648.1455"
+       style="font-size:53.29992294px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
+       x="-553.22943"
+       y="2710.1992"
        id="text3987-07"
        sodipodi:linespacing="125%"
        transform="scale(0.99687052,1.0031393)"
@@ -1221,26 +1277,133 @@
        inkscape:export-ydpi="89.709999"><tspan
          sodipodi:role="line"
          id="tspan3989-8"
-         x="-564.93024"
-         y="2648.1455">€</tspan></text>
+         x="-553.22943"
+         y="2710.1992">€</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:68.10974121px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
-       x="-594.23303"
-       y="2717.3247"
+       style="font-size:60.08815002px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
+       x="-578.50037"
+       y="2780.7705"
        id="text3991-6"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/var/www/mtcex/images/header.png"
        inkscape:export-xdpi="89.709999"
        inkscape:export-ydpi="89.709999"
-       transform="scale(1.0233599,0.97717337)"><tspan
+       transform="scale(1.0233599,0.97717333)"><tspan
          sodipodi:role="line"
          id="tspan3993-88"
-         x="-594.23303"
-         y="2717.3247">¥</tspan></text>
+         x="-578.50037"
+         y="2780.7705">¥</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:55.64305496px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
+       x="-449.21078"
+       y="2709.7209"
+       id="text3987-3-9"
+       sodipodi:linespacing="125%"
+       transform="scale(0.99687052,1.0031393)"
+       inkscape:export-filename="/var/www/mtcex/images/header.png"
+       inkscape:export-xdpi="89.709999"
+       inkscape:export-ydpi="89.709999"><tspan
+         sodipodi:role="line"
+         id="tspan3989-6-5"
+         x="-449.21078"
+         y="2709.7209">£</tspan></text>
+    <g
+       id="g3671"
+       inkscape:export-filename="/home/genjix/src/intersango/www/images/header.png"
+       inkscape:export-xdpi="89.830002"
+       inkscape:export-ydpi="89.830002">
+      <rect
+         inkscape:export-ydpi="89.709999"
+         inkscape:export-xdpi="89.709999"
+         inkscape:export-filename="/var/www/mtcex/images/header.png"
+         ry="0.36879322"
+         y="2715.8301"
+         x="-634.04205"
+         height="79.040977"
+         width="981.80255"
+         id="rect3834-6-4"
+         style="fill:#52514e;fill-opacity:1;stroke:none" />
+      <rect
+         ry="0.78388143"
+         y="2640.95"
+         x="-91.225754"
+         height="39.224461"
+         width="81.824295"
+         id="rect3999"
+         style="opacity:0.88924052;fill:none;stroke:none" />
+    </g>
+    <g
+       id="g3938-2-2-8"
+       transform="matrix(1.2509318,0,0,1.1944745,-258.47094,1474.711)"
+       inkscape:export-filename="/var/www/mtcex/images/header.png"
+       inkscape:export-xdpi="89.709999"
+       inkscape:export-ydpi="89.709999">
+      <rect
+         rx="0"
+         ry="0"
+         y="1030.5497"
+         x="-301.32812"
+         height="6.7410541"
+         width="39.408485"
+         id="rect3936-5-8-7"
+         style="fill:#52504d;fill-opacity:1;stroke:none" />
+      <path
+         transform="translate(1.9642857,-8.2142857)"
+         d="m -263.8393,1045.0854 c 0,7.6186 -8.83438,13.7947 -19.73214,13.7947 -10.89776,0 -19.73215,-6.1761 -19.73215,-13.7947 0,-7.6185 8.83439,-13.7946 19.73215,-13.7946 10.89776,0 19.73214,6.1761 19.73214,13.7946 z"
+         sodipodi:ry="13.794642"
+         sodipodi:rx="19.732143"
+         sodipodi:cy="1045.0854"
+         sodipodi:cx="-283.57144"
+         id="path3889-3-8-1"
+         style="fill:#52514e;fill-opacity:1;stroke:none"
+         sodipodi:type="arc" />
+      <path
+         transform="translate(1.9642851,-14.214286)"
+         d="m -263.8393,1045.0854 c 0,7.6186 -8.83438,13.7947 -19.73214,13.7947 -10.89776,0 -19.73215,-6.1761 -19.73215,-13.7947 0,-7.6185 8.83439,-13.7946 19.73215,-13.7946 10.89776,0 19.73214,6.1761 19.73214,13.7946 z"
+         sodipodi:ry="13.794642"
+         sodipodi:rx="19.732143"
+         sodipodi:cy="1045.0854"
+         sodipodi:cx="-283.57144"
+         id="path3889-8-2-7-7"
+         style="fill:#888681;fill-opacity:1;stroke:none"
+         sodipodi:type="arc" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:70.99336243px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
+       x="198.27676"
+       y="2709.3088"
+       id="text3987-0-0"
+       sodipodi:linespacing="125%"
+       transform="scale(0.99687052,1.0031393)"
+       inkscape:export-filename="/var/www/mtcex/images/header.png"
+       inkscape:export-xdpi="89.709999"
+       inkscape:export-ydpi="89.709999"><tspan
+         sodipodi:role="line"
+         id="tspan3989-1-4"
+         x="198.27676"
+         y="2709.3088">BTC</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:43.69716263px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+       x="-598.87048"
+       y="2827.4775"
+       id="text3050-7-2"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/var/www/mtcex/images/header.png"
+       inkscape:export-xdpi="89.709999"
+       inkscape:export-ydpi="89.709999"
+       transform="scale(1.0233599,0.97717333)"><tspan
+         sodipodi:role="line"
+         id="tspan3052-0-6"
+         x="-598.87048"
+         y="2827.4775"
+         style="font-weight:bold;fill:#ffffff;-inkscape-font-specification:Verdana Bold">Intersango</tspan></text>
     <g
        id="g4234-3"
-       transform="matrix(1.2509318,0,0,1.1944745,110.33051,1250.888)"
+       transform="matrix(1.2509318,0,0,1.1944745,108.33051,1306.888)"
        inkscape:export-filename="/var/www/mtcex/images/header.png"
        inkscape:export-xdpi="89.709999"
        inkscape:export-ydpi="89.709999">
@@ -1344,79 +1507,13 @@
            transform="translate(1.9642851,-14.214286)" />
       </g>
     </g>
-    <text
-       xml:space="preserve"
-       style="font-size:70.99336243px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
-       x="-448.14142"
-       y="2647.9177"
-       id="text3987-3-9"
-       sodipodi:linespacing="125%"
-       transform="scale(0.99687052,1.0031393)"
-       inkscape:export-filename="/var/www/mtcex/images/header.png"
-       inkscape:export-xdpi="89.709999"
-       inkscape:export-ydpi="89.709999"><tspan
-         sodipodi:role="line"
-         id="tspan3989-6-5"
-         x="-448.14142"
-         y="2647.9177">£</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:70.99336243px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#505050;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold"
-       x="161.0173"
-       y="2652.3447"
-       id="text3987-0-0"
-       sodipodi:linespacing="125%"
-       transform="scale(0.99687052,1.0031393)"
-       inkscape:export-filename="/var/www/mtcex/images/header.png"
-       inkscape:export-xdpi="89.709999"
-       inkscape:export-ydpi="89.709999"><tspan
-         sodipodi:role="line"
-         id="tspan3989-1-4"
-         x="161.0173"
-         y="2652.3447">BTC</tspan></text>
-    <g
-       id="g3938-2-2-8"
-       transform="matrix(1.2509318,0,0,1.1944745,-258.47094,1422.711)"
-       inkscape:export-filename="/var/www/mtcex/images/header.png"
-       inkscape:export-xdpi="89.709999"
-       inkscape:export-ydpi="89.709999">
-      <rect
-         rx="0"
-         ry="0"
-         y="1030.5497"
-         x="-301.32812"
-         height="6.7410541"
-         width="39.408485"
-         id="rect3936-5-8-7"
-         style="fill:#52504d;fill-opacity:1;stroke:none" />
-      <path
-         transform="translate(1.9642857,-8.2142857)"
-         d="m -263.8393,1045.0854 c 0,7.6186 -8.83438,13.7947 -19.73214,13.7947 -10.89776,0 -19.73215,-6.1761 -19.73215,-13.7947 0,-7.6185 8.83439,-13.7946 19.73215,-13.7946 10.89776,0 19.73214,6.1761 19.73214,13.7946 z"
-         sodipodi:ry="13.794642"
-         sodipodi:rx="19.732143"
-         sodipodi:cy="1045.0854"
-         sodipodi:cx="-283.57144"
-         id="path3889-3-8-1"
-         style="fill:#52514e;fill-opacity:1;stroke:none"
-         sodipodi:type="arc" />
-      <path
-         transform="translate(1.9642851,-14.214286)"
-         d="m -263.8393,1045.0854 c 0,7.6186 -8.83438,13.7947 -19.73214,13.7947 -10.89776,0 -19.73215,-6.1761 -19.73215,-13.7947 0,-7.6185 8.83439,-13.7946 19.73215,-13.7946 10.89776,0 19.73214,6.1761 19.73214,13.7946 z"
-         sodipodi:ry="13.794642"
-         sodipodi:rx="19.732143"
-         sodipodi:cy="1045.0854"
-         sodipodi:cx="-283.57144"
-         id="path3889-8-2-7-7"
-         style="fill:#888681;fill-opacity:1;stroke:none"
-         sodipodi:type="arc" />
-    </g>
     <rect
        style="fill:#52504d;fill-opacity:1;stroke:none"
        id="rect3936-5-1-2"
        width="49.297325"
        height="8.0520172"
        x="-631.83783"
-       y="2641.7314"
+       y="2693.7314"
        ry="0"
        rx="0"
        inkscape:export-filename="/var/www/mtcex/images/header.png"
@@ -1431,7 +1528,7 @@
        sodipodi:rx="19.732143"
        sodipodi:ry="13.794642"
        d="m -263.8393,1045.0854 a 19.732143,13.794642 0 1 1 -39.46429,0 19.732143,13.794642 0 1 1 39.46429,0 z"
-       transform="matrix(1.2509318,0,0,1.1944745,-252.43965,1400.9545)"
+       transform="matrix(1.2509318,0,0,1.1944745,-252.43965,1452.9545)"
        inkscape:export-filename="/var/www/mtcex/images/header.png"
        inkscape:export-xdpi="89.709999"
        inkscape:export-ydpi="89.709999" />
@@ -1444,42 +1541,10 @@
        sodipodi:rx="19.732143"
        sodipodi:ry="13.794642"
        d="m -263.8393,1045.0854 a 19.732143,13.794642 0 1 1 -39.46429,0 19.732143,13.794642 0 1 1 39.46429,0 z"
-       transform="matrix(1.2509318,0,0,1.1944745,-252.43965,1393.7877)"
+       transform="matrix(1.2509318,0,0,1.1944745,-252.43965,1445.7877)"
        inkscape:export-filename="/var/www/mtcex/images/header.png"
        inkscape:export-xdpi="89.709999"
        inkscape:export-ydpi="89.709999" />
-    <text
-       xml:space="preserve"
-       style="font-size:43.69716263px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
-       x="-598.87048"
-       y="2782.4514"
-       id="text3050-7-2"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="/var/www/mtcex/images/header.png"
-       inkscape:export-xdpi="89.709999"
-       inkscape:export-ydpi="89.709999"
-       transform="scale(1.0233599,0.97717337)"><tspan
-         sodipodi:role="line"
-         id="tspan3052-0-6"
-         x="-598.87048"
-         y="2782.4514"
-         style="font-weight:bold;fill:#ffffff;-inkscape-font-specification:Verdana Bold">Intersango</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:29.67291832px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
-       x="-549.22876"
-       y="2811.2866"
-       id="text3058-0-1"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="/var/www/mtcex/images/header.png"
-       inkscape:export-xdpi="89.709999"
-       inkscape:export-ydpi="89.709999"
-       transform="scale(1.0233599,0.97717337)"><tspan
-         sodipodi:role="line"
-         id="tspan3060-7-0"
-         x="-549.22876"
-         y="2811.2866"
-         style="font-weight:bold;fill:#ffffff;-inkscape-font-specification:Verdana Bold">Community exchange</tspan></text>
     <image
        y="2864.0051"
        x="-618.57141"
@@ -1567,5 +1632,30 @@
        d="m -840.44764,2140.9163 192.32241,-167.8388 47.66167,63.943 75.15582,-70.1067 -84.08245,0 47.87903,-50.0914 119.10165,0 0,123.982 -49.65663,48.3531 0,-84.8605 -70.04029,69.9153 -48.9357,48.9357 -49.46055,-65.0407 -142.44573,118.3663 -37.49923,-35.5573 z"
        id="path3192-2-0"
        sodipodi:nodetypes="ccccccccccccccc" />
+    <g
+       transform="matrix(0.58313122,0,0,0.60227934,-15.603383,1179.4706)"
+       id="g4281-1-9"
+       inkscape:export-filename="/tmp/arrow.png"
+       inkscape:export-xdpi="89.834763"
+       inkscape:export-ydpi="89.834763">
+      <path
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccccccccccccc"
+         id="path3192-2-5-5"
+         d="m -619.82366,2687.1888 211.51048,-186.4168 36.2331,63.943 75.15582,-70.1067 -80.15388,0 29.66475,-50.0914 139.81593,0 0,116.1249 -46.79949,48.3531 0,-84.8605 -79.326,77.7724 -48.9357,48.9357 -38.03198,-65.0407 -161.6338,136.9443 z"
+         style="fill:url(#radialGradient4279-4-7);fill-opacity:1;stroke:#009158;stroke-width:1.95742345;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3192-3-6-9-5"
+         d="m -466.21801,2551.3103 -156.7891,137.4356 37.48336,35.5464 164.84302,-138.4892 38.02708,65.0436 48.93559,-48.9356 51.58616,-50.6008 -75.61223,0 -14.34084,13.3894 -7.57817,-13.3894 z m 211.81627,0 0,57.6692 46.79471,-48.3238 0,-9.3454 z"
+         style="opacity:0.67381975;fill:url(#linearGradient3696);fill-opacity:1;stroke:#009158;stroke-width:1.95742345;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:nodetypes="cccccccccccccccc" />
+    </g>
+    <path
+       style="fill:url(#radialGradient3742);fill-opacity:1;stroke:none"
+       d="m -235.84684,2564.9987 122.48543,-106.8924 30.354546,40.7237 47.8649,-44.6492 -53.55005,0 30.49298,-31.902 75.85292,0 0,78.9611 -31.62509,30.7949 0,-54.0456 -44.60694,44.5274 -31.16595,31.1659 -31.500216,-41.4228 -90.72019,75.3846 -23.88234,-22.6456 z"
+       id="path3192-2-2"
+       sodipodi:nodetypes="ccccccccccccccc"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

@@ -1,8 +1,5 @@
         <div class='content_box'>
             <h3>Currency converter</h3>
-            <p><b>NOTICE: We will be changing bank accounts on July 21st. Your funds are safe and secure and we are still accepting deposits to the current bank account. However, please be aware that in the future our bank details will change and before making a deposit please make sure the details you are referring are up-to-date.</b></p>
-            <p><b>This site is strictly in alpha state.</b> We are currently negotiating with legal professionals in the pursuit of gaining international licensing. The software is new. Use at your own risk. We will do our best to prevent problems, but mistakes can happen. Only deposit amounts you feel comfortable with in regards to the aforementioned information. Please see the <a href='?page=help'>help</a> page for more info and our terms &amp; conditions.</p>
-            <p>Users outside the UK may wish to use <a href='http://transferwise.com/'>TransferWise</a> in order to fund their accounts.</p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
@@ -114,9 +111,21 @@
         </div>
 
         <div class='content_box'>
-            <h3>What this is</h3>
+            <h3>Bitcoin</h3>
             <p>
-            <a href='http://bitcoin.org'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities.
+            <a href='https://bitcoinconsultancy.com/wiki/index.php/Bitcoin_introduction'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities. See our sister group <a href='http://bitcoinconsultancy.com/'>Bitcoin Consultancy</a> for bitcoin related projects and questions.
             </p>
+        </div>
+
+<div class='content_box'>
+<h3>Contact info</h3>
+<p>support@britcoin.co.uk</p>
+<p>
+<b>Intersango Ltd <br /></b>
+3rd Floor 14 Hanover Street <br />
+London <br />
+England <br />
+W1S 1YH
+</p>
         </div>
 

@@ -10,27 +10,34 @@ else
     </div>
     <div id='links'>
         <ul>
-            <li><a href='?page='>Home</a>
-            Return home</li>
-<?php if ($loggedin) { ?>
-            <li><a href='?page=logout'>Logout</a>
-            End this session</li>
-            <li><a href='?page=profile'>Profile</a>
-            Dox on you</li>
-<?php } else { ?>
+<?php if (!$loggedin) { ?>
             <li><a href='?page=login'>Login</a>
             Begin here</li>
 <?php } ?>
-            <li><a href='?page=orderbook'>Orderbook</a>
-            Show orders</li>
+
+            <li><a href='?page='>Trade</a>
+            Buy and sell</li>
+
 <?php if ($loggedin) { ?>
+            <li><a href='?page=profile'>Profile</a>
+            Dox on you</li>
             <li><a href='?page=deposit'>Deposit</a>
             Top up your account</li>
             <li><a href='?page=withdraw'>Withdraw</a>
             Take out money</li>
+            <li><a href='?page=orderbook'>Orderbook</a>
+            Show orders</li>
+<?php } else { ?>
+            <li><a href='?page=orderbook'>Orderbook</a>
+            Show orders</li>
 <?php } ?>
+
             <li><a href='?page=help'>Help</a>
             Seek support</li>
+<?php if ($loggedin) { ?>
+            <li><a href='?page=logout'>Logout</a>
+            End this session</li>
+<?php } ?>
         </ul>
     </div>
     <!--<div id='languages'>

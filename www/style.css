@@ -195,7 +195,7 @@ LINKS
 -----------------------------------*/
 #main_pane {
     position: absolute;
-    top: 420px;
+    top: 140px;
 }
 #links_bg {
     background-color: #52514e;
@@ -206,7 +206,7 @@ LINKS
 #links {
     width: 160px;
     position: absolute;
-    top: 500px;
+    top: 300px;
     left: 800px;
     padding-bottom: 0;
     font-size: 12px;
@@ -247,7 +247,7 @@ FLUFF
 #flower {
     position: absolute;
     z-index: 1;
-    top: 320px;
+    top: 120px;
     left: 750px;
 }
 #header {
@@ -261,6 +261,6 @@ FLUFF
     margin-bottom: 0;
     padding-bottom: 0;
     left: 978px;
-    top: 290px;
+    top: 70px;
 }
 

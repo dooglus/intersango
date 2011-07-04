@@ -7,6 +7,24 @@
 </div>
 
 <div class='content_box'>
+<h3>Information</h3>
+<p><b>We are now accepting deposits from the following SEPA countries:</b></p>
+
+<p><b>Austria, Belgium, Denmark, Estonia, Finland, France, Germany, Iceland, Italy, Netherlands, Norway, Portugal, Spain, Sweden, Switzerland</b></p>
+
+<p>If the bank account you will use to fund your Britcoin account is in one of the aforementioned countries, please feel free to desposit to our bank. If your bank account is not in the UK or one of the aforementioned countries, your transfer will be rejected.</p>
+
+<p>We also will be processing withdraws to those countries but only on the condition that the user has deposited money before.</p>
+
+<p>By using this service the user agrees to pay all transaction costs and exchange costs that our local bank will provide.</p>
+
+<p>Be sure to ask the bank you are sending from if there are any fees associated with sending a bank transfer. Also our bank may charge fees for accepting your transfer. You are liable for those fees. </p>
+
+<p>We will be happy to provide users with a "Foreign Exchange Confirmation" detailing the exchange rate at which our bank has exchanged your EUR if necessary.</p>
+            <p>Users outside the UK may wish to use <a href='http://transferwise.com/'>TransferWise</a> in order to fund their accounts.</p>
+</div>
+
+<div class='content_box'>
 <h3>About us</h3>
 <p>My name is Amir Taaki. I have been involved in bitcoin development for the past 8 months and have been one of its few active developers. You can see my posts at the <a href="http://forum.bitcoin.org/">bitcoin forums</a> under the name genjix where I have a solid reputation. I have developed open source software for: this exchange, a bitcoin stock market exchange, a bitcoin client (Spesmilo) and others.</p>
 <p>For a list of my current projects please visit <a href="http://bitcoinconsultancy.com/wiki/index.php/Main_Page">Bitcoin Consulancy's wiki page</a>.</p>
@@ -16,6 +34,13 @@
 <div class='content_box'>
 <h3>Contact info</h3>
 <p>support@britcoin.co.uk</p>
+<p>
+<b>Intersango Ltd <br /></b>
+3rd Floor 14 Hanover Street <br />
+London <br />
+England <br />
+W1S 1YH
+</p>
 <p>Britcoin is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
 </div>
 

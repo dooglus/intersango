@@ -77,6 +77,10 @@ function switcher($page, $loggedin)
         echo "<div class='content_box'><h3>{$e->getTitle()}</h3>";
         echo "<p>{$e->getMessage()}</p></div>";
     }
+    catch (Exception $e) {
+        echo "<div class='content_box'><h3>Technical difficulties</h3>";
+        echo "<p>{$e->getMessage()}</p></div>";
+    }
 }
 
 ?>

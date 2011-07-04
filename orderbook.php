@@ -3,6 +3,10 @@ require_once 'util.php';
 
 function display_double_entry($curr_a, $curr_b, $base_curr)
 {
+    if (isset($_GET['show_all']) && get('show_all') == 'true')
+        $show_all = true;
+    else 
+        $show_all = false;
     
     echo "<div class='content_box'>\n";
     echo "<h3>People offering $curr_a for $curr_b</h3>\n";
@@ -30,6 +34,10 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
             <th>Wanted</th>
         </tr><?php
 
+    $show_query = 'LIMIT 5';
+    if ($show_all)
+        $show_query = '';
+
     $query = "
         SELECT
             *,
@@ -42,6 +50,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
         WHERE type='$curr_a' AND want_type='$curr_b' AND status='OPEN'
         ORDER BY
             IF(type='BTC', rate, -rate) ASC, timest ASC
+        $show_query
     ";
     $result = do_query($query);
     while ($row = mysql_fetch_array($result)) {
@@ -61,7 +70,12 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
     echo "        <td>$total_amount $curr_a</td>\n";
     echo "        <td>$total_want_amount $curr_b</td>\n";
     echo "    </tr>\n";
-    echo "</table></div>";
+    echo "</table>\n";
+    if ($show_all)
+        echo "<p><a href='?page=orderbook&show_all=false'>&gt;&gt; hide</a></p>\n";
+    else
+        echo "<p><a href='?page=orderbook&show_all=true'>&gt;&gt; show all</a></p>\n";
+    echo "</div>\n";
 }
 display_double_entry('BTC', 'GBP', BASE_CURRENCY::A);
 display_double_entry('GBP', 'BTC', BASE_CURRENCY::B);
