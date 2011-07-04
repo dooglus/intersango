@@ -24,8 +24,9 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
     else
         echo "1 $curr_b is worth <b>$rate $curr_a</b>";
     echo ".</p>";
-    echo "<p>$total_amount $curr_a being sold for $total_want_amount $curr_b.</p>";
 
+    if (!$show_all)
+        echo "<p>Showing top 5 entries:</p>";
 
 ?><table class='display_data'>
         <tr>
@@ -65,10 +66,12 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
         echo "        <td>$want_amount $curr_b</td>\n";
         echo "    </tr>\n";
     }
+
     echo "    <tr>\n";
     echo "        <td>Total:</td>\n";
+    $total_amount = strstr($total_amount, '.', true);
     echo "        <td>$total_amount $curr_a</td>\n";
-    echo "        <td>$total_want_amount $curr_b</td>\n";
+    echo "        <td></td>\n";
     echo "    </tr>\n";
     echo "</table>\n";
     if ($show_all)
