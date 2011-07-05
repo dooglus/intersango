@@ -24,19 +24,19 @@ is insufficient to cover bank fees then it will be denied.</p>
     <table class='display_data'>
         <tr>
             <td>Account title:</td>
-            <td>Mr Taaki</td>
+            <td>INTERSANGO LTD</td>
         </tr>
         <tr>
             <td>Bank:</td>
-            <td>Lloyds TSB</td>
+            <td>HSBC</td>
         </tr>
         <tr>
             <td>Account number:</td>
-            <td>22939560</td>
+            <td>22351560</td>
         </tr>
         <tr>
             <td>Branch sort code:</td>
-            <td>30 96 93</td>
+            <td>40 04 01</td>
         </tr>
         <tr>
             <td>Reference:</td>
