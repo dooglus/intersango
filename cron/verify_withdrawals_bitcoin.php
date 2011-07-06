@@ -1,5 +1,5 @@
 <?php
-require '../www/config.php';
+require '../htdocs/config.php';
 require '../util.php';
 
 function update_req($reqid, $status)
@@ -18,13 +18,14 @@ $query = "
     SELECT
         requests.reqid AS reqid,
         uid,
-        TRUNCATE(amount, -6) AS amount,
+        amount,
         addy
     FROM requests
     JOIN bitcoin_requests
     ON requests.reqid=bitcoin_requests.reqid
     WHERE
         req_type='WITHDR'
+        AND amount > 100000000,
         AND status='VERIFY'
         AND curr_type='BTC'
     ";
@@ -35,7 +36,7 @@ while ($row = mysql_fetch_assoc($result)) {
     $uid = $row['uid'];
     $amount = $row['amount'];
     $addy = $row['addy'];
-
+    
     if (gmp_cmp($bitcoin->getbalance(""), $amount) >= 0)
     {
         update_req($reqid, "PROCES");
