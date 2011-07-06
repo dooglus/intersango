@@ -25,7 +25,7 @@ $query = "
     ON requests.reqid=bitcoin_requests.reqid
     WHERE
         req_type='WITHDR'
-        AND amount > 100000000,
+        AND amount > 100000000
         AND status='VERIFY'
         AND curr_type='BTC'
     ";
