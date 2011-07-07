@@ -8,29 +8,29 @@
             <p><b>Currency I have:</b></p>
             <div class='currbox_wrapper'>
                 <div id='incurrency' class='currbox' onclick='javascript:rolldown_in();'>
-                    <img class='currflag' src='images/gbp_flag.png' />
-                    <span class='currname'>British Pound</span>
                     <div class='currbox_right'>
                         <b class='currcode'>GBP</b>
                         <img src='images/arrow_down.png' />
-
                     </div>
+
+                    <img class='currflag' src='images/gbp_flag.png' />
+                    <span class='currname'>British Pound</span>
                 </div>
                 <div id='currsel_in'>
                     <div class='currsel_entry' onclick='javascript:select_currency_in(this, true);'>
-                        <img class='currflag' src='images/gbp_flag.png' />
-                        <span class='currname'>British Pound</span>
                         <div class='currbox_right'>
                             <b class='currcode'>GBP</b>
                         </div>
+                        <img class='currflag' src='images/gbp_flag.png' />
+                        <span class='currname'>British Pound</span>
                     </div>
 
                     <div class='currsel_entry' onclick='javascript:select_currency_in(this, true);'>
-                        <img class='currflag' src='images/btc_flag.png' />
-                        <span class='currname'>Bitcoin</span>
                         <div class='currbox_right'>
                             <b class='currcode'>BTC</b>
                         </div>
+                        <img class='currflag' src='images/btc_flag.png' />
+                        <span class='currname'>Bitcoin</span>
                     </div>
                 </div>
             </div>
@@ -42,30 +42,28 @@
             <p><b>Currency I want:</b></p>
             <div class='currbox_wrapper'>
                 <div id='outcurrency' class='currbox' onclick='javascript:rolldown_out();'>
-                    <img class='currflag' src='images/btc_flag.png' />
-                    <span class='currname'>Bitcoin</span>
-
                     <div class='currbox_right'>
                         <b class='currcode'>BTC</b>
                         <img src='images/arrow_down.png' />
                     </div>
+
+                    <img class='currflag' src='images/btc_flag.png' />
+                    <span class='currname'>Bitcoin</span>
                 </div>
                 <div id='currsel_out'>
                     <div class='currsel_entry' onclick='javascript:select_currency_out(this, true);'>
-                        <img class='currflag' src='images/gbp_flag.png' />
-                        <span class='currname'>British Pound</span>
                         <div class='currbox_right'>
-
                             <b class='currcode'>GBP</b>
                         </div>
+                        <img class='currflag' src='images/gbp_flag.png' />
+                        <span class='currname'>British Pound</span>
                     </div>
                     <div class='currsel_entry' onclick='javascript:select_currency_out(this, true);'>
-                        <img class='currflag' src='images/btc_flag.png' />
-                        <span class='currname'>Bitcoin</span>
                         <div class='currbox_right'>
                             <b class='currcode'>BTC</b>
-
                         </div>
+                        <img class='currflag' src='images/btc_flag.png' />
+                        <span class='currname'>Bitcoin</span>
                     </div>
                 </div>
             </div>
