@@ -13,6 +13,7 @@ for bid,entry in c:
     try:
         line = entry.split(",")
         if line[6] == '':
+            print("PAYOUT",bid,entry)
             c.execute("UPDATE bank_statement SET status='PAYOUT' WHERE bid=%s",(bid,))
         if line[5] == '':
             matches = re.findall("[A-Z0-9]{8}",line[4])
@@ -59,11 +60,14 @@ for bid,entry in c:
                             status='FINAL'
                         WHERE
                             bid=%s""",(reqid,bid))
+                            
+                        print("DEPOS",bid,uid,amount,reqid,entry)
                         
                         good_reference = True
                         break
                         
                 if not good_reference:
+                    print("BADREF",entry)
                     c.execute("UPDATE bank_statement SET status='BADREF' WHERE bid=%s",(bid,))
     except StopIteration:
         pass
