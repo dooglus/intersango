@@ -1,5 +1,6 @@
         <div class='content_box'>
             <h3>Currency converter</h3>
+            <p><b>To buy bitcoins with euros, visit our newly opened sister site <a href='https://intersango.com/'>Intersango.com</a></b></p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
