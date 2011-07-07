@@ -20,7 +20,7 @@ $query = "
     WHERE
         requests.reqid='$reqid'
         AND uk_requests.name='$name'
-        AND requests.status='PROCES'
+        AND ( requests.status='PROCES' OR requests.status='FINAL' )
     ";
 $result = do_query($query);
 if (!has_results($result)) {
@@ -38,7 +38,7 @@ $query = "
     SET status='REJECT'
     WHERE
         reqid='$reqid'
-        AND status='PROCES'
+        AND ( status='PROCES' OR status='FINAL' )
     ";
 do_query($query);
 $query = "
