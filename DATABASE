@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.49, for debian-linux-gnu (i686)
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (i686)
 --
 -- Host: localhost    Database: intersango
 -- ------------------------------------------------------
--- Server version	5.1.49-1ubuntu8.1-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,13 +24,14 @@ DROP TABLE IF EXISTS `bank_statement`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bank_statement` (
   `bid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `bank_name` varchar(40) NOT NULL,
   `entry` varchar(255) NOT NULL,
   `reqid` int(10) unsigned DEFAULT NULL,
   `status` varchar(6) NOT NULL DEFAULT 'VERIFY',
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`bid`),
   UNIQUE KEY `entry` (`entry`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2400 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,8 +82,10 @@ CREATE TABLE `orderbook` (
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(6) NOT NULL DEFAULT 'OPEN',
   `processed` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`orderid`)
-) ENGINE=MyISAM AUTO_INCREMENT=166 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`orderid`),
+  KEY `orderbook_uid` (`uid`),
+  KEY `orderbook_status` (`status`)
+) ENGINE=MyISAM AUTO_INCREMENT=15049 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -114,8 +117,11 @@ CREATE TABLE `requests` (
   `curr_type` varchar(6) NOT NULL,
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(6) NOT NULL DEFAULT 'VERIFY',
-  PRIMARY KEY (`reqid`)
-) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`reqid`),
+  KEY `requests_type` (`req_type`),
+  KEY `requests_status` (`status`),
+  KEY `requests_uid` (`uid`)
+) ENGINE=MyISAM AUTO_INCREMENT=6844 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -132,8 +138,9 @@ CREATE TABLE `transactions` (
   `b_orderid` int(10) unsigned NOT NULL,
   `b_amount` bigint(20) NOT NULL,
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`txid`)
-) ENGINE=MyISAM AUTO_INCREMENT=97 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`txid`),
+  KEY `transactions_b_amount` (`b_amount`)
+) ENGINE=MyISAM AUTO_INCREMENT=13730 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +176,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`uid`),
   UNIQUE KEY `oidlogin` (`oidlogin`),
   UNIQUE KEY `deposref` (`deposref`)
-) ENGINE=MyISAM AUTO_INCREMENT=97 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3564 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -181,4 +188,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-04-07 11:07:43
+-- Dump completed on 2011-07-06 17:42:47
