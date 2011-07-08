@@ -9,7 +9,7 @@ if (count($argv) < 3)
 $bank_name = $argv[1];
 $lines = file($argv[2], FILE_IGNORE_NEW_LINES);
 
-if ($bank_name != 'LloydsTSB' && $bank_name != 'HSBC')
+if ($bank_name != 'LLoydsTSB' && $bank_name != 'HSBC')
 {
     echo "Incorrect bank specified.\n";
     exit(-1);
