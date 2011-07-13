@@ -18,15 +18,15 @@ $first = true;
 echo '{"asks": [';
 while ($row = mysql_fetch_assoc($result)) {
     $amount = internal_to_numstr($row['amount']);
+    $rate = $row['rate'];
     
     //bitcoincharts uses NUMERIC(18,8)
-    if($amount < 1000000000)
+    if($rate < 1000000000)
     {
         if ($first)
             $first = false;
         else
             echo ", ";
-        $rate = $row['rate'];
         echo "[$rate, $amount]";
     }
 }
@@ -68,14 +68,15 @@ while ($row = mysql_fetch_assoc($result)) {
     $amount = clean_sql_numstr($row['amount']);
     $amount = internal_to_numstr($amount);
     
+    $rate = $row['rate'];
+    
     //bitcoincharts uses NUMERIC(18,8)
-    if($amount < 1000000000)
+    if($rate < 1000000000)
     {
         if ($first)
             $first = false;
         else
             echo ", ";
-        $rate = $row['rate'];
         echo "[$rate, $amount]";
     }
 }
