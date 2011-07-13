@@ -17,13 +17,18 @@ $result = do_query($query);
 $first = true;
 echo '{"asks": [';
 while ($row = mysql_fetch_assoc($result)) {
-    if ($first)
-        $first = false;
-    else
-        echo ", ";
-    $rate = $row['rate'];
     $amount = internal_to_numstr($row['amount']);
-    echo "[$rate, $amount]";
+    
+    //bitcoincharts uses NUMERIC(18,8)
+    if($amount < 1000000000)
+    {
+        if ($first)
+            $first = false;
+        else
+            echo ", ";
+        $rate = $row['rate'];
+        echo "[$rate, $amount]";
+    }
 }
 echo '], "bids": [';
 
@@ -60,14 +65,19 @@ $query = "
 $result = do_query($query);
 $first = true;
 while ($row = mysql_fetch_assoc($result)) {
-    if ($first)
-        $first = false;
-    else
-        echo ", ";
-    $rate = $row['rate'];
     $amount = clean_sql_numstr($row['amount']);
     $amount = internal_to_numstr($amount);
-    echo "[$rate, $amount]";
+    
+    //bitcoincharts uses NUMERIC(18,8)
+    if($amount < 1000000000)
+    {
+        if ($first)
+            $first = false;
+        else
+            echo ", ";
+        $rate = $row['rate'];
+        echo "[$rate, $amount]";
+    }
 }
 echo ']}';
 
