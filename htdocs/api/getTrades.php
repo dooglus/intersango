@@ -41,9 +41,9 @@ while ($row = mysql_fetch_assoc($result)) {
     echo $row['rate'];
     echo ', "amount": ';
     echo internal_to_numstr($row['amount']);
-    echo ', "tid": "';
-    echo sha1($row['txid'].$secret);
-    echo '"}';
+    echo ', "tid": ';
+    echo $row['txid'];
+    echo '}';
 }
 echo ']';
 ?>
