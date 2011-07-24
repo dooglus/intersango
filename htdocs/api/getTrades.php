@@ -6,6 +6,7 @@ echo '[';
 $query = "
     SELECT
         UNIX_TIMESTAMP(transactions.timest) AS timest,
+        txid,
         IF(
             type='BTC',
             b_amount/a_amount,
@@ -40,6 +41,8 @@ while ($row = mysql_fetch_assoc($result)) {
     echo $row['rate'];
     echo ', "amount": ';
     echo internal_to_numstr($row['amount']);
+    echo ', "txid": ';
+    echo sha1($row['txid'].$secret);
     echo '}';
 }
 echo ']';
