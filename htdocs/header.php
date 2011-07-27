@@ -8,7 +8,7 @@
     <script type='text/javascript' src='exchanger.js'></script>
     <?php 
         require "$abspath/util.php";
-        $currencies = array('BTC', 'GBP');
+        $currencies = array('BTC', 'AUD');
         $rates = array();
         foreach ($currencies as $curr_a) {
             $rates_a = array();
@@ -33,7 +33,7 @@
 </head>
 
 <?php if (!$page) { ?>
-<body onload='set_currency_in("gbp"); set_currency_out("btc");'>
+<body onload='set_currency_in("aud"); set_currency_out("btc");'>
 <?php } else { ?>
 <body>
 <?php } ?>

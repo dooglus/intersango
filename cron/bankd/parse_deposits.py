@@ -45,7 +45,7 @@ for bid,entry in c:
                         VALUES
                         (
                             'DEPOS',
-                            'GBP',
+                            'AUD',
                             %s,
                             %s
                         )""",(uid,amount))

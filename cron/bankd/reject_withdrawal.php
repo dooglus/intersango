@@ -46,7 +46,7 @@ $query = "
     SET amount=amount+'$amount'
     WHERE
         uid='$uid'
-        AND type='GBP'
+        AND type='AUD'
     ";
 do_query($query);
 do_query("COMMIT");

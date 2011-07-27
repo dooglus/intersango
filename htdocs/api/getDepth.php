@@ -10,7 +10,7 @@ $query = "
         orderbook
     WHERE
         type='BTC'
-        AND want_type='GBP'
+        AND want_type='AUD'
         AND status='OPEN'
     ";
 $result = do_query($query);
@@ -41,7 +41,7 @@ $query = "
         orderbook
     WHERE
         type='BTC'
-        AND want_type='GBP'
+        AND want_type='AUD'
         AND status='OPEN'
     ";
 $result = do_query($query);
@@ -58,7 +58,7 @@ $query = "
     FROM                        
         orderbook
     WHERE
-        type='GBP'
+        type='AUD'
         AND want_type='BTC'
         AND status='OPEN'
     ";

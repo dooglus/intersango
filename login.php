@@ -90,7 +90,7 @@ try {
                     INSERT INTO purses
                         (uid, amount, type)
                     VALUES
-                        (LAST_INSERT_ID(), 0, 'GBP');
+                        (LAST_INSERT_ID(), 0, 'AUD');
                 ";
                 do_query($query);
                 $query = "

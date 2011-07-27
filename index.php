@@ -9,19 +9,19 @@
             <div class='currbox_wrapper'>
                 <div id='incurrency' class='currbox' onclick='javascript:rolldown_in();'>
                     <div class='currbox_right'>
-                        <b class='currcode'>GBP</b>
+                        <b class='currcode'>AUD</b>
                         <img src='images/arrow_down.png' />
                     </div>
 
-                    <img class='currflag' src='images/gbp_flag.png' />
+                    <img class='currflag' src='images/aud_flag.png' />
                     <span class='currname'>British Pound</span>
                 </div>
                 <div id='currsel_in'>
                     <div class='currsel_entry' onclick='javascript:select_currency_in(this, true);'>
                         <div class='currbox_right'>
-                            <b class='currcode'>GBP</b>
+                            <b class='currcode'>AUD</b>
                         </div>
-                        <img class='currflag' src='images/gbp_flag.png' />
+                        <img class='currflag' src='images/aud_flag.png' />
                         <span class='currname'>British Pound</span>
                     </div>
 
@@ -53,9 +53,9 @@
                 <div id='currsel_out'>
                     <div class='currsel_entry' onclick='javascript:select_currency_out(this, true);'>
                         <div class='currbox_right'>
-                            <b class='currcode'>GBP</b>
+                            <b class='currcode'>AUD</b>
                         </div>
-                        <img class='currflag' src='images/gbp_flag.png' />
+                        <img class='currflag' src='images/aud_flag.png' />
                         <span class='currname'>British Pound</span>
                     </div>
                     <div class='currsel_entry' onclick='javascript:select_currency_out(this, true);'>

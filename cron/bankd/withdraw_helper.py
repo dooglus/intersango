@@ -34,6 +34,6 @@ def get_withdrawals(curs, status):
         WHERE
             req_type='WITHDR'
             AND status='%s'
-            AND curr_type='GBP'
+            AND curr_type='AUD'
         """%status)
     return curs.fetchall()

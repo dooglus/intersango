@@ -15,7 +15,7 @@ $deposref = $row['deposref'];
 ?>
 
 <div class='content_box'>
-    <h3>Deposit GBP</h3>
+    <h3>Deposit AUD</h3>
     <p><b>NOTICE: Please be aware that our bank details have changed; before making a deposit please make sure the details you are referring to are up-to-date. Funds already deposited into the old account will still be deposited. </b></p>
     <p>Depositing is free by bank deposit. You are responsible for paying any incurred fees. If your deposit is insufficient to cover bank fees then it will be denied.</p>
     <p>You will need to quote <?php echo $deposref; ?> in the transaction's reference field.</p>

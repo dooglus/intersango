@@ -82,7 +82,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
         echo "<p><a href='?page=orderbook&show_all=true'>&gt;&gt; show all</a></p>\n";
     echo "</div>\n";
 }
-display_double_entry('BTC', 'GBP', BASE_CURRENCY::A);
-display_double_entry('GBP', 'BTC', BASE_CURRENCY::B);
+display_double_entry('BTC', 'AUD', BASE_CURRENCY::A);
+display_double_entry('AUD', 'BTC', BASE_CURRENCY::B);
 ?>
 

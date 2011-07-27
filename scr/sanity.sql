@@ -60,10 +60,10 @@ SELECT
                 req_type='WITHDR',
                 -amount,
                 0
-            ))) AS total_GBP_deposits
+            ))) AS total_AUD_deposits
 FROM
     requests
 WHERE
-    curr_type='GBP'
+    curr_type='AUD'
     AND status='FINAL'
 ;

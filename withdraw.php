@@ -85,7 +85,7 @@ function save_details($uid, $amount, $curr_type)
 {
     beginlog();
     syslog(LOG_NOTICE, "Withdrawing $amount $curr_type:");
-    if ($curr_type == 'GBP') {
+    if ($curr_type == 'AUD') {
         $is_international = post('is_international') == 'true';
         if (!$is_international) {
             uk_withdraw($uid, $amount, $curr_type);
@@ -138,7 +138,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
 else {
 ?>
     <div class='content_box'>
-    <h3>Withdraw GBP (UK residents)</h3>
+    <h3>Withdraw AUD (UK residents)</h3>
     <p>Enter an amount below to submit a withdrawal request. We charge no fee.
     You are responsible for paying any incurred fees. If your deposit 
     is insufficient to cover bank fees then it will be denied.</p>
@@ -165,7 +165,7 @@ else {
             <input type='text' id='input_amount' name='amount' />
             
             <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
-            <input type='hidden' name='curr_type' value='GBP' />
+            <input type='hidden' name='curr_type' value='AUD' />
             <input type='hidden' name='is_international' value='false' />
             <input type='submit' value='Submit' />
         </form>
@@ -175,8 +175,8 @@ else {
 
 <!-- DISABLED
     <div class='content_box'>
-    <h3>Withdraw GBP (international)</h3>
-    <p>Enter an amount below to submit a withdrawal request. A fee of 20 GBP for amounts below 5000 GBP and 35 GBP otherwise, applies. Your bank may charge an additional processing fee on their end.</p>
+    <h3>Withdraw AUD (international)</h3>
+    <p>Enter an amount below to submit a withdrawal request. A fee of 20 AUD for amounts below 5000 AUD and 35 AUD otherwise, applies. Your bank may charge an additional processing fee on their end.</p>
     <p>Please also contact support@britcoin.co.uk</p>
     <p>
         <form action='' class='indent_form' method='post'>
@@ -194,7 +194,7 @@ else {
             <label for='input_amount'>Amount</label>
             <input type='text' id='input_amount' name='amount' />
 
-            <input type='hidden' name='curr_type' value='GBP' />
+            <input type='hidden' name='curr_type' value='AUD' />
             <input type='hidden' name='is_international' value='true' />
             <input type='submit' value='Submit' />
         </form>

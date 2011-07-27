@@ -20,14 +20,14 @@ else
     $vol = 0;
 echo '"vol": ' . $vol . ', ';
 
-$exchange_fields = calc_exchange_rate('GBP', 'BTC', BASE_CURRENCY::B);
+$exchange_fields = calc_exchange_rate('AUD', 'BTC', BASE_CURRENCY::B);
 if (!$exchange_fields)
     $rate = 0;
 else
     list($total_amount, $total_want_amount, $rate) = $exchange_fields; 
 echo '"buy": ' . $rate . ', ';
 
-$exchange_fields = calc_exchange_rate('BTC', 'GBP', BASE_CURRENCY::A);
+$exchange_fields = calc_exchange_rate('BTC', 'AUD', BASE_CURRENCY::A);
 if (!$exchange_fields)
     $rate = 0;
 else
@@ -63,12 +63,12 @@ if (has_results($result)) {
     $a_type = $row['a_type'];
     $b_amount = $row['b_amount'];
     $b_type = $row['b_type'];
-    if ($a_type == 'GBP') {
+    if ($a_type == 'AUD') {
         # swap them around so BTC is always the base currency
         list($a_amount, $b_amount) = array($b_amount, $a_amount);
         list($a_type, $b_type) = array($b_type, $a_type);
     }
-    if ($a_type == 'BTC' && $b_type == 'GBP')
+    if ($a_type == 'BTC' && $b_type == 'AUD')
         $rate = (float)$b_amount / (float)$a_amount;
     else
         $rate = 0;

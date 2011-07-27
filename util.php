@@ -216,7 +216,7 @@ function deduct_funds($amount, $curr_type)
 
 function curr_supported_check($curr_type)
 {
-    $supported_currencies = array('GBP', 'BTC');
+    $supported_currencies = array('AUD', 'BTC');
     if (!in_array($curr_type, $supported_currencies))
         throw new Error('Ooops!', 'Bad currency supplied.');
 }

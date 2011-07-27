@@ -62,7 +62,7 @@ while ($row = mysql_fetch_array($result)) {
             requests.reqid=uk_requests.reqid
         WHERE
             requests.req_type='WITHDR'
-            AND requests.curr_type='GBP'
+            AND requests.curr_type='AUD'
             AND requests.amount='$amount'
             AND uk_requests.name LIKE '$name%'
         ";
