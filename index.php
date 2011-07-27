@@ -14,7 +14,7 @@
                     </div>
 
                     <img class='currflag' src='images/aud_flag.png' />
-                    <span class='currname'>British Pound</span>
+                    <span class='currname'>Australian Dollar</span>
                 </div>
                 <div id='currsel_in'>
                     <div class='currsel_entry' onclick='javascript:select_currency_in(this, true);'>
@@ -22,7 +22,7 @@
                             <b class='currcode'>AUD</b>
                         </div>
                         <img class='currflag' src='images/aud_flag.png' />
-                        <span class='currname'>British Pound</span>
+                        <span class='currname'>Australian Dollar</span>
                     </div>
 
                     <div class='currsel_entry' onclick='javascript:select_currency_in(this, true);'>
@@ -56,7 +56,7 @@
                             <b class='currcode'>AUD</b>
                         </div>
                         <img class='currflag' src='images/aud_flag.png' />
-                        <span class='currname'>British Pound</span>
+                        <span class='currname'>Australian Dollar</span>
                     </div>
                     <div class='currsel_entry' onclick='javascript:select_currency_out(this, true);'>
                         <div class='currbox_right'>
