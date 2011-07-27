@@ -22,19 +22,19 @@ $deposref = $row['deposref'];
     <table class='display_data'>
         <tr>
             <td>Account title:</td>
-            <td>INTERSANGO LTD</td>
+            <td>High Net Worth Property PTY LTD</td>
         </tr>
         <tr>
             <td>Bank:</td>
-            <td>HSBC</td>
+            <td>ANZ</td>
         </tr>
         <tr>
             <td>Account number:</td>
-            <td>22351560</td>
+            <td>2034-65422</td>
         </tr>
         <tr>
-            <td>Branch sort code:</td>
-            <td>40 04 01</td>
+            <td>BSB:</td>
+            <td>014-506</td>
         </tr>
         <tr>
             <td>Reference:</td>
