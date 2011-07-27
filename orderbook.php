@@ -69,7 +69,9 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
 
     echo "    <tr>\n";
     echo "        <td>Total:</td>\n";
-    $total_amount = strstr($total_amount, '.', true);
+    # strstr's 3rd argument only works in PHP 5.3.0 and newer
+    #   http://php.net/manual/en/function.strstr.php
+    # $total_amount = strstr($total_amount, '.', true);
     echo "        <td>$total_amount $curr_a</td>\n";
     echo "        <td></td>\n";
     echo "    </tr>\n";
