@@ -8,8 +8,8 @@ function set_currency(elem, currency)
 {
     switch(currency)
     {
-        case 'gbp':
-            set_curr_block(elem, 'gbp', 'British Pound');
+        case 'aud':
+            set_curr_block(elem, 'aud', 'Australian Dollar');
         break;
 
         case 'btc':
@@ -22,8 +22,8 @@ function twin_currency(currency)
     switch(currency)
     {
         case 'btc':
-            return 'gbp';
-        case 'gbp':
+            return 'aud';
+        case 'aud':
         default:
             return 'btc';
     }

@@ -17,7 +17,7 @@ if(isset($_POST['cancel_request']))
     }
 }
 
-function display_request_info_gbp($uid, $reqid)
+function display_request_info_aud($uid, $reqid)
 {
     $query = "
         SELECT name, bank, acc_num, sort_code
@@ -122,7 +122,7 @@ else {
         <p>
         <?php
         # only one of these will return a result
-        display_request_info_gbp($uid, $reqid);
+        display_request_info_aud($uid, $reqid);
         display_request_info_btc($uid, $reqid);
         display_request_info_intnl($uid, $reqid);
         ?>
