@@ -1,6 +1,6 @@
         <div class='content_box'>
             <h3>Currency converter</h3>
-            <p><b>To buy bitcoins with euros, visit our newly opened sister site <a href='https://intersango.com/'>Intersango.com</a></b></p>
+            <p><b>Intersango.com.au is an Australian exchange. It allows you to trade AUS Dollars (AUD) for Bitcoins (BTC) or Bitcoins for AUS Dollars with other Intersango users.</a></b></p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
@@ -112,19 +112,21 @@
         <div class='content_box'>
             <h3>Bitcoin</h3>
             <p>
-            <a href='https://bitcoinconsultancy.com/wiki/index.php/Bitcoin_introduction'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities. See our sister group <a href='http://bitcoinconsultancy.com/'>Bitcoin Consultancy</a> for bitcoin related projects and questions.
+            <a href='http://bitcoin.org'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities. See <a href='http://bitcoinconsultancy.com/'>Bitcoin Consultancy</a> for bitcoin related projects and questions.
             </p>
         </div>
 
 <div class='content_box'>
 <h3>Contact info</h3>
-<p>support@britcoin.co.uk</p>
+<p>support@Intersango.com.au</p>
 <p>
-<b>Intersango Ltd <br /></b>
-3rd Floor 14 Hanover Street <br />
-London <br />
-England <br />
-W1S 1YH
+<b>High Net Worth Property Pty Ltd <br /></b>
+Trading As: Intersango <br />
+ACN: 61 131 700 779 <br />
+Gold Coast <br />
+Queensland <br />
+Australia <br />
+4208
 </p>
         </div>
 

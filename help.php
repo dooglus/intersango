@@ -8,40 +8,38 @@
 
 <div class='content_box'>
 <h3>Information</h3>
-<p><b>We are now accepting deposits from the following SEPA countries:</b></p>
+<p><b>We are now accepting deposits from the following STATES of Australia:</b></p>
 
-<p><b>Austria, Belgium, Denmark, Estonia, Finland, France, Germany, Iceland, Italy, Netherlands, Norway, Portugal, Spain, Sweden, Switzerland</b></p>
+<p><b>Queensland, Victoria, New South Wales, Western Australia, Tasmania, Northern Territory, Australian Capital Territory, South Australia </b></p>
 
-<p>If the bank account you will use to fund your Britcoin account is in one of the aforementioned countries, please feel free to desposit to our bank. If your bank account is not in the UK or one of the aforementioned countries, your transfer will be rejected.</p>
+<p>If the bank account you will use to fund your Intersango account is in one of the aforementioned States, please feel free to desposit to our bank. If your bank account is not in Australia or one of the aforementioned States, your transfer will be rejected.</p>
 
-<p>We also will be processing withdraws to those countries but only on the condition that the user has deposited money before.</p>
-
-<p>By using this service the user agrees to pay all transaction costs and exchange costs that our local bank will provide.</p>
+<p>We also will be processing withdraws to those States but only on the condition that the user has deposited money before.</p>
 
 <p>Be sure to ask the bank you are sending from if there are any fees associated with sending a bank transfer. Also our bank may charge fees for accepting your transfer. You are liable for those fees. </p>
 
-<p>We will be happy to provide users with a "Foreign Exchange Confirmation" detailing the exchange rate at which our bank has exchanged your EUR if necessary.</p>
-            <p>Users outside the UK may wish to use <a href='http://transferwise.com/'>TransferWise</a> in order to fund their accounts.</p>
 </div>
 
 <div class='content_box'>
 <h3>About us</h3>
-<p>My name is Amir Taaki. I have been involved in bitcoin development for the past 8 months and have been one of its few active developers. You can see my posts at the <a href="http://forum.bitcoin.org/">bitcoin forums</a> under the name genjix where I have a solid reputation. I have developed open source software for: this exchange, a bitcoin stock market exchange, a bitcoin client (Spesmilo) and others.</p>
-<p>For a list of my current projects please visit <a href="http://bitcoinconsultancy.com/wiki/index.php/Main_Page">Bitcoin Consultancy's wiki page</a>.</p>
-<p>Britcoin.co.uk is my decision to provide those living in the UK with a free exchange in order to promote awareness in the UK and allow UK residents to not miss out on the benefits of using bitcoins and being part of this great social change!</p>
+<p>My name is Andre Jensen. I have been involved in bitcoin for the past 6 months and have been one of its few active developers. You can see my posts at the <a href="http://forum.bitcoin.org/">bitcoin forums</a> under the name gorkalitus where I have a growing reputation. Amir Taaki developed open source software for: this exchange, a bitcoin stock market exchange, a bitcoin client (Spesmilo) and others.</p>
+<p>For a list of Amir Taaki's current projects please visit <a href="http://bitcoinconsultancy.com/wiki/index.php/Main_Page">Bitcoin Consultancy's wiki page</a>.</p>
+<p>Intersango.com.au is my decision to provide those living in Australia with a free exchange in order to promote awareness in Australia and allow Australia residents to not miss out on the benefits of using bitcoins and being part of this great social change!</p>
 </div>
 
 <div class='content_box'>
 <h3>Contact info</h3>
-<p>support@britcoin.co.uk</p>
+<p>support@intersango.com.au</p>
 <p>
-<b>Intersango Ltd <br /></b>
-3rd Floor 14 Hanover Street <br />
-London <br />
-England <br />
-W1S 1YH
+<b>High Net Worth Property Pty Ltd <br /></b>
+Trading As: Intersango <br />
+ACN: 61 131 700 779 <br />
+Gold Coast <br />
+Queensland <br />
+Australia <br />
+4208
 </p>
-<p>Britcoin is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
+<p>Intersango is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
 </div>
 
 <div class='content_box'>
@@ -59,7 +57,7 @@ W1S 1YH
 <h3>Privacy policy</h3>
 
 <h4>A. Policy statement</h4>
-<p>Britcoin respects customer privacy. Users can visit most pages on our website and use all of the tools located without identifying themselves or providing personal or financial information. We collect the minimum information needed, which is all viewable from your profile. Normally we do not expunge records but may decide to on request and after careful consideration. We do not store cookies for privacy purposes. Our website may provide links to third-party websites for authentication, customer convenience and information. We do not control those third-party sites or their privacy practices and are not in any way or form liable for their content and or services.</p>
+<p>Intersango respects customer privacy. Users can visit most pages on our website and use all of the tools located without identifying themselves or providing personal or financial information. We collect the minimum information needed, which is all viewable from your profile. Normally we do not expunge records but may decide to on request and after careful consideration. We do not store cookies for privacy purposes. Our website may provide links to third-party websites for authentication, customer convenience and information. We do not control those third-party sites or their privacy practices and are not in any way or form liable for their content and or services.</p>
 
 <h4>B. How we use personal information</h4>
 <p>We may use personal information as necessary to: complete bank deposits and withdrawals, effect transactions authorised by the user and maintain accounts.</p>
@@ -85,6 +83,6 @@ W1S 1YH
 <h4>E. Notification of policy changes</h4>
 <p>Updates will be posted on our front page with an offer to re-review our changes. Our customers will always know what information we collect online, how we use it and what choices they have.</p>
 
-<p>We value our customer's opinions. Do not hesitate to email us if you have comments or questions about our policies. Details may be found above.</p>
+<p>We value our customers' opinions. Do not hesitate to email us if you have comments or questions about our policies. Details may be found above.</p>
 </div>
 
