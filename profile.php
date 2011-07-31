@@ -112,5 +112,29 @@ if ($row) { ?>
     } while ($row = mysql_fetch_assoc($result));
     echo "</table></div>";
 }
-?>
 
+$bitcoin = connect_bitcoin();
+$needed_conf = confirmations_for_deposit();
+$balance = $bitcoin->getbalance($uid, $needed_conf);
+
+if ($balance != $bitcoin->getbalance($uid, 0)) { ?>
+    <div class='content_box'>
+    <h3>Pending bitcoin deposits</h3>
+    <table class='display_data'>
+        <tr>
+            <th>Amount</th>
+            <th>Confirmations Received</th>
+            <th>More Confirmations Needed</th>
+        </tr>
+    <?php
+        for ($conf = $needed_conf; $conf >= 0; $conf--) {
+              $new_balance = $bitcoin->getbalance($uid, $conf);
+              if ($balance != $new_balance) {
+                 $diff = $new_balance - $balance;
+                 echo "<tr><td>", internal_to_numstr($diff), "</td><td>$conf</td><td>", $needed_conf - $conf, "</td></tr>\n";
+                 $balance = $new_balance;
+              }
+        }
+    echo "</table></div>";
+}
+?>
