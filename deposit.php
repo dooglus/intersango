@@ -47,6 +47,5 @@ $deposref = $row['deposref'];
 <div class='content_box'>
     <h3>Deposit BTC</h3>
     <p>You can deposit to <?php echo $addy; ?></p>
-    <p>It takes 6 confirmations before funds are added to your account.</p>
+    <p>It takes <?php echo confirmations_for_deposit(); ?> confirmations before funds are added to your account.</p>
 </div>
-
