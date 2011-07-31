@@ -9,20 +9,26 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
         $show_all = false;
     
     echo "<div class='content_box'>\n";
-    echo "<h3>People offering $curr_a for $curr_b</h3>\n";
+    if ($curr_a == 'BTC')
+        echo "<h3>People selling $curr_a for $curr_b</h3>\n";
+    else
+        echo "<h3>People buying $curr_b for $curr_a</h3>\n";
 
     $exchange_fields = calc_exchange_rate($curr_a, $curr_b, $base_curr);        
     if (!$exchange_fields) {
-        echo "<p>Nobody is selling $curr_a for $curr_b.</p>";
+        if ($curr_a == 'BTC')
+            echo "<p>Nobody is selling $curr_a for $curr_b.</p>";
+        else
+            echo "<p>Nobody is buying $curr_b for $curr_a.</p>";
         echo "</div>";
         return;
     }
     list($total_amount, $total_want_amount, $rate) = $exchange_fields; 
     echo "<p>Best exchange rate is ";
     if ($base_curr == BASE_CURRENCY::A)
-        echo "1 $curr_a is worth <b>$rate $curr_b</b>";
+        echo "<b>$rate $curr_b/$curr_a</b>";
     else
-        echo "1 $curr_b is worth <b>$rate $curr_a</b>";
+        echo "<b>$rate $curr_a/$curr_b</b>";
     echo ".</p>";
 
     if (!$show_all)
