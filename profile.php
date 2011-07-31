@@ -21,9 +21,10 @@ echo '</div>';
 $query = "
     SELECT
         orderid,
-        IF(status='OPEN', amount, initial_amount) AS amount,
+        amount,
+        initial_amount,
         type,
-        IF(status='OPEN', want_amount, initial_want_amount) AS want_amount,
+        initial_want_amount,
         want_type,
         DATE_FORMAT(timest, '%H:%i %d/%m/%y') AS timest,
         status
@@ -40,25 +41,32 @@ if ($row) { ?>
         <tr>
             <th>Giving</th>
             <th>Wanted</th>
+            <th>Price</th>
             <th>Time</th>
-            <th>Status</th>
+            <th>Status<br/>(% matched)</th>
             <th></th>
         </tr><?php
     do {
         $orderid = $row['orderid'];
         $amount = internal_to_numstr($row['amount']);
+        $initial_amount = internal_to_numstr($row['initial_amount']);
         $type = $row['type'];
-        $want_amount = internal_to_numstr($row['want_amount']);
+        $initial_want_amount = internal_to_numstr($row['initial_want_amount']);
         $want_type = $row['want_type'];
         $timest = $row['timest'];
-        $status = $row['status'];
-        $status = translate_order_code($status);
+        $timest = str_replace(" ", "<br/>", $timest);
+        $status_code = $row['status'];
+        $status = translate_order_code($status_code);
+        $price = sprintf("%.6f", ($type == 'BTC') ? $initial_want_amount / $initial_amount : $initial_amount / $initial_want_amount);
+        $percent_complete = sprintf("%.0f", ($initial_amount - $amount) * 100.0 / $initial_amount);
+        $trade_count = count_transactions($orderid);
         echo "    <tr>\n";
-        echo "        <td>$amount $type</td>\n";
-        echo "        <td>$want_amount $want_type</td>\n";
+        echo "        <td>$initial_amount&nbsp;$type</td>\n";
+        echo "        <td>$initial_want_amount&nbsp;$want_type</td>\n";
+        echo "        <td>$price</td>\n";
         echo "        <td>$timest</td>\n";
-        echo "        <td>$status</td>\n";
-        echo "        <td><a href='?page=view_order&orderid=$orderid'>View order</a></td>\n";
+        echo "        <td>$status<br/>($percent_complete%)</td>\n";
+        echo "        <td><a href='?page=view_order&orderid=$orderid'>View<br/>($trade_count trade", $trade_count != 1 ? "s" : "", ")</a></td>\n";
         echo "    </tr>\n";
     } while ($row = mysql_fetch_assoc($result));
     echo "</table></div>";

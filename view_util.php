@@ -1,5 +1,20 @@
 <?php
 
+function count_transactions($orderid)
+{
+    $query = "
+        SELECT COUNT(*) as count
+        FROM transactions
+        WHERE (transactions.a_orderid=$orderid
+           OR  transactions.b_orderid=$orderid)
+          AND  transactions.a_amount != -1
+          AND  transactions.b_amount != -1;
+    ";
+    $result = do_query($query);
+    $row = mysql_fetch_assoc($result);
+    return $row['count'];
+}
+    
 function display_transactions($uid, $orderid)
 {
     $ordselq = '';
@@ -68,7 +83,7 @@ function display_transactions($uid, $orderid)
         echo "        <td>$a_amount $type</td><td>$b_amount $want_type</td><td>$price</td>\n";
         echo "        <td>$timest</td>\n";
         if ($orderid == -1)
-            echo "        <td><a href='?page=view_order&orderid=$this_orderid'>View order</a></td>\n";
+            echo "        <td><a href='?page=view_order&orderid=$this_orderid'>View</a></td>\n";
         echo "    </tr>\n";
     }
     if (!$first) {
