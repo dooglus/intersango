@@ -24,7 +24,11 @@ function display_transactions($uid, $orderid)
     ";
     $result = do_query($query);
     $first = true;
+    $a_total = 0;
+    $b_total = 0;
+    $count = 0;
     while ($row = mysql_fetch_assoc($result)) {
+        $count++;
         $who = $row['who'];
         $a_amount = $row['a_amount'];
         $b_amount = $row['b_amount'];
@@ -47,6 +51,8 @@ function display_transactions($uid, $orderid)
                 </tr><?php
         }
 
+        $a_total += $a_amount;
+        $b_total += $b_amount;
         $a_amount = internal_to_numstr($a_amount);
         $b_amount = internal_to_numstr($b_amount);
         $type = $row['type'];
@@ -56,18 +62,38 @@ function display_transactions($uid, $orderid)
         else
            $price = $a_amount / $b_amount;
         $price = sprintf("%.6f", $price);
-        $orderid = $row['orderid'];
+        $this_orderid = $row['orderid'];
         $timest = $row['timest'];
         echo "    <tr>\n";
         echo "        <td>$a_amount $type</td><td>$b_amount $want_type</td><td>$price</td>\n";
         echo "        <td>$timest</td>\n";
         if ($orderid == -1)
-            echo "        <td><a href='?page=view_order&orderid=$orderid'>View order</a></td>\n";
+            echo "        <td><a href='?page=view_order&orderid=$this_orderid'>View order</a></td>\n";
         echo "    </tr>\n";
     }
-    if (!$first)
+    if (!$first) {
+        if ($orderid != -1 && $count > 1) {
+            $a_total = internal_to_numstr($a_total);
+            $b_total = internal_to_numstr($b_total);
+
+            if ($type == 'BTC')
+                $price = $b_total / $a_total;
+            else
+                $price = $a_total / $b_total;
+            $price = sprintf("%.6f", $price);
+            
+            echo "    <tr>\n";
+            echo "        <td>--------</td><td>--------</td><td>--------</td>\n";
+            echo "        <td></td>\n";
+            echo "    </tr>\n";
+            echo "    <tr>\n";
+            echo "        <td>$a_total $type</td><td>$b_total $want_type</td><td>$price</td>\n";
+            echo "        <td></td>\n";
+            echo "    </tr>\n";
+        }
+
         echo "</table></div>";
+    }
 }
 
 ?>
-
