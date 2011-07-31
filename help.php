@@ -12,7 +12,7 @@
 
 <p><b>Queensland, Victoria, New South Wales, Western Australia, Tasmania, Northern Territory, Australian Capital Territory, South Australia </b></p>
 
-<p>If the bank account you will use to fund your Intersango account is in one of the aforementioned States, please feel free to desposit to our bank. If your bank account is not in Australia or one of the aforementioned States, your transfer will be rejected.</p>
+<p>If the bank account you will use to fund your Intersango account is in one of the aforementioned States, please feel free to deposit to our bank. If your bank account is not in Australia or one of the aforementioned States, your transfer will be rejected.</p>
 
 <p>We also will be processing withdraws to those States but only on the condition that the user has deposited money before.</p>
 
