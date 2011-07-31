@@ -20,7 +20,7 @@ function display_transactions($uid, $orderid)
             transactions.a_orderid=orderbook.orderid
             OR transactions.b_orderid=orderbook.orderid
         WHERE orderbook.uid='$uid' $ordselq
-        ORDER BY transactions.timest DESC;
+        ORDER BY transactions.txid DESC;
     ";
     $result = do_query($query);
     $first = true;
@@ -39,7 +39,9 @@ function display_transactions($uid, $orderid)
             <h3>Your trades <?php if ($orderid != -1) echo 'for this order'; ?></h3>
             <table class='display_data'>
                 <tr>
-                    <th>Description</th>
+                    <th>You gave</th>
+                    <th>You got</th>
+                    <th>Effective Price</th>
                     <th>Time</th>
                     <?php if ($orderid == -1) echo '<th></th>'; ?>
                 </tr><?php
@@ -49,10 +51,15 @@ function display_transactions($uid, $orderid)
         $b_amount = internal_to_numstr($b_amount);
         $type = $row['type'];
         $want_type = $row['want_type'];
+        if ($type == 'BTC')
+           $price = $b_amount / $a_amount;
+        else
+           $price = $a_amount / $b_amount;
+        $price = sprintf("%.6f", $price);
         $orderid = $row['orderid'];
         $timest = $row['timest'];
         echo "    <tr>\n";
-        echo "        <td>You gave $a_amount $type for <b>$b_amount $want_type</td>\n";
+        echo "        <td>$a_amount $type</td><td>$b_amount $want_type</td><td>$price</td>\n";
         echo "        <td>$timest</td>\n";
         if ($orderid == -1)
             echo "        <td><a href='?page=view_order&orderid=$orderid'>View order</a></td>\n";
