@@ -138,7 +138,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
 else {
 ?>
     <div class='content_box'>
-    <h3>Withdraw AUD (UK residents)</h3>
+    <h3>Withdraw AUD (Australian residents)</h3>
     <p>Enter an amount below to submit a withdrawal request. We charge no fee.
     You are responsible for paying any incurred fees. If your deposit 
     is insufficient to cover bank fees then it will be denied.</p>
@@ -222,4 +222,3 @@ else {
 <?php
 }
 ?>
-
