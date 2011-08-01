@@ -156,7 +156,7 @@ else {
                     <input type='text' class='input_no_block' id='input_account_number' name='account_number' />
                 </div>
                 <div id='acc_sort'>
-                    <label for='input_sort_code'>Sort code</label>
+                    <label for='input_sort_code'>BSB</label>
                     <input type='text' id='input_sort_code' name='sort_code' />
                 </div>
             </div>

@@ -24,7 +24,7 @@
 <h3>About us</h3>
 <p>My name is Andre Jensen. I have been involved in bitcoin for the past 6 months and have been one of its few active developers. You can see my posts at the <a href="http://forum.bitcoin.org/">bitcoin forums</a> under the name gorkalitus where I have a growing reputation. Amir Taaki developed open source software for: this exchange, a bitcoin stock market exchange, a bitcoin client (Spesmilo) and others.</p>
 <p>For a list of Amir Taaki's current projects please visit <a href="http://bitcoinconsultancy.com/wiki/index.php/Main_Page">Bitcoin Consultancy's wiki page</a>.</p>
-<p>Intersango.com.au is my decision to provide those living in Australia with a free exchange in order to promote awareness in Australia and allow Australia residents to not miss out on the benefits of using bitcoins and being part of this great social change!</p>
+<p>World Bitcoin Exchange is my decision to provide those living in Australia with a free exchange in order to promote awareness in Australia and allow Australian residents to not miss out on the benefits of using bitcoins and being part of this great social change!</p>
 </div>
 
 <div class='content_box'>
@@ -32,7 +32,7 @@
 <p>support@intersango.com.au</p>
 <p>
 <b>High Net Worth Property Pty Ltd <br /></b>
-Trading As: Intersango <br />
+Trading As: World Bitcoin Exchange <br />
 ACN: 61 131 700 779 <br />
 Gold Coast <br />
 Queensland <br />
@@ -85,4 +85,3 @@ Australia <br />
 
 <p>We value our customers' opinions. Do not hesitate to email us if you have comments or questions about our policies. Details may be found above.</p>
 </div>
-

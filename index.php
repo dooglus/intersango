@@ -1,6 +1,9 @@
         <div class='content_box'>
             <h3>Currency converter</h3>
-            <p><b>Intersango.com.au is an Australian exchange. It allows you to trade AUS Dollars (AUD) for Bitcoins (BTC) or Bitcoins for AUS Dollars with other Intersango users.</a></b></p>
+            <p><b>Intersango is an exchange. Here we allow you to trade Australian Dollars (AUD) for Bitcoins (BTC) or Bitcoins for Australian Dollars with other Intersango users.</a></b></p>
+            <p><b>To <a href='https://britcoin.co.uk/'>buy bitcoins</a> with GBP, visit <a href='https://britcoin.co.uk/'>britcoin.co.uk</a></b></p> 
+            <p><b>To <a href='https://intersango.com/'>buy bitcoins</a> with EUR, visit the newly opened site <a href='https://intersango.com/'>intersango.com</a></b></p>
+            <p><b>To <a href='https://intersango.us/'>buy bitcoins</a> with USD, visit the newly opened site <a href='https://intersango.us/'>intersango.us</a></b></p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
@@ -121,7 +124,7 @@
 <p>support@Intersango.com.au</p>
 <p>
 <b>High Net Worth Property Pty Ltd <br /></b>
-Trading As: Intersango <br />
+Trading As: World Bitcoin Exchange <br />
 ACN: 61 131 700 779 <br />
 Gold Coast <br />
 Queensland <br />
@@ -129,4 +132,3 @@ Australia <br />
 4208
 </p>
         </div>
-
