@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
 
+
+sitemap: http://cdn.attracta.com/sitemap/803422.xml.gz
