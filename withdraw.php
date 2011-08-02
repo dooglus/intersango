@@ -121,7 +121,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     $amount = truncate_num($amount);
 
     curr_supported_check($curr_type);
-    order_worthwhile_check($amount, $amount_disp);
+    order_worthwhile_check($amount, $amount_disp, minimum_withdraw());
     enough_money_check($amount, $curr_type);
 
     if (!save_details($uid, $amount, $curr_type))
