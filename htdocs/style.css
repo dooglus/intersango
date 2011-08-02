@@ -16,20 +16,20 @@ body {
     height: 20px;
     padding: 6px 0 0 10px;
     margin: 0;
-    background-color: #ffc06f;
+    background-color: #7ad3af;
 }
 input[type=text] {
     margin: 8px;
     padding: 6px 0 0 10px;
-    background-color: #ffc06f;
+    background-color: #7ad3af;
     border: 0;
     color: #52514e;
     font-weight: bold;
     font-size: 18px;
-    border: 2px solid #f28900;
+    border: 2px solid #8df5cb;
 }
 input[type=text]:focus {
-    border: 2px solid #52514e;
+    border: 2px solid #8df5cb;
     margin: 8px;
 }
 #exchanger {
@@ -68,7 +68,7 @@ input[type=text]:focus {
     width: 300px;
     height: 20px;
     padding: 6px 0 0 10px;
-    background-color: #ffc06f;
+    background-color: #7ad3af;
 }
 .currsel_entry:hover {
     background-color: #ddd;
@@ -78,9 +78,9 @@ input[type=submit]{
     padding: 5px 20px;
     min-width: 80px;
     margin-left: 30px;
-    color: #42603e;
-    background: none;
-    border: 3px solid #f28100;
+    color: #000000;
+    background-color: #7ad3af;
+    border: 3px solid #8df5cb;
 }
 input[type=submit]:hover {
     color: #017d4d;
@@ -109,7 +109,7 @@ CONTENT
 .content_box {
     width: 750px;
     font-size: 12px;
-    color: #42413e;
+    color: #000000;
     border-bottom: 1px dashed #52514e;
     padding-bottom: 10px;
     /* WTFFF??? */
@@ -164,11 +164,12 @@ CONTENT
     margin-top: 20px;
 }
 .content_box a {
-    color: #42603e;
+    color: #444;
     text-decoration: none;
 }
 .content_box a:hover {
-    color: #017d4d;
+    color: #000;
+    text-decoration: underline;
 }
 .indent {
     padding-left: 10px;
@@ -178,8 +179,8 @@ CONTENT
     color: inherit;
     font-weight: inherit;
     background-color: inherit;
-    border: 2px solid #f2a800;
-    background-color: #ffa938;
+    border: 2px solid #8df5cb;
+    background-color: #7ad3af;
     margin-bottom: 20px;
     margin-top: 10px;
     margin-left: 40px;
@@ -210,7 +211,7 @@ LINKS
     left: 800px;
     padding-bottom: 0;
     font-size: 12px;
-    color: #999;
+    color: #fff;
 }
 #links a {
     display: block;
@@ -219,7 +220,8 @@ LINKS
     color: #fff;
 }
 #links a:hover {
-    color: #4aa897;
+    // color: #4aa897;
+    text-decoration: underline;
 }
 #links ul li {
     list-style: square outside url('images/list_marker.png');
@@ -238,7 +240,7 @@ LINKS
     border: 1px solid #52514e; 
     background: none;
 }
-.image_right img{
+.image_right img {
 }
 
 /*---------------------------------
