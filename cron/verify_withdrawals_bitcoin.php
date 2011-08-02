@@ -36,14 +36,16 @@ while ($row = mysql_fetch_assoc($result)) {
     $uid = $row['uid'];
     $amount = $row['amount'];
     $addy = $row['addy'];
-    
-    if (gmp_cmp($bitcoin->getbalance(""), $amount) >= 0)
+    $we_have = $bitcoin->getbalance("", confirmations_for_deposit());
+
+    if (gmp_cmp($we_have, $amount) >= 0)
     {
         update_req($reqid, "PROCES");
         $bitcoin->sendfrom("", $addy, $amount);
         update_req($reqid, "FINAL");
     }
+    else
+        echo "we only have ", internal_to_numstr($we_have), " BTC so can't withdraw ", internal_to_numstr($amount), " BTC\n";
 }
 
 ?>
-
