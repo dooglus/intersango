@@ -124,7 +124,7 @@
 <p>support@Intersango.com.au</p>
 <p>Call +617 3102-9666</p>
 <p>Office Hours Mon-Fri 9am to 5pm</p> 
-<p>(Standard time zone: UTC/GMT +10 hours)</p>
+<p>(Standard time zone: UTC/GMT +10 hours - it is currently <?php require_once "util.php"; echo get_time_text(); ?>)</p>
 <p>
 <b>High Net Worth Property Pty Ltd <br /></b>
 Trading As: World Bitcoin Exchange <br />

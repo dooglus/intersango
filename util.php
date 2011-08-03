@@ -288,5 +288,15 @@ function translate_request_code($code)
     }
 }
 
+function get_time_text()
+{
+    $result = do_query("SELECT CONCAT(DATE_FORMAT(now, '%l:%i')," .
+                       "LOWER(DATE_FORMAT(now, '%p'))," .
+                       "DATE_FORMAT(now, ' on %W')) AS time" .
+                       " FROM (SELECT NOW() AS now) now");
+    $row = mysql_fetch_assoc($result);
+    return $row['time'];
+}
+
 ?>
 
