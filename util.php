@@ -290,6 +290,7 @@ function translate_request_code($code)
 
 function get_time_text()
 {
+    // see http://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-format
     $result = do_query("SELECT CONCAT(DATE_FORMAT(now, '%l:%i')," .
                        "LOWER(DATE_FORMAT(now, '%p'))," .
                        "DATE_FORMAT(now, ' on %W')) AS time" .
