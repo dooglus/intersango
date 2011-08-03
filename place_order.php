@@ -59,15 +59,13 @@ $query = "
         '$want_type');
     ";
 $result = do_query($query);
-do_query("COMMIT");
 $orderid = mysql_insert_id();
+do_query("COMMIT");
 ?>
 
 <div class='content_box'>
     <h3>Order placed</h3>
-    <p>
-    <?php echo "Your order offering $amount_disp $type for $want_amount_disp $want_type has been placed."; ?>
-    </p>
-    <p>You may visit the <a href='?page=orderbook'>orderbook</a>.</p>
+    <p><?php echo "Your order offering $amount_disp $type for $want_amount_disp $want_type has been placed."; ?></p>
+    <p>You may view your <a href="?page=view_order&orderid=<?php echo $orderid; ?>">new order</a> or
+       visit the <a href="?page=orderbook">orderbook</a>.</p>
 </div>
-
