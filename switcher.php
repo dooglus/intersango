@@ -65,6 +65,10 @@ function switcher($page, $loggedin)
                     log_badpage($page);
                 break;
 
+            case '404':
+                include("$abspath/404.php");
+                break;  
+
             case '':
                 include("$abspath/index.php");
                 break;  
@@ -89,6 +93,4 @@ function switcher($page, $loggedin)
         echo "<p>{$e->getMessage()}</p></div>";
     }
 }
-
 ?>
-
