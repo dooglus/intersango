@@ -1,6 +1,5 @@
 <?php
-
-require '../util.php';
+require_once '../util.php';
 
 $query = "
     SELECT

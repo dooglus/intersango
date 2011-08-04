@@ -1,6 +1,6 @@
 <?php
-require '../htdocs/config.php';
-require '../util.php';
+require_once '../htdocs/config.php';
+require_once '../util.php';
 
 function update_req($reqid, $status)
 {

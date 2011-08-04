@@ -12,7 +12,7 @@ if(!isset($_SESSION['csrf_token']))
     }   
 }
 
-require 'config.php';
+require_once 'config.php';
 
 if (isset($_GET['page']))
     $page = htmlspecialchars($_GET['page']);

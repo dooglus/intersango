@@ -1,6 +1,7 @@
 <?php
 # require_once '/var/db.intersango.inc';
 require_once '/home7/worldbit/db.intersango.inc';
+require_once 'htdocs/config.php';
 
 function escapestr($str)
 {

@@ -1,5 +1,5 @@
 <?php
-require "../config.php";
+require_once "../config.php";
 require "$abspath/util.php";
 
 $query = "
