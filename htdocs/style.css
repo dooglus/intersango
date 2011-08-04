@@ -190,6 +190,10 @@ CONTENT
     padding-right: 30px;
     text-align: left;
 }
+tr.me {
+    // color: #f00;
+    font-weight: bold;
+}
 
 /*---------------------------------
 LINKS
