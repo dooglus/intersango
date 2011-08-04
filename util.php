@@ -75,6 +75,11 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
     return array($total_amount, $total_want_amount, $rate);
 }
 
+function is_logged_in()
+{
+    return isset($_SESSION['uid']);
+}
+
 function user_id()
 {
     if (!isset($_SESSION['uid'])) {
