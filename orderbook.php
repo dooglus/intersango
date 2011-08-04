@@ -1,7 +1,7 @@
 <?php
 require_once 'util.php';
 
-function display_double_entry($curr_a, $curr_b, $base_curr)
+function display_double_entry($curr_a, $curr_b, $base_curr, $uid)
 {
     if (isset($_GET['show_all']) && get('show_all') == 'true')
         $show_all = true;
@@ -47,7 +47,10 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
 
     $query = "
         SELECT
-            *,
+            orderid,
+            amount,
+            want_amount,
+            uid=$uid as me,
             IF(
                 type='BTC',
                 initial_want_amount/initial_amount,
@@ -66,10 +69,16 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
         # MySQL kindly computes this for us.
         # we trim the excessive 0
         $rate = clean_sql_numstr($row['rate']);
-        echo "    <tr>\n";
+        $me = $row['me'];
+        if ($me)
+            echo "    <tr class='me'>\n";
+        else
+            echo "    <tr>\n";
         echo "        <td>$rate</td>\n";
         echo "        <td>$amount $curr_a</td>\n";
         echo "        <td>$want_amount $curr_b</td>\n";
+        if ($me)
+            echo "        <td><a href='?page=view_order&orderid=",$row['orderid'],"'>View</a></td>\n";
         echo "    </tr>\n";
     }
 
@@ -90,7 +99,13 @@ function display_double_entry($curr_a, $curr_b, $base_curr)
         echo "<p><a href='?page=orderbook&show_all=true'>&gt;&gt; show all</a></p>\n";
     echo "</div>\n";
 }
-display_double_entry('BTC', 'AUD', BASE_CURRENCY::A);
-display_double_entry('AUD', 'BTC', BASE_CURRENCY::B);
+
+if (is_logged_in())
+    $uid = user_id();
+else
+    $uid = -1;
+
+display_double_entry('BTC', 'AUD', BASE_CURRENCY::A, $uid);
+display_double_entry('AUD', 'BTC', BASE_CURRENCY::B, $uid);
 ?>
 
