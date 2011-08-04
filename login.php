@@ -27,9 +27,9 @@ try {
         //if it is NOT NULL then it will return a username you can then set any cookies/session data for that username and complete the login process
         $oidlogin = Duo::verifyResponse(IKEY, SKEY, AKEY, $_POST['sig_response']);
         if($oidlogin != NULL) {
-            echo "<div class='content_box'>";
-            echo '<h3>Successful login!</h3>';
-            echo '<p>Welcome back commander. Welcome back.</p>';
+            echo "                    <div class='content_box'>\n";
+            echo "                    <h3>Successful login!</h3>\n";
+            echo "                    <p>Welcome back commander. Welcome back.</p>\n";
 
             # protect against session hijacking now we've escalated privilege level
             session_regenerate_id(true);
@@ -112,10 +112,10 @@ try {
     <iframe id="duo_iframe" width="500" height="800" frameborder="0" allowtransparency="true" style="background: transparent;"></iframe>
 <?php
             } else {
-                echo "<div class='content_box'>";
-                echo '<h3>Successful login!</h3>';
+                echo "                    <div class='content_box'>\n";
+                echo "                        <h3>Successful login!</h3>\n";
                 if (has_results($result))
-                    echo '<p>Welcome back commander. Welcome back.</p>';
+                    echo "                        <p>Welcome back commander. Welcome back.</p>\n";
                 else {
                     $query = "
                         INSERT INTO users (
@@ -143,8 +143,8 @@ try {
                             (LAST_INSERT_ID(), 0, 'BTC');
                     ";
                     do_query($query);
-                    echo "<p>Nice to finally see you here, <i>new</i> user.</p>\n";
-                    echo "<p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>\n";
+                    echo "                        <p>Nice to finally see you here, <i>new</i> user.</p>\n";
+                    echo "                        <p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>\n";
                 }
 
                 // store for later
@@ -161,4 +161,4 @@ catch (ErrorException $e) {
 } 
 # close content box
 ?>
-        </div>
+                    </div>
