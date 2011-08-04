@@ -3,10 +3,10 @@
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <title>Intersango Bitcoin Exchange</title>
-    <?php if (!$page) { ?>
+<?php if (!$page) { ?>
     <script type='text/javascript' src='jquery-1.4.4.min.js'></script>
     <script type='text/javascript' src='exchanger.js'></script>
-    <?php 
+<?php 
         require "$abspath/util.php";
         $currencies = array('BTC', 'AUD');
         $rates = array();
