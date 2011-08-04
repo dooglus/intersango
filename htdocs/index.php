@@ -21,7 +21,7 @@ else
 
 if($page == 'logout') {
   session_destroy();
-  header('Location: index.php');
+  header('Location: ?page=trade');
   exit();
 }
 else {
