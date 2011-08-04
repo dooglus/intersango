@@ -17,7 +17,7 @@ require_once 'config.php';
 if (isset($_GET['page']))
     $page = htmlspecialchars($_GET['page']);
 else
-    $page = '';
+    $page = 'trade';
 
 if($page == 'logout') {
   session_destroy();
