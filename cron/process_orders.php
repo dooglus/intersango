@@ -1,6 +1,6 @@
 <?php
-require '../util.php';
-require '../errors.php';
+require_once '../util.php';
+require_once '../errors.php';
 
 function b_query($query)
 {
@@ -145,6 +145,30 @@ function process()
     do_query("LOCK TABLES orderbook WRITE, purses WRITE, transactions WRITE");
     do_query("SET div_precision_increment = 8");
 
+    // find and cancel any active orders from users with negative BTC or AUD balances
+    // this should never happen unless someone is trying to double-spend their balance
+    $query = "
+        SELECT orderid
+        FROM orderbook
+        JOIN purses
+        ON orderbook.uid = purses.uid
+        WHERE
+            status != 'CLOSED' AND
+            status != 'CANCEL' AND
+            purses.amount < 0
+        GROUP BY orderid
+        ";
+    $result = b_query($query);
+    while ($row = mysql_fetch_array($result)) {
+        $orderid = $row['orderid'];
+        $query = "
+            UPDATE orderbook
+            SET status=CANCEL
+            WHERE orderid='$orderid'
+        ";
+        b_query($query);
+    }
+
     $query = "
         SELECT orderid
         FROM orderbook
@@ -170,4 +194,3 @@ function process()
 process();
 
 ?>
-
