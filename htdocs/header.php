@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <title>Intersango Bitcoin Exchange</title>
-<?php if (!$page) { ?>
+<?php if ($page == 'trade') { ?>
     <script type='text/javascript' src='jquery-1.4.4.min.js'></script>
     <script type='text/javascript' src='exchanger.js'></script>
 <?php 
@@ -32,7 +32,7 @@
     <link rel="icon" type="image/png" href="favicon.png" />
 </head>
 
-<?php if (!$page) { ?>
+<?php if ($page == 'trade') { ?>
 <body onload='set_currency_in("aud"); set_currency_out("btc");'>
 <?php } else { ?>
 <body>

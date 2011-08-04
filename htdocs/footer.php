@@ -23,7 +23,7 @@ function show_links()
     }
 
     if (!$loggedin) show_link('login',        'Login',        'Begin here'                     );
-    show_link                ('',             'Trade',        'Buy and sell'                   );
+    show_link                ('trade',        'Trade',        'Buy and sell'                   );
     if ($loggedin) show_link ('profile',      'Profile',      'Dox on you'                     );
     if ($loggedin) show_link ('deposit',      'Deposit',      'Top up your account'            );
     if ($loggedin) show_link ('withdraw',     'Withdraw',     'Take out money'                 );
