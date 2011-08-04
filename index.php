@@ -37,11 +37,8 @@
                     </div>
                 </div>
             </div>
-
-
         </td>
         <td>
-
             <p><b>Currency I want:</b></p>
             <div class='currbox_wrapper'>
                 <div id='outcurrency' class='currbox' onclick='javascript:rolldown_out();'>
