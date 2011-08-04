@@ -58,6 +58,13 @@ function switcher($page, $loggedin)
                     log_badpage($page);
                 break;
 
+            case 'turn_on_duo':
+                if ($loggedin)
+                    include("$abspath/turn_on_duo.php");
+                else
+                    log_badpage($page);
+                break;
+
             case '':
                 include("$abspath/index.php");
                 break;  
