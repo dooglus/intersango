@@ -1,5 +1,6 @@
 <?php
 $abspath = '/home7/worldbit/programs/intersango';
+$urlroot = '/';
 require "$abspath/errors.php";
 enable_errors();
 
