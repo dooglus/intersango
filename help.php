@@ -1,7 +1,7 @@
 <div class='content_box'>
 <h3>Help</h3>
 <p>For safety, please keep funds off-site when not trading.</p>
-<p>To begin trading, navigate to the <a href="?page=trade">trade page</a>, enter your desired amount and click buy. The trade will materialise in the orderbook and under your profile. You will not be able to view any information from other trader's accounts for privacy reasons.</p>
+<p>To begin trading, navigate to the <a href="?page=trade">trade page</a>, enter your desired amount and click buy. The trade will materialise in the orderbook and under your profile. You will not be able to view any information from other traders' accounts for privacy reasons.</p>
 <p>You may cancel an order by viewing the desired order (found under your profile). Click "Cancel" to revoke any current orders.</p>
 <p>The source code for this website is available online at <a href="https://github.com/dooglus/intersango">github</a>. We believe hiding the workings of a website is a poor substitute for good security.</p>
 </div>
@@ -23,7 +23,7 @@
 <div class='content_box'>
 <h3>About us</h3>
 <p>My name is Andre Jensen, Managing Director of High Net Worth Property Pty Ltd based in Gold Coast, Australia, Our company provides High Net Worth individuals in Australia with investment products and services, recently we have taken an interest in bitcoin for its investment opportunities, we have been following bitcoin's success for the past 3 months and found out there was no fully operating Bitcoin Exchange in Australia.
-<p>Recently we partnered and acquired the services of one of bitcoin's few active developers<a href="mailto:dooglus@gmail.com"> Chris Moore</a> to install the exchange increasing security and user experience. You can see Chris Moore's update's here <a href="https://github.com/dooglus/intersango">Github</a> under the name dooglus where Chris has a strong reputation amongst other exchanges on the market. 
+<p>Recently we partnered and acquired the services of one of bitcoin's few active developers<a href="mailto:dooglus@gmail.com"> Chris Moore</a> to install the exchange increasing security and user experience. You can see Chris Moore's updates here <a href="https://github.com/dooglus/intersango">Github</a> under the name dooglus where Chris has a strong reputation amongst other exchanges on the market. 
 <p>Amir Taaki developed the open source software for: this exchange, a bitcoin stock market exchange, a bitcoin client (Spesmilo) and others.</p>
 <p>For a list of Amir Taaki's current projects please visit <a href="http://bitcoinconsultancy.com/wiki/index.php/Main_Page">Bitcoin Consultancy's wiki page</a>.</p>
 <p>World Bitcoin Exchange is my decision to provide those living in Australia with a free exchange in order to promote awareness in Australia and allow Australian residents to not miss out on the benefits of using bitcoins and being part of this great social change!</p>
