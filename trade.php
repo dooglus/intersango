@@ -1,9 +1,9 @@
         <div class='content_box'>
             <h3>Currency converter</h3>
             <p><b>Intersango is an exchange. Here we allow you to trade Australian Dollars (AUD) for Bitcoins (BTC) or Bitcoins for Australian Dollars with other Intersango users.</a></b></p>
-            <p><b>To <a href='https://britcoin.co.uk/'>buy bitcoins</a> with GBP, visit <a href='https://britcoin.co.uk/'>britcoin.co.uk</a></b></p> 
-            <p><b>To <a href='https://intersango.com/'>buy bitcoins</a> with EUR, visit the newly opened site <a href='https://intersango.com/'>intersango.com</a></b></p>
-            <p><b>To <a href='https://intersango.us/'>buy bitcoins</a> with USD, visit the newly opened site <a href='https://intersango.us/'>intersango.us</a></b></p>
+            <p><b>To <a target="_blank" href='https://britcoin.co.uk/'>buy bitcoins</a> with GBP, visit <a target="_blank" href='https://britcoin.co.uk/'>britcoin.co.uk</a></b></p> 
+            <p><b>To <a target="_blank" href='https://intersango.com/'>buy bitcoins</a> with EUR, visit the newly opened site <a target="_blank" href='https://intersango.com/'>intersango.com</a></b></p>
+            <p><b>To <a target="_blank" href='https://intersango.us/'>buy bitcoins</a> with USD, visit the newly opened site <a target="_blank" href='https://intersango.us/'>intersango.us</a></b></p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
@@ -112,7 +112,7 @@
         <div class='content_box'>
             <h3>Bitcoin</h3>
             <p>
-            <a href='http://bitcoin.org'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities. See <a href='http://bitcoinconsultancy.com/'>Bitcoin Consultancy</a> for bitcoin related projects and questions.
+            <a target="_blank" href='http://bitcoin.org'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities. See <a target="_blank" href='http://bitcoinconsultancy.com/'>Bitcoin Consultancy</a> for bitcoin related projects and questions.
             </p>
         </div>
 
