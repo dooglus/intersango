@@ -172,6 +172,7 @@ CREATE TABLE `users` (
   `oidlogin` varchar(100) NOT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   `deposref` varchar(8) NOT NULL DEFAULT '',
+  `use_duo` tinyint(1) NOT NULL DEFAULT '0',
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `oidlogin` (`oidlogin`),
