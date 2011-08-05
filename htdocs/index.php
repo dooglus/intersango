@@ -26,14 +26,13 @@ if($page == 'logout') {
 }
 else {
     ob_start();
-    require 'header.php';
+    require "$abspath/header.php";
     require_once "$abspath/util.php";
     include "$abspath/switcher.php";
     switcher($page, is_logged_in());
-
-    # actually re-checks whether you're logged in or not because
+    // actually re-checks whether you're logged in or not because
     # switcher() can log you in and set $_SESSION there
-    require 'footer.php';
+    require "$abspath/footer.php";
     ob_end_flush();
 }
 ?>
