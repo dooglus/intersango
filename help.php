@@ -246,7 +246,7 @@ else { ?>
 <p>
     2. In the case of a dispute between parties, we will not intervene
     to settle the matter. Once an order has been filled, and funds
-    appear in the parties accounts, that trade should be consider
+    appear in the parties' accounts, that trade should be considered
     irrevocable. Trades are irreversible.
 </p>
 <p>
