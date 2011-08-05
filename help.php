@@ -23,7 +23,7 @@
 </div>
 
 <div class='content_box'>
-<h3>Security - Two Factor Authentication</h3>
+<h3>Security - two factor authentication</h3>
 <p>
     Security is always paramount on the web and even more important
     with Bitcoin. The “ease of sending large funds globally”
@@ -188,7 +188,7 @@ Australia <br />
 </div>
 
 <div class='content_box'>
-<h3>Fees and Comissions</h3>
+<h3>Fees and comissions</h3>
 <p>
 <?php
 if (commission_percentage_for_aud() == 0 && commission_percentage_for_btc() == 0)
@@ -204,7 +204,7 @@ else { ?>
 </div>
 
 <div class='content_box'>
-<h3>Account Limits</h3>
+<h3>Account limits</h3>
 <p>
     <strong>Daily Bitcoin transfer limits:</strong> Default Bitcoin
     withdrawal limit is 500 coins per day. This limit is in place to
