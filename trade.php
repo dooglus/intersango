@@ -102,10 +102,9 @@
             </p>
     <?php }
     else { ?>
-            <p>
-            To begin trading you will need an OpenID account.
-            </p>
-            <p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a>.
+            <p>To begin trading you will need an OpenID account.</p>
+            <p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a></p>
+            <p>This is a Two-Factor Authentication Security Supported Exchange, for more Info see our help section.</p>.
     <?php } ?>
         </div>
 
