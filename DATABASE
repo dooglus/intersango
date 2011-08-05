@@ -79,6 +79,7 @@ CREATE TABLE `orderbook` (
   `initial_want_amount` bigint(20) NOT NULL,
   `want_amount` bigint(20) NOT NULL,
   `want_type` varchar(6) NOT NULL,
+  `commission` bigint(20) NOT NULL,
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(6) NOT NULL DEFAULT 'OPEN',
   `processed` tinyint(1) NOT NULL DEFAULT '0',
@@ -101,6 +102,9 @@ CREATE TABLE `purses` (
   `type` varchar(6) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+INSERT INTO `purses` VALUES (1,0,'AUD');
+INSERT INTO `purses` VALUES (1,0,'BTC');
 
 --
 -- Table structure for table `requests`
@@ -135,8 +139,10 @@ CREATE TABLE `transactions` (
   `txid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `a_orderid` int(10) unsigned NOT NULL,
   `a_amount` bigint(20) NOT NULL,
+  `a_commission` bigint(20) NOT NULL,
   `b_orderid` int(10) unsigned NOT NULL,
   `b_amount` bigint(20) NOT NULL,
+  `b_commission` bigint(20) NOT NULL,
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`txid`),
   KEY `transactions_b_amount` (`b_amount`)
@@ -177,8 +183,11 @@ CREATE TABLE `users` (
   PRIMARY KEY (`uid`),
   UNIQUE KEY `oidlogin` (`oidlogin`),
   UNIQUE KEY `deposref` (`deposref`)
-) ENGINE=MyISAM AUTO_INCREMENT=3564 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+INSERT INTO `users` VALUES (1,'commission',0,'comm',0,NOW());
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
