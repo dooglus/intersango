@@ -1,19 +1,18 @@
 RewriteEngine on
 
-RewriteCond %{HTTP_HOST} ^intersango.com.au$ [OR]
-RewriteCond %{HTTP_HOST} ^www.intersango.com.au$
-RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com" [R=301,L]
+# 301 Moved Permanently
+RewriteCond %{HTTP_HOST} ^(www.)?bitaussie.com$                    [OR]
+RewriteCond %{HTTP_HOST} ^(www.)?intersango.com.au$                [OR]
+RewriteCond %{HTTP_HOST} ^(www.)?australianbitcoinexchange.com$    [OR]
+RewriteCond %{HTTP_HOST} ^(www.)?australianbitcoinexchange.com.au$
+RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com/" [R=301,L]
 
-RewriteCond %{HTTP_HOST} ^bitaussie.com$ [OR]
-RewriteCond %{HTTP_HOST} ^www.bitaussie.com$
-RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com" [R=301,L]
+# make sure worldbitcoinexchange.com is using https
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^worldbitcoinexchange.com$
+RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com/" [R=301,L]
 
-RewriteCond %{HTTP_HOST} ^australianbitcoinexchange.com.au$ [OR]
-RewriteCond %{HTTP_HOST} ^www.australianbitcoinexchange.com.au$
-RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com" [R=301,L]
-
-RewriteCond %{HTTP_HOST} ^australianbitcoinexchange.com$ [OR]
-RewriteCond %{HTTP_HOST} ^www.australianbitcoinexchange.com$
-RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com" [R=302,L]
+RewriteCond %{HTTP_HOST} ^www.worldbitcoinexchange.com$
+RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com/" [R=301,L]
 
 ErrorDocument 404 /?page=404
