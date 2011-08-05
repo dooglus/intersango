@@ -80,8 +80,9 @@
     required in your account. Regardless in the absolute worst case
     scenario this service will never cost the user more than $5.00 (or
     BTC equivalent) per month. In the event the funds are not
-    available in the user account immediate suspension of the service
-    will take effect, You can optout of the service at any time, by
+    available in the user account on the 1st of the month, your
+    account will revert back to regular "One Factor" authentification
+    immediately.  You can opt out of the service at any time by
     contacting us.
 </p>
 <p>
