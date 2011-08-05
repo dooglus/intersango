@@ -190,11 +190,16 @@ Australia <br />
 <div class='content_box'>
 <h3>Fees and Comissions</h3>
 <p>
+<?php
+if (commission_percentage_for_aud() == 0 && commission_percentage_for_btc() == 0)
+    echo "All trades are free of commission\n";
+else { ?>
     In order to pay for server space, bandwidth, programmers,
-    designers, and other costs, World Bitcoin Exchange imposes a 0.6%
-    (capped at 0.25AUD when buying AUD) 0.1% (capped at 0.025BTC when
-    buying BTC) fee on every transaction performed by all users of the
-    website.
+    designers, and other costs, World Bitcoin Exchange imposes fees on
+    every transaction performed by all users of the website, as
+    follows:
+<?php show_commission_rates();
+} ?>
 </p>
 </div>
 

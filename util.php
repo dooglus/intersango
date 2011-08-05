@@ -314,6 +314,25 @@ function get_time_text()
     return $row['time'];
 }
 
+function show_commission_rates()
+{
+    echo "<blockquote>\n";
+
+    if (commission_percentage_for_btc() == 0)
+        echo "<p>buying BTC is free of commission</p>\n";
+    else
+        echo "<p>", commission_percentage_for_btc(), "%",
+            " (capped at ", commission_cap_in_btc(), " BTC) when buying BTC</p>\n";
+
+    if (commission_percentage_for_aud() == 0)
+        echo "<p>buying AUD is free of commission</p>\n";
+    else
+        echo "<p>", commission_percentage_for_aud(), "%",
+            " (capped at ", commission_cap_in_aud(), " AUD) when selling BTC</p>\n";
+
+    echo "</blockquote>\n";
+}
+
 function take_commission($amount, $curr_type, $orderid)
 {
     add_funds(1, $amount, $curr_type);
