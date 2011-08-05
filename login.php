@@ -103,7 +103,7 @@ try {
 
             if ($use_duo) {
                 $sig_request = Duo::signRequest(IKEY, SKEY, AKEY, $oidlogin); ?>
-    <script src="Duo-Web-v1.bundled.min.js"></script>
+    <script src="js/Duo-Web-v1.bundled.min.js"></script>
     <script>
         Duo.init({'host': <?php echo "'" . HOST . "'"; ?>,
                   'post_action': '?page=login',
