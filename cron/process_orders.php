@@ -10,10 +10,14 @@ function b_query($query)
 
 # we have two orders which have matched.  one of them partially fills the other
 # refer to them as 'partial' and 'filled'
-function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_type,
-                $partial_orderid, $partial_uid, $amount_from_partial, $partial_type)
+function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_type,  $old_filled_commission,
+                $partial_orderid, $partial_uid, $amount_from_partial, $partial_type, $old_partial_commission)
 {
-    echo "    pacman: order $partial_orderid (user $partial_uid) is filling order $filled_orderid (user $filled_uid) by giving $amount_from_partial $partial_type for $amount_from_filled $filled_type\n\n";
+    echo "    pacman: order $partial_orderid (user $partial_uid, already paid $old_partial_commission) is filling\n";
+    echo "            order $filled_orderid (user $filled_uid, already paid $old_filled_commission)\n";
+    echo "            by giving ",
+        internal_to_numstr($amount_from_partial), " $partial_type for ",
+        internal_to_numstr($amount_from_filled), " $filled_type\n\n";
 
     # close order that's being filled
     $query = "
@@ -58,11 +62,27 @@ function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_ty
         ";
     b_query($query);
 
-    # perform funding of both accounts
-    add_funds($filled_uid, $amount_from_partial, $partial_type);
-    add_funds($partial_uid, $amount_from_filled, $filled_type);
+    // calculate commission
+    //   partial_commission is the commission paid on the money received by the partially filled order,
+    //     ie. on the money received from the filled order
+    $partial_commission = commission_on_type($amount_from_filled,  $filled_type,  $old_partial_commission);
+    $filled_commission  = commission_on_type($amount_from_partial, $partial_type, $old_filled_commission);
 
-    create_record($filled_orderid, $amount_from_filled, $partial_orderid, $amount_from_partial);
+    // calculate amount remaining after commission
+    $partial_minus_commission = gmp_strval(gmp_sub($amount_from_partial, $filled_commission));
+    $filled_minus_commission  = gmp_strval(gmp_sub($amount_from_filled,  $partial_commission));
+
+    // perform funding of both accounts
+    add_funds($filled_uid,  $partial_minus_commission, $partial_type);
+    add_funds($partial_uid, $filled_minus_commission,  $filled_type);
+
+    // take the commission
+    take_commission($filled_commission,  $partial_type, $filled_orderid);
+    take_commission($partial_commission, $filled_type,  $partial_orderid);
+
+    // record the transaction
+    create_record($filled_orderid,  $amount_from_filled,  $partial_commission,
+                  $partial_orderid, $amount_from_partial, $filled_commission);
 }
 
 function fulfill_order($our_orderid)
@@ -117,8 +137,8 @@ function fulfill_order($our_orderid)
             $them->new_want = gmp_strval(gmp_div($right, $them->initial_amount));
             echo "    we swallow them; they can afford {$them->new_want} from us\n";
 
-            pacman($them->orderid, $them->uid, $them->amount,   $them->type,
-                   $our->orderid,  $our->uid,  $them->new_want, $our->type);
+            pacman($them->orderid, $them->uid, $them->amount,   $them->type, $them->commission,
+                   $our->orderid,  $our->uid,  $them->new_want, $our->type,  $our->commission);
 
             # re-update as still haven't finished...
             # info needed for any further transactions
@@ -133,8 +153,8 @@ function fulfill_order($our_orderid)
             $our->new_want = gmp_strval(gmp_div($left, $them->initial_want_amount));
             echo "    they swallow us; we can afford {$our->new_want} from them\n";
 
-            pacman($our->orderid,  $our->uid,  $our->amount,   $our->type,
-                   $them->orderid, $them->uid, $our->new_want, $our->want_type);
+            pacman($our->orderid,  $our->uid,  $our->amount,   $our->type,      $our->commission,
+                   $them->orderid, $them->uid, $our->new_want, $our->want_type, $them->commission);
             break;
         }
     }
@@ -191,6 +211,18 @@ function process()
     do_query("UNLOCK TABLES");
 }
 
-process();
-
+try {
+    process();
+}
+catch (Error $e) {
+    report_exception($e, SEVERITY::ERROR);
+    // Same as below, but flag + log this for review,
+    echo "\nError: \"{$e->getTitle()}\"\n  {$e->getMessage()}\n";
+}
+catch (Problem $e) {
+    echo "\nProblem: \"{$e->getTitle()}\"\n  {$e->getMessage()}\n";
+}
+catch (Exception $e) {
+    echo "\nException: \"{$e->getTitle()}\"\n  {$e->getMessage()}\n";
+}
 ?>

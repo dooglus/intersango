@@ -8,20 +8,25 @@ class BASE_CURRENCY
     const B = 1;
 }
 
-function create_record($our_orderid, $our_amount, $them_orderid, $them_amount)
+function create_record($our_orderid,  $our_amount,  $our_commission,
+                       $them_orderid, $them_amount, $them_commission)
 {
-    # record keeping
+    // record keeping
     $query = "
         INSERT INTO transactions (
             a_orderid,
             a_amount,
+            a_commission,
             b_orderid,
-            b_amount
+            b_amount,
+            b_commission
         ) VALUES (
             '$our_orderid',
             '$our_amount',
+            '$our_commission',
             '$them_orderid',
-            '$them_amount'
+            '$them_amount',
+            '$them_commission'
         );
     ";
     do_query($query);
@@ -111,12 +116,7 @@ function sync_to_bitcoin($uid)
 {
     $bitcoin = connect_bitcoin();
     $balance = $bitcoin->getbalance($uid, confirmations_for_deposit());
-    #$query = "
-    #    UPDATE purses
-    #    SET amount = amount + '$balance'
-    #    WHERE uid='$uid' AND type='BTC';
-    #";
-    #do_query($query);
+
     if (gmp_cmp($balance, '0') > 0) {
         $bitcoin->move($uid, '', $balance);
         $query = "
@@ -175,7 +175,7 @@ function has_enough($amount, $curr_type)
 
 class OrderInfo
 {
-    public $orderid, $uid, $initial_amount, $amount, $type, $initial_want_amount, $want_amount, $want_type, $status, $timest, $processed;
+    public $orderid, $uid, $initial_amount, $amount, $type, $initial_want_amount, $want_amount, $want_type, $commission, $status, $timest, $processed;
 
     public function __construct($row)
     {
@@ -187,6 +187,7 @@ class OrderInfo
         $this->initial_want_amount = $row['initial_want_amount'];
         $this->want_amount = $row['want_amount'];
         $this->want_type = $row['want_type'];
+        $this->commission = $row['commission'];
         $this->status = $row['status'];
         $this->timest = $row['timest_format'];
         $this->processed = (bool)$row['processed'];
@@ -210,13 +211,7 @@ function fetch_order_info($orderid)
 
 function deduct_funds($amount, $curr_type)
 {
-    $uid = user_id();
-    $query = "
-        UPDATE purses
-        SET amount = amount - '$amount'
-        WHERE uid='$uid' AND type='$curr_type';
-    ";
-    do_query($query);
+    add_funds(user_id(), -$amount, $curr_type);
 }
 
 function curr_supported_check($curr_type)
@@ -304,5 +299,65 @@ function get_time_text()
     return $row['time'];
 }
 
-?>
+function take_commission($amount, $curr_type, $orderid)
+{
+    add_funds(1, $amount, $curr_type);
 
+    $result = do_query("
+        SELECT COUNT(*) AS count
+        FROM orderbook
+        WHERE orderid='$orderid'
+        AND want_type = '$curr_type'
+    ");
+
+    $row = mysql_fetch_assoc($result);
+    if ($row['count'] != 1)
+        throw new Error('Error taking commission', "Mismatched currency types");
+
+    $result = do_query("
+        UPDATE orderbook
+        SET commission = commission + $amount
+        WHERE orderid='$orderid'
+        AND want_type = '$curr_type'
+    ");
+}
+
+function commission($amount, $percentage, $cap, $already_paid)
+{
+    $commission = gmp_div(gmp_mul((string)$amount,
+                                  numstr_to_internal((string)$percentage)),
+                          numstr_to_internal(100));
+
+    // reduce the cap by the amount we already paid, but no lower than 0
+    $cap = max(gmp_strval(gmp_sub(numstr_to_internal($cap), $already_paid)), 0);
+    return min(gmp_strval($commission), $cap);
+}
+
+function commission_on_aud($aud, $already_paid)
+{
+    return commission($aud,
+                      commission_percentage_for_aud(),
+                      commission_cap_in_aud(),
+                      $already_paid);
+}
+
+function commission_on_btc($btc, $already_paid)
+{
+    return commission($btc,
+                      commission_percentage_for_btc(),
+                      commission_cap_in_btc(),
+                      $already_paid);
+}
+
+// calculate and return the commission to pay on $amount of type $curr_type if $already_paid has already been paid on this order
+function commission_on_type($amount, $curr_type, $already_paid)
+{
+    if ($curr_type == 'AUD')
+        return commission_on_aud($amount, $already_paid);
+
+    if ($curr_type == 'BTC')
+        return commission_on_btc($amount, $already_paid);
+
+    throw new Error('Unknown currency type', "Type $curr_type isn't AUD or BTC");
+}
+?>

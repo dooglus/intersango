@@ -194,6 +194,9 @@ tr.me {
     // color: #f00;
     font-weight: bold;
 }
+blockquote {
+    margin-left: 20px;
+}
 
 /*---------------------------------
 LINKS
