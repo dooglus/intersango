@@ -82,7 +82,22 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
 
 function is_logged_in()
 {
-    return isset($_SESSION['uid']);
+    if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin']))
+        return false;
+
+    // just having a 'uid' in the session isn't enough to be logged in
+    // check that the oidlogin matches the uid in case database has been reset
+    if (has_results(do_query("
+        SELECT uid
+        FROM users
+        WHERE oidlogin = '{$_SESSION['oidlogin']}'
+        AND uid = '{$_SESSION['uid']}'
+    ")))
+        return true;
+
+    session_destroy();
+    header('Location: .');
+    exit();
 }
 
 function user_id()
