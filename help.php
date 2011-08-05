@@ -40,7 +40,7 @@
 </p>
 <p>
     We are offering 5 ways to authenticate your Intersango login. All
-    are optional, if you do not wish to activate 2
+    are optional; if you do not wish to activate 2
     factor-authentication it won&#8217;t be required. You can activate
     this by (clicking Security Use two-factor authentification in the
     right menu panel.)
