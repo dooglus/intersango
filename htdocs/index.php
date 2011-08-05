@@ -27,11 +27,10 @@ if($page == 'logout') {
 else {
     ob_start();
     require 'header.php';
+    require_once "$abspath/util.php";
     include "$abspath/switcher.php";
-    if (isset($_SESSION['uid']) && $_SESSION['uid'])
-        switcher($page, true);
-    else
-        switcher($page, false);
+    switcher($page, is_logged_in());
+
     # actually re-checks whether you're logged in or not because
     # switcher() can log you in and set $_SESSION there
     require 'footer.php';
