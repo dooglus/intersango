@@ -69,6 +69,10 @@ function switcher($page, $loggedin)
                 include("$abspath/404.php");
                 break;  
 
+            case 'test':
+                include("$abspath/test.php");
+                break;  
+
             case 'trade':
                 include("$abspath/trade.php");
                 break;  
