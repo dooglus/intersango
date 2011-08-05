@@ -11,10 +11,10 @@ function confirmations_for_deposit() { return 4; }
 function timezone() { return "Australia/Queensland"; }
 
 // percentage commission to charge on each AUD received
-function commission_percentage_for_aud() { return '0.60'; }
+function commission_percentage_for_aud() { return '0.6'; }
 
 // percentage commission to charge on each BTC received
-function commission_percentage_for_btc() { return '0.10'; }
+function commission_percentage_for_btc() { return '0.1'; }
 
 // commission cap, in AUD, when buying AUD
 function commission_cap_in_aud() { return '0.25'; }
