@@ -116,6 +116,29 @@
             </p>
         </div>
 
+        <div class='content_box'>
+            <h3>Commission</h3>
+<?php
+    if (commission_percentage_for_aud() == 0 && commission_percentage_for_btc() == 0)
+        echo "<p>All trades are free of commission</p>\n";
+    else {
+        echo "<p>Commission is charged at the following rates:</p>\n";
+        echo "<blockquote>\n";
+        if (commission_percentage_for_aud() == 0)
+            echo "<p>buying AUD is free of commission</p>\n";
+        else
+            echo "<p>", commission_percentage_for_aud(), "%",
+                " capped at ", commission_cap_in_aud(), " AUD when buying AUD</p>\n";
+        if (commission_percentage_for_btc() == 0)
+            echo "<p>buying BTC is free of commission</p>\n";
+        else
+            echo "<p>", commission_percentage_for_btc(), "%",
+                " capped at ", commission_cap_in_btc(), " BTC when buying BTC</p>\n";
+        echo "</blockquote>\n";
+    }
+?>
+        </div>
+
 <div class='content_box'>
 <h3>Contact info</h3>
 <p>support@Intersango.com.au</p>
