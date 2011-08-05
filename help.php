@@ -7,6 +7,26 @@
 </div>
 
 <div class='content_box'>
+<h3>Security - Two Factor Authentication</h3>
+<p>Security is always paramount on the web and even more important with Bitcoin. The “ease of sending large funds globally” unfortunately has the potential to become the “ease of stealing large funds globally”. With this in mind World Bitcoin Exchange set out to find well qualified security experts. Our search led us to Dug Song, Jon Oberheide and their team at Duo Security.</p>
+<p><strong>How this will work for our users:</strong><br /> 
+For detailed information visit their site at <a href="http://www.duosecurity.com/docs/authentication" target="_blank">http://www.duosecurity.com/docs/authentication</a><br /> 
+We are offering 5 ways to authenticate your Intersango login. All are optional, if you do not wish to activate 2 factor-authentication it won&#8217;t be required. You can activate this by (clicking Security Use two-factor authentification in the right menu panel.)<br /> 
+<strong><br /> 
+Phone callback</strong> – You will receive a call, push a predesignated key to authenticate<br /> 
+<strong>Passcodes via SMS </strong>– Duo will send you a set of passcodes used to login<br /> 
+<strong>Passcodes via Duo Mobile</strong> - Your phone will generate a passcode (works offline)<br /> 
+<strong>Duo Push</strong> – Your phone will be sent a request when you try to log in<br /> 
+<strong>Hard tokens</strong> – We can ship you a physical token that will be used to login for onetime fee of $20</p>
+<p>The beauty of their system is how quick and simple it is to both implement and use. Within minutes you can be up and running. Additionally there are even more advanced security features for Duo Push. Selecting Duo Push will &#8220;push&#8221; a login request to your phone. You can review the specifics of the request (integration, location, etc.) and then approve or deny it instantly. Click here for a quick 30 second video showcasing the various methods: <a href="http://www.youtube.com/watch?v=7N8pBVAWLwU" target="_blank">http://www.youtube.com/watch?v=7N8pBVAWLwU</a><br /> 
+<strong><br /> 
+What will this enhanced security feature cost the user?</strong><br /> 
+For the first month absolutely nothing. After you have evaluated the system in our live environment, to continue the service we deduct a small fee of $5.00 (or BTC equivalent) on the 1st of every month. If we can justify charging less we will. To continue receiving this service a minimum of $5.00 (or BTC equivalent) is required in your account. Regardless in the absolute worst case scenario this service will never cost the user more than $5.00 (or BTC equivalent) per month. In the event the funds are not available in the user account immediate suspension of the service will take effect, You can optout of the service at any time, by contacting us.
+You can add additional phone numbers or remove a phone for a small fee of $1.00 (or BTC equivalent) by contacting us.</p> 
+<p>Your feedback is greatly appreciated as always. We would like to continue to provide you a safe and trusted place to exchange Bitcoins. Questions please email us at <a href="mailto:support@intersango.com.au">support@intersango.com.au</a></p> 
+					</div>
+
+<div class='content_box'>
 <h3>Information</h3>
 <p><b>We are now accepting deposits from the following STATES of Australia:</b></p>
 
@@ -26,7 +46,7 @@
 <p>Recently we partnered and acquired the services of one of bitcoin's few active developers<a href="mailto:dooglus@gmail.com"> Chris Moore</a> to install the exchange increasing security and user experience. You can see Chris Moore's updates here <a href="https://github.com/dooglus/intersango">Github</a> under the name dooglus where Chris has a strong reputation amongst other exchanges on the market. 
 <p>Amir Taaki developed the open source software for: this exchange, a bitcoin stock market exchange, a bitcoin client (Spesmilo) and others.</p>
 <p>For a list of Amir Taaki's current projects please visit <a href="http://bitcoinconsultancy.com/wiki/index.php/Main_Page">Bitcoin Consultancy's wiki page</a>.</p>
-<p>World Bitcoin Exchange is my decision to provide those living in Australia with a free exchange in order to promote awareness in Australia and allow Australian residents to not miss out on the benefits of using bitcoins and being part of this great social change!</p>
+<p>World Bitcoin Exchange is my decision to provide those living in Australia with an exchange in order to promote awareness in Australia and allow Australian residents to not miss out on the benefits of using bitcoins and being part of this great social change!</p>
 </div>
 
 <div class='content_box'>
@@ -44,7 +64,19 @@ Queensland <br />
 Australia <br />
 4208
 </p>
-<p>World Bitcoin Exchange is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions are free.</p>
+<p>World Bitcoin Exchange is currently operating unlicensed. We are seeking legitimisation. Until then, all transactions have a low commission structure.</p>
+</div>
+
+<div class='content_box'>
+<h3>Fees and Comissions</h3>
+<p>In order to pay for server space, bandwidth, programmers, designers, and other costs, World Bitcoin Exchange imposes a 0.6% (capped at 0.25AUD when buying AUD) 0.1% (capped at 0.025BTC when buying BTC) fee on every transaction performed by all users of the website.</p>
+</div>
+
+<div class='content_box'>
+<h3>Account Limits</h3>
+<p><strong>Daily Bitcoin transfer limits:</strong> Default Bitcoin withdrawal limit is 500 coins per day. This limit is in place to protect users in case their account is compromised. If you would like to increase this daily Bitcoin withdrawal limit for your account, please contact support.</p>
+<p><strong>Daily money transfer limits:</strong> Unlike Bitcoins, flow of money is heavily regulated by law. So the maximum amount you can transfer is capped at AUD 500 per day. Withdrawals and deposits both count towards this limit</p>
+<p>Default maximum account size limit is AUD 9,000; if you would like to raise this limit, please submit a Request to Support and we will guide you through the AML/CFT process as mandated under the The Anti-Money Laundering and Counter-Terrorism Financing Act 2006 (AML/CTF Act) received Royal Assent on 12 December 2006</p>
 </div>
 
 <div class='content_box'>
