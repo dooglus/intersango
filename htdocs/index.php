@@ -31,7 +31,7 @@ else {
     include "$abspath/switcher.php";
     switcher($page, is_logged_in());
     // actually re-checks whether you're logged in or not because
-    # switcher() can log you in and set $_SESSION there
+    // switcher() can log you in and set $_SESSION there
     require "$abspath/footer.php";
     ob_end_flush();
 }
