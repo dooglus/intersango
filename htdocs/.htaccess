@@ -5,14 +5,15 @@ RewriteCond %{HTTP_HOST} ^(www.)?bitaussie.com$                    [OR]
 RewriteCond %{HTTP_HOST} ^(www.)?intersango.com.au$                [OR]
 RewriteCond %{HTTP_HOST} ^(www.)?australianbitcoinexchange.com$    [OR]
 RewriteCond %{HTTP_HOST} ^(www.)?australianbitcoinexchange.com.au$
-RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com/" [R=301,L]
+RewriteRule ^(.*)$ "https://worldbitcoinexchange.com/$1" [R=301,L]
 
 # make sure worldbitcoinexchange.com is using https
 RewriteCond %{HTTPS} off
 RewriteCond %{HTTP_HOST} ^worldbitcoinexchange.com$
-RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com/" [R=301,L]
+RewriteRule ^(.*)$ "https://worldbitcoinexchange.com/$1" [R=301,L]
 
+# get rid of the www. part
 RewriteCond %{HTTP_HOST} ^www.worldbitcoinexchange.com$
-RewriteRule ^/?$ "https\:\/\/worldbitcoinexchange\.com/" [R=301,L]
+RewriteRule ^(.*)$ "https://worldbitcoinexchange.com/$1" [R=301,L]
 
 ErrorDocument 404 /?page=404
