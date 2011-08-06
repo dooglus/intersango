@@ -4,20 +4,8 @@
 define('_we_are_one', 1);
 session_start();
 
-require_once 'config.php';
-
-function logout()
-{
-    session_destroy();
-
-    // expire the session cookie
-    if (ini_get("session.use_cookies")) {
-        $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 36*60*60, $params["path"],   $params["domain"], $params["secure"], $params["httponly"]);
-    }
-    header('Location: .');
-    exit();
-}
+require_once "config.php";
+require_once "$abspath/util.php";
 
 // change the session ID regularly
 if (!isset($_SESSION['creation_time'])) {
@@ -56,7 +44,6 @@ if($page == 'logout')
 ob_start();
 
 require_once "$abspath/header.php";
-require_once "$abspath/util.php";
 include "$abspath/switcher.php";
 
 switcher($page, is_logged_in());

@@ -7,7 +7,6 @@
     <script type='text/javascript' src='js/jquery-1.4.4.min.js'></script>
     <script type='text/javascript' src='js/exchanger.js'></script>
 <?php 
-        require_once "$abspath/util.php";
         $currencies = array('BTC', 'AUD');
         $rates = array();
         foreach ($currencies as $curr_a) {

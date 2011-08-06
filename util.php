@@ -80,6 +80,19 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
     return array($total_amount, $total_want_amount, $rate);
 }
 
+function logout()
+{
+    session_destroy();
+
+    // expire the session cookie
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 36*60*60, $params["path"],   $params["domain"], $params["secure"], $params["httponly"]);
+    }
+    header('Location: .');
+    exit();
+}
+
 function is_logged_in()
 {
     if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin']))
