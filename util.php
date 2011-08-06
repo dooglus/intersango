@@ -130,15 +130,20 @@ function get($key)
 function sync_to_bitcoin($uid)
 {
     $bitcoin = connect_bitcoin();
-    $balance = $bitcoin->getbalance($uid, confirmations_for_deposit());
+    try {
+        $balance = $bitcoin->getbalance($uid, confirmations_for_deposit());
 
-    if (gmp_cmp($balance, '0') > 0) {
-        $bitcoin->move($uid, '', $balance);
-        $query = "
+        if (gmp_cmp($balance, '0') > 0) {
+            $bitcoin->move($uid, '', $balance);
+            $query = "
             INSERT INTO requests (req_type, uid, amount, curr_type)
             VALUES ('DEPOS', '$uid', '$balance', 'BTC');
         ";
-        do_query($query);
+            do_query($query);
+        }
+    } catch (Exception $e) {
+        if ($e->getMessage() != 'Unable to connect.')
+            throw $e;
     }
 }
 
