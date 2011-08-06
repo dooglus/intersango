@@ -1,7 +1,60 @@
 <?php
 require_once "util.php";
 
-echo "<div class='content_box'>\n";
-echo "<h3>Put test code here...</h3>\n";
+function test_aud_commission($aud, $already_paid = '0')
+{
+    $commission = commission_on_aud(numstr_to_internal($aud), numstr_to_internal($already_paid));
+    echo "<li>commission selling BTC for <b>$aud</b> AUD is <b>", internal_to_numstr($commission), "</b> AUD if $already_paid was already paid<br/>\n";
+}
 
+function test_btc_commission($btc, $already_paid = '0')
+{
+    $commission = commission_on_btc(numstr_to_internal($btc), numstr_to_internal($already_paid));
+    echo "<li>commission buying <b>$btc</b> BTC is <b>", internal_to_numstr($commission), "</b> AUD if $already_paid was already paid<br/>\n";
+}
+
+echo "<div class='content_box'>\n";
+echo "<h3>Rates</h3>\n";
+show_commission_rates();
+echo "</div>\n";
+
+echo "<div class='content_box'>\n";
+echo "<h3>Commission buying BTC</h3>\n";
+echo "<p>rate is ", commission_percentage_for_btc(), "%",
+    " and cap is ", commission_cap_in_btc(), " BTC</p>\n";
+echo "<ul>\n";
+test_btc_commission(.0001, '1');
+test_btc_commission(.0001, '0.012');
+test_btc_commission(.0001);
+test_btc_commission(.001);
+test_btc_commission(.01);
+test_btc_commission(.1);
+test_btc_commission(1);
+test_btc_commission(10);
+test_btc_commission(100);
+test_btc_commission(1000);
+test_btc_commission(10000);
+test_btc_commission(10000, '0.012');
+test_btc_commission(10000, '1');
+echo "</ul></div>\n";
+
+echo "<div class='content_box'>\n";
+echo "<h3>Commission selling BTC</h3>\n";
+echo "<p>rate is ", commission_percentage_for_aud(), "%",
+    " and cap is ", commission_cap_in_aud(), " AUD</p>\n";
+echo "<ul>\n";
+test_aud_commission(.0001, '1');
+test_aud_commission(.0001, '0.012');
+test_aud_commission(.0001);
+test_aud_commission(.001);
+test_aud_commission(.01);
+test_aud_commission(.1);
+test_aud_commission(1);
+test_aud_commission(10);
+test_aud_commission(100);
+test_aud_commission(1000);
+test_aud_commission(10000);
+test_aud_commission(10000, '0.012');
+test_aud_commission(10000, '1');
+echo "</ul></div>\n";
 ?>
