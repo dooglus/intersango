@@ -1,5 +1,5 @@
 <?php
-require '../util.php';
+require_once '../util.php';
 
 function summa($type)
 {

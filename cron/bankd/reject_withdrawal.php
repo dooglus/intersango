@@ -1,5 +1,5 @@
 <?php
-require '../../util.php';
+require_once '../../util.php';
 
 if (count($argv) < 3) {
     echo "reject_withdrawal [request ID (reqid)] [person name]\n";

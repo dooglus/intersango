@@ -55,7 +55,7 @@ if($page == 'logout')
 // turn output buffering on
 ob_start();
 
-require "$abspath/header.php";
+require_once "$abspath/header.php";
 require_once "$abspath/util.php";
 include "$abspath/switcher.php";
 
@@ -76,7 +76,7 @@ if (0) {
 
 // actually re-checks whether you're logged in or not because
 // switcher() can log you in and set $_SESSION there
-require "$abspath/footer.php";
+require_once "$abspath/footer.php";
 
 // send the contents of the output buffer
 ob_end_flush();

@@ -1,6 +1,6 @@
 <?php
 require_once "../config.php";
-require "$abspath/util.php";
+require_once "$abspath/util.php";
 
 echo '[';
 $query = "

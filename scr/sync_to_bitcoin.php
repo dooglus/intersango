@@ -1,6 +1,6 @@
 <?php
-require '../errors.php';
-require '../util.php';
+require_once '../errors.php';
+require_once '../util.php';
 if (count($argv) < 2) {
     echo "need account name to synchronise\n";
     exit(-1);

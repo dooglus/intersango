@@ -1,7 +1,7 @@
 <?php
 $abspath = '/home7/worldbit/programs/intersango';
 $urlroot = '/';
-require "$abspath/errors.php";
+require_once "$abspath/errors.php";
 enable_errors();
 
 // how many minutes can a user be idle for before they're automatically logged out
