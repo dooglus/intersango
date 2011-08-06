@@ -62,23 +62,30 @@ function bitcoin_withdraw($uid, $amount, $curr_type)
 {
     $addy = post('address');
     $bitcoin = connect_bitcoin();
-    $validaddy = $bitcoin->validateaddress($addy);
-    if (!$validaddy['isvalid'])
-        throw new Problem('Bitcoin says no', 'That address you supplied was invalid.');
-    syslog(LOG_NOTICE, "address=$addy");
-    endlog();
+    try {
+        $validaddy = $bitcoin->validateaddress($addy);
+        if (!$validaddy['isvalid'])
+            throw new Problem('Bitcoin says no', 'That address you supplied was invalid.');
+        syslog(LOG_NOTICE, "address=$addy");
+        endlog();
 
-    $query = "
-        INSERT INTO requests (req_type, uid, amount, curr_type)
-        VALUES ('WITHDR', '$uid', TRUNCATE('$amount', -6), '$curr_type');
-    ";
-    do_query($query);
-    $reqid = mysql_insert_id();
-    $query = "
-        INSERT INTO bitcoin_requests (reqid, addy)
-        VALUES ('$reqid', '$addy');
-    ";
-    do_query($query);
+        $query = "
+            INSERT INTO requests (req_type, uid, amount, curr_type)
+            VALUES ('WITHDR', '$uid', TRUNCATE('$amount', -6), '$curr_type');
+        ";
+        do_query($query);
+        $reqid = mysql_insert_id();
+        $query = "
+            INSERT INTO bitcoin_requests (reqid, addy)
+            VALUES ('$reqid', '$addy');
+        ";
+        do_query($query);
+    } catch (Exception $e) {
+        if ($e->getMessage() != 'Unable to connect.')
+            throw $e;
+        throw new Problem("Sorry...",
+                          "We are currently experiencing trouble connecting to the bitcoin network and so cannot verify that you entered a valid bitcoin address.</p><p>Your withdrawal request has been cancelled.</p><p>Please try again in a few minutes.");
+    }
 }
 
 function save_details($uid, $amount, $curr_type)

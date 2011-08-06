@@ -121,11 +121,12 @@ if ($row) { ?>
     echo "</table></div>";
 }
 
-$bitcoin = connect_bitcoin();
-$needed_conf = confirmations_for_deposit();
-$balance = $bitcoin->getbalance($uid, $needed_conf);
+try {
+    $bitcoin = connect_bitcoin();
+    $needed_conf = confirmations_for_deposit();
+    $balance = $bitcoin->getbalance($uid, $needed_conf);
 
-if ($balance != $bitcoin->getbalance($uid, 0)) { ?>
+    if ($balance != $bitcoin->getbalance($uid, 0)) { ?>
     <div class='content_box'>
     <h3>Pending bitcoin deposits</h3>
     <table class='display_data'>
@@ -143,6 +144,15 @@ if ($balance != $bitcoin->getbalance($uid, 0)) { ?>
                  $balance = $new_balance;
               }
         }
-    echo "</table></div>";
+        echo "</table></div>";
+    }
+} catch (Exception $e) {
+    if ($e->getMessage() != 'Unable to connect.')
+        throw $e;
+    echo "<div class='content_box'>\n";
+    echo "<h3>Pending bitcoin deposits</h3>\n";
+    echo "<p>Normally this area would display any bitcoin deposits you have made that are awaiting confirmations, but we are having trouble connecting to the bitcoin network at the moment, so it doesn't.</p>\n";
+    echo "<p>Please try again in a few minutes.</p>\n";
+    echo "</div>";
 }
 ?>

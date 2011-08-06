@@ -2,7 +2,13 @@
 require_once 'util.php';
 $uid = user_id();
 $bitcoin = connect_bitcoin();
-$addy = $bitcoin->getaccountaddress((string)$uid);
+try {
+    $addy = $bitcoin->getaccountaddress((string)$uid);
+} catch (Exception $e) {
+    if ($e->getMessage() != 'Unable to connect.')
+        throw $e;
+    $addy = '';
+}
 
 $query = "
     SELECT deposref
@@ -46,6 +52,12 @@ $deposref = $row['deposref'];
 
 <div class='content_box'>
     <h3>Deposit BTC</h3>
-    <p>You can deposit to <?php echo $addy; ?></p>
-    <p>It takes <?php echo confirmations_for_deposit(); ?> confirmations before funds are added to your account.</p>
+<?php
+if ($addy) {
+    echo "    <p>You can deposit to <b>$addy</b></p>\n";
+    echo "    <p>The above address is specific to your account.  Each time you deposit, a new address will be generated for you.</p>\n";
+    echo "    <p>It takes ", confirmations_for_deposit(), " confirmations before funds are added to your account.</p>\n";
+} else
+    echo "    <p>We are currently experiencing trouble connecting to the bitcoin network.  Please try again in a few minutes.</p>\n";
+?>
 </div>
