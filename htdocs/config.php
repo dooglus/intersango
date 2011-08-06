@@ -4,6 +4,12 @@ $urlroot = '/';
 require "$abspath/errors.php";
 enable_errors();
 
+// how many minutes can a user be idle for before they're automatically logged out
+function max_idle_minutes_before_logout() { return 60; }
+
+// how often should we change the session id (in minutes)
+function max_session_id_lifetime() { return 10; }
+
 // how many confirmations we need on incoming bitcoin transfers before adding them to the user accounts
 function confirmations_for_deposit() { return 4; }
 
