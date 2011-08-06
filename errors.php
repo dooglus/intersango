@@ -2,7 +2,8 @@
 function enable_errors()
 {
     error_reporting(E_ALL|E_STRICT);
-    ini_set('display_errors', '1');
+    ini_set('display_errors', '0');
+    ini_set('log_errors', '1');
 }
 function disable_errors_if_not_me()
 {
@@ -133,4 +134,3 @@ function reporting_shutdown() {
 
 set_error_handler("reporting_error_handler");
 register_shutdown_function("reporting_shutdown");
-
