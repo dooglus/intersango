@@ -138,7 +138,7 @@ function display_transactions($uid, $orderid)
             echo "        <td></td>\n";
             echo "    </tr>\n";
             echo "    <tr>\n";
-            echo "        <td>$a_total $type</td><td>$b_total $want_type</td><td>$commission_total $want_type (",
+            echo "        <td>$a_total $type</td><td>$b_total $want_type</td><td>$commission_total $want_type<br/>(",
                 sprintf("%.3f", $commission_percent), "%)</td><td>$price</td>\n";
             echo "        <td></td>\n";
             echo "    </tr>\n";
