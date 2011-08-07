@@ -100,10 +100,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid)
     echo "</div>\n";
 }
 
-if (is_logged_in())
-    $uid = user_id();
-else
-    $uid = -1;
+$uid = is_logged_in();
 
 display_double_entry('BTC', 'AUD', BASE_CURRENCY::A, $uid);
 display_double_entry('AUD', 'BTC', BASE_CURRENCY::B, $uid);

@@ -96,21 +96,22 @@ function logout()
 function is_logged_in()
 {
     if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin']))
-        return false;
+        return 0;
 
     // just having a 'uid' in the session isn't enough to be logged in
     // check that the oidlogin matches the uid in case database has been reset
+    $uid = $_SESSION['uid'];
+    $oidlogin = $_SESSION['oidlogin'];
+
     if (has_results(do_query("
         SELECT uid
         FROM users
-        WHERE oidlogin = '{$_SESSION['oidlogin']}'
-        AND uid = '{$_SESSION['uid']}'
+        WHERE oidlogin = '$oidlogin'
+        AND uid = '$uid'
     ")))
-        return true;
+        return $uid;
 
-    session_destroy();
-    header('Location: .');
-    exit();
+    logout();
 }
 
 function user_id()
