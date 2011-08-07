@@ -137,12 +137,12 @@ try {
         </tr>
     <?php
         for ($conf = $needed_conf; $conf >= 0; $conf--) {
-              $new_balance = $bitcoin->getbalance($uid, $conf);
-              if ($balance != $new_balance) {
-                 $diff = gmp_sub($new_balance, $balance);
-                 echo "<tr><td>", internal_to_numstr($diff), "</td><td>$conf</td><td>", $needed_conf - $conf, "</td></tr>\n";
-                 $balance = $new_balance;
-              }
+            $new_balance = $bitcoin->getbalance($uid, $conf);
+            if ($balance != $new_balance) {
+                $diff = gmp_sub($new_balance, $balance);
+                echo "<tr><td>", internal_to_numstr($diff), "</td><td>$conf</td><td>", $needed_conf - $conf, "</td></tr>\n";
+                $balance = $new_balance;
+            }
         }
         echo "</table></div>";
     }
