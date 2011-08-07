@@ -79,13 +79,13 @@ function display_transactions($uid, $orderid)
                 </tr><?php
         }
 
-        $a_total += $a_amount;
-        $b_total += $b_amount;
-        $commission_total += $b_commission;
+        $a_total = gmp_add($a_total, $a_amount);
+        $b_total = gmp_add($b_total, $b_amount);
+        $commission_total = gmp_add($commission_total, $b_commission);
 
-        $commission_percent = internal_to_numstr($b_commission) * 100.0 / internal_to_numstr($b_amount);
+        $commission_percent = bcdiv(bcmul($b_commission, 100), $b_amount, 3);
 
-        $b_amount -= $b_commission;
+        $b_amount = gmp_sub($b_amount, $b_commission);
 
         $a_amount = internal_to_numstr($a_amount);
         $b_amount = internal_to_numstr($b_amount);
@@ -109,9 +109,9 @@ function display_transactions($uid, $orderid)
     }
     if (!$first) {
         if ($orderid != -1 && $count > 1) {
-            $commission_percent = internal_to_numstr($commission_total) * 100.0 / internal_to_numstr($b_total);
+            $commission_percent = bcdiv(bcmul(gmp_strval($commission_total), 100), gmp_strval($b_total), 3);
 
-            $b_total -= $commission_total;
+            $b_total = gmp_sub($b_total, $commission_total);
             $a_total = internal_to_numstr($a_total);
             $b_total = internal_to_numstr($b_total);
             $commission_total = internal_to_numstr($commission_total);
