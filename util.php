@@ -410,7 +410,7 @@ function commission($amount, $percentage, $cap, $already_paid)
                           numstr_to_internal(100));
 
     // reduce the cap by the amount we already paid, but no lower than 0
-    $cap = max(gmp_strval(gmp_sub(numstr_to_internal($cap), $already_paid)), 0);
+    $cap = max(gmp_strval(gmp_sub(numstr_to_internal($cap), $already_paid)), '0');
     return min(gmp_strval($commission), $cap);
 }
 
