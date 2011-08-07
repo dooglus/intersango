@@ -44,7 +44,7 @@ if ($row) { ?>
             <th>Price</th>
             <th>Time</th>
             <th>Status<br/>(% matched)</th>
-            <th></th>
+            <th>Trades</th>
         </tr><?php
     do {
         $orderid = $row['orderid'];
@@ -60,20 +60,20 @@ if ($row) { ?>
         $price = sprintf("%.6f", ($type == 'BTC') ? $initial_want_amount / $initial_amount : $initial_amount / $initial_want_amount);
         $percent_complete = sprintf("%.0f", ($initial_amount - $amount) * 100.0 / $initial_amount);
         $trade_count = count_transactions($orderid);
-        echo "    <tr>\n";
+        echo "    ", active_table_row("active", "?page=view_order&orderid=$orderid"), "\n";
         echo "        <td>$initial_amount&nbsp;$type</td>\n";
         echo "        <td>$initial_want_amount&nbsp;$want_type</td>\n";
         echo "        <td>$price</td>\n";
         echo "        <td>$timest</td>\n";
         echo "        <td>$status<br/>($percent_complete%)</td>\n";
-        echo "        <td><a href='?page=view_order&orderid=$orderid'>View<br/>($trade_count trade", $trade_count != 1 ? "s" : "", ")</a></td>\n";
+        echo "        <td>$trade_count</td>\n";
         echo "    </tr>\n";
     } while ($row = mysql_fetch_assoc($result));
     echo "</table></div>";
 }
 
 # also used when you view an order
-display_transactions($uid, -1);
+display_transactions($uid, 0);
 
 $query = "
     SELECT

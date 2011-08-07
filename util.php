@@ -207,6 +207,15 @@ function has_enough($amount, $curr_type)
     return has_results($result);
 }
 
+function active_table_row($class, $url)
+{
+    printf ("<tr %s %s %s %s>",
+            "class=\"$class\"",
+            'onmouseover="style.backgroundColor=\'#8ae3bf\';"',
+            'onmouseout="style.backgroundColor=\'#7ad3af\';"',
+            "onclick=\"document.location='$url';\"");
+}
+
 class OrderInfo
 {
     public $orderid, $uid, $initial_amount, $amount, $type, $initial_want_amount, $want_amount, $want_type, $commission, $status, $timest, $processed;
