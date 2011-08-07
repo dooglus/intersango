@@ -6,17 +6,17 @@ require_once 'view_util.php';
 if (!isset($_SESSION['uid']))
     throw new Error('Denied', 'Go away.');
 
-echo "   <div class='content_box'>";
-echo '<h3>Private user info</h3>';
+echo "   <div class='content_box'>\n";
+echo "<h3>Private user info</h3>\n";
 # main info
-echo '<p>You are logged in.</p>';
+echo "<p>You are logged in.</p>\n";
 $uid = $_SESSION['uid'];
 $oidlogin = $_SESSION['oidlogin'];
-echo '<p>User ID: '.$uid.'</p>';
-echo '<p>OpenID: '.$oidlogin.'</p>';
+echo "<p>User ID: $uid</p>\n";
+echo "<p>OpenID: $oidlogin</p>\n";
 show_balances();
-echo '<p>Balances above do not include funds in the orderbook.</p>';
-echo '</div>';
+echo "<p>Balances above do not include funds in the orderbook.</p>\n";
+echo "</div>\n";
 
 $query = "
     SELECT
