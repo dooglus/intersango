@@ -4,77 +4,76 @@ defined('_we_are_one') || die('Direct access not allowed.');
 
 function switcher($page, $loggedin)
 {
-    global $abspath;
     try {
         switch($page) {
             case 'profile':
                 if ($loggedin)
-                    include("$abspath/profile.php");
+                    include("profile.php");
                 else
                     log_badpage($page);
                 break;
 
             case 'view_order':
                 if ($loggedin)
-                    include("$abspath/view_order.php");
+                    include("view_order.php");
                 else
                     log_badpage($page);
                 break;
 
             case 'view_request':
                 if ($loggedin)
-                    include("$abspath/view_request.php");
+                    include("view_request.php");
                 else
                     log_badpage($page);
                 break;
 
             case 'login':
                 if (!$loggedin)
-                    include("$abspath/login.php");
+                    include("login.php");
                 else
                     log_badpage($page);
                 break;
 
             case 'deposit':
-                include("$abspath/deposit.php");
+                include("deposit.php");
                 break;
 
             case 'withdraw':
-                include("$abspath/withdraw.php");
+                include("withdraw.php");
                 break;
 
             case 'help':
-                include("$abspath/help.php");
+                include("help.php");
                 break;
 
             case 'orderbook':
-                include("$abspath/orderbook.php");
+                include("orderbook.php");
                 break;
 
             case 'place_order':
                 if ($loggedin)
-                    include("$abspath/place_order.php");
+                    include("place_order.php");
                 else
                     log_badpage($page);
                 break;
 
             case 'turn_on_duo':
                 if ($loggedin)
-                    include("$abspath/turn_on_duo.php");
+                    include("turn_on_duo.php");
                 else
                     log_badpage($page);
                 break;
 
             case '404':
-                include("$abspath/404.php");
+                include("404.php");
                 break;  
 
             case 'test':
-                include("$abspath/test.php");
+                include("test.php");
                 break;  
 
             case 'trade':
-                include("$abspath/trade.php");
+                include("trade.php");
                 break;  
 
             default:
