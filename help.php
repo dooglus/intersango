@@ -207,7 +207,7 @@ else { ?>
 <h3>Account limits</h3>
 <p>
     <strong>Daily Bitcoin transfer limits:</strong> Default Bitcoin
-    withdrawal limit is 500 coins per day. This limit is in place to
+    withdrawal limit is 100 coins per day. This limit is in place to
     protect users in case their account is compromised. If you would
     like to increase this daily Bitcoin withdrawal limit for your
     account, please contact support.
