@@ -32,6 +32,9 @@ function show_links()
     show_link                ('help',         'Help',         'Seek support'                   );
     if ($loggedin) show_link ('logout',       'Logout',       'End this session'               );
 }
+
+function show_footer()
+{
 ?>
                 </div>
             </div>
@@ -47,3 +50,4 @@ function show_links()
     </div>-->
 </body>
 </html>
+<?php } ?>

@@ -1,3 +1,8 @@
+<?php
+
+function show_header()
+{
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,3 +48,4 @@
         <div id='links_bg'>
             <div id='content'>
                 <div id='content_sideshadow'>
+<?php } ?>

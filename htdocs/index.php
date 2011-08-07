@@ -4,8 +4,14 @@
 define('_we_are_one', 1);
 session_start();
 
+// turn output buffering on
+ob_start();
+
 require_once "config.php";
 require_once "$abspath/util.php";
+require_once "$abspath/header.php";
+require_once "$abspath/switcher.php";
+require_once "$abspath/footer.php";
 
 // change the session ID regularly
 if (!isset($_SESSION['creation_time'])) {
@@ -40,11 +46,7 @@ else
 if($page == 'logout')
     logout();
 
-// turn output buffering on
-ob_start();
-
-require_once "$abspath/header.php";
-include "$abspath/switcher.php";
+show_header();
 
 switcher($page, is_logged_in());
 
@@ -63,7 +65,7 @@ if (0) {
 
 // actually re-checks whether you're logged in or not because
 // switcher() can log you in and set $_SESSION there
-require_once "$abspath/footer.php";
+show_footer();
 
 // send the contents of the output buffer
 ob_end_flush();
