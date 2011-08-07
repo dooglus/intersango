@@ -86,6 +86,9 @@ input[type=submit]:hover {
     color: #017d4d;
     cursor: pointer;
 }
+tr.active {
+    cursor: pointer;
+}
 
 /*---------------------------------
 CONTENT
@@ -178,7 +181,6 @@ CONTENT
     font-size: inherit;
     color: inherit;
     font-weight: inherit;
-    background-color: inherit;
     border: 2px solid #8df5cb;
     background-color: #7ad3af;
     margin-bottom: 20px;
