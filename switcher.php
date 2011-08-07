@@ -6,23 +6,13 @@ function switcher($page, $loggedin)
 {
     try {
         switch($page) {
+            case 'place_order':
             case 'profile':
-                if ($loggedin)
-                    include("profile.php");
-                else
-                    log_badpage($page);
-                break;
-
+            case 'turn_on_duo':
             case 'view_order':
-                if ($loggedin)
-                    include("view_order.php");
-                else
-                    log_badpage($page);
-                break;
-
             case 'view_request':
                 if ($loggedin)
-                    include("view_request.php");
+                    include("$page.php");
                 else
                     log_badpage($page);
                 break;
@@ -34,46 +24,14 @@ function switcher($page, $loggedin)
                     log_badpage($page);
                 break;
 
-            case 'deposit':
-                include("deposit.php");
-                break;
-
-            case 'withdraw':
-                include("withdraw.php");
-                break;
-
-            case 'help':
-                include("help.php");
-                break;
-
-            case 'orderbook':
-                include("orderbook.php");
-                break;
-
-            case 'place_order':
-                if ($loggedin)
-                    include("place_order.php");
-                else
-                    log_badpage($page);
-                break;
-
-            case 'turn_on_duo':
-                if ($loggedin)
-                    include("turn_on_duo.php");
-                else
-                    log_badpage($page);
-                break;
-
             case '404':
-                include("404.php");
-                break;  
-
+            case 'deposit':
+            case 'help':
+            case 'orderbook':
             case 'test':
-                include("test.php");
-                break;  
-
             case 'trade':
-                include("trade.php");
+            case 'withdraw':
+                include("$page.php");
                 break;  
 
             default:
