@@ -1,6 +1,6 @@
 <?php
 
-function show_header()
+function show_header($page)
 {
 ?>
 <!DOCTYPE html>

@@ -46,7 +46,7 @@ else
 if($page == 'logout')
     logout();
 
-show_header();
+show_header($page);
 
 switcher($page, is_logged_in());
 
