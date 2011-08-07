@@ -19,16 +19,16 @@ function confirmations_for_deposit() { return 4; }
 // which timezone should we use
 function timezone() { return "Australia/Queensland"; }
 
-// percentage commission to charge on each AUD received
+// percentage commission to charge on each AUD received; 0 for no commission
 function commission_percentage_for_aud() { return '0.6'; }
 
-// percentage commission to charge on each BTC received
+// percentage commission to charge on each BTC received; 0 for no commission
 function commission_percentage_for_btc() { return '0.1'; }
 
-// commission cap, in AUD, when buying AUD
+// commission cap, in AUD, when buying AUD; '0' for no cap
 function commission_cap_in_aud() { return '0.25'; }
 
-// commission cap, in BTC, when buying BTC
+// commission cap, in BTC, when buying BTC; '0' for no cap
 function commission_cap_in_btc() { return '0.025'; }
 
 // the smallest you can say you 'have' when placing an order

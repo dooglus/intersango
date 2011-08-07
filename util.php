@@ -365,17 +365,31 @@ function show_commission_rates()
 {
     echo "<blockquote>\n";
 
-    if (commission_percentage_for_btc() == 0)
+    $cap = commission_cap_in_btc();
+    $rate = commission_percentage_for_btc();
+    if ($rate == 0)
         echo "<p>buying BTC is free of commission</p>\n";
-    else
-        echo "<p>", commission_percentage_for_btc(), "%",
-            " (capped at ", commission_cap_in_btc(), " BTC) when buying BTC</p>\n";
+    else {
+        echo "<p>$rate%";
+        if ($cap)
+            echo " (capped at $cap BTC)";
+        else
+            echo " (uncapped)";
+        echo " when buying BTC</p>\n";
+    }
 
-    if (commission_percentage_for_aud() == 0)
+    $cap = commission_cap_in_aud();
+    $rate = commission_percentage_for_aud();
+    if ($rate == 0)
         echo "<p>buying AUD is free of commission</p>\n";
-    else
-        echo "<p>", commission_percentage_for_aud(), "%",
-            " (capped at ", commission_cap_in_aud(), " AUD) when selling BTC</p>\n";
+    else {
+        echo "<p>$rate%";
+        if ($cap)
+            echo " (capped at $cap AUD)";
+        else
+            echo " (uncapped)";
+        echo " when selling BTC</p>\n";
+    }
 
     echo "</blockquote>\n";
 }
@@ -410,6 +424,8 @@ function commission($amount, $percentage, $cap, $already_paid)
                           numstr_to_internal(100));
 
     // reduce the cap by the amount we already paid, but no lower than 0
+    if (!$cap) return gmp_strval($commission);
+
     $cap = max(gmp_strval(gmp_sub(numstr_to_internal($cap), $already_paid)), '0');
     return min(gmp_strval($commission), $cap);
 }
