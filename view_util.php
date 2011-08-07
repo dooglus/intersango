@@ -96,7 +96,7 @@ function display_transactions($uid, $orderid)
            $price = $b_amount / $a_amount;
         else
            $price = $a_amount / $b_amount;
-        $price = sprintf("%.6f", $price);
+        $price = sprintf("%.4f", $price);
         $this_orderid = $row['orderid'];
         $timest = $row['timest'];
         echo "    <tr>\n";
