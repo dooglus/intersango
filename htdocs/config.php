@@ -4,6 +4,9 @@ $urlroot = '/';
 require_once "$abspath/errors.php";
 enable_errors();
 
+// path to a directory to use for per-user locks - must be writable by the user who runs PHP scripts
+function lock_dir() { return "/home/chris/Programs/intersango/programs/intersango/locks/"; }
+
 // how many minutes can a user be idle for before they're automatically logged out
 function max_idle_minutes_before_logout() { return 60; }
 
