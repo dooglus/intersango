@@ -7,7 +7,7 @@ function show_header($page)
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <title>Intersango Bitcoin Exchange</title>
+    <title>World Bitcoin Exchange</title>
 <?php if ($page == 'trade') { ?>
     <script type='text/javascript' src='js/jquery-1.4.4.min.js'></script>
     <script type='text/javascript' src='js/exchanger.js'></script>
