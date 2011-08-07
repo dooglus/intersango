@@ -6,11 +6,13 @@ function switcher($page, $loggedin)
 {
     try {
         switch($page) {
+            case 'deposit':
             case 'place_order':
             case 'profile':
             case 'turn_on_duo':
             case 'view_order':
             case 'view_request':
+            case 'withdraw':
                 if ($loggedin)
                     include("$page.php");
                 else
@@ -25,12 +27,10 @@ function switcher($page, $loggedin)
                 break;
 
             case '404':
-            case 'deposit':
             case 'help':
             case 'orderbook':
             case 'test':
             case 'trade':
-            case 'withdraw':
                 include("$page.php");
                 break;  
 
