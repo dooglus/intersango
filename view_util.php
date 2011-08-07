@@ -133,7 +133,10 @@ function display_transactions($uid, $orderid)
             echo "    </tr>\n";
         }
 
-        echo "</table></div>";
+        echo "</table>\n";
+        echo "<p>The 'you got' column is the amount you received after commission was taken off.</p>";
+        echo "<p>The 'effective price' also includes the effect of commission, and so may be slightly worse than the price you requested.</p>";
+        echo "</div>\n";
     }
 }
 
