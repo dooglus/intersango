@@ -5,6 +5,9 @@ defined('_we_are_one') || die('Direct access not allowed.');
 function switcher($page, $loggedin)
 {
     try {
+        $fp = false;
+        if ($loggedin) $fp = get_lock();
+
         switch($page) {
             case 'deposit':
             case 'place_order':
@@ -53,5 +56,7 @@ function switcher($page, $loggedin)
         echo "<div class='content_box'><h3>Technical difficulties</h3>";
         echo "<p>{$e->getMessage()}</p></div>";
     }
+
+    if ($fp) release_lock($fp);
 }
 ?>
