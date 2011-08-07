@@ -193,8 +193,8 @@ CONTENT
     text-align: left;
 }
 tr.me {
-    // color: #f00;
     font-weight: bold;
+    cursor: pointer;
 }
 blockquote {
     margin-left: 20px;
