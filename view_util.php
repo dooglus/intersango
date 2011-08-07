@@ -116,35 +116,39 @@ function display_transactions($uid, $orderid)
         echo "    </tr>\n";
     }
 
-    if ($orderid && $count > 1) {
-        $commission_percent = bcdiv(bcmul(gmp_strval($commission_total), 100), gmp_strval($b_total), 3);
+    // if we showed any table at all
+    if (!$first) {
+        // if we need to show a summary line
+        if ($orderid && $count > 1) {
+            $commission_percent = bcdiv(bcmul(gmp_strval($commission_total), 100), gmp_strval($b_total), 3);
 
-        $b_total = gmp_sub($b_total, $commission_total);
-        $a_total = internal_to_numstr($a_total);
-        $b_total = internal_to_numstr($b_total);
-        $commission_total = internal_to_numstr($commission_total);
+            $b_total = gmp_sub($b_total, $commission_total);
+            $a_total = internal_to_numstr($a_total);
+            $b_total = internal_to_numstr($b_total);
+            $commission_total = internal_to_numstr($commission_total);
 
-        if ($type == 'BTC')
-            $price = $b_total / $a_total;
-        else
-            $price = $a_total / $b_total;
-        $price = sprintf("%.6f", $price);
+            if ($type == 'BTC')
+                $price = $b_total / $a_total;
+            else
+                $price = $a_total / $b_total;
+            $price = sprintf("%.6f", $price);
             
-        echo "    <tr>\n";
-        echo "        <td>--------</td><td>--------</td><td>--------</td><td>--------</td>\n";
-        echo "        <td></td>\n";
-        echo "    </tr>\n";
-        echo "    <tr>\n";
-        echo "        <td>$a_total $type</td><td>$b_total $want_type</td><td>$commission_total $want_type (",
-            sprintf("%.3f", $commission_percent), "%)</td><td>$price</td>\n";
-        echo "        <td></td>\n";
-        echo "    </tr>\n";
-    }
+            echo "    <tr>\n";
+            echo "        <td>--------</td><td>--------</td><td>--------</td><td>--------</td>\n";
+            echo "        <td></td>\n";
+            echo "    </tr>\n";
+            echo "    <tr>\n";
+            echo "        <td>$a_total $type</td><td>$b_total $want_type</td><td>$commission_total $want_type (",
+                sprintf("%.3f", $commission_percent), "%)</td><td>$price</td>\n";
+            echo "        <td></td>\n";
+            echo "    </tr>\n";
+        }
 
-    echo "</table>\n";
-    echo "<p>The 'you got' column is the amount you received after commission was taken off.</p>";
-    echo "<p>The 'price' column shows the effective price of the trade, after commission.</p>";
-    echo "</div>\n";
+        echo "</table>\n";
+        echo "<p>The 'you got' column is the amount you received after commission was taken off.</p>";
+        echo "<p>The 'price' column shows the effective price of the trade, after commission.</p>";
+        echo "</div>\n";
+    }
 }
 
 ?>
