@@ -123,6 +123,25 @@ function user_id()
     return $_SESSION['uid'];
 }
 
+function get_lock()
+{
+    $uid = user_id();
+    $lock = lock_dir() . $uid;
+
+    if (!($fp = fopen($lock, "w")))
+        throw new Error('Lock Error', "Can't create lockfile for $uid");
+
+    if (!flock($fp, LOCK_EX|LOCK_NB))
+        throw new Error('Lock Error', "User $uid is already doing stuff.<br/>");
+
+    return $fp;
+}
+
+function release_lock($fp)
+{
+    flock($fp, LOCK_UN);
+}
+
 function cleanup_string($val)
 {
     $val = preg_replace('/[^A-Za-z0-9 .]/', '', $val);
