@@ -5,7 +5,7 @@ defined('_we_are_one') || die('Direct access not allowed.');
 function switcher($page, $is_logged_in, $is_admin)
 {
     try {
-        if ($is_logged_in) show_content_header($is_logged_in);
+        show_content_header($is_logged_in);
 
         $lock = false;
         if ($is_logged_in) $lock = get_lock();
