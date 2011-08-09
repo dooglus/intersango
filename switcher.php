@@ -5,8 +5,8 @@ defined('_we_are_one') || die('Direct access not allowed.');
 function switcher($page, $is_logged_in, $is_admin)
 {
     try {
-        $fp = false;
-        if ($is_logged_in) $fp = get_lock();
+        $lock = false;
+        if ($is_logged_in) $lock = get_lock();
 
         switch($page) {
             case 'deposit':
@@ -64,6 +64,6 @@ function switcher($page, $is_logged_in, $is_admin)
         echo "<p>{$e->getMessage()}</p></div>";
     }
 
-    if ($fp) release_lock($fp);
+    if ($lock) release_lock($lock);
 }
 ?>
