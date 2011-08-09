@@ -1,9 +1,13 @@
 <?php
 
-function show_link($page, $title, $text)
+function show_link($page, $title, $text, $admin=0)
 {
     global $urlroot;
-    echo "            <li><a href='", $urlroot, "?page=$page'>$title</a>$text</li>\n";
+    if ($admin)
+        echo "            <li><a style='color: red;' href='";
+    else
+        echo "            <li><a href='";
+    echo $urlroot, "?page=$page'>$title</a>$text</li>\n";
 }
 
 function show_links($is_logged_in, $is_admin)
@@ -24,6 +28,8 @@ function show_links($is_logged_in, $is_admin)
     show_link                    ('orderbook',    'Orderbook',    'Show orders'                    );
     if ($show_duo)      show_link('turn_on_duo',  'Security',     'Use two-factor authentification');
     show_link                    ('help',         'Help',         'Seek support'                   );
+    if ($is_admin)      show_link('bank',         'Bank',         'Show bank statement'          ,1);
+    if ($is_admin)      show_link('freeze',       'Freeze',       'Stop activity on the exchange',1);
     if ($is_logged_in)  show_link('logout',       'Logout',       'End this session'               );
 }
 

@@ -27,8 +27,12 @@ function switcher($page, $is_logged_in, $is_admin)
                 break;
 
             case 'login':
-                if (!$is_logged_in)
+                if (!$is_logged_in) {
                     include("login.php");
+
+                    // we just tried to log in, so check whether or not it worked before showing the footer
+                    list($is_logged_in, $is_admin) = array(is_logged_in(), is_admin());
+                }
                 else
                     log_badpage($page);
                 break;
@@ -42,8 +46,9 @@ function switcher($page, $is_logged_in, $is_admin)
                 break;  
 
             case 'bank':
+            case 'freeze':
                 if ($is_admin)
-                    include("$page/index.php");
+                    include("$page.php");
                 else
                     log_badpage($page);
                 break;  
@@ -81,8 +86,6 @@ function switcher($page, $is_logged_in, $is_admin)
         echo "<p>{$e->getMessage()}</p></div>";
     }
 
-    // actually re-checks whether you're logged in or not because
-    // switcher() can log you in and set $_SESSION there
     show_footer($is_logged_in, $is_admin);
 
     if ($lock) release_lock($lock);

@@ -1,7 +1,7 @@
 <?php
 
-include_once "xero.php";
-include_once "bank_config.php";
+include_once "bank/xero.php";
+include_once "bank/bank_config.php";
 
 global $abspath;
 
