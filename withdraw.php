@@ -130,6 +130,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     curr_supported_check($curr_type);
     order_worthwhile_check($amount, $amount_disp, minimum_withdraw());
     enough_money_check($amount, $curr_type);
+    check_withdraw_limit($uid, $amount, $curr_type);
 
     if (!save_details($uid, $amount, $curr_type))
         throw Error('We had to admit it sometime...', 'Stop trading on thie site. Contact the admin FAST.');
@@ -211,21 +212,44 @@ else {
 
     <div class='content_box'>
     <h3>Withdraw BTC</h3>
-    <p>Enter an amount below to withdraw.</p>
+<?php
+    $uid = user_id();
+    $balances = fetch_balances();
+    $btc = $balances['BTC'];
+    $withdrawn = btc_withdrawn_today($uid);
+    $limit = numstr_to_internal(maximum_daily_btc_withdraw());
+    $available = gmp_sub($limit, $withdrawn);
+    if (gmp_cmp($btc, $available) > 0) {
+        echo "    <p>You can withdraw up to ", internal_to_numstr($limit), " BTC each day.</p>\n";
+        if ($withdrawn) {
+            echo "    <p>You have withdrawn ", internal_to_numstr($withdrawn), " BTC today\n";
+            if (gmp_cmp($available, '0') > 0)
+                echo "    and so can withdraw up to ", internal_to_numstr($available), " BTC more.";
+            else
+                echo "    and so cannot withdraw any more until tomorrow.";
+            echo "</p>\n";
+        }
+    }
+    if (gmp_cmp($btc, '0') <= 0)
+        echo "    <p>You don't have any BTC to withdraw.</p>\n";
+    else if (gmp_cmp($available, '0') > 0) {
+        echo "    <p>Enter an amount below to withdraw.  You have ", internal_to_numstr($btc), " BTC.</p>\n";
+?>
     <p>
         <form action='' class='indent_form' method='post'>
-            <label for='input_amount'>Amount</label>
-            <input type='text' id='input_amount' name='amount' />
-
             <label for='input_address'>Address</label>
             <input type='text' id='input_address' name='address' />
             
+            <label for='input_amount'>Amount</label>
+            <input type='text' id='input_amount' name='amount' />
+
             <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
             <input type='hidden' name='curr_type' value='BTC' />
             <input type='submit' value='Submit' />
         </form>
     </p>
-    </div>
 <?php
+    }
+    echo "    </div>\n";
 }
 ?>
