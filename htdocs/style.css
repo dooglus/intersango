@@ -109,6 +109,21 @@ CONTENT
     min-height: 700px;
     padding: 0;
 }
+.content_header {
+    width: 750px;
+    height: 36px;
+    background-color: #00a462;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+    padding: 5px;
+}
+.content_header_box {
+    background: url('images/panel_tile.png') repeat;
+    padding: 5px;
+    margin: 5px;
+    float: right;
+}
 .content_box {
     width: 750px;
     font-size: 12px;
