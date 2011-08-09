@@ -170,7 +170,7 @@ else {
             </div>
 
             <label for='input_amount'>Amount</label>
-            <input type='text' id='input_amount' name='amount' />
+            <input type='text' id='input_amount' name='amount' value='0.00' />
             
             <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
             <input type='hidden' name='curr_type' value='AUD' />
@@ -200,7 +200,7 @@ else {
             </div>
 
             <label for='input_amount'>Amount</label>
-            <input type='text' id='input_amount' name='amount' />
+            <input type='text' id='input_amount' name='amount' value='0.00' />
 
             <input type='hidden' name='curr_type' value='AUD' />
             <input type='hidden' name='is_international' value='true' />
@@ -241,7 +241,7 @@ else {
             <input type='text' id='input_address' name='address' />
             
             <label for='input_amount'>Amount</label>
-            <input type='text' id='input_amount' name='amount' />
+            <input type='text' id='input_amount' name='amount' value='0.00' />
 
             <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
             <input type='hidden' name='curr_type' value='BTC' />
