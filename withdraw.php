@@ -147,7 +147,30 @@ else {
 ?>
     <div class='content_box'>
     <h3>Withdraw AUD (Australian residents)</h3>
-    <p>Enter an amount below to submit a withdrawal request. We charge no fee.
+<?php
+    $uid = user_id();
+    $balances = fetch_balances($uid);
+    $aud = $balances['AUD'];
+    $transferred = aud_transferred_today($uid);
+    $limit = numstr_to_internal(maximum_daily_aud_transfer());
+    $available = gmp_sub($limit, $transferred);
+    if (gmp_cmp($aud, $available) > 0) {
+        echo "    <p>You can transfer up to ", internal_to_numstr($limit), " AUD each day.</p>\n";
+        if ($transferred) {
+            echo "    <p>You have transferred ", internal_to_numstr($transferred), " AUD today\n";
+            if (gmp_cmp($available, '0') > 0)
+                echo "    and so can withdraw up to ", internal_to_numstr($available), " AUD more.";
+            else
+                echo "    and so cannot withdraw any more until tomorrow.";
+            echo "</p>\n";
+        }
+    }
+    if (gmp_cmp($aud, '0') <= 0)
+        echo "    <p>You don't have any AUD to withdraw.</p>\n";
+    else if (gmp_cmp($available, '0') > 0) {
+        echo "    <p>Enter an amount below to withdraw.  You have ", internal_to_numstr($aud), " AUD.</p>\n";
+?>
+    <p>We charge no fee.
     You are responsible for paying any incurred fees. If your deposit 
     is insufficient to cover bank fees then it will be denied.</p>
     <p>
@@ -179,6 +202,7 @@ else {
         </form>
     </p>
     <p>Allow 3-5 working days for payments to pass through clearing.</p>
+<?php } ?>
     </div>
 
 <!-- DISABLED
