@@ -48,7 +48,7 @@ if($page == 'logout')
 
 show_header($page);
 
-switcher($page, is_logged_in());
+switcher($page, is_logged_in(), is_admin());
 
 // debugging for session stuff
 if (0) {

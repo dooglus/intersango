@@ -114,6 +114,25 @@ function is_logged_in()
     logout();
 }
 
+function is_admin()
+{
+    if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin']))
+        return false;
+
+    // just having a 'uid' in the session isn't enough to be logged in
+    // check that the oidlogin matches the uid in case database has been reset
+    $uid = $_SESSION['uid'];
+    $oidlogin = $_SESSION['oidlogin'];
+
+    return has_results(do_query("
+        SELECT uid
+        FROM users
+        WHERE oidlogin = '$oidlogin'
+        AND uid = '$uid'
+        AND is_admin = 1
+    "));
+}
+    
 function user_id()
 {
     if (!isset($_SESSION['uid'])) {

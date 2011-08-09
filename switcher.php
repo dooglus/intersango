@@ -2,11 +2,11 @@
 # security protection
 defined('_we_are_one') || die('Direct access not allowed.');
 
-function switcher($page, $loggedin)
+function switcher($page, $is_logged_in, $is_admin)
 {
     try {
         $fp = false;
-        if ($loggedin) $fp = get_lock();
+        if ($is_logged_in) $fp = get_lock();
 
         switch($page) {
             case 'deposit':
@@ -16,14 +16,14 @@ function switcher($page, $loggedin)
             case 'view_order':
             case 'view_request':
             case 'withdraw':
-                if ($loggedin)
+                if ($is_logged_in)
                     include("$page.php");
                 else
                     log_badpage($page);
                 break;
 
             case 'login':
-                if (!$loggedin)
+                if (!$is_logged_in)
                     include("login.php");
                 else
                     log_badpage($page);
@@ -35,6 +35,13 @@ function switcher($page, $loggedin)
             case 'test':
             case 'trade':
                 include("$page.php");
+                break;  
+
+            case 'bank':
+                if ($is_admin)
+                    include("$page/index.php");
+                else
+                    log_badpage($page);
                 break;  
 
             default:
