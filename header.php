@@ -1,6 +1,6 @@
 <?php
 
-function show_header($page)
+function show_header($page, $is_logged_in)
 {
 ?>
 <!DOCTYPE html>
@@ -48,24 +48,61 @@ function show_header($page)
         <div id='links_bg'>
             <div id='content'>
                 <div id='content_sideshadow'>
-<?php }
+<?php
+    show_content_header($is_logged_in);
+}
+
+function show_content_header_balances($uid)
+{
+    $spaces = '&nbsp;&nbsp;&nbsp;&nbsp;';
+
+    $balances = fetch_balances($uid);
+    $aud = internal_to_numstr($balances['AUD'], 4);
+    $btc = internal_to_numstr($balances['BTC'], 4);
+
+    $c_balances = fetch_committed_balances($uid);
+    $c_aud = internal_to_numstr($c_balances['AUD'], 4);
+    $c_btc = internal_to_numstr($c_balances['BTC'], 4);
+
+    echo "    <div class='content_header_box'>\n";
+    echo "        balances:{$spaces}$aud ";
+    if ($c_aud > 0) echo "(+$c_aud) ";
+    echo "AUD{$spaces}$btc ";
+    if ($c_btc > 0) echo "(+$c_btc) ";
+    echo "BTC\n";
+    echo "    </div>\n";
+}
+
+function show_content_header_ticker()
+{
+    $spaces = '&nbsp;&nbsp;&nbsp;&nbsp;';
+    list($vol, $buy, $sell, $last) = get_ticker_data();
+    echo "    <div class='content_header_box'>\n";
+    echo "        24h volume:&nbsp;$vol BTC{$spaces}";
+    if ($buy > $sell)
+        echo "buy:&nbsp;<span style='color: #af0;'>$buy</span>{$spaces}sell:&nbsp;<span style='color: #af0;'>$sell</span>";
+    else
+        echo "buy:&nbsp;$buy${spaces}sell:&nbsp;$sell";
+    echo "{$spaces}last:&nbsp;$last\n";
+    echo "    </div>\n";
+}
+
+function show_content_header_time()
+{
+    echo "    <div class='content_header_box' style='float: right;'>\n";
+    echo "        ", date('g:ia', time()), "\n";
+    echo "    </div>\n";
+}
 
 function show_content_header($is_logged_in)
 {
     echo "<div class='content_header'>\n";
 
-    echo "<div class='content_header_box'>\n";
-    echo date('g:ia', time());
-    echo "</div>\n";
+    show_content_header_time();
+    show_content_header_ticker();
 
-    if ($is_logged_in) {
-        echo "<div class='content_header_box'>\n";
-        $balances = fetch_balances();
-        $btc = internal_to_numstr($balances['BTC']);
-        $aud = internal_to_numstr($balances['AUD']);
-        echo "$btc BTC | $aud AUD";
-        echo "</div>\n";
-    }
+    if ($is_logged_in)
+        show_content_header_balances($is_logged_in);
 
     echo "</div>\n";
 }

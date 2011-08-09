@@ -96,7 +96,7 @@
             <p>
             Use the above to give you an indication of the current exchange rates.
             </p>
-        <?php show_balances($indent=true); ?>
+        <?php show_balances($is_logged_in, $indent=true); ?>
             <p>
             Select the currency you wish to buy on the left, then click Buy.
             </p>

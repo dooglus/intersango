@@ -199,10 +199,30 @@ function sync_to_bitcoin($uid)
     }
 }
 
-function fetch_balances()
+function fetch_committed_balances($uid)
+{
+    // returns an array of amounts of balances currently committed in unfilled orders
+    $balances = array();
+    sync_to_bitcoin($uid);
+    $query = "
+        SELECT sum(amount) as amount, type
+        FROM orderbook
+        WHERE uid = '$uid'
+              AND status = 'OPEN'
+        GROUP BY type;
+    ";
+    $result = do_query($query);
+    while ($row = mysql_fetch_array($result)) {
+        $amount = $row['amount'];
+        $type = $row['type'];
+        $balances[$type] = $amount;
+    }
+    return $balances;
+}
+
+function fetch_balances($uid)
 {
     $balances = array();
-    $uid = user_id();
     sync_to_bitcoin($uid);
     $query = "
         SELECT amount, type
@@ -218,9 +238,21 @@ function fetch_balances()
     return $balances;
 }
 
-function show_balances($indent=false)
+function show_committed_balances($uid, $indent=false)
 {
-    $balances = fetch_balances();
+    $balances = fetch_committed_balances($uid);
+    if ($indent)
+        echo "<p class='indent'>";
+    else
+        echo "<p>";
+    echo "You have ", internal_to_numstr($balances['AUD']), " AUD and ",
+        internal_to_numstr($balances['BTC']), " BTC ",
+        "tied up in the orderbook.</p>\n";
+}
+
+function show_balances($uid, $indent=false)
+{
+    $balances = fetch_balances($uid);
     foreach($balances as $type => $amount) {
         $amount = internal_to_numstr($amount);
         if ($indent)
@@ -235,17 +267,17 @@ function get_ticker_data()
 {
     $query = "
     SELECT
-        SUM(initial_amount - amount) AS vol
+        SUM(b_amount + b_commission) AS vol
     FROM
-        orderbook
+        transactions
     WHERE
-        type='BTC'
+        b_amount > 0
         AND timest BETWEEN NOW() - INTERVAL 1 DAY AND NOW()
     ";
     $result = do_query($query);
     $row = get_row($result);
     if (isset($row['vol']))
-        $vol = internal_to_numstr($row['vol']);
+        $vol = internal_to_numstr($row['vol'], 4);
     else
         $vol = 0;
 
@@ -290,15 +322,10 @@ function get_ticker_data()
         $a_type = $row['a_type'];
         $b_amount = $row['b_amount'];
         $b_type = $row['b_type'];
-        if ($a_type == 'AUD') {
-            # swap them around so BTC is always the base currency
-                list($a_amount, $b_amount) = array($b_amount, $a_amount);
-            list($a_type, $b_type) = array($b_type, $a_type);
-        }
-        if ($a_type == 'BTC' && $b_type == 'AUD')
-            $last = (float)$b_amount / (float)$a_amount;
+        if ($a_type == 'AUD' && $b_type == 'BTC')
+            $last = bcdiv($a_amount, $b_amount, 4);
         else
-            $last = 0;
+            echo "this never happens<br/>\n";
     }
     else
         $last = 0;

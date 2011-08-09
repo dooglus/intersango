@@ -5,7 +5,9 @@ defined('_we_are_one') || die('Direct access not allowed.');
 function switcher($page, $is_logged_in, $is_admin)
 {
     try {
-        show_content_header($is_logged_in);
+        // delay showing the header when logging in until we know whether the login worked or not
+        if ($page != 'login')
+            show_header($page, $is_logged_in);
 
         $lock = false;
         if ($is_logged_in) $lock = get_lock();
@@ -50,7 +52,20 @@ function switcher($page, $is_logged_in, $is_admin)
                 log_badpage($page);
                 break;
         }
-    } 
+
+        // debugging for session stuff
+        if (0) {
+            echo "<div class='content_box'>\n";
+            echo "<h3>Debug</h3>\n";
+            echo "<p>\n";
+            echo "session id: ", session_id(), "<br/>\n";
+            echo "session age: ", time() - $_SESSION['creation_time'], " seconds<br/>\n";
+            if (isset($inactivity)) echo "you were inactive for $inactivity seconds<br/>\n";
+            echo "max_idle_minutes_before_logout() = ", max_idle_minutes_before_logout(), " minutes = ", max_idle_minutes_before_logout() * 60, " seconds<br/>\n";
+            echo "max_session_id_lifetime() = ", max_session_id_lifetime(), " minutes = ", max_session_id_lifetime() * 60, " seconds<br/>\n";
+            echo "</p></div>\n";
+        }
+    }
     catch (Error $e) {
         report_exception($e, SEVERITY::ERROR);
         # Same as below, but flag + log this for review,
@@ -65,6 +80,10 @@ function switcher($page, $is_logged_in, $is_admin)
         echo "<div class='content_box'><h3>Technical difficulties</h3>";
         echo "<p>{$e->getMessage()}</p></div>";
     }
+
+    // actually re-checks whether you're logged in or not because
+    // switcher() can log you in and set $_SESSION there
+    show_footer();
 
     if ($lock) release_lock($lock);
 }

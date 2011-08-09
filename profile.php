@@ -14,8 +14,8 @@ $uid = $_SESSION['uid'];
 $oidlogin = $_SESSION['oidlogin'];
 echo "<p>User ID: $uid</p>\n";
 echo "<p>OpenID: $oidlogin</p>\n";
-show_balances();
-echo "<p>Balances above do not include funds in the orderbook.</p>\n";
+show_balances($uid);
+show_committed_balances($uid);
 echo "</div>\n";
 
 $query = "

@@ -214,7 +214,7 @@ else {
     <h3>Withdraw BTC</h3>
 <?php
     $uid = user_id();
-    $balances = fetch_balances();
+    $balances = fetch_balances($uid);
     $btc = $balances['BTC'];
     $withdrawn = btc_withdrawn_today($uid);
     $limit = numstr_to_internal(maximum_daily_btc_withdraw());

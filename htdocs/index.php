@@ -48,26 +48,7 @@ else
 if($page == 'logout')
     logout();
 
-show_header($page);
-
 switcher($page, is_logged_in(), is_admin());
-
-// debugging for session stuff
-if (0) {
-    echo "<div class='content_box'>\n";
-    echo "<h3>Debug</h3>\n";
-    echo "<p>\n";
-    echo "session id: ", session_id(), "<br/>\n";
-    echo "session age: ", time() - $_SESSION['creation_time'], " seconds<br/>\n";
-    if (isset($inactivity)) echo "you were inactive for $inactivity seconds<br/>\n";
-    echo "max_idle_minutes_before_logout() = ", max_idle_minutes_before_logout(), " minutes = ", max_idle_minutes_before_logout() * 60, " seconds<br/>\n";
-    echo "max_session_id_lifetime() = ", max_session_id_lifetime(), " minutes = ", max_session_id_lifetime() * 60, " seconds<br/>\n";
-    echo "</p></div>\n";
-}
-
-// actually re-checks whether you're logged in or not because
-// switcher() can log you in and set $_SESSION there
-show_footer();
 
 // send the contents of the output buffer
 ob_end_flush();
