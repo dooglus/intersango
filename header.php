@@ -34,7 +34,7 @@ function show_header($page, $is_logged_in, $base = false)
         echo "        exchange_rates = ".json_encode($rates).";\n";
         echo "    </script>\n";
     }
-    if ($base) echo "    <base href=\"$base/\" />\n"; ?>
+    if ($base) echo "    <base href=\"$base\" />\n"; ?>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
 </head>
