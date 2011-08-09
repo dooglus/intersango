@@ -476,4 +476,40 @@ function commission_on_type($amount, $curr_type, $already_paid)
 
     throw new Error('Unknown currency type', "Type $curr_type isn't AUD or BTC");
 }
+
+function btc_withdrawn_today($uid)
+{
+    $query = "
+        SELECT SUM(amount) as sum
+        FROM requests
+        WHERE timest > CURRENT_DATE()
+        AND uid = $uid
+        AND req_type = 'WITHDR'
+        AND curr_type = 'BTC'
+    ";
+    $result = do_query($query);
+    $row = get_row($result);
+    $sum = $row['sum'];
+    if (!$sum) $sum = '0';
+    return $sum;
+}
+
+function check_btc_withdraw_limit($uid, $amount)
+{
+    $withdrawn = btc_withdrawn_today($uid);
+    $limit = numstr_to_internal(maximum_daily_btc_withdraw());
+    $available = gmp_sub($limit, $withdrawn);
+
+    if (gmp_cmp($amount, $available) > 0)
+        throw new Problem('Daily limit exceeded', 'You can only withdraw '.internal_to_numstr($limit).' BTC per day.');
+}
+
+function check_withdraw_limit($uid, $amount, $curr_type)
+{
+    if ($curr_type == 'BTC')
+        check_btc_withdraw_limit($uid, $amount);
+    else
+        check_aud_transfer_limit($uid, $amount);
+}
+
 ?>
