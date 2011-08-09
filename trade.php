@@ -80,7 +80,7 @@
             </td>
             </tr>
     <?php
-    if ($loggedin) { ?>
+    if ($is_logged_in) { ?>
         <tr><td></td><td>
                     <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
                     <input type='hidden' name='type' value='' />
@@ -92,7 +92,7 @@
         </form>
 
     <?php
-    if ($loggedin) { ?>
+    if ($is_logged_in) { ?>
             <p>
             Use the above to give you an indication of the current exchange rates.
             </p>
