@@ -1,6 +1,8 @@
 <?php
 
-function show_header($page, $is_logged_in)
+require_once "util.php";
+
+function show_header($page, $is_logged_in, $base = false)
 {
 ?>
 <!DOCTYPE html>
@@ -31,7 +33,8 @@ function show_header($page, $is_logged_in)
         echo "    <script type='text/javascript'>\n";
         echo "        exchange_rates = ".json_encode($rates).";\n";
         echo "    </script>\n";
-    } ?>
+    }
+    if ($base) echo "    <base href=\"$base/\" />\n"; ?>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
 </head>
@@ -90,7 +93,7 @@ function show_content_header_ticker()
 function show_content_header_time()
 {
     echo "    <div class='content_header_box' style='float: right;'>\n";
-    echo "        ", date('g:ia', time()), "\n";
+    echo "        ", date('g:i:s a', time()), "\n";
     echo "    </div>\n";
 }
 

@@ -14,7 +14,7 @@ function show_links($is_logged_in, $is_admin)
 {
     $show_duo = 0;
     if ($is_logged_in) {
-        require_once '../db.php';
+        require_once 'db.php';
         $result = do_query("SELECT use_duo FROM users WHERE uid=$is_logged_in");
         $row = get_row($result);
         $show_duo = !$row['use_duo'];
