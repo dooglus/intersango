@@ -296,36 +296,19 @@ function get_ticker_data()
     $query = "
     SELECT
         a_amount,
-        ord_a.type AS a_type,
-        b_amount,
-        ord_b.type AS b_type
+        b_amount
     FROM
-        transactions AS t
-    JOIN
-        orderbook AS ord_a
-    ON
-        ord_a.orderid=a_orderid
-    JOIN
-        orderbook AS ord_b
-    ON
-        ord_b.orderid=b_orderid
+        transactions
     WHERE
         b_amount >= 0
     ORDER BY
-        t.timest DESC
+        timest DESC
     LIMIT 1
     ";
     $result = do_query($query);
     if (has_results($result)) {
         $row = get_row($result);
-        $a_amount = $row['a_amount'];
-        $a_type = $row['a_type'];
-        $b_amount = $row['b_amount'];
-        $b_type = $row['b_type'];
-        if ($a_type == 'AUD' && $b_type == 'BTC')
-            $last = bcdiv($a_amount, $b_amount, 4);
-        else
-            echo "this never happens<br/>\n";
+        $last = bcdiv($row['a_amount'], $row['b_amount'], 4);
     }
     else
         $last = 0;
