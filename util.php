@@ -272,7 +272,7 @@ function get_ticker_data()
         transactions
     WHERE
         b_amount > 0
-        AND timest BETWEEN NOW() - INTERVAL 1 DAY AND NOW()
+        AND timest > NOW() - INTERVAL 1 DAY;
     ";
     $result = do_query($query);
     $row = get_row($result);
