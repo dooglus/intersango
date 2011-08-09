@@ -83,7 +83,7 @@ function switcher($page, $is_logged_in, $is_admin)
 
     // actually re-checks whether you're logged in or not because
     // switcher() can log you in and set $_SESSION there
-    show_footer();
+    show_footer($is_logged_in, $is_admin);
 
     if ($lock) release_lock($lock);
 }

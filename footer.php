@@ -6,34 +6,28 @@ function show_link($page, $title, $text)
     echo "            <li><a href='", $urlroot, "?page=$page'>$title</a>$text</li>\n";
 }
 
-function show_links()
+function show_links($is_logged_in, $is_admin)
 {
-    if (isset($_SESSION['uid']) && $_SESSION['uid']) {
-        $loggedin = true;
-        $uid = $_SESSION['uid'];
-    } else
-        $loggedin = false;
-
     $show_duo = 0;
-    if ($loggedin) {
+    if ($is_logged_in) {
         require_once '../db.php';
         $result = do_query("SELECT use_duo FROM users WHERE uid=$uid");
         $row = get_row($result);
         $show_duo = !$row['use_duo'];
     }
 
-    if (!$loggedin) show_link('login',        'Login',        'Begin here'                     );
-    show_link                ('trade',        'Trade',        'Buy and sell'                   );
-    if ($loggedin) show_link ('profile',      'Profile',      'Dox on you'                     );
-    if ($loggedin) show_link ('deposit',      'Deposit',      'Top up your account'            );
-    if ($loggedin) show_link ('withdraw',     'Withdraw',     'Take out money'                 );
-    show_link                ('orderbook',    'Orderbook',    'Show orders'                    );
-    if ($show_duo) show_link ('turn_on_duo',  'Security',     'Use two-factor authentification');
-    show_link                ('help',         'Help',         'Seek support'                   );
-    if ($loggedin) show_link ('logout',       'Logout',       'End this session'               );
+    if (!$is_logged_in) show_link('login',        'Login',        'Begin here'                     );
+    show_link                    ('trade',        'Trade',        'Buy and sell'                   );
+    if ($is_logged_in)  show_link('profile',      'Profile',      'Dox on you'                     );
+    if ($is_logged_in)  show_link('deposit',      'Deposit',      'Top up your account'            );
+    if ($is_logged_in)  show_link('withdraw',     'Withdraw',     'Take out money'                 );
+    show_link                    ('orderbook',    'Orderbook',    'Show orders'                    );
+    if ($show_duo)      show_link('turn_on_duo',  'Security',     'Use two-factor authentification');
+    show_link                    ('help',         'Help',         'Seek support'                   );
+    if ($is_logged_in)  show_link('logout',       'Logout',       'End this session'               );
 }
 
-function show_footer()
+function show_footer($is_logged_in, $is_admin)
 {
 ?>
                 </div>
@@ -42,7 +36,7 @@ function show_footer()
     </div>
     <div id='links'>
         <ul>
-<?php show_links(); ?>
+<?php show_links($is_logged_in, $is_admin); ?>
         </ul>
     </div>
     <!--<div id='languages'>
