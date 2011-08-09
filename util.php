@@ -202,7 +202,7 @@ function sync_to_bitcoin($uid)
 function fetch_committed_balances($uid)
 {
     // returns an array of amounts of balances currently committed in unfilled orders
-    $balances = array();
+    $balances = array('AUD'=>'0','BTC'=>'0');
     sync_to_bitcoin($uid);
     $query = "
         SELECT sum(amount) as amount, type
