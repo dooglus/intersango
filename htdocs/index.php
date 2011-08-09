@@ -29,6 +29,8 @@ if (isset($_SESSION['uid']) && isset($_SESSION['last_activity'])) {
 }
 $_SESSION['last_activity'] = time();
 
+date_default_timezone_set(timezone());
+
 if(!isset($_SESSION['csrf_token']))
 {
     $_SESSION['csrf_token'] = '';
