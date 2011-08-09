@@ -48,4 +48,26 @@ function show_header($page)
         <div id='links_bg'>
             <div id='content'>
                 <div id='content_sideshadow'>
-<?php } ?>
+<?php }
+
+function show_content_header($is_logged_in)
+{
+    echo "<div class='content_header'>\n";
+
+    echo "<div class='content_header_box'>\n";
+    echo date('g:ia', time());
+    echo "</div>\n";
+
+    if ($is_logged_in) {
+        echo "<div class='content_header_box'>\n";
+        $balances = fetch_balances();
+        $btc = internal_to_numstr($balances['BTC']);
+        $aud = internal_to_numstr($balances['AUD']);
+        echo "$btc BTC | $aud AUD";
+        echo "</div>\n";
+    }
+
+    echo "</div>\n";
+}
+
+ ?>
