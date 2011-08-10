@@ -71,14 +71,12 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid)
         $rate = clean_sql_numstr($row['rate']);
         $me = $row['me'];
         if ($me)
-            echo "    <tr class='me'>\n";
+            echo "    ", active_table_row("me", "?page=view_order&orderid={$row['orderid']}");
         else
             echo "    <tr>\n";
         echo "        <td>$rate</td>\n";
         echo "        <td>$amount $curr_a</td>\n";
         echo "        <td>$want_amount $curr_b</td>\n";
-        if ($me)
-            echo "        <td><a href='?page=view_order&orderid=",$row['orderid'],"'>View</a></td>\n";
         echo "    </tr>\n";
     }
 

@@ -1,6 +1,6 @@
 <?php
-# require_once '/var/db.intersango.inc';
-require_once '/home7/worldbit/db.intersango.inc';
+require_once '/var/db.intersango.inc';
+// require_once '/home7/worldbit/db.intersango.inc';
 require_once 'htdocs/config.php';
 
 function escapestr($str)
@@ -31,8 +31,11 @@ function numstr_to_internal($numstr)
 {
     return bcmul($numstr, pow(10, 8), 0);
 }
+
 function internal_to_numstr($num, $precision=8)
 {
+    if (!is_string($num) && !is_resource($num))
+        throw new Error('Coding error!', "internal_to_numstr argument has type '" . gettype($num) . "'");
     $repr = gmp_strval($num);
     $repr = bcdiv($repr, pow(10, 8), $precision);
     # now tidy output...

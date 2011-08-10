@@ -114,6 +114,25 @@ function is_logged_in()
     logout();
 }
 
+function is_admin()
+{
+    if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin']))
+        return false;
+
+    // just having a 'uid' in the session isn't enough to be logged in
+    // check that the oidlogin matches the uid in case database has been reset
+    $uid = $_SESSION['uid'];
+    $oidlogin = $_SESSION['oidlogin'];
+
+    return has_results(do_query("
+        SELECT uid
+        FROM users
+        WHERE oidlogin = '$oidlogin'
+        AND uid = '$uid'
+        AND is_admin = 1
+    "));
+}
+    
 function user_id()
 {
     if (!isset($_SESSION['uid'])) {
@@ -121,6 +140,25 @@ function user_id()
         throw new Error('Login 404', "You're not logged in. Proceed to the <a href='?login.php'>login</a> form.");
     }
     return $_SESSION['uid'];
+}
+
+function get_lock()
+{
+    $uid = user_id();
+    $lock = lock_dir() . $uid;
+
+    if (!($fp = fopen($lock, "w")))
+        throw new Error('Lock Error', "Can't create lockfile for $uid");
+
+    if (!flock($fp, LOCK_EX|LOCK_NB))
+        throw new Error('Lock Error', "User $uid is already doing stuff.<br/>");
+
+    return $fp;
+}
+
+function release_lock($fp)
+{
+    flock($fp, LOCK_UN);
 }
 
 function cleanup_string($val)
@@ -161,10 +199,30 @@ function sync_to_bitcoin($uid)
     }
 }
 
-function fetch_balances()
+function fetch_committed_balances($uid)
+{
+    // returns an array of amounts of balances currently committed in unfilled orders
+    $balances = array('AUD'=>'0','BTC'=>'0');
+    sync_to_bitcoin($uid);
+    $query = "
+        SELECT sum(amount) as amount, type
+        FROM orderbook
+        WHERE uid = '$uid'
+              AND status = 'OPEN'
+        GROUP BY type;
+    ";
+    $result = do_query($query);
+    while ($row = mysql_fetch_array($result)) {
+        $amount = $row['amount'];
+        $type = $row['type'];
+        $balances[$type] = $amount;
+    }
+    return $balances;
+}
+
+function fetch_balances($uid)
 {
     $balances = array();
-    $uid = user_id();
     sync_to_bitcoin($uid);
     $query = "
         SELECT amount, type
@@ -180,9 +238,21 @@ function fetch_balances()
     return $balances;
 }
 
-function show_balances($indent=false)
+function show_committed_balances($uid, $indent=false)
 {
-    $balances = fetch_balances();
+    $balances = fetch_committed_balances($uid);
+    if ($indent)
+        echo "<p class='indent'>";
+    else
+        echo "<p>";
+    echo "You have ", internal_to_numstr($balances['AUD']), " AUD and ",
+        internal_to_numstr($balances['BTC']), " BTC ",
+        "tied up in the orderbook.</p>\n";
+}
+
+function show_balances($uid, $indent=false)
+{
+    $balances = fetch_balances($uid);
     foreach($balances as $type => $amount) {
         $amount = internal_to_numstr($amount);
         if ($indent)
@@ -191,6 +261,59 @@ function show_balances($indent=false)
             echo "<p>";
         echo "You have $amount $type.</p>\n";
     }
+}
+
+function get_ticker_data()
+{
+    $query = "
+    SELECT
+        SUM(b_amount + b_commission) AS vol
+    FROM
+        transactions
+    WHERE
+        b_amount > 0
+        AND timest > NOW() - INTERVAL 1 DAY;
+    ";
+    $result = do_query($query);
+    $row = get_row($result);
+    if (isset($row['vol']))
+        $vol = internal_to_numstr($row['vol'], 4);
+    else
+        $vol = 0;
+
+    $exchange_fields = calc_exchange_rate('AUD', 'BTC', BASE_CURRENCY::B);
+    if (!$exchange_fields)
+        $buy = 0;
+    else
+        list($total_amount, $total_want_amount, $buy) = $exchange_fields; 
+
+    $exchange_fields = calc_exchange_rate('BTC', 'AUD', BASE_CURRENCY::A);
+    if (!$exchange_fields)
+        $sell = 0;
+    else
+        list($total_amount, $total_want_amount, $sell) = $exchange_fields; 
+
+    $query = "
+    SELECT
+        a_amount,
+        b_amount
+    FROM
+        transactions
+    WHERE
+        b_amount >= 0
+    ORDER BY
+        timest DESC
+    LIMIT 1
+    ";
+    $result = do_query($query);
+    if (has_results($result)) {
+        $row = get_row($result);
+        $last = bcdiv($row['a_amount'], $row['b_amount'], 4);
+    }
+    else
+        $last = 0;
+
+    return array($vol, $buy, $sell, $last);
 }
 
 function has_enough($amount, $curr_type)
@@ -205,6 +328,15 @@ function has_enough($amount, $curr_type)
     ";
     $result = do_query($query);
     return has_results($result);
+}
+
+function active_table_row($class, $url)
+{
+    printf ("<tr %s %s %s %s>",
+            "class=\"$class\"",
+            'onmouseover="style.backgroundColor=\'#8ae3bf\';"',
+            'onmouseout="style.backgroundColor=\'#7ad3af\';"',
+            "onclick=\"document.location='$url';\"");
 }
 
 class OrderInfo
@@ -337,17 +469,31 @@ function show_commission_rates()
 {
     echo "<blockquote>\n";
 
-    if (commission_percentage_for_btc() == 0)
+    $cap = commission_cap_in_btc();
+    $rate = commission_percentage_for_btc();
+    if ($rate == 0)
         echo "<p>buying BTC is free of commission</p>\n";
-    else
-        echo "<p>", commission_percentage_for_btc(), "%",
-            " (capped at ", commission_cap_in_btc(), " BTC) when buying BTC</p>\n";
+    else {
+        echo "<p>$rate%";
+        if ($cap)
+            echo " (capped at $cap BTC)";
+        else
+            echo " (uncapped)";
+        echo " when buying BTC</p>\n";
+    }
 
-    if (commission_percentage_for_aud() == 0)
+    $cap = commission_cap_in_aud();
+    $rate = commission_percentage_for_aud();
+    if ($rate == 0)
         echo "<p>buying AUD is free of commission</p>\n";
-    else
-        echo "<p>", commission_percentage_for_aud(), "%",
-            " (capped at ", commission_cap_in_aud(), " AUD) when selling BTC</p>\n";
+    else {
+        echo "<p>$rate%";
+        if ($cap)
+            echo " (capped at $cap AUD)";
+        else
+            echo " (uncapped)";
+        echo " when selling BTC</p>\n";
+    }
 
     echo "</blockquote>\n";
 }
@@ -382,7 +528,9 @@ function commission($amount, $percentage, $cap, $already_paid)
                           numstr_to_internal(100));
 
     // reduce the cap by the amount we already paid, but no lower than 0
-    $cap = max(gmp_strval(gmp_sub(numstr_to_internal($cap), $already_paid)), 0);
+    if (!$cap) return gmp_strval($commission);
+
+    $cap = max(gmp_strval(gmp_sub(numstr_to_internal($cap), $already_paid)), '0');
     return min(gmp_strval($commission), $cap);
 }
 
@@ -413,4 +561,83 @@ function commission_on_type($amount, $curr_type, $already_paid)
 
     throw new Error('Unknown currency type', "Type $curr_type isn't AUD or BTC");
 }
+
+// sum available and committed AUD amounts
+function total_aud_balance($uid)
+{
+    $balances = fetch_balances($uid);
+    $committed_balances = fetch_committed_balances($uid);
+    $total_aud_balance = gmp_add($balances['AUD'], $committed_balances['AUD']);
+    return $total_aud_balance;
+}
+
+function aud_transferred_today($uid)
+{
+    $query = "
+        SELECT SUM(amount) as sum
+        FROM requests
+        WHERE timest > CURRENT_DATE()
+        AND uid = $uid
+        AND req_type in ('WITHDR', 'DEPOS')
+        AND curr_type = 'AUD'
+    ";
+    $result = do_query($query);
+    $row = get_row($result);
+    $sum = $row['sum'];
+    if (!$sum) $sum = '0';
+    return $sum;
+}
+
+function btc_withdrawn_today($uid)
+{
+    $query = "
+        SELECT SUM(amount) as sum
+        FROM requests
+        WHERE timest > CURRENT_DATE()
+        AND uid = $uid
+        AND req_type = 'WITHDR'
+        AND curr_type = 'BTC'
+    ";
+    $result = do_query($query);
+    $row = get_row($result);
+    $sum = $row['sum'];
+    if (!$sum) $sum = '0';
+    return $sum;
+}
+
+function check_aud_balance_limit($uid, $amount)
+{
+    $balance = total_aud_balance($uid);
+    $limit = numstr_to_internal(maximum_aud_balance());
+    echo "<p>Maximum balance is ", internal_to_numstr($limit), " AUD and you have ", internal_to_numstr($balance), " AUD.</p>\n";
+}
+
+function check_aud_transfer_limit($uid, $amount)
+{
+    $withdrawn = aud_transferred_today($uid);
+    $limit = numstr_to_internal(maximum_daily_aud_transfer());
+    $available = gmp_sub($limit, $withdrawn);
+
+    if (gmp_cmp($amount, $available) > 0)
+        throw new Problem('Daily limit exceeded', 'You can only transfer '.internal_to_numstr($limit).' AUD per day.');
+}
+
+function check_btc_withdraw_limit($uid, $amount)
+{
+    $withdrawn = btc_withdrawn_today($uid);
+    $limit = numstr_to_internal(maximum_daily_btc_withdraw());
+    $available = gmp_sub($limit, $withdrawn);
+
+    if (gmp_cmp($amount, $available) > 0)
+        throw new Problem('Daily limit exceeded', 'You can only withdraw '.internal_to_numstr($limit).' BTC per day.');
+}
+
+function check_withdraw_limit($uid, $amount, $curr_type)
+{
+    if ($curr_type == 'BTC')
+        check_btc_withdraw_limit($uid, $amount);
+    else
+        check_aud_transfer_limit($uid, $amount);
+}
+
 ?>

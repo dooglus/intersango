@@ -60,6 +60,7 @@ if (isset($_POST['cancel_order'])) {
     ?><div class='content_box'>
         <h3>Cancelled!</h3>
         <p>Order <?php echo $orderid; ?> is no more.</p>
+        <p>Back to <a href="?page=orderbook">the orderbook</a>.</p>
     </div><?php
 }
 else {

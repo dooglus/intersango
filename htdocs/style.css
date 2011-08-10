@@ -86,6 +86,9 @@ input[type=submit]:hover {
     color: #017d4d;
     cursor: pointer;
 }
+tr.active {
+    cursor: pointer;
+}
 
 /*---------------------------------
 CONTENT
@@ -105,6 +108,20 @@ CONTENT
     height: 100%;
     min-height: 700px;
     padding: 0;
+}
+.content_header {
+    width: 750px;
+    background-color: #00a462;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000000;
+    padding: 5px;
+}
+.content_header_box {
+    background: url('images/panel_tile.png') repeat;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 4px;
 }
 .content_box {
     width: 750px;
@@ -178,7 +195,6 @@ CONTENT
     font-size: inherit;
     color: inherit;
     font-weight: inherit;
-    background-color: inherit;
     border: 2px solid #8df5cb;
     background-color: #7ad3af;
     margin-bottom: 20px;
@@ -191,11 +207,14 @@ CONTENT
     text-align: left;
 }
 tr.me {
-    // color: #f00;
     font-weight: bold;
+    cursor: pointer;
 }
 blockquote {
     margin-left: 20px;
+}
+table {
+    border-spacing: 0px;
 }
 
 /*---------------------------------

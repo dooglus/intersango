@@ -27,10 +27,6 @@ try {
         //if it is NOT NULL then it will return a username you can then set any cookies/session data for that username and complete the login process
         $oidlogin = Duo::verifyResponse(IKEY, SKEY, AKEY, $_POST['sig_response']);
         if($oidlogin != NULL) {
-            echo "                    <div class='content_box'>\n";
-            echo "                    <h3>Successful login!</h3>\n";
-            echo "                    <p>Welcome back commander. Welcome back.</p>\n";
-
             # protect against session hijacking now we've escalated privilege level
             session_regenerate_id(true);
 
@@ -47,8 +43,14 @@ try {
             // store for later
             $_SESSION['oidlogin'] = $oidlogin;
             $_SESSION['uid'] = $uid;
+
+            show_header('login', $uid);
+            echo "                    <div class='content_box'>\n";
+            echo "                    <h3>Successful login!</h3>\n";
+            echo "                    <p>Welcome back commander. Welcome back.</p>\n";
         }
         else {
+            show_header('login', 0);
             echo "bad 2nd auth?<br/>\n";
             // throw new Problem(":(", "Unable to login.");
         }
@@ -60,6 +62,7 @@ try {
                 $openid->identity = htmlspecialchars($_GET['openid_identifier'], ENT_QUOTES);
                 header('Location: '.$openid->authUrl());
             }
+            show_header('login', 0);
 ?>
 <div class='content_box'>
 <h3>Login</h3>
@@ -77,6 +80,7 @@ try {
 <?php
         }
         else if ($openid->mode == 'cancel') {
+            show_header('login', 0);
             throw new Problem(":(", "Login was cancelled.");
         }
         else if ($openid->validate()) {
@@ -102,6 +106,7 @@ try {
             }
 
             if ($use_duo) {
+                show_header('login', 0);
                 $sig_request = Duo::signRequest(IKEY, SKEY, AKEY, $oidlogin); ?>
     <script src="js/Duo-Web-v1.bundled.min.js"></script>
     <script>
@@ -112,6 +117,7 @@ try {
     <iframe id="duo_iframe" width="500" height="800" frameborder="0" allowtransparency="true" style="background: transparent;"></iframe>
 <?php
             } else {
+                show_header('login', $uid);
                 echo "                    <div class='content_box'>\n";
                 echo "                        <h3>Successful login!</h3>\n";
                 if (has_results($result))
@@ -152,6 +158,7 @@ try {
                 $_SESSION['uid'] = $uid;
             }
         } else {
+            show_header('login', 0);
             throw new Problem(":(", "Unable to login.  Please <a href='?page=login'>try again</a>.");
         }
     }

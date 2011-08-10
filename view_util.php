@@ -18,7 +18,7 @@ function count_transactions($orderid)
 function display_transactions($uid, $orderid)
 {
     $ordselq = '';
-    if ($orderid == -1)
+    if (!$orderid)
         $sort = "DESC";
     else {
         $sort = "ASC";
@@ -67,25 +67,27 @@ function display_transactions($uid, $orderid)
         if ($first) {
             $first = false;
             ?> <div class='content_box'>
-            <h3>Your trades <?php if ($orderid != -1) echo 'for this order'; ?></h3>
+            <h3>Your trades <?php if ($orderid) echo 'for this order'; ?></h3>
             <table class='display_data'>
                 <tr>
+<?php if (!$orderid) { ?>
+                    <th>Order</th>
+<?php } ?>
                     <th>You gave</th>
                     <th>You got</th>
                     <th>Commission</th>
-                    <th>Effective Price</th>
+                    <th>Price</th>
                     <th>Time</th>
-                    <?php if ($orderid == -1) echo '<th></th>'; ?>
                 </tr><?php
         }
 
-        $a_total += $a_amount;
-        $b_total += $b_amount;
-        $commission_total += $b_commission;
+        $a_total = gmp_add($a_total, $a_amount);
+        $b_total = gmp_add($b_total, $b_amount);
+        $commission_total = gmp_add($commission_total, $b_commission);
 
-        $commission_percent = internal_to_numstr($b_commission) * 100.0 / internal_to_numstr($b_amount);
+        $commission_percent = bcdiv(bcmul($b_commission, 100), $b_amount, 3);
 
-        $b_amount -= $b_commission;
+        $b_amount = gmp_sub($b_amount, $b_commission);
 
         $a_amount = internal_to_numstr($a_amount);
         $b_amount = internal_to_numstr($b_amount);
@@ -96,22 +98,31 @@ function display_transactions($uid, $orderid)
            $price = $b_amount / $a_amount;
         else
            $price = $a_amount / $b_amount;
-        $price = sprintf("%.6f", $price);
+        $price = sprintf("%.4f", $price);
         $this_orderid = $row['orderid'];
         $timest = $row['timest'];
-        echo "    <tr>\n";
-        echo "        <td>$a_amount $type</td><td>$b_amount $want_type</td><td>$b_commission $want_type (",
-            sprintf("%.3f", $commission_percent), "%)</td><td>$price</td>\n";
-        echo "        <td>$timest</td>\n";
-        if ($orderid == -1)
-            echo "        <td><a href='?page=view_order&orderid=$this_orderid'>View</a></td>\n";
+        if (!$orderid)
+            echo "    ", active_table_row("active", "?page=view_order&orderid=$this_orderid"), "\n";
+        else
+            echo "    <tr>\n";
+        echo "        ";
+        if (!$orderid)
+            echo "<td>$this_orderid</td>";
+        echo "<td>$a_amount $type</td>";
+        echo "<td>$b_amount $want_type</td>";
+        echo "<td>$b_commission $want_type<br/>(", sprintf("%.3f", $commission_percent), "%)</td>";
+        echo "<td>$price</td>";
+        echo "<td>$timest</td>\n";
         echo "    </tr>\n";
     }
-    if (!$first) {
-        if ($orderid != -1 && $count > 1) {
-            $commission_percent = internal_to_numstr($commission_total) * 100.0 / internal_to_numstr($b_total);
 
-            $b_total -= $commission_total;
+    // if we showed any table at all
+    if (!$first) {
+        // if we need to show a summary line
+        if ($orderid && $count > 1) {
+            $commission_percent = bcdiv(bcmul(gmp_strval($commission_total), 100), gmp_strval($b_total), 3);
+
+            $b_total = gmp_sub($b_total, $commission_total);
             $a_total = internal_to_numstr($a_total);
             $b_total = internal_to_numstr($b_total);
             $commission_total = internal_to_numstr($commission_total);
@@ -127,13 +138,16 @@ function display_transactions($uid, $orderid)
             echo "        <td></td>\n";
             echo "    </tr>\n";
             echo "    <tr>\n";
-            echo "        <td>$a_total $type</td><td>$b_total $want_type</td><td>$commission_total $want_type (",
+            echo "        <td>$a_total $type</td><td>$b_total $want_type</td><td>$commission_total $want_type<br/>(",
                 sprintf("%.3f", $commission_percent), "%)</td><td>$price</td>\n";
             echo "        <td></td>\n";
             echo "    </tr>\n";
         }
 
-        echo "</table></div>";
+        echo "</table>\n";
+        echo "<p>The 'you got' column is the amount you received after commission was taken off.</p>";
+        echo "<p>The 'price' column shows the effective price of the trade, after commission.</p>";
+        echo "</div>\n";
     }
 }
 

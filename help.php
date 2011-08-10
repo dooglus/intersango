@@ -219,14 +219,14 @@ else { ?>
     <strong>Daily money transfer limits:</strong> Unlike Bitcoins,
     flow of money is heavily regulated by law. So the maximum amount
     you can transfer is capped at AUD 500 per day. Withdrawals and
-    deposits both count towards this limit
+    deposits both count towards this limit.
 </p>
 <p>
     Default maximum account size limit is AUD 5,000; if you would like
     to raise this limit, please submit a Request to Support and we
     will guide you through the AML/CFT process as mandated under the
-    The Anti-Money Laundering and Counter-Terrorism Financing Act 2006
-    (AML/CTF Act) received Royal Assent on 12 December 2006
+    Anti-Money Laundering and Counter-Terrorism Financing Act 2006.
+    (AML/CTF Act) received Royal Assent on 12 December 2006.
 </p>
 </div>
 

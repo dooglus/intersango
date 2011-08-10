@@ -14,8 +14,9 @@ $uid = $_SESSION['uid'];
 $oidlogin = $_SESSION['oidlogin'];
 echo "<p>User ID: $uid</p>\n";
 echo "<p>OpenID: $oidlogin</p>\n";
-show_balances();
-echo "<p>Balances above do not include funds in the orderbook.</p>\n";
+show_balances($uid);
+show_committed_balances($uid);
+check_aud_balance_limit($uid, "0");
 echo "</div>\n";
 
 $query = "
@@ -44,7 +45,7 @@ if ($row) { ?>
             <th>Price</th>
             <th>Time</th>
             <th>Status<br/>(% matched)</th>
-            <th></th>
+            <th>Trades</th>
         </tr><?php
     do {
         $orderid = $row['orderid'];
@@ -60,20 +61,20 @@ if ($row) { ?>
         $price = sprintf("%.6f", ($type == 'BTC') ? $initial_want_amount / $initial_amount : $initial_amount / $initial_want_amount);
         $percent_complete = sprintf("%.0f", ($initial_amount - $amount) * 100.0 / $initial_amount);
         $trade_count = count_transactions($orderid);
-        echo "    <tr>\n";
+        echo "    ", active_table_row("active", "?page=view_order&orderid=$orderid"), "\n";
         echo "        <td>$initial_amount&nbsp;$type</td>\n";
         echo "        <td>$initial_want_amount&nbsp;$want_type</td>\n";
         echo "        <td>$price</td>\n";
         echo "        <td>$timest</td>\n";
         echo "        <td>$status<br/>($percent_complete%)</td>\n";
-        echo "        <td><a href='?page=view_order&orderid=$orderid'>View<br/>($trade_count trade", $trade_count != 1 ? "s" : "", ")</a></td>\n";
+        echo "        <td>$trade_count</td>\n";
         echo "    </tr>\n";
     } while ($row = mysql_fetch_assoc($result));
     echo "</table></div>";
 }
 
 # also used when you view an order
-display_transactions($uid, -1);
+display_transactions($uid, 0);
 
 $query = "
     SELECT
@@ -137,12 +138,12 @@ try {
         </tr>
     <?php
         for ($conf = $needed_conf; $conf >= 0; $conf--) {
-              $new_balance = $bitcoin->getbalance($uid, $conf);
-              if ($balance != $new_balance) {
-                 $diff = $new_balance - $balance;
-                 echo "<tr><td>", internal_to_numstr($diff), "</td><td>$conf</td><td>", $needed_conf - $conf, "</td></tr>\n";
-                 $balance = $new_balance;
-              }
+            $new_balance = $bitcoin->getbalance($uid, $conf);
+            if ($balance != $new_balance) {
+                $diff = gmp_sub($new_balance, $balance);
+                echo "<tr><td>", internal_to_numstr($diff), "</td><td>$conf</td><td>", $needed_conf - $conf, "</td></tr>\n";
+                $balance = $new_balance;
+            }
         }
         echo "</table></div>";
     }
