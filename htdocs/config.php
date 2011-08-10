@@ -5,7 +5,7 @@ require_once "$abspath/errors.php";
 enable_errors();
 
 // path to a directory to use for per-user locks - must be writable by the user who runs PHP scripts
-function lock_dir() { return "/home/chris/Programs/intersango/programs/intersango/locks/"; }
+function lock_dir() { global $abspath; return $abspath . "/locks"; }
 
 // which timezone should we use
 function timezone() { return "Australia/Queensland"; }
