@@ -117,12 +117,12 @@ try {
     <iframe id="duo_iframe" width="500" height="800" frameborder="0" allowtransparency="true" style="background: transparent;"></iframe>
 <?php
             } else {
-                show_header('login', $uid);
-                echo "                    <div class='content_box'>\n";
-                echo "                        <h3>Successful login!</h3>\n";
-                if (has_results($result))
+                if (has_results($result)) {
+                    show_header('login', $uid);
+                    echo "                    <div class='content_box'>\n";
+                    echo "                        <h3>Successful login!</h3>\n";
                     echo "                        <p>Welcome back commander. Welcome back.</p>\n";
-                else {
+                } else {
                     $query = "
                         INSERT INTO users (
                             oidlogin,
@@ -134,6 +134,7 @@ try {
                     ";
                     do_query($query);
                     $uid = (string)mysql_insert_id();
+
                     // generate random str for deposit reference
                     $query = "
                         INSERT INTO purses
@@ -149,6 +150,11 @@ try {
                             (LAST_INSERT_ID(), 0, 'BTC');
                     ";
                     do_query($query);
+
+                    show_header('login', $uid);
+
+                    echo "                    <div class='content_box'>\n";
+                    echo "                        <h3>Successful login!</h3>\n";
                     echo "                        <p>Nice to finally see you here, <i>new</i> user.</p>\n";
                     echo "                        <p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>\n";
                 }
