@@ -11,6 +11,16 @@ function lock_dir() { global $abspath; return $abspath . "/locks"; }
 function timezone() { return "Australia/Queensland"; }
 
 // .------------------------------------------------------------------------
+// |  free money! (set to zero before going live!!)
+// `------------------------------------------------------------------------
+
+// how much free AUD to give new accounts on signup
+function free_aud_on_signup() { return "1000"; }
+
+// how much free BTC to give new accounts on signup
+function free_btc_on_signup() { return "100"; }
+
+// .------------------------------------------------------------------------
 // |  security
 // `------------------------------------------------------------------------
 
