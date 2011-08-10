@@ -82,7 +82,7 @@ function show_content_header_ticker()
     list($vol, $buy, $sell, $last) = get_ticker_data();
     echo "    <div class='content_header_box'>\n";
     echo "        24h volume:&nbsp;$vol BTC{$spaces}";
-    if ($buy > $sell)
+    if ($buy > $sell && $buy != 0 && $sell != 0)
         echo "buy:&nbsp;<span style='color: #af0;'>$buy</span>{$spaces}sell:&nbsp;<span style='color: #af0;'>$sell</span>";
     else
         echo "buy:&nbsp;$buy${spaces}sell:&nbsp;$sell";
