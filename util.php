@@ -145,7 +145,7 @@ function user_id()
 function get_lock()
 {
     $uid = user_id();
-    $lock = lock_dir() . $uid;
+    $lock = lock_dir() . "/" . $uid;
 
     if (!($fp = fopen($lock, "w")))
         throw new Error('Lock Error', "Can't create lockfile for $uid");
