@@ -562,6 +562,15 @@ function commission_on_type($amount, $curr_type, $already_paid)
     throw new Error('Unknown currency type', "Type $curr_type isn't AUD or BTC");
 }
 
+// sum available and committed AUD amounts
+function total_aud_balance($uid)
+{
+    $balances = fetch_balances($uid);
+    $committed_balances = fetch_committed_balances($uid);
+    $total_aud_balance = gmp_add($balances['AUD'], $committed_balances['AUD']);
+    return $total_aud_balance;
+}
+
 function aud_transferred_today($uid)
 {
     $query = "
@@ -594,6 +603,13 @@ function btc_withdrawn_today($uid)
     $sum = $row['sum'];
     if (!$sum) $sum = '0';
     return $sum;
+}
+
+function check_aud_balance_limit($uid, $amount)
+{
+    $balance = total_aud_balance($uid);
+    $limit = numstr_to_internal(maximum_aud_balance());
+    echo "<p>Maximum balance is ", internal_to_numstr($limit), " AUD and you have ", internal_to_numstr($balance), " AUD.</p>\n";
 }
 
 function check_aud_transfer_limit($uid, $amount)

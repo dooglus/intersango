@@ -16,6 +16,7 @@ echo "<p>User ID: $uid</p>\n";
 echo "<p>OpenID: $oidlogin</p>\n";
 show_balances($uid);
 show_committed_balances($uid);
+check_aud_balance_limit($uid, "0");
 echo "</div>\n";
 
 $query = "
