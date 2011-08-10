@@ -187,7 +187,7 @@ CREATE TABLE `users` (
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO `users` VALUES (1,'commission',0,'comm',0,NOW());
+INSERT INTO `users` VALUES (1,'commission',0,'comm',0,0,NOW());
 
 --
 -- Table structure for table `user_sessions`
