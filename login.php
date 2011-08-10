@@ -135,19 +135,22 @@ try {
                     do_query($query);
                     $uid = (string)mysql_insert_id();
 
+                    $free_aud = numstr_to_internal(free_aud_on_signup());
+                    $free_btc = numstr_to_internal(free_btc_on_signup());
+
                     // generate random str for deposit reference
                     $query = "
                         INSERT INTO purses
                             (uid, amount, type)
                         VALUES
-                            (LAST_INSERT_ID(), 0, 'AUD');
+                            (LAST_INSERT_ID(), $free_aud, 'AUD');
                     ";
                     do_query($query);
                     $query = "
                         INSERT INTO purses
                             (uid, amount, type)
                         VALUES
-                            (LAST_INSERT_ID(), 0, 'BTC');
+                            (LAST_INSERT_ID(), $free_btc, 'BTC');
                     ";
                     do_query($query);
 
@@ -156,6 +159,10 @@ try {
                     echo "                    <div class='content_box'>\n";
                     echo "                        <h3>Successful login!</h3>\n";
                     echo "                        <p>Nice to finally see you here, <i>new</i> user.</p>\n";
+                    if (gmp_cmp($free_aud, 0) > 0 or gmp_cmp($free_btc, 0))
+                        echo "                        <p>We've given you ",
+                            internal_to_numstr($free_btc), " BTC and ",
+                            internal_to_numstr($free_aud), " AUD to test the exchange with.</p>\n";
                     echo "                        <p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>\n";
                 }
 
