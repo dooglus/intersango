@@ -109,7 +109,7 @@
     Australia</b>
 </p>
 <p>
-    If the bank account you will use to fund your Intersango account
+    If the bank account you will use to fund your World Bitcoin Exchange account
     is in one of the aforementioned States, please feel free to
     deposit to our bank. If your bank account is not in Australia or
     one of the aforementioned States, your transfer will be rejected.
@@ -132,13 +132,13 @@
     Property Pty Ltd based in Gold Coast, Australia, Our company
     provides High Net Worth individuals in Australia with investment
     products and services, recently we have taken an interest in
-    bitcoin for its investment opportunities, we have been following
-    bitcoin's success for the past 3 months and found out there was no
+    Bitcoin for its investment opportunities, we have been following
+    Bitcoin's success for the past 3 months and found out there was no
     fully operating Bitcoin Exchange in Australia.
 </p>
 <p>
     Recently we partnered and acquired the services of one of
-    bitcoin's few active developers<a href="mailto:dooglus@gmail.com">
+    Bitcoin's few active developers<a href="mailto:dooglus@gmail.com">
     Chris Moore</a> to install the exchange increasing security and
     user experience. You can see Chris Moore's updates here <a
     href="https://github.com/dooglus/intersango">Github</a> under the
@@ -147,7 +147,7 @@
 </p>
 <p>
     Amir Taaki developed the open source software for: this exchange,
-    a bitcoin stock market exchange, a bitcoin client (Spesmilo) and
+    a Bitcoin stock market exchange, a bitcoin client (Spesmilo) and
     others.
 </p>
 <p>
@@ -159,7 +159,7 @@
     World Bitcoin Exchange is my decision to provide those living in
     Australia with an exchange in order to promote awareness in
     Australia and allow Australian residents to not miss out on the
-    benefits of using bitcoins and being part of this great social
+    benefits of using Bitcoins and being part of this great social
     change!
 </p>
 </div>
@@ -167,6 +167,9 @@
 <div class='content_box'>
 <h3>Contact info</h3>
 <p>support@intersango.com.au</p>
+<p>Skype:worldbitcoinexchange</p>
+<p>Facebook:worldbitcoinexchange</p>
+<p>Twitter:worldbitcoinx</p>
 <p>Call +617 3102-9666</p>
 <p>Office Hours Mon-Fri 9am to 5pm</p> 
 <p>(Standard time zone: UTC/GMT +10 hours - it is currently
@@ -285,7 +288,7 @@ else { ?>
 
 <h4>A. Policy statement</h4>
 <p>
-    Intersango respects customer privacy. Users can visit most pages
+    World Bitcoin Exchange respects customer privacy. Users can visit most pages
     on our website and use all of the tools located without
     identifying themselves or providing personal or financial
     information. We collect the minimum information needed, which is
