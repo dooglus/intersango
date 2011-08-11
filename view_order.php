@@ -23,7 +23,9 @@ if (!isset($_GET['orderid']))
 $orderid = get('orderid');
 $uid = user_id();
 $info = fetch_order_info($orderid);
-if ($info->uid != $uid)
+if ($is_admin)
+    $uid = $info->uid;
+else if ($info->uid != $uid)
     throw new Problem('Not for your eyes', "This isn't your order.");
 
 if (isset($_POST['cancel_order'])) {
@@ -84,7 +86,7 @@ else {
             echo "<p>$amount $type for $want_amount $want_type remaining.</p>";
         } ?>
         <p>
-        Made <?php echo $timest; ?>
+        Made <?php echo $timest; if ($is_admin) echo " by user $uid"; ?>
         </p>
         <p>
         <?php echo translate_order_code($status); ?>
