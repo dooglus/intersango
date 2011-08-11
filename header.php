@@ -39,11 +39,14 @@ function show_header($page, $is_logged_in, $base = false)
     <link rel="icon" type="image/png" href="favicon.png" />
 </head>
 
-<?php if ($page == 'trade') { ?>
-<body onload='set_currency_in("aud"); set_currency_out("btc");'>
-<?php } else { ?>
-<body>
-<?php } ?>
+<?php
+if ($page == 'trade')
+    if (isset($_SESSION['currency_in']) && $_SESSION['currency_in'] == 'BTC')
+        echo "<body onload='set_currency_in(\"btc\"); set_currency_out(\"aud\");'>\n";
+    else
+        echo "<body onload='set_currency_in(\"aud\"); set_currency_out(\"btc\");'>\n";
+else
+    echo "<body>\n"; ?>
     <img id='flower' src='images/flower.png' />
     <img id='header' src='images/header.png' />
     <img id='skyline' src='images/skyline.png' />

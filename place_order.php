@@ -21,6 +21,8 @@ $type = strtoupper($type);
 $want_type = post('want_type');
 $want_type = strtoupper($want_type);
 
+$_SESSION['currency_in'] = $type;
+
 curr_supported_check($type);
 curr_supported_check($want_type);
 
