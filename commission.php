@@ -7,7 +7,7 @@ require_once 'openid.php';
 function active_table_cell($uid, $txid, $orderid, $sub, $amount)
 {
     $url = "?page=view_order&orderid=$orderid&uid=$uid";
-    echo "<td id='cell_${txid}_${orderid}_$sub' onmouseover='In(\"$orderid\");' onmouseout='Out(\"$orderid\");' onclick='document.location=\"$url\"'>", internal_to_numstr($amount), "</td>";
+    echo "<td class='active' id='cell_${txid}_${orderid}_$sub' onmouseover='In(\"$orderid\");' onmouseout='Out(\"$orderid\");' onclick='document.location=\"$url\"'>", internal_to_numstr($amount), "</td>";
 }
 
 ?>
@@ -88,10 +88,10 @@ while ($row = mysql_fetch_assoc($result)) {
 
     echo "<tr>";
     echo "<td>$txid</td>";
-    active_table_cell($a_uid, $txid, $b_orderid, 'a', $a_amount);
-    active_table_cell($a_uid, $txid, $b_orderid, 'b', $a_commission);
-    active_table_cell($b_uid, $txid, $a_orderid, 'a', $b_amount);
-    active_table_cell($b_uid, $txid, $a_orderid, 'b', $b_commission);
+    active_table_cell($a_uid, $txid, $b_orderid, 'amount', $a_amount);
+    active_table_cell($a_uid, $txid, $b_orderid, 'comm', $a_commission);
+    active_table_cell($b_uid, $txid, $a_orderid, 'amount', $b_amount);
+    active_table_cell($b_uid, $txid, $a_orderid, 'comm', $b_commission);
     echo "<td>$timest</td>";
     echo "</tr>\n";
 }
@@ -136,28 +136,25 @@ function ObjById(id)
     return returnVar; 
 }
 
-function In(oid)
+function Color(oid, color)
 {
     var txs = tx[oid];
-    var endings = ['a', 'b'];
+    var endings = ['amount', 'comm'];
     for (var a in txs) {
-        var tid = txs[a];
-        var base = "cell_" + tid + "_" + oid + "_";
+        var base = "cell_" + txs[a] + "_" + oid + "_";
         for (var ending in endings)
-            ObjById(base + endings[ending]).style.backgroundColor="#8ae3bf";
+            ObjById(base + endings[ending]).style.backgroundColor=color;
     }
+}
+
+function In(oid)
+{
+    Color(oid, "#8ae3bf");
 }
 
 function Out(oid)
 {
-    var txs = tx[oid];
-    var endings = ['a', 'b'];
-    for (var a in txs) {
-        var tid = txs[a];
-        var base = "cell_" + tid + "_" + oid + "_";
-        for (var ending in endings)
-            ObjById(base + endings[ending]).style.backgroundColor="#7ad3af";
-    }
+    Color(oid, "#7ad3af");
 }
 </script>
 </div>

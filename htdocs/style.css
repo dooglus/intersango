@@ -86,7 +86,7 @@ input[type=submit]:hover {
     color: #017d4d;
     cursor: pointer;
 }
-tr.active {
+tr.active, td.active {
     cursor: pointer;
 }
 
