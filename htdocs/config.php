@@ -1,6 +1,12 @@
 <?php
 $abspath = '/home7/worldbit/programs/intersango';
 $urlroot = '/';
+
+if (!file_exists("$abspath/trade.php")) {
+    echo "\$abspath should point to the intersango directory - the one that contains trade.php, etc.\n";
+    exit();
+}
+
 require_once "$abspath/errors.php";
 enable_errors();
 
