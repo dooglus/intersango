@@ -14,6 +14,45 @@ function update_req($reqid, $status)
     do_query($query);
 }
 
+// find and cancel any active requests from users with negative BTC or AUD balances
+// this should never happen unless someone is trying to double-spend their balance
+$query = "
+    SELECT
+        reqid, requests.amount as amount, requests.uid as uid
+    FROM requests
+    JOIN purses
+    ON requests.uid = purses.uid
+    WHERE
+        req_type = 'WITHDR'
+        AND curr_type = 'BTC'
+        AND (status = 'VERIFY' OR status = 'PROCES')
+        AND purses.amount < 0
+    GROUP BY reqid
+";
+$result = do_query($query);
+while ($row = mysql_fetch_array($result)) {
+    $reqid = $row['reqid'];
+    $amount = $row['amount'];
+    $uid = $row['uid'];
+    try {
+        $lock = get_lock($uid);
+        $query = "
+    UPDATE requests
+    SET status = 'CANCEL'
+    WHERE reqid = '$reqid'
+        ";
+        do_query($query);
+        add_funds($uid, $amount, 'BTC');
+        release_lock($lock);
+    }
+    catch (Error $e) {
+        if ($e->getTitle() == 'Lock Error')
+            echo "can't get lock for $uid\n";
+        else
+            throw $e;
+    }
+}
+
 $query = "
     SELECT
         requests.reqid AS reqid,
