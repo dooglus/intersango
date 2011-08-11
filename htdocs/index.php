@@ -48,7 +48,10 @@ else
 if($page == 'logout')
     logout();
 
-switcher($page, is_logged_in(), is_admin());
+$is_logged_in = is_logged_in();
+$is_admin = is_admin();
+
+switcher($page, $is_logged_in, $is_admin);
 
 // send the contents of the output buffer
 ob_end_flush();
