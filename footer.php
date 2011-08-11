@@ -28,6 +28,8 @@ function show_links($is_logged_in, $is_admin)
     show_link                    ('orderbook',    'Orderbook',    'Show orders'                    );
     if ($show_duo)      show_link('turn_on_duo',  'Security',     'Use two-factor authentification');
     show_link                    ('help',         'Help',         'Seek support'                   );
+    if ($is_admin)      show_link('users',        'Users',        'Show registered users',        1);
+    if ($is_admin)      show_link('commission',   'Commission',   'Show commission statement',    1);
     if ($is_admin)      show_link('bank',         'Bank',         'Show bank statement'          ,1);
     if ($is_admin)      show_link('freeze',       'Freeze',       'Stop activity on the exchange',1);
     if ($is_logged_in)  show_link('logout',       'Logout',       'End this session'               );
