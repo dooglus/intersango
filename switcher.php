@@ -12,7 +12,7 @@ function switcher($page)
             show_header($page, $is_logged_in);
 
         $lock = false;
-        if ($is_logged_in) $lock = get_lock();
+        if ($is_logged_in) $lock = get_lock($is_logged_in);
 
         switch($page) {
             case 'deposit':

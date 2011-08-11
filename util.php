@@ -142,17 +142,22 @@ function user_id()
     return $_SESSION['uid'];
 }
 
-function get_lock()
+function get_lock($uid)
 {
-    $uid = user_id();
     $lock = lock_dir() . "/" . $uid;
 
-    if (!($fp = fopen($lock, "w")))
+    $umask = umask(0);
+    if (!($fp = fopen($lock, "w"))) {
+        umask($umask);
         throw new Error('Lock Error', "Can't create lockfile for $uid");
+    }
 
-    if (!flock($fp, LOCK_EX|LOCK_NB))
+    if (!flock($fp, LOCK_EX|LOCK_NB)) {
+        umask($umask);
         throw new Error('Lock Error', "User $uid is already doing stuff.<br/>");
+    }
 
+    umask($umask);
     return $fp;
 }
 
