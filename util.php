@@ -588,6 +588,7 @@ function aud_transferred_today($uid)
         AND uid = $uid
         AND req_type in ('WITHDR', 'DEPOS')
         AND curr_type = 'AUD'
+        AND status != 'CANCEL'
     ";
     $result = do_query($query);
     $row = get_row($result);
@@ -605,6 +606,7 @@ function btc_withdrawn_today($uid)
         AND uid = $uid
         AND req_type = 'WITHDR'
         AND curr_type = 'BTC'
+        AND status != 'CANCEL'
     ";
     $result = do_query($query);
     $row = get_row($result);
