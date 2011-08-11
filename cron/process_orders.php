@@ -172,7 +172,7 @@ function process()
     // find and cancel any active orders from users with negative BTC or AUD balances
     // this should never happen unless someone is trying to double-spend their balance
     $query = "
-        SELECT orderid
+        SELECT orderid, orderbook.amount as amount, orderbook.type, orderbook.uid as uid
         FROM orderbook
         JOIN purses
         ON orderbook.uid = purses.uid
@@ -185,12 +185,30 @@ function process()
     $result = b_query($query);
     while ($row = mysql_fetch_array($result)) {
         $orderid = $row['orderid'];
-        $query = "
-            UPDATE orderbook
-            SET status=CANCEL
-            WHERE orderid='$orderid'
-        ";
-        b_query($query);
+        $amount = $row['amount'];
+        $type = $row['type'];
+        $uid = $row['uid'];
+        try {
+            $lock = get_lock($uid);
+            $query = "
+    UPDATE orderbook
+    SET status = 'CANCEL'
+    WHERE orderid = '$orderid'
+            ";
+            b_query($query);
+            add_funds($uid, $amount, $type);
+
+            // these records indicate returned funds.
+            create_record($orderid, $amount, 0,
+                          0,        -1,      0);
+            release_lock($lock);
+        }
+        catch (Error $e) {
+            if ($e->getTitle() == 'Lock Error')
+                echo "can't get lock for $uid\n";
+            else
+                throw $e;
+        }
     }
 
     $query = "
