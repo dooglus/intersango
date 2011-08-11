@@ -181,6 +181,9 @@ function get($key)
 
 function sync_to_bitcoin($uid)
 {
+    if (!is_string($uid))
+        throw new Error('Coding error!', "sync_to_bitcoin() expects a string, not type '" . gettype($uid) . "'");
+        
     $bitcoin = connect_bitcoin();
     try {
         $balance = $bitcoin->getbalance($uid, confirmations_for_deposit());
@@ -267,7 +270,7 @@ function get_ticker_data()
 {
     $query = "
     SELECT
-        SUM(b_amount + b_commission) AS vol
+        SUM(b_amount) AS vol
     FROM
         transactions
     WHERE
