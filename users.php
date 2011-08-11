@@ -1,5 +1,5 @@
 <?php
-function show_users()
+function show_users($precision)
 {
     echo "<div class='content_box'>\n";
     echo "<h3>Users</h3>\n";
@@ -29,10 +29,18 @@ function show_users()
 
             echo "<table class='display_data'>\n";
             echo "<tr>";
+            echo "<th></th>";
+//          echo "<th></th>";
+            echo "<th colspan='2' style='text-align: center;'>AUD</th>";
+            echo "<th colspan='2' style='text-align: center;'>BTC</th>";
+            echo "</tr>\n";
+            echo "<tr>";
             echo "<th>UID</th>";
 //          echo "<th>OID</th>";
-            echo "<th>AUD</th>";
-            echo "<th>BTC</th>";
+            echo "<th>On Hand</th>";
+            echo "<th>In Book</th>";
+            echo "<th>On Hand</th>";
+            echo "<th>In Book</th>";
             echo "<th>Registered</th>";
             echo "</tr>\n";
         }
@@ -43,6 +51,9 @@ function show_users()
         $timest = $row['timest'];
         $aud = $row['aud'];
         $btc = $row['btc'];
+        $committed = fetch_committed_balances($uid);
+        $c_aud = $committed['AUD'];
+        $c_btc = $committed['BTC'];
 
         if ($is_admin)
             echo "<tr style='font-weight: bold'>";
@@ -50,8 +61,10 @@ function show_users()
             echo "<tr>";
         echo "<td>$uid</td>";
 //      echo "<td>$oidlogin</td>";
-        echo "<td>", internal_to_numstr($aud), "</td>";
-        echo "<td>", internal_to_numstr($btc), "</td>";
+        echo "<td>", internal_to_numstr($aud,   $precision), "</td>";
+        echo "<td>", internal_to_numstr($c_aud, $precision), "</td>";
+        echo "<td>", internal_to_numstr($btc,   $precision), "</td>";
+        echo "<td>", internal_to_numstr($c_btc, $precision), "</td>";
         echo "<td>$timest</td>";
         echo "</tr>\n";
     }
@@ -63,5 +76,5 @@ function show_users()
     echo "</div>\n";
 }
 
-show_users();
+show_users($precision = 4);
 ?>
