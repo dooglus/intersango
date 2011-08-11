@@ -17,6 +17,8 @@ function count_transactions($orderid)
     
 function display_transactions($uid, $orderid)
 {
+    global $is_logged_in, $is_admin;
+
     $ordselq = '';
     if (!$orderid)
         $sort = "DESC";
@@ -67,7 +69,13 @@ function display_transactions($uid, $orderid)
         if ($first) {
             $first = false;
             ?> <div class='content_box'>
-            <h3>Your trades <?php if ($orderid) echo 'for this order'; ?></h3>
+            <h3>
+<?php
+    if ($is_logged_in == $uid)
+        echo "Your trades ";
+    else
+        echo "Trades ";
+    if ($orderid) echo 'for this order'; ?></h3>
             <table class='display_data'>
                 <tr>
 <?php if (!$orderid) { ?>
