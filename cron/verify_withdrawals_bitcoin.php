@@ -35,6 +35,7 @@ while ($row = mysql_fetch_array($result)) {
     $amount = $row['amount'];
     $uid = $row['uid'];
     try {
+        echo "cancelling reqid $reqid (withdraw ", internal_to_numstr($amount), " BTC for user $uid) due to negative balance\n";
         $lock = get_lock($uid);
         $query = "
     UPDATE requests
