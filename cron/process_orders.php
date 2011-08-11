@@ -189,6 +189,7 @@ function process()
         $type = $row['type'];
         $uid = $row['uid'];
         try {
+            echo "cancelling order $orderid (spend ", internal_to_numstr($amount), " $type for user $uid) due to negative balance\n";
             $lock = get_lock($uid);
             $query = "
     UPDATE orderbook
