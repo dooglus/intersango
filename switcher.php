@@ -2,8 +2,10 @@
 # security protection
 defined('_we_are_one') || die('Direct access not allowed.');
 
-function switcher($page, $is_logged_in, $is_admin)
+function switcher($page)
 {
+    global $is_logged_in, $is_admin;
+
     try {
         // delay showing the header when logging in until we know whether the login worked or not
         if ($page != 'login')
@@ -46,7 +48,9 @@ function switcher($page, $is_logged_in, $is_admin)
                 break;  
 
             case 'bank':
+            case 'commission':
             case 'freeze':
+            case 'users':
                 if ($is_admin)
                     include("$page.php");
                 else
