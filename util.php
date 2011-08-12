@@ -27,9 +27,14 @@ function set_frozen($freeze = true)
     }
 }
 
+function is_frozen()
+{
+    return file_exists(freeze_file());
+}
+
 function check_frozen()
 {
-    if (file_exists(freeze_file()))
+    if (is_frozen())
         throw new Error("Frozen", "Trading on the exchange is temporarily frozen");
 }
 
