@@ -22,6 +22,7 @@
 </p>
 </div>
 
+<a name="two_factor"/>
 <div class='content_box'>
 <h3>Security - two factor authentication</h3>
 <p>
