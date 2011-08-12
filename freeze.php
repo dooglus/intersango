@@ -26,10 +26,15 @@ if (isset($_POST['set_freeze'])) {
         throw Error("Unknown state", "State $state should be 'freeze' or 'unfreeze'.");
 } else {
     $is_frozen = is_frozen();
-    if ($is_frozen)
+    if ($is_frozen) {
         echo "<p>The exchange is currently frozen.</p>\n";
-    else
+        echo "<p>Click 'unfreeze' below to resume order matching and withdrawal processing.</p>\n";
+    } else {
         echo "<p>The exchange isn't currently frozen.</p>\n";
+        echo "<p>Click 'freeze' below to freeze order matching and withdrawal processing.</p>\n";
+        echo "<p>Users will still be able to place and cancel orders,\n";
+        echo "they just won't be matched until after you unfreeze the exchange.</p>\n";
+    }
 ?>
     <form action='' class='indent_form' method='post'>
         <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
