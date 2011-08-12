@@ -570,6 +570,23 @@ function commission_on_type($amount, $curr_type, $already_paid)
     throw new Error('Unknown currency type', "Type $curr_type isn't AUD or BTC");
 }
 
+function day_time_range_string()
+{
+    $offset = day_starts_minutes_after_midnight();
+    return minutes_past_midnight_as_time_string($offset) . " to " . minutes_past_midnight_as_time_string($offset-1);
+}
+
+function minutes_past_midnight_as_time_string($minutes)
+{
+    if ($minutes == 0)
+        return "midnight";
+
+    if ($minutes == 12*60)
+        return "noon";
+
+    return str_replace(' ', '', strftime("%l:%M%P", mktime(0,0,0) + $minutes*60));
+}
+
 // sum available and committed AUD amounts
 function total_aud_balance($uid)
 {
@@ -581,10 +598,14 @@ function total_aud_balance($uid)
 
 function aud_transferred_today($uid)
 {
+    $midnight_offset = day_starts_minutes_after_midnight();
     $query = "
         SELECT SUM(amount) as sum
         FROM requests
-        WHERE timest > CURRENT_DATE()
+        WHERE timest > (SELECT IF (NOW() > CURRENT_DATE + INTERVAL $midnight_offset MINUTE,
+                                   CURRENT_DATE,
+                                   CURRENT_DATE - INTERVAL 1 DAY))
+                     + INTERVAL $midnight_offset MINUTE
         AND uid = $uid
         AND req_type in ('WITHDR', 'DEPOS')
         AND curr_type = 'AUD'
@@ -599,10 +620,14 @@ function aud_transferred_today($uid)
 
 function btc_withdrawn_today($uid)
 {
+    $midnight_offset = day_starts_minutes_after_midnight();
     $query = "
         SELECT SUM(amount) as sum
         FROM requests
-        WHERE timest > CURRENT_DATE()
+        WHERE timest > (SELECT IF (NOW() > CURRENT_DATE + INTERVAL $midnight_offset MINUTE,
+                                   CURRENT_DATE,
+                                   CURRENT_DATE - INTERVAL 1 DAY))
+                     + INTERVAL $midnight_offset MINUTE
         AND uid = $uid
         AND req_type = 'WITHDR'
         AND curr_type = 'BTC'

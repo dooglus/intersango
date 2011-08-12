@@ -155,7 +155,7 @@ else {
     $limit = numstr_to_internal(maximum_daily_aud_transfer());
     $available = gmp_sub($limit, $transferred);
     if (gmp_cmp($aud, $available) > 0) {
-        echo "    <p>You can transfer up to ", internal_to_numstr($limit), " AUD each day.</p>\n";
+        echo "    <p>You can transfer up to ", internal_to_numstr($limit), " AUD each day (", day_time_range_string(), ")</p>\n";
         if ($transferred) {
             echo "    <p>You have transferred ", internal_to_numstr($transferred), " AUD today\n";
             if (gmp_cmp($available, '0') > 0)
@@ -244,7 +244,7 @@ else {
     $limit = numstr_to_internal(maximum_daily_btc_withdraw());
     $available = gmp_sub($limit, $withdrawn);
     if (gmp_cmp($btc, $available) > 0) {
-        echo "    <p>You can withdraw up to ", internal_to_numstr($limit), " BTC each day.</p>\n";
+        echo "    <p>You can withdraw up to ", internal_to_numstr($limit), " BTC each day (", day_time_range_string(), ").</p>\n";
         if ($withdrawn) {
             echo "    <p>You have withdrawn ", internal_to_numstr($withdrawn), " BTC today\n";
             if (gmp_cmp($available, '0') > 0)
