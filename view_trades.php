@@ -10,7 +10,9 @@ echo "<h3>Recent Trades</h3>\n";
 $query = "
     SELECT txid,
            a_amount,
+           a_orderid,
            b_amount,
+           b_orderid,
            " . sql_format_date("t.timest") . " AS timest,
            a.uid AS a_uid,
            b.uid AS b_uid
@@ -26,6 +28,7 @@ $query = "
 $result = do_query($query);
 $first = true;
 $amount_aud_total = $amount_btc_total = '0';
+$mine = 0;
 while ($row = mysql_fetch_assoc($result)) {
     if ($first) {
         $first = false;
@@ -41,7 +44,9 @@ while ($row = mysql_fetch_assoc($result)) {
     
     $txid = $row['txid'];
     $a_amount = $row['a_amount'];
+    $a_orderid = $row['a_orderid'];
     $b_amount = $row['b_amount'];
+    $b_orderid = $row['b_orderid'];
     $timest = $row['timest'];
     $a_uid = $row['a_uid'];
     $b_uid = $row['b_uid'];
@@ -50,10 +55,27 @@ while ($row = mysql_fetch_assoc($result)) {
     $amount_aud_total = gmp_add($amount_aud_total, $a_amount);
     $amount_btc_total = gmp_add($amount_btc_total, $b_amount);
 
-    echo "<tr>";
+    $a_is_me = ($a_uid == $is_logged_in);
+    $b_is_me = ($b_uid == $is_logged_in);
+
+    if ($a_is_me)
+        echo active_table_row("active", "?page=view_order&orderid=$a_orderid");
+    else if ($b_is_me)
+        echo active_table_row("active", "?page=view_order&orderid=$b_orderid");
+    else
+        echo "<tr>";
+
     echo "<td>$txid</td>";
-    echo "<td>", internal_to_numstr($a_amount,4), "</td>";
-    echo "<td>", internal_to_numstr($b_amount,4), "</td>";
+    if ($a_is_me) {
+        $mine++;
+        echo "<td style='font-weight:bold;'>", internal_to_numstr($a_amount,4), "</td>";
+    } else
+        echo "<td>", internal_to_numstr($a_amount,4), "</td>";
+    if ($b_is_me) {
+        $mine++;
+        echo "<td style='font-weight:bold;'>", internal_to_numstr($b_amount,4), "</td>";
+    } else
+        echo "<td>", internal_to_numstr($b_amount,4), "</td>";
     echo "<td>$price</td>";
     echo "<td>$timest</td>";
     echo "</tr>\n";
@@ -73,6 +95,13 @@ else {
     echo "        <td>$price</td>";
     echo "    </tr>\n";
     echo "</table>\n";
+
+    if ($mine) {
+        if ($mine == 1)
+            echo "<p>The amount you <span style='font-weight: bold;'>gave</span> is in <span style='font-weight: bold;'>bold</span>.</p>\n";
+        else
+            echo "<p>The $mine amounts you <span style='font-weight: bold;'>gave</span> are in <span style='font-weight: bold;'>bold</span>.</p>\n";
+    }
 }
 
 ?>
