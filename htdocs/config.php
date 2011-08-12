@@ -13,8 +13,15 @@ enable_errors();
 // path to a directory to use for per-user locks - must be writable by the user who runs PHP scripts
 function lock_dir() { global $abspath; return $abspath . "/locks"; }
 
+// .------------------------------------------------------------------------
+// |  local time
+// `------------------------------------------------------------------------
+
 // which timezone should we use
 function timezone() { return "Australia/Queensland"; }
+
+// how many minutes after midnight does the day start, for the purposes of limiting daily transfers
+function day_starts_minutes_after_midnight() { return 9*60 + 0; } // day starts at 9:00am
 
 // .------------------------------------------------------------------------
 // |  free money! (set to zero before going live!!)
