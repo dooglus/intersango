@@ -27,7 +27,7 @@ $query = "
         type,
         initial_want_amount,
         want_type,
-        DATE_FORMAT(timest, '%H:%i %d/%m/%y') AS timest,
+        " . sql_format_date("timest") . " AS timest,
         status
     FROM orderbook
     WHERE uid='$uid'
@@ -82,7 +82,7 @@ $query = "
         req_type,
         amount,
         curr_type,
-        DATE_FORMAT(timest, '%H:%i %d/%m/%y') AS timest,
+        " . sql_format_date("timest") . " AS timest,
         status
     FROM requests
     WHERE

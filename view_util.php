@@ -36,7 +36,7 @@ function display_transactions($uid, $orderid)
             transactions.b_commission AS b_commission,
             orderbook.type AS type,
             orderbook.want_type AS want_type,
-            DATE_FORMAT(transactions.timest, '%H:%i %d/%m/%y') AS timest
+            " . sql_format_date("transactions.timest") . " AS timest
         FROM transactions
         JOIN orderbook
         ON

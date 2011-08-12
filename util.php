@@ -410,7 +410,7 @@ function fetch_order_info($orderid)
     $query = "
         SELECT
             *,
-            DATE_FORMAT(timest, '%H:%i %d/%m/%y') AS timest_format
+            " . sql_format_date("timest") . " AS timest_format
         FROM orderbook
         WHERE orderid='$orderid';
     ";
@@ -504,7 +504,7 @@ function get_time_text()
     // see http://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-format
     $result = do_query("SELECT CONCAT(DATE_FORMAT(now, '%l:%i')," .
                        "LOWER(DATE_FORMAT(now, '%p'))," .
-                       "DATE_FORMAT(now, ' on %W')) AS time" .
+                       "DATE_FORMAT(now, ' on %W %D')) AS time" .
                        " FROM (SELECT NOW() AS now) now");
     $row = mysql_fetch_assoc($result);
     return $row['time'];
