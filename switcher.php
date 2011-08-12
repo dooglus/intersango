@@ -21,7 +21,6 @@ function switcher($page)
             case 'turn_on_duo':
             case 'view_order':
             case 'view_request':
-            case 'view_trades':
             case 'withdraw':
                 if ($is_logged_in)
                     include("$page.php");
@@ -45,6 +44,7 @@ function switcher($page)
             case 'orderbook':
             case 'test':
             case 'trade':
+            case 'view_trades':
                 include("$page.php");
                 break;  
 
