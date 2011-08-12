@@ -15,6 +15,22 @@ function switcher($page)
         if ($is_logged_in) $lock = get_lock($is_logged_in);
 
         switch($page) {
+
+            ////////////////////////////////////////////////////////////////////////
+            // for general consumption
+            ////////////////////////////////////////////////////////////////////////
+            case '404':
+            case 'help':
+            case 'orderbook':
+            case 'test':
+            case 'trade':
+            case 'view_trades':
+                include("$page.php");
+                break;  
+
+            ////////////////////////////////////////////////////////////////////////
+            // for logged in users only
+            ////////////////////////////////////////////////////////////////////////
             case 'deposit':
             case 'place_order':
             case 'profile':
@@ -28,6 +44,19 @@ function switcher($page)
                     log_badpage($page);
                 break;
 
+            ////////////////////////////////////////////////////////////////////////
+            // for admin only
+            ////////////////////////////////////////////////////////////////////////
+            case 'bank':
+            case 'commission':
+            case 'freeze':
+            case 'users':
+                if ($is_admin)
+                    include("$page.php");
+                else
+                    log_badpage($page);
+                break;  
+
             case 'login':
                 if (!$is_logged_in) {
                     include("login.php");
@@ -38,25 +67,6 @@ function switcher($page)
                 else
                     log_badpage($page);
                 break;
-
-            case '404':
-            case 'help':
-            case 'orderbook':
-            case 'test':
-            case 'trade':
-            case 'view_trades':
-                include("$page.php");
-                break;  
-
-            case 'bank':
-            case 'commission':
-            case 'freeze':
-            case 'users':
-                if ($is_admin)
-                    include("$page.php");
-                else
-                    log_badpage($page);
-                break;  
 
             default:
                 log_badpage($page);
