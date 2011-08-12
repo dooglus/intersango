@@ -38,6 +38,13 @@ function check_frozen()
         throw new Error("Frozen", "Trading on the exchange is temporarily frozen");
 }
 
+function sql_format_date($date)
+{
+    return "CONCAT(DATE_FORMAT($date, '%l:%i'), " .
+                  "LOWER(DATE_FORMAT($date, '%p')), " .
+                  "DATE_FORMAT($date, ' %d-%b-%y'))";
+}
+
 function create_record($our_orderid,  $our_amount,  $our_commission,
                        $them_orderid, $them_amount, $them_commission)
 {
