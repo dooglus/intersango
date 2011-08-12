@@ -96,7 +96,7 @@ function show_content_header_ticker()
 function show_content_header_time()
 {
     echo "    <div class='content_header_box' style='float: right;'>\n";
-    echo "        ", date('g:i:s a', time()), "\n";
+    echo "        ", date('g:i:sa j-M', time()), "\n";
     echo "    </div>\n";
 }
 
