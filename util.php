@@ -8,6 +8,31 @@ class BASE_CURRENCY
     const B = 1;
 }
 
+function freeze_file()
+{
+    return lock_dir() . "/FREEZE";
+}
+
+function set_frozen($freeze = true)
+{
+    if ($freeze) {
+        $umask = umask(0);
+        umask(0);
+        if (!($fp = fopen(freeze_file(), "w")))
+            throw new Error('Freeze Error', "Can't create freeze file " . freeze_file());
+    } else {
+        unlink(freeze_file());
+        if (file_exists(freeze_file()))
+            throw new Error('Unfreeze Error', "Can't unlink freeze file " . freeze_file());
+    }
+}
+
+function check_frozen()
+{
+    if (file_exists(freeze_file()))
+        throw new Error("Frozen", "Trading on the exchange is temporarily frozen");
+}
+
 function create_record($our_orderid,  $our_amount,  $our_commission,
                        $them_orderid, $them_amount, $them_commission)
 {

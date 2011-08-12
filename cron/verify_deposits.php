@@ -1,7 +1,10 @@
 <?php
 require_once '../util.php';
 
-$query = "
+try {
+    check_frozen();
+
+    $query = "
     SELECT
         reqid,
         uid,
@@ -13,12 +16,12 @@ $query = "
         status='VERIFY'
         AND req_type='DEPOS'
     ";
-$result = do_query($query);
+    $result = do_query($query);
 
-while ($row = mysql_fetch_assoc($result))
-{
-    $reqid = $row['reqid'];
-    $query = "
+    while ($row = mysql_fetch_assoc($result))
+    {
+        $reqid = $row['reqid'];
+        $query = "
         UPDATE
             requests
         SET
@@ -26,13 +29,13 @@ while ($row = mysql_fetch_assoc($result))
         WHERE
             reqid='$reqid'
         ";
-    do_query($query);
+        do_query($query);
 
-    $uid = $row['uid'];
-    $type = $row['curr_type'];
-    $amount = $row['amount'];
+        $uid = $row['uid'];
+        $type = $row['curr_type'];
+        $amount = $row['amount'];
 
-    $query = "
+        $query = "
         UPDATE
             purses
         SET
@@ -41,9 +44,9 @@ while ($row = mysql_fetch_assoc($result))
             uid='$uid'
             AND type='$type'
         ";
-    do_query($query);
+        do_query($query);
 
-    $query = "
+        $query = "
         UPDATE
             requests
         SET
@@ -51,6 +54,18 @@ while ($row = mysql_fetch_assoc($result))
         WHERE
             reqid='$reqid'
         ";
-    do_query($query);
+        do_query($query);
+    }
 }
-
+catch (Error $e) {
+    report_exception($e, SEVERITY::ERROR);
+    // Same as below, but flag + log this for review,
+    echo "\nError: \"{$e->getTitle()}\"\n  {$e->getMessage()}\n";
+}
+catch (Problem $e) {
+    echo "\nProblem: \"{$e->getTitle()}\"\n  {$e->getMessage()}\n";
+}
+catch (Exception $e) {
+    echo "\nException: \"{$e->getTitle()}\"\n  {$e->getMessage()}\n";
+}
+?>

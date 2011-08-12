@@ -235,6 +235,7 @@ function process()
 }
 
 try {
+    check_frozen();
     process();
 }
 catch (Error $e) {
