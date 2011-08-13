@@ -50,6 +50,12 @@ $result = do_query($query);
 $row = get_row($result);
 $best_rate = $row['rate'];
 
+if (!$best_rate)
+    $best_rate = get_last_price();
+
+if (!$best_rate)
+    $best_rate = "(amount / want_amount)";
+
 $query = "
     SELECT
         initial_amount / initial_want_amount AS rate,

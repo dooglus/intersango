@@ -308,6 +308,31 @@ function show_balances($uid, $indent=false)
     }
 }
 
+function get_last_price($precision = 8)
+{
+    $query = "
+    SELECT
+        a_amount,
+        b_amount
+    FROM
+        transactions
+    WHERE
+        b_amount >= 0
+    ORDER BY
+        timest DESC
+    LIMIT 1
+    ";
+    $result = do_query($query);
+    if (has_results($result)) {
+        $row = get_row($result);
+        $last = bcdiv($row['a_amount'], $row['b_amount'], $precision);
+    }
+    else
+        $last = 0;
+
+    return $last;
+}
+
 function get_ticker_data()
 {
     $query = "
@@ -338,25 +363,7 @@ function get_ticker_data()
     else
         list($total_amount, $total_want_amount, $sell) = $exchange_fields; 
 
-    $query = "
-    SELECT
-        a_amount,
-        b_amount
-    FROM
-        transactions
-    WHERE
-        b_amount >= 0
-    ORDER BY
-        timest DESC
-    LIMIT 1
-    ";
-    $result = do_query($query);
-    if (has_results($result)) {
-        $row = get_row($result);
-        $last = bcdiv($row['a_amount'], $row['b_amount'], 4);
-    }
-    else
-        $last = 0;
+    $last = get_last_price(4);
 
     return array($vol, $buy, $sell, $last);
 }
