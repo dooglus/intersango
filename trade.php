@@ -117,7 +117,7 @@
         <div class='content_box'>
             <h3>Commission</h3>
 <?php
-    if (commission_percentage_for_aud() == 0 && commission_percentage_for_btc() == 0)
+    if (COMMISSION_PERCENTAGE_FOR_AUD == 0 && COMMISSION_PERCENTAGE_FOR_BTC == 0)
         echo "<p>All trades are free of commission</p>\n";
     else {
         echo "<p>Commission is charged at the following rates:</p>\n";

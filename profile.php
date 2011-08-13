@@ -124,7 +124,7 @@ if ($row) { ?>
 
 try {
     $bitcoin = connect_bitcoin();
-    $needed_conf = confirmations_for_deposit();
+    $needed_conf = CONFIRMATIONS_FOR_DEPOSIT;
     $balance = $bitcoin->getbalance($uid, $needed_conf);
 
     if ($balance != $bitcoin->getbalance($uid, 0)) { ?>

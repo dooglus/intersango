@@ -135,8 +135,8 @@ try {
                     do_query($query);
                     $uid = (string)mysql_insert_id();
 
-                    $free_aud = numstr_to_internal(free_aud_on_signup());
-                    $free_btc = numstr_to_internal(free_btc_on_signup());
+                    $free_aud = numstr_to_internal(FREE_AUD_ON_SIGNUP);
+                    $free_btc = numstr_to_internal(FREE_BTC_ON_SIGNUP);
 
                     // generate random str for deposit reference
                     $query = "

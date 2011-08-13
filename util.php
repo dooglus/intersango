@@ -10,7 +10,7 @@ class BASE_CURRENCY
 
 function freeze_file()
 {
-    return lock_dir() . "/FREEZE";
+    return LOCK_DIR . "/FREEZE";
 }
 
 function set_frozen($freeze = true)
@@ -181,7 +181,7 @@ function user_id()
 
 function get_lock($uid)
 {
-    $lock = lock_dir() . "/" . $uid;
+    $lock = LOCK_DIR . "/" . $uid;
 
     $umask = umask(0);
     if (!($fp = fopen($lock, "w"))) {
@@ -228,7 +228,7 @@ function sync_to_bitcoin($uid)
         
     $bitcoin = connect_bitcoin();
     try {
-        $balance = $bitcoin->getbalance($uid, confirmations_for_deposit());
+        $balance = $bitcoin->getbalance($uid, CONFIRMATIONS_FOR_DEPOSIT);
 
         if (gmp_cmp($balance, '0') > 0) {
             $bitcoin->move($uid, '', $balance);
@@ -514,8 +514,8 @@ function show_commission_rates()
 {
     echo "<blockquote>\n";
 
-    $cap = commission_cap_in_btc();
-    $rate = commission_percentage_for_btc();
+    $cap = COMMISSION_CAP_IN_BTC;
+    $rate = COMMISSION_PERCENTAGE_FOR_BTC;
     if ($rate == 0)
         echo "<p>buying BTC is free of commission</p>\n";
     else {
@@ -527,8 +527,8 @@ function show_commission_rates()
         echo " when buying BTC</p>\n";
     }
 
-    $cap = commission_cap_in_aud();
-    $rate = commission_percentage_for_aud();
+    $cap = COMMISSION_CAP_IN_AUD;
+    $rate = COMMISSION_PERCENTAGE_FOR_AUD;
     if ($rate == 0)
         echo "<p>buying AUD is free of commission</p>\n";
     else {
@@ -582,16 +582,16 @@ function commission($amount, $percentage, $cap, $already_paid)
 function commission_on_aud($aud, $already_paid)
 {
     return commission($aud,
-                      commission_percentage_for_aud(),
-                      commission_cap_in_aud(),
+                      COMMISSION_PERCENTAGE_FOR_AUD,
+                      COMMISSION_CAP_IN_AUD,
                       $already_paid);
 }
 
 function commission_on_btc($btc, $already_paid)
 {
     return commission($btc,
-                      commission_percentage_for_btc(),
-                      commission_cap_in_btc(),
+                      COMMISSION_PERCENTAGE_FOR_BTC,
+                      COMMISSION_CAP_IN_BTC,
                       $already_paid);
 }
 
@@ -609,7 +609,7 @@ function commission_on_type($amount, $curr_type, $already_paid)
 
 function day_time_range_string()
 {
-    $offset = day_starts_minutes_after_midnight();
+    $offset = DAY_STARTS_MINUTES_AFTER_MIDNIGHT;
     return minutes_past_midnight_as_time_string($offset) . " to " . minutes_past_midnight_as_time_string($offset-1);
 }
 
@@ -635,7 +635,7 @@ function total_aud_balance($uid)
 
 function aud_transferred_today($uid)
 {
-    $midnight_offset = day_starts_minutes_after_midnight();
+    $midnight_offset = DAY_STARTS_MINUTES_AFTER_MIDNIGHT;
     $query = "
         SELECT SUM(amount) as sum
         FROM requests
@@ -657,7 +657,7 @@ function aud_transferred_today($uid)
 
 function btc_withdrawn_today($uid)
 {
-    $midnight_offset = day_starts_minutes_after_midnight();
+    $midnight_offset = DAY_STARTS_MINUTES_AFTER_MIDNIGHT;
     $query = "
         SELECT SUM(amount) as sum
         FROM requests
@@ -680,14 +680,14 @@ function btc_withdrawn_today($uid)
 function check_aud_balance_limit($uid, $amount)
 {
     $balance = total_aud_balance($uid);
-    $limit = numstr_to_internal(maximum_aud_balance());
+    $limit = numstr_to_internal(MAXIMUM_AUD_BALANCE);
     echo "<p>Maximum balance is ", internal_to_numstr($limit), " AUD and you have ", internal_to_numstr($balance), " AUD.</p>\n";
 }
 
 function check_aud_transfer_limit($uid, $amount)
 {
     $withdrawn = aud_transferred_today($uid);
-    $limit = numstr_to_internal(maximum_daily_aud_transfer());
+    $limit = numstr_to_internal(MAXIMUM_DAILY_AUD_TRANSFER);
     $available = gmp_sub($limit, $withdrawn);
 
     if (gmp_cmp($amount, $available) > 0)
@@ -697,7 +697,7 @@ function check_aud_transfer_limit($uid, $amount)
 function check_btc_withdraw_limit($uid, $amount)
 {
     $withdrawn = btc_withdrawn_today($uid);
-    $limit = numstr_to_internal(maximum_daily_btc_withdraw());
+    $limit = numstr_to_internal(MAXIMUM_DAILY_BTC_WITHDRAW);
     $available = gmp_sub($limit, $withdrawn);
 
     if (gmp_cmp($amount, $available) > 0)

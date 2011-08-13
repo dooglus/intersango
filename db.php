@@ -55,6 +55,6 @@ function clean_sql_numstr($numstr)
     return $numstr;
 }
 
-do_query("set time_zone = '".timezone()."'");
+do_query("set time_zone = '".TIMEZONE."'");
 
 ?>

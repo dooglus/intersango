@@ -79,7 +79,7 @@ try {
         $uid = $row['uid'];
         $amount = $row['amount'];
         $addy = $row['addy'];
-        $we_have = $bitcoin->getbalance("", confirmations_for_deposit());
+        $we_have = $bitcoin->getbalance("", CONFIRMATIONS_FOR_DEPOSIT);
 
         if (gmp_cmp($we_have, $amount) >= 0)
         {

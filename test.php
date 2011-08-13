@@ -26,8 +26,8 @@ echo "</div>\n";
 
 echo "<div class='content_box'>\n";
 echo "<h3>Commission buying BTC</h3>\n";
-echo "<p>rate is ", commission_percentage_for_btc(), "%",
-    " and cap is ", commission_cap_in_btc(), " BTC</p>\n";
+echo "<p>rate is ", COMMISSION_PERCENTAGE_FOR_BTC, "%",
+    " and cap is ", COMMISSION_CAP_IN_BTC, " BTC</p>\n";
 echo "<ul>\n";
 test_btc_commission('0.000000001');
 test_btc_commission('0.00000001');
@@ -68,8 +68,8 @@ echo "</ul></div>\n";
 
 echo "<div class='content_box'>\n";
 echo "<h3>Commission selling BTC</h3>\n";
-echo "<p>rate is ", commission_percentage_for_aud(), "%",
-    " and cap is ", commission_cap_in_aud(), " AUD</p>\n";
+echo "<p>rate is ", COMMISSION_PERCENTAGE_FOR_AUD, "%",
+    " and cap is ", COMMISSION_CAP_IN_AUD, " AUD</p>\n";
 echo "<ul>\n";
 test_aud_commission('0.0001', '1');
 test_aud_commission('0.0001', '0.012');

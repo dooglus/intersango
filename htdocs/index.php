@@ -8,15 +8,15 @@ session_start();
 ob_start();
 
 require_once "config.php";
-require_once "$abspath/util.php";
-require_once "$abspath/header.php";
-require_once "$abspath/switcher.php";
-require_once "$abspath/footer.php";
+require_once ABSPATH . "/util.php";
+require_once ABSPATH . "/header.php";
+require_once ABSPATH . "/switcher.php";
+require_once ABSPATH . "/footer.php";
 
 // change the session ID regularly
 if (!isset($_SESSION['creation_time'])) {
     $_SESSION['creation_time'] = time();
-} else if (time() - $_SESSION['creation_time'] > max_session_id_lifetime() * 60) {
+} else if (time() - $_SESSION['creation_time'] > MAX_SESSION_ID_LIFETIME * 60) {
     session_regenerate_id(true);
     $_SESSION['creation_time'] = time();
 }
@@ -24,12 +24,12 @@ if (!isset($_SESSION['creation_time'])) {
 // log the user out if they're idle too long
 if (isset($_SESSION['uid']) && isset($_SESSION['last_activity'])) {
     $inactivity = time() - $_SESSION['last_activity'];
-    if ($inactivity > max_idle_minutes_before_logout() * 60)
+    if ($inactivity > MAX_IDLE_MINUTES_BEFORE_LOGOUT * 60)
         logout();
 }
 $_SESSION['last_activity'] = time();
 
-date_default_timezone_set(timezone());
+date_default_timezone_set(TIMEZONE);
 
 if(!isset($_SESSION['csrf_token']))
 {

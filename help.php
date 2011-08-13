@@ -195,7 +195,7 @@ Australia <br />
 <h3>Fees and comissions</h3>
 <p>
 <?php
-if (commission_percentage_for_aud() == 0 && commission_percentage_for_btc() == 0)
+if (COMMISSION_PERCENTAGE_FOR_AUD == 0 && COMMISSION_PERCENTAGE_FOR_BTC == 0)
     echo "All trades are free of commission\n";
 else { ?>
     In order to pay for server space, bandwidth, programmers,

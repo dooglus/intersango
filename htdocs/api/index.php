@@ -1,16 +1,16 @@
 <?php
 require_once "../config.php";
-require_once "$abspath/header.php";
-require_once "$abspath/footer.php";
+require_once ABSPATH . "/header.php";
+require_once ABSPATH . "/footer.php";
 
 session_start();
 
-date_default_timezone_set(timezone());
+date_default_timezone_set(TIMEZONE);
 
 $is_logged_in = is_logged_in();
 $is_admin = is_admin();
 
-show_header('api', $is_logged_in, $urlroot);
+show_header('api', $is_logged_in, URLROOT);
 ?>
 <div class='content_box'>
     <h3>API pages</h3>

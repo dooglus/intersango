@@ -128,7 +128,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     $amount = truncate_num($amount);
 
     curr_supported_check($curr_type);
-    order_worthwhile_check($amount, $amount_disp, minimum_withdraw());
+    order_worthwhile_check($amount, $amount_disp, MINIMUM_WITHDRAW);
     enough_money_check($amount, $curr_type);
     check_withdraw_limit($uid, $amount, $curr_type);
 
@@ -152,7 +152,7 @@ else {
     $balances = fetch_balances($uid);
     $aud = $balances['AUD'];
     $transferred = aud_transferred_today($uid);
-    $limit = numstr_to_internal(maximum_daily_aud_transfer());
+    $limit = numstr_to_internal(MAXIMUM_DAILY_AUD_TRANSFER);
     $available = gmp_sub($limit, $transferred);
     if (gmp_cmp($aud, $available) > 0) {
         echo "    <p>You can transfer up to ", internal_to_numstr($limit), " AUD each day (", day_time_range_string(), ")</p>\n";
@@ -241,7 +241,7 @@ else {
     $balances = fetch_balances($uid);
     $btc = $balances['BTC'];
     $withdrawn = btc_withdrawn_today($uid);
-    $limit = numstr_to_internal(maximum_daily_btc_withdraw());
+    $limit = numstr_to_internal(MAXIMUM_DAILY_BTC_WITHDRAW);
     $available = gmp_sub($limit, $withdrawn);
     if (gmp_cmp($btc, $available) > 0) {
         echo "    <p>You can withdraw up to ", internal_to_numstr($limit), " BTC each day (", day_time_range_string(), ").</p>\n";

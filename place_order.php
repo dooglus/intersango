@@ -32,8 +32,8 @@ $amount = numstr_to_internal($amount_disp);
 $want_amount_disp = post('want_amount');
 $want_amount = numstr_to_internal($want_amount_disp);
 
-order_worthwhile_check($amount, $amount_disp, minimum_have_amount());
-order_worthwhile_check($want_amount, $want_amount_disp, minimum_want_amount());
+order_worthwhile_check($amount, $amount_disp, MINIMUM_HAVE_AMOUNT);
+order_worthwhile_check($want_amount, $want_amount_disp, MINIMUM_WANT_AMOUNT);
 
 enough_money_check($amount, $type);
 

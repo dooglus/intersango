@@ -81,8 +81,8 @@ function switcher($page)
             echo "session id: ", session_id(), "<br/>\n";
             echo "session age: ", time() - $_SESSION['creation_time'], " seconds<br/>\n";
             if (isset($inactivity)) echo "you were inactive for $inactivity seconds<br/>\n";
-            echo "max_idle_minutes_before_logout() = ", max_idle_minutes_before_logout(), " minutes = ", max_idle_minutes_before_logout() * 60, " seconds<br/>\n";
-            echo "max_session_id_lifetime() = ", max_session_id_lifetime(), " minutes = ", max_session_id_lifetime() * 60, " seconds<br/>\n";
+            echo "MAX_IDLE_MINUTES_BEFORE_LOGOUT = ", MAX_IDLE_MINUTES_BEFORE_LOGOUT, " minutes = ", MAX_IDLE_MINUTES_BEFORE_LOGOUT * 60, " seconds<br/>\n";
+            echo "MAX_SESSION_ID_LIFETIME = ", MAX_SESSION_ID_LIFETIME, " minutes = ", MAX_SESSION_ID_LIFETIME * 60, " seconds<br/>\n";
             echo "</p></div>\n";
         }
     }

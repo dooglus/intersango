@@ -2,12 +2,11 @@
 
 function show_link($page, $title, $text, $admin=0)
 {
-    global $urlroot;
     if ($admin)
         echo "            <li><a style='color: red;' href='";
     else
         echo "            <li><a href='";
-    echo $urlroot, "?page=$page'>$title</a>$text</li>\n";
+    echo URLROOT, "?page=$page'>$title</a>$text</li>\n";
 }
 
 function show_links($is_logged_in, $is_admin)
