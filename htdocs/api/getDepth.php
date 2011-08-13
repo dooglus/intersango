@@ -1,6 +1,6 @@
 <?php
 require_once "../config.php";
-require_once "ABSPATH/util.php";
+require_once ABSPATH . "/util.php";
 
 $query = "
     SELECT
