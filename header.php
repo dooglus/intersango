@@ -41,7 +41,8 @@ function show_header($page, $is_logged_in, $base = false)
 
 <?php
 if ($page == 'trade')
-    if (isset($_SESSION['currency_in']) && $_SESSION['currency_in'] == 'BTC')
+    if ((isset($_GET['in']) && get('in') == 'BTC') ||
+        (isset($_SESSION['currency_in']) && $_SESSION['currency_in'] == 'BTC'))
         echo "<body onload='set_currency_in(\"btc\"); set_currency_out(\"aud\");'>\n";
     else
         echo "<body onload='set_currency_in(\"aud\"); set_currency_out(\"btc\");'>\n";
@@ -83,12 +84,15 @@ function show_content_header_ticker()
 {
     $spaces = '&nbsp;&nbsp;&nbsp;&nbsp;';
     list($vol, $buy, $sell, $last) = get_ticker_data();
+    if ($buy > $sell && $buy != 0 && $sell != 0)
+        $style = " style='color:#af0;'";
+    else
+        $style = '';
+    $buy_link = "<a $style href=\"?page=trade&in=BTC\">$buy</a>";
+    $sell_link = "<a $style href=\"?page=trade&in=AUD\">$sell</a>";
     echo "    <div class='content_header_box'>\n";
     echo "        24h volume:&nbsp;<a href=\"?page=view_trades\">$vol BTC</a>{$spaces}";
-    if ($buy > $sell && $buy != 0 && $sell != 0)
-        echo "buy:&nbsp;<span style='color: #af0;'>$buy</span>{$spaces}sell:&nbsp;<span style='color: #af0;'>$sell</span>";
-    else
-        echo "buy:&nbsp;$buy${spaces}sell:&nbsp;$sell";
+    echo "buy:&nbsp;$buy_link${spaces}sell:&nbsp;$sell_link";
     echo "{$spaces}last:&nbsp;$last\n";
     echo "    </div>\n";
 }
