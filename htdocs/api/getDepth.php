@@ -2,6 +2,9 @@
 require_once "../config.php";
 require_once ABSPATH . "/util.php";
 
+$asks = array();
+$bids = array();
+
 $query = "
     SELECT
         initial_want_amount / initial_amount AS rate,
@@ -16,23 +19,15 @@ $query = "
         rate DESC
     ";
 $result = do_query($query);
-$first = true;
-echo '{"asks": [';
+$asks = array();
 while ($row = mysql_fetch_assoc($result)) {
     $amount = internal_to_numstr($row['amount']);
     $rate = $row['rate'];
     
     //bitcoincharts uses NUMERIC(18,8)
     if($rate < 1000000000)
-    {
-        if ($first)
-            $first = false;
-        else
-            echo ", ";
-        echo "[$rate, $amount]";
-    }
+        array_push($asks, "[$rate, $amount]");
 }
-echo '], "bids": [';
 
 // find exchange rate
 $query = "
@@ -73,7 +68,6 @@ $query = "
         rate DESC
     ";
 $result = do_query($query);
-$first = true;
 while ($row = mysql_fetch_assoc($result)) {
     $amount = clean_sql_numstr($row['amount']);
     $amount = internal_to_numstr($amount);
@@ -82,15 +76,9 @@ while ($row = mysql_fetch_assoc($result)) {
     
     //bitcoincharts uses NUMERIC(18,8)
     if($rate < 1000000000)
-    {
-        if ($first)
-            $first = false;
-        else
-            echo ", ";
-        echo "[$rate, $amount]";
-    }
+        array_push($bids, "[$rate, $amount]");
 }
-echo ']}';
+
+echo '{"asks": [', implode($asks, ", "), '], "bids": [', implode($bids, ", "), "]}";
 
 ?>
-
