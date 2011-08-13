@@ -12,6 +12,8 @@ $query = "
         type='BTC'
         AND want_type='AUD'
         AND status='OPEN'
+    ORDER BY
+        rate DESC
     ";
 $result = do_query($query);
 $first = true;
@@ -61,6 +63,8 @@ $query = "
         type='AUD'
         AND want_type='BTC'
         AND status='OPEN'
+    ORDER BY
+        rate DESC
     ";
 $result = do_query($query);
 $first = true;
