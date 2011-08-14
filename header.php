@@ -58,7 +58,7 @@ if ($page == 'trade') {
 } else
     echo "<body>\n"; ?>
     <img id='flower' src='images/flower.png' />
-    <img id='header' src='images/header.png' />
+    <a href="."><img id='header' src='images/header.png' /></a>
     <img id='skyline' src='images/skyline.png' />
     <div id='main_pane'>
         <div id='links_bg'>
