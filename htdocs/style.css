@@ -132,6 +132,12 @@ CONTENT
     /* WTFFF??? */
     padding-top: 1px;
 }
+.content_header a {
+    color: #000;
+}
+.content_header a:hover {
+    text-decoration: none;
+}
 .content_box ul {
     margin: 0 0 8px 40px;
 }

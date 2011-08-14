@@ -1,3 +1,14 @@
+<?php
+    if (isset($_GET['have']))
+        $in_amount = internal_to_numstr(get('have'));
+    else
+        $in_amount = '';
+
+    if (isset($_GET['want']))
+        $out_amount = internal_to_numstr(get('want'));
+    else
+        $out_amount = '';
+?>
         <div class='content_box'>
             <h3>Currency converter</h3>
             <p><b>Intersango is an exchange. Here we allow you to trade Australian Dollars (AUD) for Bitcoins (BTC) or Bitcoins for Australian Dollars with other Intersango users.</a></b></p>
@@ -71,11 +82,11 @@
 
             <tr>
             <td>
-            <input id='inamount' name='amount' class='curramount' type="text" size="20" value="" onkeyup='typed_amount_in();'>
+            <input id='inamount' name='amount' class='curramount' type="text" size="20" value="<?php echo $in_amount?>" onkeyup='typed_amount_in();'>
             </td>
 
             <td>
-            <input id='outamount' name='want_amount' class='curramount' type="text" size="20" value="" onkeyup='typed_amount_out();'>
+            <input id='outamount' name='want_amount' class='curramount' type="text" size="20" value="<?php echo $out_amount?>" onkeyup='typed_amount_out();'>
             </td>
             </tr>
     <?php

@@ -40,12 +40,22 @@ function show_header($page, $is_logged_in, $base = false)
 </head>
 
 <?php
-if ($page == 'trade')
-    if (isset($_SESSION['currency_in']) && $_SESSION['currency_in'] == 'BTC')
+if ($page == 'trade') {
+    if (isset($_GET['in'])) {
+        if (get('in') == 'BTC')
+            $in = 'btc';
+        else
+            $in = 'aud';
+    } else if (isset($_SESSION['currency_in']) && $_SESSION['currency_in'] == 'BTC')
+        $in = 'btc';
+    else
+        $in = 'aud';
+
+    if ($in == 'btc')
         echo "<body onload='set_currency_in(\"btc\"); set_currency_out(\"aud\");'>\n";
     else
         echo "<body onload='set_currency_in(\"aud\"); set_currency_out(\"btc\");'>\n";
-else
+} else
     echo "<body>\n"; ?>
     <img id='flower' src='images/flower.png' />
     <img id='header' src='images/header.png' />
@@ -83,12 +93,35 @@ function show_content_header_ticker()
 {
     $spaces = '&nbsp;&nbsp;&nbsp;&nbsp;';
     list($vol, $buy, $sell, $last) = get_ticker_data();
+    if ($buy > $sell && $buy != 0 && $sell != 0)
+        $style = " style='color:#af0;'";
+    else
+        $style = '';
+
+    // include prices up to 0.001% worse than the best
+    $include_very_close_prices = '0.99999';
+
+    // ask for 0.001% less than we need to match the worst price we want
+    // $request_less_for_match = '0.99999';
+    $request_less_for_match    = '1';
+
+    if ($buy) {
+        list ($buy_have, $buy_want, $worst_price) = find_total_trades_available_at_rate(bcmul($buy, $include_very_close_prices, 8), 'AUD');
+        $buy_have = bcmul(bcmul($buy_want, $worst_price), $request_less_for_match);;
+        $buy_link = "<a $style href=\"?page=trade&in=BTC&have=$buy_want&want=$buy_have\">$buy</a>";
+    } else
+        $buy_link = "none";
+
+    if ($sell) {
+        list ($sell_have, $sell_want, $worst_price) = find_total_trades_available_at_rate(bcdiv($sell, $include_very_close_prices, 8), 'BTC');
+        $sell_have = bcmul(bcdiv($sell_want, $worst_price), $request_less_for_match);
+        $sell_link = "<a $style href=\"?page=trade&in=AUD&have=$sell_want&want=$sell_have\">$sell</a>";
+    } else
+        $sell_link = "none";
+
     echo "    <div class='content_header_box'>\n";
     echo "        24h volume:&nbsp;<a href=\"?page=view_trades\">$vol BTC</a>{$spaces}";
-    if ($buy > $sell && $buy != 0 && $sell != 0)
-        echo "buy:&nbsp;<span style='color: #af0;'>$buy</span>{$spaces}sell:&nbsp;<span style='color: #af0;'>$sell</span>";
-    else
-        echo "buy:&nbsp;$buy${spaces}sell:&nbsp;$sell";
+    echo "buy:&nbsp;$buy_link${spaces}sell:&nbsp;$sell_link";
     echo "{$spaces}last:&nbsp;$last\n";
     echo "    </div>\n";
 }
