@@ -28,10 +28,10 @@ define('DAY_STARTS_MINUTES_AFTER_MIDNIGHT', 9*60 + 0); // day starts at 9:00am
 // `------------------------------------------------------------------------
 
 // how much free AUD to give new accounts on signup
-define('FREE_AUD_ON_SIGNUP', "1000");
+define('FREE_AUD_ON_SIGNUP', "0");
 
 // how much free BTC to give new accounts on signup
-define('FREE_BTC_ON_SIGNUP', "100");
+define('FREE_BTC_ON_SIGNUP', "0");
 
 // .------------------------------------------------------------------------
 // |  security
