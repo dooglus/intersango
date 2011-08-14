@@ -112,6 +112,10 @@ function typed_amount(this_name, change_name)
             rate = a_curr_rates[b_curr];
             val = parseFloat(text_field);
             val *= rate;
+
+	    // toFixed(2) rounds 0.235001 up to 0.24, meaning the order doesn't quite match
+	    // take off 0.0049999 to make sure of a match
+	    val -= 0.0049999;
             change_obj.attr('value', val.toFixed(2));
         }
         else {
