@@ -138,7 +138,7 @@ CONTENT
 .content_header a:hover {
     text-decoration: none;
 }
-.content_box ul {
+.content_box ul li {
     margin: 0 0 8px 40px;
 }
 .content_box p, .content_box h4 {
