@@ -83,6 +83,40 @@ function add_funds($uid, $amount, $type)
     do_query($query);
 }
 
+function find_total_trades_available_at_rate($rate, $have_curr)
+{
+    // find the total 'amount' and 'want_amount' in the book from people having $have_curr offering a rate of $rate or better (for us)
+    do_query("SET div_precision_increment = 8");
+    if ($have_curr == 'BTC')
+        $query = "
+    SELECT
+        SUM(amount) AS amount,
+        SUM(want_amount) as want_amount,
+        MAX(initial_want_amount/initial_amount) as worst_price
+    FROM
+        orderbook
+    WHERE
+        type='BTC'
+        AND status='OPEN'
+        AND initial_want_amount/initial_amount <= $rate
+        ";
+    else
+        $query = "
+    SELECT
+        SUM(amount) AS amount,
+        SUM(want_amount) as want_amount,
+        MIN(initial_amount/initial_want_amount) as worst_price
+    FROM
+        orderbook
+    WHERE
+        type='AUD'
+        AND status='OPEN'
+        AND initial_amount/initial_want_amount >= $rate
+        ";
+
+    return mysql_fetch_array(do_query($query));
+}
+
 function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
 {
     # how is the rate calculated? is it a/b or b/a?
