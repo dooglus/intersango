@@ -22,7 +22,67 @@
 </p>
 </div>
 
-<a name="two_factor"/>
+<a id="ticker"></a>
+<div class='content_box'>
+<h3>Ticker Contents</h3>
+<p>
+    Every page on the exchange has a header containing information
+    about the market.  The first line of the header is a basic 'ticker'
+    display.  It shows, from left to right:
+    <ul>
+    <li><span style="font-weight: bold;">24h volume</span> - This
+    	shows the total volume, in Bitcoins, of trades made on the
+    	exchange in the last 24 hours.  It's a clickable link which
+    	takes you to a view of all the trades made in the last 24
+    	hours.  The trades are anonymous, except for any which you
+    	were involved in.  For the trades you were involved in, the
+    	amount you gave will be shown in bold, and that trade will be
+    	clickable to allow you to see the whole of your side of the
+    	order in detail.
+    <li><span style="font-weight: bold;">buy</span> - This shows the
+    	highest price per Bitcoin that anyone is currently offering to
+    	buy at.  It's clickable, and takes you to the 'trade' page
+    	with the boxes pre-filled to allow you to quickly accept the
+    	best price(s) on the exchange.  The values which are
+    	pre-filled when you click the 'buy' link include all available
+    	'buy' orders which are within 0.001% of the best price.  So if
+    	someone is offering to buy Bitcoins at $10 each and that's the
+    	highest price on the exchange, you'll see "buy: 10".  If you
+    	click that link, you'll be taken to the 'trade' page with
+    	values pre-filled to match all orders which offer $9.999 or
+    	more per Bitcoin.
+    <li><span style="font-weight: bold;">sell</span> - This shows the
+    	lowest price per Bitcoin that anyone is currently offering to
+    	sell at.  It's clickable, and acts in a way completely
+    	analogous to the 'buy' link described above.
+    <li><span style="font-weight: bold;">last</span> - This shows the
+        price at which Bitcoins were most recently traded on the
+        exchange.
+    <li><span style="font-weight: bold;">date &amp; time</span> - This
+    	shows the date and time on the exchange server, which is
+    	configured to use the '<?php echo TIMEZONE; ?>' timezone
+    	setting.
+    </ul>
+</p>
+<p>
+    While you are logged in to the exchange, you will see a 2nd line
+    in the header, showing your current balances.  Numbers in brackets
+    after your balance indicate funds which you control but which are
+    currently tied up in unmatched orders on the orderbook.
+</p>
+<p>
+    For example, "46 (+4) BTC" indicates that you have 46 Bitcoins
+    available to sell or withdraw, and 4 more which you are currently
+    attempting to sell on the orderbook.  Cancelling your sell
+    order(s) will make all 50 Bitcoins available to you.
+</p>
+<p>
+    Occasionally a 3rd line will show up, showing important
+    information concerning the running of the exchange.
+</p>
+</div>
+
+<a id="two_factor"></a>
 <div class='content_box'>
 <h3>Security - two factor authentication</h3>
 <p>

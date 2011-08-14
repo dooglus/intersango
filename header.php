@@ -119,10 +119,12 @@ function show_content_header_ticker()
     } else
         $sell_link = "none";
 
+    $help_link = "<a target=\"_blank\" href=\"?page=help#ticker\">help</a>";
+
     echo "    <div class='content_header_box'>\n";
     echo "        24h volume:&nbsp;<a href=\"?page=view_trades\">$vol BTC</a>{$spaces}";
     echo "buy:&nbsp;$buy_link${spaces}sell:&nbsp;$sell_link";
-    echo "{$spaces}last:&nbsp;$last\n";
+    echo "{$spaces}last:&nbsp;$last{$spaces}$help_link\n";
     echo "    </div>\n";
 }
 
