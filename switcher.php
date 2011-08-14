@@ -49,6 +49,7 @@ function switcher($page)
             ////////////////////////////////////////////////////////////////////////
             case 'bank':
             case 'commission':
+            case 'add_cash':
             case 'freeze':
             case 'users':
                 if ($is_admin)
