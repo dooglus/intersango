@@ -8,6 +8,27 @@ class BASE_CURRENCY
     const B = 1;
 }
 
+function show_contact_info()
+{ ?>
+<h3>Contact info</h3>
+<p>Email: <a href="mailto:support@intersango.com.au">support@Intersango.com.au</a></p>
+<p>Skype: <a href="skype:worldbitcoinexchange?call">worldbitcoinexchange</a></p>
+<p>Facebook: <a target="_blank" href="http://www.facebook.com/pages/World-Bitcoin-Exchange/227118550652605">worldbitcoinexchange</a></p>
+<p>Twitter: <a target="_blank" href="http://twitter.com/worldbitcoinx">@worldbitcoinx</a></p>
+<p>Call +617 3102-9666</p>
+<p>Office Hours Mon-Fri 9am to 5pm</p> 
+<p>(Standard time zone: UTC/GMT +10 hours - it is currently <?php require_once "util.php"; echo get_time_text(); ?>)</p>
+<p>
+<b>High Net Worth Property Pty Ltd <br /></b>
+Trading As: World Bitcoin Exchange <br />
+ACN: 61 131 700 779 <br />
+Gold Coast <br />
+Queensland <br />
+Australia <br />
+4208
+</p>
+<?php }
+
 function freeze_file()
 {
     return LOCK_DIR . "/FREEZE";

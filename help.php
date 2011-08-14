@@ -226,24 +226,7 @@
 </div>
 
 <div class='content_box'>
-<h3>Contact info</h3>
-<p>support@intersango.com.au</p>
-<p>Skype:worldbitcoinexchange</p>
-<p>Facebook:worldbitcoinexchange</p>
-<p>Twitter:worldbitcoinx</p>
-<p>Call +617 3102-9666</p>
-<p>Office Hours Mon-Fri 9am to 5pm</p> 
-<p>(Standard time zone: UTC/GMT +10 hours - it is currently
-   <?php require_once "util.php"; echo get_time_text(); ?>)</p>
-<p>
-<b>High Net Worth Property Pty Ltd <br /></b>
-Trading As: World Bitcoin Exchange <br />
-ACN: 61 131 700 779 <br />
-Gold Coast <br />
-Queensland <br />
-Australia <br />
-4208
-</p>
+<?php show_contact_info(); ?>
 <p>
     World Bitcoin Exchange is currently operating unlicensed. We are
     seeking legitimisation. Until then, all transactions have a low
