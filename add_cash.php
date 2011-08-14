@@ -22,26 +22,29 @@ if (isset($_POST['deposit_cash'])) {
     if (has_results($result)) {
         $row = get_row($result);
         $user = $row['uid'];
-        echo "<p>$reference is the code for user $user</p>\n";
+        // echo "<p>$reference is the code for user $user</p>\n";
 
         $query = "
             INSERT INTO requests (req_type, curr_type, uid,   amount )
             VALUES               ('DEPOS',  'AUD',     $user, $amount_internal)
         ";
         do_query($query);
-        echo "<p>deposited $amount to account with reference $reference...</p>\n";
-        echo "<p>another?</p>\n";
+        echo "<p><span style='font-weight: bold;'>added request to deposit $amount AUD to user $user's purse (reference $reference)</span></p>\n";
+        echo "<p>deposit should show up in their account in a minute or two</p>\n";
+        echo "<p>make another deposit?</p>\n";
+        $amount= $reference = '';
     } else {
         echo "<p>$reference isn't a valid reference code\n";
         echo "<p>try again?</p>\n";
     }
-}
+} else
+    $amount = $reference = '';
 ?>
     <form action='' class='indent_form' method='post'>
         <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
         <input type='hidden' name='deposit_cash' value='true' />
-        reference: <input type='text' name='reference' />
-        amount: <input type='text' name='amount' value='0.0' />
+        reference: <input type='text' name='reference' value='<?php echo $reference; ?>'/>
+        amount: <input type='text' name='amount' value='<?php echo $amount; ?>' />
         <input type='submit' value='Deposit' />
     </form> 
 </div>
