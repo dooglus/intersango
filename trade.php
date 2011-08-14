@@ -128,7 +128,10 @@
 
 <div class='content_box'>
 <h3>Contact info</h3>
-<p>support@Intersango.com.au</p>
+<p>Email: <a href="mailto:support@intersango.com.au">support@Intersango.com.au</a></p>
+<p>Skype: worldbitcoinexchange</p>
+<p>Facebook: worldbitcoinexchange</p>
+<p>Twitter: worldbitcoinx</p>
 <p>Call +617 3102-9666</p>
 <p>Office Hours Mon-Fri 9am to 5pm</p> 
 <p>(Standard time zone: UTC/GMT +10 hours - it is currently <?php require_once "util.php"; echo get_time_text(); ?>)</p>
