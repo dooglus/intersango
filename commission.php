@@ -1,8 +1,4 @@
 <?php
-require_once 'util.php';
-require_once 'view_util.php';
-require_once 'errors.php';
-require_once 'openid.php';
 
 function active_table_cell($uid, $txid, $orderid, $sub, $amount)
 {
