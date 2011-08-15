@@ -123,6 +123,7 @@ try {
                     echo "                        <h3>Successful login!</h3>\n";
                     echo "                        <p>Welcome back commander. Welcome back.</p>\n";
                 } else {
+                    // generate random str for deposit reference
                     $query = "
                         INSERT INTO users (
                             oidlogin,
@@ -138,7 +139,6 @@ try {
                     $free_aud = numstr_to_internal(FREE_AUD_ON_SIGNUP);
                     $free_btc = numstr_to_internal(FREE_BTC_ON_SIGNUP);
 
-                    // generate random str for deposit reference
                     $query = "
                         INSERT INTO purses
                             (uid, amount, type)
