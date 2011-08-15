@@ -52,7 +52,7 @@ while ($row = mysql_fetch_assoc($result)) {
     $timest = $row['timest'];
     $a_uid = $row['a_uid'];
     $b_uid = $row['b_uid'];
-    $price = bcdiv($a_amount, $b_amount, 4);
+    $price = clean_sql_numstr(bcdiv($a_amount, $b_amount, 4));
 
     $amount_aud_total = gmp_add($amount_aud_total, $a_amount);
     $amount_btc_total = gmp_add($amount_btc_total, $b_amount);
@@ -88,7 +88,7 @@ while ($row = mysql_fetch_assoc($result)) {
 if ($first)
     echo "<p>There are no recent trades.</p>\n";
 else {
-    $price = bcdiv(gmp_strval($amount_aud_total), gmp_strval($amount_btc_total), 4);
+    $price = clean_sql_numstr(bcdiv(gmp_strval($amount_aud_total), gmp_strval($amount_btc_total), 4));
     echo "    <tr>\n";
     if ($is_admin)
         echo "        <td></td><td></td><td>--------</td><td></td><td>--------</td><td>--------</td>\n";
