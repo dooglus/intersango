@@ -7,8 +7,7 @@ session_start();
 
 date_default_timezone_set(TIMEZONE);
 
-$is_logged_in = is_logged_in();
-$is_admin = is_admin();
+list ($is_logged_in, $is_admin) = get_login_status();
 
 show_header('api', $is_logged_in, URLROOT);
 ?>
