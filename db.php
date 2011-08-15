@@ -38,20 +38,16 @@ function internal_to_numstr($num, $precision=8)
         throw new Error('Coding error!', "internal_to_numstr argument has type '" . gettype($num) . "'");
     $repr = gmp_strval($num);
     $repr = bcdiv($repr, pow(10, 8), $precision);
-    # now tidy output...
-    # trim trailing 0s
-    $repr = rtrim($repr, '0');
-    # and a trailing . if it exists
-    $repr = rtrim($repr, '.');
-    return $repr;
+    // now tidy output...
+    return clean_sql_numstr($repr);
 }
 
 function clean_sql_numstr($numstr)
 {
-    if (strpos($numstr, '.') === false)
-        return $numstr;
-    $numstr = rtrim($numstr, '0');
-    $numstr = rtrim($numstr, '.');
+    if (strpos($numstr, '.') !== false) {
+        $numstr = rtrim($numstr, '0');
+        $numstr = rtrim($numstr, '.');
+    }
     return $numstr;
 }
 
