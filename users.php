@@ -27,6 +27,7 @@ function show_users($precision)
     $aud_total = $c_aud_total = $t_aud_total = '0';
     $btc_total = $c_btc_total = $t_btc_total = '0';
     $first = true;
+    $count_users = $count_funded_users = 0;
     while ($row = mysql_fetch_assoc($result)) {
         $uid = $row['uid'];
         $oidlogin = $row['oidlogin'];
@@ -39,9 +40,16 @@ function show_users($precision)
         $c_btc = $committed['BTC'];
         $t_aud = gmp_add($aud, $c_aud);
         $t_btc = gmp_add($btc, $c_btc);
+        if ($uid == '1')
+            $uid = "fees";
+        else
+            $count_users++;
 
         if ($omit_zero_balances && $aud == 0 && $c_aud == 0 && $btc == 0 && $c_btc == 0)
             continue;
+
+        if ($uid != 'fees')
+            $count_funded_users++;
 
         if ($first) {
             $first = false;
@@ -73,8 +81,6 @@ function show_users($precision)
         $c_btc_total = gmp_add($c_btc_total, $c_btc);
         $t_btc_total = gmp_add($t_btc_total, $t_btc);
 
-        if ($uid == '1') $uid = "fees";
-
         if ($is_admin)
             echo "<tr style='font-weight: bold'>";
         else
@@ -105,6 +111,9 @@ function show_users($precision)
         echo "</table>\n";
         echo "<p>Admins are shown in bold type, and at the top of the table.</p>\n";
     }
+
+    echo "<p>There are $count_funded_users users with funds, and $count_users in total.</p>\n";
+
     echo "</div>\n";
 }
 
