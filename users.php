@@ -1,6 +1,8 @@
 <?php
 function show_users($precision)
 {
+    $omit_zero_balances = false;
+
     echo "<div class='content_box'>\n";
     echo "<h3>Users</h3>\n";
 
@@ -26,6 +28,21 @@ function show_users($precision)
     $btc_total = $c_btc_total = $t_btc_total = '0';
     $first = true;
     while ($row = mysql_fetch_assoc($result)) {
+        $uid = $row['uid'];
+        $oidlogin = $row['oidlogin'];
+        $is_admin = $row['is_admin'];
+        $timest = $row['timest'];
+        $aud = $row['aud'];
+        $btc = $row['btc'];
+        $committed = fetch_committed_balances($uid);
+        $c_aud = $committed['AUD'];
+        $c_btc = $committed['BTC'];
+        $t_aud = gmp_add($aud, $c_aud);
+        $t_btc = gmp_add($btc, $c_btc);
+
+        if ($omit_zero_balances && $aud == 0 && $c_aud == 0 && $btc == 0 && $c_btc == 0)
+            continue;
+
         if ($first) {
             $first = false;
 
@@ -48,18 +65,6 @@ function show_users($precision)
 //          echo "<th>Registered</th>";
             echo "</tr>\n";
         }
-
-        $uid = $row['uid'];
-        $oidlogin = $row['oidlogin'];
-        $is_admin = $row['is_admin'];
-        $timest = $row['timest'];
-        $aud = $row['aud'];
-        $btc = $row['btc'];
-        $committed = fetch_committed_balances($uid);
-        $c_aud = $committed['AUD'];
-        $c_btc = $committed['BTC'];
-        $t_aud = gmp_add($aud, $c_aud);
-        $t_btc = gmp_add($btc, $c_btc);
 
         $aud_total   = gmp_add($aud_total,   $aud);
         $c_aud_total = gmp_add($c_aud_total, $c_aud);
