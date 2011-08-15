@@ -461,6 +461,8 @@ function get_ticker_data()
 
     $last = get_last_price(4);
 
+    // for testing layout when all stats have 4 decimal places
+    // return array('21.1234', '20.1234', '21.6789', '21.4567', '1234567.3456', '21.5543', '21.2345', '22.1257');
     return array($high, $low, $avg, $vwap, $vol, $last, $buy, $sell);
 }
 
