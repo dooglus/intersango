@@ -139,10 +139,10 @@ CONTENT
     text-decoration: none;
 }
 .content_box ul li {
-    margin: 0 0 8px 40px;
+    margin: 8px 0 8px 40px;
 }
 .content_box p, .content_box h4 {
-    margin: 0 0 8px 20px;
+    margin: 8px 0 8px 20px;
 }
 .content_box label {
     display: block;
