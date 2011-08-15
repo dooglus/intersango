@@ -1,7 +1,7 @@
 <?php
 function show_users($precision)
 {
-    $omit_zero_balances = false;
+    $omit_zero_balances = true;
 
     echo "<div class='content_box'>\n";
     echo "<h3>Users</h3>\n";
