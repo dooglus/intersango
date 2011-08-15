@@ -1,4 +1,51 @@
+<script type="text/javascript">
+function ObjById(id) 
+{ 
+    if (document.getElementById) 
+        var returnVar = document.getElementById(id); 
+    else if (document.all) 
+        var returnVar = document.all[id]; 
+    else if (document.layers) 
+        var returnVar = document.layers[id]; 
+    return returnVar; 
+}
+</script>
+
 <?php
+
+function show_similar_codes($reference)
+{
+    $reference = strtolower($reference);
+
+    $result = do_query("SELECT deposref FROM users WHERE uid > 1 ORDER BY deposref");
+
+    while ($row = mysql_fetch_assoc($result)) {
+        $deposref = strtolower($row['deposref']);
+        $scores[$deposref] = 8 + similar_text($reference, $deposref) - levenshtein($reference, $deposref);
+    }
+
+    arsort($scores);
+
+    $first = true;
+    foreach ($scores as $deposref => $score) {
+        if ($score > 5) {
+            if ($first) {
+                $first = false;
+                echo "<p>Did you mean one of these?  Higher number = closer match.</p>\n";
+                echo "<p>Click an entry to copy it to the form below, then resubmit.</p>\n";
+                echo "<table class='display_data'>\n";
+            }
+            echo "<tr",
+                " class=\"me\"",
+                " onmouseover=\"style.backgroundColor='#8ae3bf';\"",
+                " onmouseout=\"style.backgroundColor='#7ad3af';\"",
+                " onclick=\"ObjById('ref').value = '$deposref';\">";
+            echo "<td>$deposref</td><td>$score</td></tr>\n";
+        }
+    }
+
+    if (!$first) echo "</table>\n";
+}
 
 if (isset($_POST['make_deposit'])) {
     if (isset($_POST['csrf_token'])) {
@@ -37,6 +84,7 @@ if (isset($_POST['deposit_cash'])) {
         $amount= $reference = '';
     } else {
         echo "<p>'$reference' isn't a valid reference code\n";
+        show_similar_codes($reference);
         echo "<p>try again?</p>\n";
     }
 } else
@@ -45,7 +93,7 @@ if (isset($_POST['deposit_cash'])) {
     <form action='' class='indent_form' method='post'>
         <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
         <input type='hidden' name='deposit_cash' value='true' />
-        reference: <input type='text' name='reference' value='<?php echo $reference; ?>'/>
+        reference: <input id='ref' type='text' name='reference' value='<?php echo $reference; ?>'/>
         amount: <input type='text' name='amount' value='<?php echo $amount; ?>' />
         <input type='submit' value='Deposit' />
     </form> 
