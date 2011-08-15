@@ -143,7 +143,8 @@ function show_content_header_frozen()
     if (is_frozen()) {
         echo "    <div class='content_header_box'>\n";
         echo "        <span style='color: #fff;'>trading on the exchange is currently frozen; no orders will be matched</span>\n";
-        if (is_admin()) echo "&nbsp;&nbsp;&nbsp;&nbsp;<a style='color: red;' href=\"?page=freeze\">unfreeze</a>\n";
+        global $is_admin;
+        if ($is_admin) echo "&nbsp;&nbsp;&nbsp;&nbsp;<a style='color: red;' href=\"?page=freeze\">unfreeze</a>\n";
         echo "    </div>\n";
     }
 }
