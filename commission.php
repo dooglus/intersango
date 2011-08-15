@@ -1,9 +1,11 @@
 <?php
 
+define ('PRECISION', 4);
+
 function active_table_cell($uid, $txid, $orderid, $sub, $amount)
 {
     $url = "?page=view_order&orderid=$orderid&uid=$uid";
-    echo "<td class='active' id='cell_${txid}_${orderid}_$sub' onmouseover='In(\"$orderid\");' onmouseout='Out(\"$orderid\");' onclick='document.location=\"$url\"'>", internal_to_numstr($amount), "</td>";
+    echo "<td class='active' id='cell_${txid}_${orderid}_$sub' onmouseover='In(\"$orderid\");' onmouseout='Out(\"$orderid\");' onclick='document.location=\"$url\"'>", internal_to_numstr($amount, PRECISION), "</td>";
 }
 
 ?>
@@ -17,7 +19,11 @@ echo "<div class='content_box'>\n";
 echo "<h3>Commission</h3>\n";
 
 $query = "
-    SELECT txid, a_orderid, a_amount, a_commission, b_orderid, b_amount, b_commission, t.timest as timest, a.uid as a_uid, b.uid as b_uid
+    SELECT txid,
+           a_orderid, a_amount, a_commission,
+           b_orderid, b_amount, b_commission, " .
+           sql_format_date("t.timest") . " as timest,
+           a.uid as a_uid, b.uid as b_uid
     FROM transactions AS t
     JOIN
         orderbook AS a
@@ -84,10 +90,10 @@ while ($row = mysql_fetch_assoc($result)) {
 
     echo "<tr>";
     echo "<td>$txid</td>";
-    active_table_cell($a_uid, $txid, $b_orderid, 'amount', $a_amount);
-    active_table_cell($a_uid, $txid, $b_orderid, 'comm', $a_commission);
-    active_table_cell($b_uid, $txid, $a_orderid, 'amount', $b_amount);
-    active_table_cell($b_uid, $txid, $a_orderid, 'comm', $b_commission);
+    active_table_cell($a_uid, $txid, $b_orderid, 'amount', $a_amount    );
+    active_table_cell($a_uid, $txid, $b_orderid, 'comm',   $a_commission);
+    active_table_cell($b_uid, $txid, $a_orderid, 'amount', $b_amount    );
+    active_table_cell($b_uid, $txid, $a_orderid, 'comm',   $b_commission);
     echo "<td>$timest</td>";
     echo "</tr>\n";
 }
@@ -98,10 +104,10 @@ if (!$first) {
     echo "    </tr>\n";
     echo "    <tr>\n";
     echo "        <td></td>";
-    echo "        <td>", internal_to_numstr($amount_aud_total), "</td>";
-    echo "        <td>", internal_to_numstr($commission_aud_total), "</td>";
-    echo "        <td>", internal_to_numstr($amount_btc_total), "</td>";
-    echo "        <td>", internal_to_numstr($commission_btc_total), "</td>";
+    echo "        <td>", internal_to_numstr($amount_aud_total,     PRECISION), "</td>";
+    echo "        <td>", internal_to_numstr($commission_aud_total, PRECISION), "</td>";
+    echo "        <td>", internal_to_numstr($amount_btc_total,     PRECISION), "</td>";
+    echo "        <td>", internal_to_numstr($commission_btc_total, PRECISION), "</td>";
     echo "    </tr>\n";
     echo "</table>\n";
 }
@@ -110,7 +116,7 @@ $commissions = fetch_balances('1');
 echo "<p>In the commission purse, there is ",
     internal_to_numstr($commissions['AUD']), " AUD and ",
     internal_to_numstr($commissions['BTC']), " BTC.\n";
-echo "Hopefully that matches with the totals shown above.</p>\n";
+echo "Hopefully that matches with the totals shown above (to " . PRECISION . " decimal places, at least).</p>\n";
 ?>
 <script type="text/javascript">
 var tx = [];
