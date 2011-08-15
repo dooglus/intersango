@@ -22,6 +22,8 @@ function show_users($precision)
     ";
 
     $result = do_query($query);
+    $aud_total = $c_aud_total = $t_aud_total = '0';
+    $btc_total = $c_btc_total = $t_btc_total = '0';
     $first = true;
     while ($row = mysql_fetch_assoc($result)) {
         if ($first) {
@@ -59,6 +61,15 @@ function show_users($precision)
         $t_aud = gmp_add($aud, $c_aud);
         $t_btc = gmp_add($btc, $c_btc);
 
+        $aud_total   = gmp_add($aud_total,   $aud);
+        $c_aud_total = gmp_add($c_aud_total, $c_aud);
+        $t_aud_total = gmp_add($t_aud_total, $t_aud);
+        $btc_total   = gmp_add($btc_total,   $btc);
+        $c_btc_total = gmp_add($c_btc_total, $c_btc);
+        $t_btc_total = gmp_add($t_btc_total, $t_btc);
+
+        if ($uid == '1') $uid = "fees";
+
         if ($is_admin)
             echo "<tr style='font-weight: bold'>";
         else
@@ -76,6 +87,16 @@ function show_users($precision)
     }
 
     if (!$first) {
+        echo "<tr><td></td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td></tr>\n";
+        echo "<tr>\n";
+        echo "<td></td>";
+        echo "<td>", internal_to_numstr($aud_total,   $precision), "</td>";
+        echo "<td>", internal_to_numstr($c_aud_total, $precision), "</td>";
+        echo "<td>", internal_to_numstr($t_aud_total, $precision), "</td>";
+        echo "<td>", internal_to_numstr($btc_total,   $precision), "</td>";
+        echo "<td>", internal_to_numstr($c_btc_total, $precision), "</td>";
+        echo "<td>", internal_to_numstr($t_btc_total, $precision), "</td>";
+        echo "</tr>\n";
         echo "</table>\n";
         echo "<p>Admins are shown in bold type, and at the top of the table.</p>\n";
     }
