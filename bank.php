@@ -59,10 +59,34 @@ function show_statement($xero, $account, $from = '', $to = '')
     }
 }
 
+function show_withdrawals()
+{
+    echo "<div class='content_box'>\n";
+    echo "<h3>Withdraw requests</h3>\n";
+    $result = do_query("SELECT * FROM requests WHERE req_type = 'WITHDR' AND curr_type = 'AUD'");
+    $first = true;
+    while ($row = mysql_fetch_assoc($result)) {
+        if ($first) {
+            $first = false;
+
+            echo "<table class='display_data'>\n";
+            echo "<tr><th>User</th><th>Amount</th></tr>\n";
+        }
+        $uid = $row['uid'];
+        $amount = internal_to_numstr($row['amount']);
+        echo "<tr><td>$uid</td><td>$amount</td></tr>\n";
+    }
+    if (!$first)
+        echo "</table>\n";
+
+    echo "</div>\n";
+}
+
 $from = "&fromDate=1 Jan 2011";
 # $to = "&toDate=31 Dec 2011";
 
 show_statement($xero, ACCOUNT, $from);
 // list_accounts($xero);
+show_withdrawals();
 
 ?>
