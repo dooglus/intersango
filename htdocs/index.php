@@ -48,8 +48,7 @@ else
 if($page == 'logout')
     logout();
 
-$is_logged_in = is_logged_in();
-$is_admin = is_admin();
+list ($is_logged_in, $is_admin) = get_login_status();
 
 switcher($page, $is_logged_in, $is_admin);
 
