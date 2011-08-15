@@ -86,7 +86,7 @@ else {
             echo "<p>$amount $type for $want_amount $want_type remaining.</p>";
         } ?>
         <p>
-        Made <?php echo $timest; if ($is_admin) echo " by user $uid"; ?>
+        Made <?php echo $timest; if ($is_logged_in != $uid) echo " by user $uid"; ?>
         </p>
         <p>
         <?php echo translate_order_code($status); ?>
