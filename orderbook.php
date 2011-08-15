@@ -1,7 +1,7 @@
 <?php
 require_once 'util.php';
 
-function display_double_entry($curr_a, $curr_b, $base_curr, $uid)
+function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
 {
     if (isset($_GET['show_all']) && get('show_all') == 'true')
         $show_all = true;
@@ -39,6 +39,9 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid)
             <th>Cost / BTC</th>
             <th>Giving</th>
             <th>Wanted</th>
+<?php if ($is_admin) { ?>
+            <th>User</th>
+<?php } ?>
         </tr><?php
 
     $show_query = 'LIMIT 5';
@@ -51,6 +54,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid)
             amount,
             want_amount,
             uid=$uid as me,
+            uid,
             IF(
                 type='BTC',
                 initial_want_amount/initial_amount,
@@ -70,6 +74,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid)
         # we trim the excessive 0
         $rate = clean_sql_numstr($row['rate']);
         $me = $row['me'];
+        $uid = $row['uid'];
         if ($me)
             echo "    ", active_table_row("me", "?page=view_order&orderid={$row['orderid']}");
         else
@@ -77,6 +82,8 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid)
         echo "        <td>$rate</td>\n";
         echo "        <td>$amount $curr_a</td>\n";
         echo "        <td>$want_amount $curr_b</td>\n";
+        if ($is_admin)
+            echo "        <td>$uid</td>\n";
         echo "    </tr>\n";
     }
 
@@ -98,9 +105,8 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid)
     echo "</div>\n";
 }
 
-$uid = is_logged_in();
+global $is_logged_in, $is_admin;
 
-display_double_entry('BTC', 'AUD', BASE_CURRENCY::A, $uid);
-display_double_entry('AUD', 'BTC', BASE_CURRENCY::B, $uid);
+display_double_entry('BTC', 'AUD', BASE_CURRENCY::A, $is_logged_in, $is_admin);
+display_double_entry('AUD', 'BTC', BASE_CURRENCY::B, $is_logged_in, $is_admin);
 ?>
-
