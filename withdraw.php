@@ -27,7 +27,7 @@ function uk_withdraw($uid, $amount, $curr_type)
 
     $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type)
-        VALUES ('WITHDR', '$uid', TRUNCATE('$amount', -6), '$curr_type');
+        VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
     ";
     do_query($query);
     $reqid = mysql_insert_id();
@@ -47,7 +47,7 @@ function international_withdraw($uid, $amount, $curr_type)
 
     $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type)
-        VALUES ('WITHDR', '$uid', TRUNCATE('$amount', -6), '$curr_type');
+        VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
     ";
     do_query($query);
     $reqid = mysql_insert_id();
@@ -71,7 +71,7 @@ function bitcoin_withdraw($uid, $amount, $curr_type)
 
         $query = "
             INSERT INTO requests (req_type, uid, amount, curr_type)
-            VALUES ('WITHDR', '$uid', TRUNCATE('$amount', -6), '$curr_type');
+            VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
         ";
         do_query($query);
         $reqid = mysql_insert_id();
@@ -114,9 +114,11 @@ function save_details($uid, $amount, $curr_type)
     return false;
 }
 
-function truncate_num($num)
+function truncate_num($num, $decimal_places)
 {
-    return substr($num, 0, -6) . '000000';
+    $trailing_zeroes = 8 - $decimal_places;
+    if ($trailing_zeroes == 0) return $num;
+    return substr($num, 0, -$trailing_zeroes) . str_repeat('0', $trailing_zeroes);
 }
 
 if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
@@ -125,7 +127,12 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     $amount_disp = post('amount');
     $curr_type = post('curr_type');
     $amount = numstr_to_internal($amount_disp);
-    $amount = truncate_num($amount);
+
+    // dollar amounts should be truncated to cents, but Bitcoins are more divisible
+    if ($curr_type == 'BTC')
+        $amount = truncate_num($amount, BTC_WITHDRAW_DECIMAL_PLACES);
+    else
+        $amount = truncate_num($amount, 2);
 
     curr_supported_check($curr_type);
     order_worthwhile_check($amount, $amount_disp, MINIMUM_WITHDRAW);
