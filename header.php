@@ -68,10 +68,9 @@ if ($page == 'trade') {
     show_content_header($is_logged_in);
 }
 
+define('SPACE', '&nbsp;&nbsp;&nbsp;&nbsp;');
 function show_content_header_balances($uid)
 {
-    $spaces = '&nbsp;&nbsp;&nbsp;&nbsp;';
-
     $balances = fetch_balances($uid);
     $aud = internal_to_numstr($balances['AUD'], 4);
     $btc = internal_to_numstr($balances['BTC'], 4);
@@ -81,9 +80,9 @@ function show_content_header_balances($uid)
     $c_btc = internal_to_numstr($c_balances['BTC'], 4);
 
     echo "    <div class='content_header_box'>\n";
-    echo "        balances:{$spaces}$aud ";
+    echo "        ", SPACE, "balances:", SPACE, "$aud ";
     if ($c_aud > 0) echo "(+$c_aud) ";
-    echo "AUD{$spaces}$btc ";
+    echo "AUD", SPACE, "$btc ";
     if ($c_btc > 0) echo "(+$c_btc) ";
     echo "BTC\n";
     echo "    </div>\n";
@@ -119,19 +118,23 @@ function show_content_header_ticker()
     } else
         $sell_link = "none";
 
-    $help_link = "<a target=\"_blank\" href=\"?page=help#ticker\">help</a>";
-
     echo "    <div class='content_header_box'>\n";
-    echo "        24h volume:&nbsp;<a href=\"?page=view_trades\">$vol BTC</a>{$spaces}";
-    echo "buy:&nbsp;$buy_link${spaces}sell:&nbsp;$sell_link";
-    echo "{$spaces}last:&nbsp;$last{$spaces}$help_link\n";
+    echo "    ", SPACE, "24 hour volume: <a href=\"?page=view_trades\">$vol BTC</a></div>\n";
+    echo "    <div class='content_header_box'>\n";
+    echo "        ", SPACE;
+    echo "buy: $buy_link${spaces}sell: $sell_link";
+    echo SPACE, "last: $last", SPACE, "high: $high", SPACE, "low: $low", SPACE, "avg: $vwap\n";
     echo "    </div>\n";
 }
 
 function show_content_header_time()
 {
+    $help_link = "<a target=\"_blank\" href=\"?page=help#ticker\">help</a>";
+    $spaces = '&nbsp;&nbsp;&nbsp;&nbsp;';
+
     echo "    <div class='content_header_box' style='float: right;'>\n";
-    echo "        ", date('g:i:sa j-M', time()), "\n";
+    echo "        $help_link", SPACE;
+    echo "        ", date('g:i:sa j-M', time()), SPACE, "\n";
     echo "    </div>\n";
 }
 
