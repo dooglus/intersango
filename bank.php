@@ -76,7 +76,10 @@ function show_withdrawals()
         $amount = internal_to_numstr($row['amount']);
         echo "<tr><td>$uid</td><td>$amount</td></tr>\n";
     }
-    if (!$first)
+
+    if ($first)
+        echo "<p>No pending withdrawals.</p>\n";
+    else
         echo "</table>\n";
 
     echo "</div>\n";
