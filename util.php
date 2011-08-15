@@ -211,17 +211,19 @@ function get_login_status()
     logout();
 }
 
-function is_logged_in()
-{
-    $status = get_login_status();
-    return $status[0];
-}
+// not used any more - call get_login_status() instead
+// function is_logged_in()
+// {
+//     $status = get_login_status();
+//     return $status[0];
+// }
 
-function is_admin()
-{
-    $status = get_login_status();
-    return $status[1];
-}
+// not used any more - call get_login_status() instead
+// function is_admin()
+// {
+//     $status = get_login_status();
+//     return $status[1];
+// }
     
 function user_id()
 {
