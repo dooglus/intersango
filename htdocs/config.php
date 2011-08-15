@@ -75,6 +75,11 @@ define('MINIMUM_WANT_AMOUNT', '0.0005');
 // the smallest you can withdraw (it's the same for AUD and BTC)
 define('MINIMUM_WITHDRAW', '0.5');
 
+// how many decimal places allowed in BTC withdrawal (0 through 8)
+//   0 means only whole bitcoins can be withdrawn;
+//   8 means 1.23456789 is a valid amount to withdraw
+define('BTC_WITHDRAW_DECIMAL_PLACES', '8');
+
 // .------------------------------------------------------------------------
 // |  upper limits
 // `------------------------------------------------------------------------
