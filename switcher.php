@@ -63,7 +63,7 @@ function switcher($page)
                     include("login.php");
 
                     // we just tried to log in, so check whether or not it worked before showing the footer
-                    list($is_logged_in, $is_admin) = array(is_logged_in(), is_admin());
+                    list($is_logged_in, $is_admin) = get_login_status();
                 }
                 else
                     log_badpage($page);
