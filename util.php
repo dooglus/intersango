@@ -385,14 +385,46 @@ function get_last_price($precision = 8)
     else
         $last = 0;
 
-    return $last;
+    return clean_sql_numstr($last);
 }
+
+// {"ticker":
+//   {"high":11.89,             highest traded price in last 24h
+//    "low":9.903,              lowest traded price in last 24h
+//    "avg":10.743607598,       mean traded price in last 24h (sum of price / number of prices)
+//    "vwap":10.844024918,      volume weighted average price (sum of price*amount / sum of amount)
+//    "vol":49103,              volume (in BTC)
+//    "last":11.35,             last traded price
+//    "buy":11.35,              highest buy offer
+//    "sell":11.38967           lowest sell offer
+//   }
+// }
+//
+// I'm doing the divisions using bcdiv() in PHP rather than in the SQL
+// query because even with SET div_precision_increment = 4; it was
+// giving 8 digits of precision:
+//
+// mysql> SELECT a_amount, b_amount, a_amount/b_amount, sum(a_amount/b_amount) as sum,
+//               sum(a_amount/b_amount)/1 as sumover1
+//        FROM transactions WHERE b_amount > 0 AND timest > NOW() - INTERVAL 1 DAY;
+//
+// +-----------+----------+-------------------+---------+-------------+
+// | a_amount  | b_amount | a_amount/b_amount | sum     | sumover1    |
+// +-----------+----------+-------------------+---------+-------------+
+// | 500000000 | 22727272 |      22.000000704 | 22.0000 | 22.00000070 |
+// +-----------+----------+-------------------+---------+-------------+
 
 function get_ticker_data()
 {
     $query = "
     SELECT
-        SUM(b_amount) AS vol
+        MAX(a_amount/b_amount) AS high,
+        MIN(a_amount/b_amount) AS low,
+        SUM(a_amount/b_amount) AS sum_of_prices,
+        COUNT(*)               AS number_of_prices,
+        SUM(a_amount)          AS sum_of_a_amounts,
+        SUM(b_amount)          AS sum_of_b_amounts,
+        SUM(b_amount)          AS vol
     FROM
         transactions
     WHERE
@@ -401,10 +433,19 @@ function get_ticker_data()
     ";
     $result = do_query($query);
     $row = get_row($result);
-    if (isset($row['vol']))
-        $vol = internal_to_numstr($row['vol'], 4);
-    else
-        $vol = 0;
+    if (isset($row['vol'])) {
+        $sum_of_prices = $row['sum_of_prices'];
+        $number_of_prices = $row['number_of_prices'];
+        $sum_of_a_amounts = $row['sum_of_a_amounts'];
+        $sum_of_b_amounts = $row['sum_of_b_amounts'];
+
+        $high = clean_sql_numstr($row['high']);
+        $low  = clean_sql_numstr($row['low']);
+        $avg  = clean_sql_numstr(bcdiv($sum_of_prices,    $number_of_prices, 4));
+        $vwap = clean_sql_numstr(bcdiv($sum_of_a_amounts, $sum_of_b_amounts, 4));
+        $vol  = internal_to_numstr($row['vol'], 4);
+    } else
+        $high = $low = $avg = $vwap = $vol = 0;
 
     $exchange_fields = calc_exchange_rate('AUD', 'BTC', BASE_CURRENCY::B);
     if (!$exchange_fields)
@@ -420,7 +461,7 @@ function get_ticker_data()
 
     $last = get_last_price(4);
 
-    return array($vol, $buy, $sell, $last);
+    return array($high, $low, $avg, $vwap, $vol, $last, $buy, $sell);
 }
 
 function has_enough($amount, $curr_type)

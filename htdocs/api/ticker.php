@@ -2,13 +2,15 @@
 require_once "../config.php";
 require_once ABSPATH . "/util.php";
 
-list ($vol, $buy, $sell, $last) = get_ticker_data();
+list ($high, $low, $avg, $vwap, $vol, $last, $buy, $sell) = get_ticker_data();
 
 echo '{"ticker": {';
-echo '"vol": ' . $vol . ', ';
-echo '"buy": ' . $buy . ', ';
-echo '"sell": ' . $sell . ', ';
-echo '"last": ' . $last . '}}';
-
+echo '"high": ' . $high . ', ';
+echo '"low": '  . $low  . ', ';
+echo '"avg": '  . $avg  . ', ';
+echo '"vwap": ' . $vwap . ', ';
+echo '"vol": '  . $vol  . ', ';
+echo '"last": ' . $last . ', ';
+echo '"buy": '  . $buy  . ', ';
+echo '"sell": ' . $sell . '}}';
 ?>
-

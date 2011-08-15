@@ -92,7 +92,7 @@ function show_content_header_balances($uid)
 function show_content_header_ticker()
 {
     $spaces = '&nbsp;&nbsp;&nbsp;&nbsp;';
-    list($vol, $buy, $sell, $last) = get_ticker_data();
+    list($high, $low, $avg, $vwap, $vol, $last, $buy, $sell) = get_ticker_data();
     if ($buy > $sell && $buy != 0 && $sell != 0)
         $style = " style='color:#af0;'";
     else
