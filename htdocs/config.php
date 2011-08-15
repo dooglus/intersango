@@ -1,5 +1,5 @@
 <?php
-define('ABSPATH', '/home7/worldbit/programs/intersango');
+define('ABSPATH', '/home/worldbit/programs/intersango');
 define('URLROOT', '/');
 
 if (!file_exists(ABSPATH . "/trade.php")) {
