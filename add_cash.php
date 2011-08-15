@@ -36,7 +36,7 @@ if (isset($_POST['deposit_cash'])) {
         echo "<p>make another deposit?</p>\n";
         $amount= $reference = '';
     } else {
-        echo "<p>$reference isn't a valid reference code\n";
+        echo "<p>'$reference' isn't a valid reference code\n";
         echo "<p>try again?</p>\n";
     }
 } else
