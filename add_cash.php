@@ -11,6 +11,8 @@ if (isset($_POST['make_deposit'])) {
 echo "<div class='content_box'>\n";
 echo "<h3>Deposit cash</h3>\n";
 
+if (!$is_admin) throw new Error("GTFO", "How did you get here?");
+
 if (isset($_POST['deposit_cash'])) {
 
     $reference = post('reference');
