@@ -35,7 +35,9 @@ while ($row = mysql_fetch_assoc($result)) {
         echo "<table class='display_data'>\n";
         echo "<tr>";
         echo "<th>TID</th>";
+        if ($is_admin) echo "<th>User</th>";
         echo "<th>AUD</th>";
+        if ($is_admin) echo "<th>User</th>";
         echo "<th>BTC</th>";
         echo "<th>Price</th>";
         echo "<th>Date</th>";
@@ -66,11 +68,13 @@ while ($row = mysql_fetch_assoc($result)) {
         echo "<tr>";
 
     echo "<td>$txid</td>";
+    if ($is_admin) echo "<td>$a_uid</td>";
     if ($a_is_me) {
         $mine++;
         echo "<td style='font-weight:bold;'>", internal_to_numstr($a_amount,4), "</td>";
     } else
         echo "<td>", internal_to_numstr($a_amount,4), "</td>";
+    if ($is_admin) echo "<td>$b_uid</td>";
     if ($b_is_me) {
         $mine++;
         echo "<td style='font-weight:bold;'>", internal_to_numstr($b_amount,4), "</td>";
@@ -86,11 +90,16 @@ if ($first)
 else {
     $price = bcdiv(gmp_strval($amount_aud_total), gmp_strval($amount_btc_total), 4);
     echo "    <tr>\n";
-    echo "        <td></td><td>--------</td><td>--------</td><td>--------</td>\n";
+    if ($is_admin)
+        echo "        <td></td><td></td><td>--------</td><td></td><td>--------</td><td>--------</td>\n";
+    else
+        echo "        <td></td><td>--------</td><td>--------</td><td>--------</td>\n";
     echo "    </tr>\n";
     echo "    <tr>\n";
     echo "        <td></td>";
+    if ($is_admin) echo "        <td></td>";
     echo "        <td>", internal_to_numstr($amount_aud_total,4), "</td>";
+    if ($is_admin) echo "        <td></td>";
     echo "        <td>", internal_to_numstr($amount_btc_total,4), "</td>";
     echo "        <td>$price</td>";
     echo "    </tr>\n";
