@@ -185,44 +185,42 @@ function logout()
     exit();
 }
 
-function is_logged_in()
+function get_login_status()
 {
     if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin']))
-        return 0;
+        return array(0, false);
 
     // just having a 'uid' in the session isn't enough to be logged in
     // check that the oidlogin matches the uid in case database has been reset
     $uid = $_SESSION['uid'];
     $oidlogin = $_SESSION['oidlogin'];
 
-    if (has_results(do_query("
-        SELECT uid
+    $result = do_query("
+        SELECT is_admin
         FROM users
         WHERE oidlogin = '$oidlogin'
         AND uid = '$uid'
-    ")))
-        return $uid;
+    ");
+
+    if (has_results($result)) {
+        $row = mysql_fetch_array($result);
+        $is_admin = $row['is_admin'];
+        return array($uid, $is_admin == '1');
+    }
 
     logout();
 }
 
+function is_logged_in()
+{
+    $status = get_login_status();
+    return $status[0];
+}
+
 function is_admin()
 {
-    if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin']))
-        return false;
-
-    // just having a 'uid' in the session isn't enough to be logged in
-    // check that the oidlogin matches the uid in case database has been reset
-    $uid = $_SESSION['uid'];
-    $oidlogin = $_SESSION['oidlogin'];
-
-    return has_results(do_query("
-        SELECT uid
-        FROM users
-        WHERE oidlogin = '$oidlogin'
-        AND uid = '$uid'
-        AND is_admin = 1
-    "));
+    $status = get_login_status();
+    return $status[1];
 }
     
 function user_id()
