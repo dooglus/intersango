@@ -63,6 +63,6 @@ if ($addy) {
     echo "    <p>The above address is specific to your account.  Each time you deposit, a new address will be generated for you.</p>\n";
     echo "    <p>It takes ", CONFIRMATIONS_FOR_DEPOSIT, " confirmations before funds are added to your account.</p>\n";
 } else
-    echo "    <p>We are currently experiencing trouble connecting to the bitcoin network.  Please try again in a few minutes.</p>\n";
+    echo "    <p>We are currently experiencing trouble connecting to the Bitcoin network.  Please try again in a few minutes.</p>\n";
 ?>
 </div>

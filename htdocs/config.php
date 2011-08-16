@@ -43,7 +43,7 @@ define('MAX_IDLE_MINUTES_BEFORE_LOGOUT', 60);
 // how often should we change the session id (in minutes)
 define('MAX_SESSION_ID_LIFETIME', 10);
 
-// how many confirmations we need on incoming bitcoin transfers before adding them to the user accounts
+// how many confirmations we need on incoming Bitcoin transfers before adding them to the user accounts
 define('CONFIRMATIONS_FOR_DEPOSIT', 4);
 
 // .------------------------------------------------------------------------

@@ -152,7 +152,7 @@ try {
         throw $e;
     echo "<div class='content_box'>\n";
     echo "<h3>Pending bitcoin deposits</h3>\n";
-    echo "<p>Normally this area would display any bitcoin deposits you have made that are awaiting confirmations, but we are having trouble connecting to the bitcoin network at the moment, so it doesn't.</p>\n";
+    echo "<p>Normally this area would display any Bitcoin deposits you have made that are awaiting confirmations, but we are having trouble connecting to the Bitcoin network at the moment, so it doesn't.</p>\n";
     echo "<p>Please try again in a few minutes.</p>\n";
     echo "</div>";
 }
