@@ -114,6 +114,22 @@ function show_users($precision)
 
     echo "<p>There are $count_funded_users users with funds, and $count_users in total.</p>\n";
 
+    $bitcoin = connect_bitcoin();
+    $balance = $bitcoin->getbalance('');
+
+    echo "<p>The bitcoin wallet has ", internal_to_numstr($balance), " BTC.<br/></p>\n";
+
+    $diff = gmp_sub($t_btc_total, $balance);
+
+    $cmp = gmp_cmp($diff, 0);
+
+    if ($cmp == 0)
+        echo "<p>That's the exact right amount</p>\n";
+    else if ($cmp > 0)
+        echo "<p>That's ", internal_to_numstr($diff), " BTC less than is on deposit</p>\n";
+    else
+        echo "<p>That's ", internal_to_numstr(gmp_mul("-1", $diff)), " BTC more than is on deposit</p>\n";
+
     echo "</div>\n";
 }
 
