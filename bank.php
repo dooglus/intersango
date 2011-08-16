@@ -63,22 +63,47 @@ function show_withdrawals()
 {
     echo "<div class='content_box'>\n";
     echo "<h3>Withdraw requests</h3>\n";
-    $result = do_query("SELECT * FROM requests WHERE req_type = 'WITHDR' AND curr_type = 'AUD'");
+    $result = do_query("
+        SELECT requests.reqid as reqid, uid, amount, " . sql_format_date("timest") . " as timest, name, bank, acc_num, sort_code
+        FROM requests
+        JOIN uk_requests
+        ON uk_requests.reqid = requests.reqid
+        WHERE req_type = 'WITHDR'
+          AND curr_type = 'AUD'
+          AND status = 'VERIFY'");
     $first = true;
     while ($row = mysql_fetch_assoc($result)) {
         if ($first) {
             $first = false;
 
             echo "<table class='display_data'>\n";
-            echo "<tr><th>User</th><th>Amount</th></tr>\n";
+            echo "<tr>";
+            // echo "<th>User</th>";
+            echo "<th>AUD</th>";
+            echo "<th>Time</th>";
+            echo "<th>Name</th>";
+            echo "<th>Bank</th>";
+            echo "<th>Account#</th>";
+            echo "<th>BSB</th>";
+            echo "</tr>\n";
         }
         $reqid = $row['reqid'];
-        $uid = $row['uid'];
+        // $uid = $row['uid'];
         $amount = internal_to_numstr($row['amount']);
+        $timest = $row['timest'];
+        $name = $row['name'];
+        $bank = $row['bank'];
+        $acc_num = $row['acc_num'];
+        $sort_code = $row['sort_code'];
         echo "<tr>";
         echo active_table_row("me", "?page=view_request&reqid=$reqid");
-        echo "<td>$uid</td>";
+        // echo "<td>$uid</td>";
         echo "<td>$amount</td>";
+        echo "<td>$timest</td>";
+        echo "<td>$name</td>";
+        echo "<td>$bank</td>";
+        echo "<td>$acc_num</td>";
+        echo "<td>$sort_code</td>";
         echo "</tr>\n";
     }
 
