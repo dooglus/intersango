@@ -226,7 +226,7 @@
 </p>
 <p>
     Amir Taaki developed the open source software for: this exchange,
-    a Bitcoin stock market exchange, a bitcoin client (Spesmilo) and
+    a Bitcoin stock market exchange, a Bitcoin client (Spesmilo) and
     others.
 </p>
 <p>

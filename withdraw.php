@@ -84,7 +84,7 @@ function bitcoin_withdraw($uid, $amount, $curr_type)
         if ($e->getMessage() != 'Unable to connect.')
             throw $e;
         throw new Problem("Sorry...",
-                          "We are currently experiencing trouble connecting to the bitcoin network and so cannot verify that you entered a valid bitcoin address.</p><p>Your withdrawal request has been cancelled.</p><p>Please try again in a few minutes.");
+                          "We are currently experiencing trouble connecting to the Bitcoin network and so cannot verify that you entered a valid Bitcoin address.</p><p>Your withdrawal request has been cancelled.</p><p>Please try again in a few minutes.");
     }
 }
 

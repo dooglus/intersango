@@ -121,7 +121,7 @@
         <div class='content_box'>
             <h3>Bitcoin</h3>
             <p>
-            <a target="_blank" href='http://bitcoin.org'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities. See <a target="_blank" href='http://bitcoinconsultancy.com/'>Bitcoin Consultancy</a> for bitcoin related projects and questions.
+            <a target="_blank" href='http://bitcoin.org'>Bitcoin</a> is an emerging crypto-currency that offers many exciting possibilities. See <a target="_blank" href='http://bitcoinconsultancy.com/'>Bitcoin Consultancy</a> for Bitcoin related projects and questions.
             </p>
         </div>
 
