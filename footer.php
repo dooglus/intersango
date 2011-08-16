@@ -30,7 +30,7 @@ function show_links($is_logged_in, $is_admin)
     if ($is_admin)      show_link('users',        'Users',        'Show registered users',        1);
     if ($is_admin)      show_link('add_cash',     'Add cash',     'Deposit using bank statement', 1);
     if ($is_admin)      show_link('commission',   'Commission',   'Show commission statement',    1);
-    if ($is_admin)      show_link('bank',         'Bank',         'Show bank statement'          ,1);
+    if ($is_admin)      show_link('bank',         'Bank',         'Show bank statement &amp; pending withdrawals',1);
     if ($is_admin)      show_link('freeze',       'Freeze',       'Stop activity on the exchange',1);
     if ($is_logged_in)  show_link('logout',       'Logout',       'End this session'               );
 }
