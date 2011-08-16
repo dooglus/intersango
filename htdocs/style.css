@@ -99,14 +99,14 @@ CONTENT
     width: 980px;
     background: url('images/panel_tile.png') repeat;
     width: 770px;
-    min-height: 700px;
+    min-height: 800px;
     height: 100%;
     left: 0px;
 }
 #content_sideshadow {
     background: url('images/panel_border.png') repeat-y top right;
     height: 100%;
-    min-height: 700px;
+    min-height: 800px;
     padding: 0;
 }
 .content_header {
@@ -236,17 +236,18 @@ LINKS
 #links_bg {
     background-color: #52514e;
     width: 980px;
-    min-height: 700px;
+    min-height: 800px;
 }
 
 #links {
     width: 160px;
     position: absolute;
-    top: 300px;
+    top: 290px;
     left: 800px;
     padding-bottom: 0;
     font-size: 12px;
     color: #fff;
+    z-index: 2;
 }
 #links a {
     display: block;
