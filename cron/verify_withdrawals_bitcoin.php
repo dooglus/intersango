@@ -47,7 +47,7 @@ try {
         ";
             do_query($query);
             add_funds($uid, $amount, 'BTC');
-            release_lock($lock);
+            release_lock($uid);
         }
         catch (Error $e) {
             if ($e->getTitle() == 'Lock Error')

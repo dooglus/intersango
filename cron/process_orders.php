@@ -202,7 +202,7 @@ function process()
             // these records indicate returned funds.
             create_record($orderid, $amount, 0,
                           0,        -1,      0);
-            release_lock($lock);
+            release_lock($uid);
         }
         catch (Error $e) {
             if ($e->getTitle() == 'Lock Error')

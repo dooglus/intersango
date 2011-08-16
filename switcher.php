@@ -12,7 +12,10 @@ function switcher($page)
             show_header($page, $is_logged_in);
 
         $lock = false;
-        if ($is_logged_in) $lock = get_lock($is_logged_in, 1); // wait if nobody else is waiting, else throw error
+        if ($is_logged_in) {
+            get_lock($is_logged_in, 1); // wait if nobody else is waiting, else throw error
+            $lock = $is_logged_in;
+        }
 
         switch($page) {
 
