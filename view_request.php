@@ -66,6 +66,10 @@ $uid = user_id();
 
 if (isset($_POST['cancel_request'])) {
     # cancel an order
+    if ($is_admin)
+        $uid_check = "";
+    else
+        $uid_check = "AND requests.uid='$uid'";
     $query = "
         UPDATE
             requests
@@ -79,7 +83,7 @@ if (isset($_POST['cancel_request'])) {
             purses.amount=purses.amount+requests.amount
         WHERE
             reqid='$reqid'
-            AND requests.uid='$uid'
+            $uid_check
             AND status='VERIFY'
             AND req_type='WITHDR'
     ";
@@ -90,6 +94,11 @@ if (isset($_POST['cancel_request'])) {
     </div><?php
 }
 else {
+    if ($is_admin)
+        $uid_check = "";
+    else
+        $uid_check = "AND uid='$uid'";
+
     $query = "
         SELECT
             req_type,
@@ -98,7 +107,7 @@ else {
             " . sql_format_date("timest") . " AS timest,
             status
         FROM requests
-        WHERE reqid='$reqid' AND uid='$uid'
+        WHERE reqid='$reqid' $uid_check
     ";
     $result = do_query($query);
     if (!has_results($result))
