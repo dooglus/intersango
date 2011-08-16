@@ -234,7 +234,29 @@ function user_id()
     return $_SESSION['uid'];
 }
 
-function get_lock($uid)
+function get_wait_lock($uid)
+{
+    $lock = LOCK_DIR . "/" . $uid . ".wait";
+
+    $umask = umask(0);
+    if (!($fp = fopen($lock, "w"))) {
+        umask($umask);
+        throw new Error('Lock Error', "Can't create wait lockfile for $uid");
+    }
+
+    if (!flock($fp, LOCK_EX|LOCK_NB)) {
+        umask($umask);
+        return false;
+    }
+
+    umask($umask);
+    return $fp;
+}
+
+// $block = 0: fail instantly if already locked
+// $block = 1: wait for lock if nobody else is already waiting, else fail instantly
+// $block = 2: wait for lock, even if someone else is already waiting
+function get_lock($uid, $block = 1)
 {
     $lock = LOCK_DIR . "/" . $uid;
 
@@ -244,9 +266,45 @@ function get_lock($uid)
         throw new Error('Lock Error', "Can't create lockfile for $uid");
     }
 
-    if (!flock($fp, LOCK_EX|LOCK_NB)) {
-        umask($umask);
-        throw new Error('Lock Error', "User $uid is already doing stuff.<br/>");
+    $block_flags = LOCK_EX;
+    $no_block_flags = LOCK_EX|LOCK_NB;
+
+    if ($block == 0) {
+        if (!flock($fp, $no_block_flags)) {
+            umask($umask);
+            throw new Error('Lock Error', "User $uid is already doing stuff.<br/>");
+        }
+    } else if ($block == 2) {
+        // try to get wait_lock.  don't care whether we get it or not, only doing it to tell others who care that we're waiting
+        $wait_lock = get_wait_lock($uid);
+        if (!flock($fp, $block_flags)) {
+            release_lock($wait_lock);
+            umask($umask);
+            throw new Error('Lock Error', "Can't get lock for user $uid, even after waiting.<br/>");
+        }
+        if ($wait_lock)
+            release_lock($wait_lock);
+    } else if ($block == 1) {
+        // try getting the lock without blocking first
+        if (!flock($fp, $no_block_flags)) {
+            // if we can't, then check whether anyone else is already waiting
+            $wait_lock = get_wait_lock($uid);
+            if ($wait_lock) {
+                echo "got wait lock<br/>\n";
+                // if not, then wait
+                if (!flock($fp, $block_flags)) {
+                    release_lock($wait_lock);
+                    umask($umask);
+                    throw new Error('Lock Error', "Can't get lock for user $uid, even after waiting.<br/>");
+                }
+                release_lock($wait_lock);
+            } else {
+                echo "didn't get wait lock<br/>\n";
+                umask($umask);
+                throw new Error('Lock Error', "User $uid is already doing stuff, and also already waiting for lock.<br/>");
+            }
+        } else
+            echo "got lock without waiting<br/>\n";
     }
 
     umask($umask);
