@@ -92,8 +92,27 @@ if (isset($_POST['cancel_request'])) {
         <h3>Cancelled!</h3>
         <p>Request <?php echo $reqid; ?> is no more.</p>
     </div><?php
-}
-else {
+} else if (isset($_POST['finish_request'])) {
+    // mark an order's status as 'FINAL'
+    if (!$is_admin) throw new Problem("Nope", "You don't have permission to do that");
+
+    $query = "
+        UPDATE
+            requests
+        SET
+            requests.status='FINAL'
+        WHERE
+            reqid='$reqid'
+            AND status='VERIFY'
+            AND req_type='WITHDR'
+            AND curr_type = 'AUD'
+    ";
+    do_query($query);
+    ?><div class='content_box'>
+        <h3>Finished!</h3>
+        <p>Request <?php echo $reqid; ?> has been set to '<?php echo translate_request_code("FINAL"); ?>' status.</p>
+    </div><?php
+} else {
     if ($is_admin)
         $uid_check = "";
     else
@@ -150,7 +169,18 @@ else {
                 <input type='submit' value='Cancel request' />
             </form> 
             </p>
-        <?php } ?>
+        <?php
+        if (isset($_GET['show_finish']) && $is_admin && $curr_type == 'AUD') { ?>
+            <p>Clicking 'Finish request' will mark this request as being '<?php echo translate_request_code("FINAL"); ?>':</p>
+            <p>
+            <form action='' class='indent_form' method='post'>
+                <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
+                <input type='hidden' name='finish_request' value='true' />
+                <input type='submit' value='Finish request' />
+            </form> 
+            </p>
+            <?php }
+        } ?>
     </div> <?php
 }
 ?>
