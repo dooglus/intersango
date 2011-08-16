@@ -117,7 +117,7 @@ function show_users($precision)
     $bitcoin = connect_bitcoin();
     $balance = $bitcoin->getbalance('');
 
-    echo "<p>The bitcoin wallet has ", internal_to_numstr($balance), " BTC.<br/></p>\n";
+    echo "<p>The Bitcoin wallet has ", internal_to_numstr($balance), " BTC.<br/></p>\n";
 
     $diff = gmp_sub($t_btc_total, $balance);
 
