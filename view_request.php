@@ -17,7 +17,7 @@ if(isset($_POST['cancel_request']))
     }
 }
 
-function display_request_info_aud($uid, $reqid)
+function display_request_info_aud($reqid)
 {
     $query = "
         SELECT name, bank, acc_num, sort_code
@@ -33,7 +33,7 @@ function display_request_info_aud($uid, $reqid)
     echo "<p>Account number: {$row['acc_num']}</p>\n";
     echo "<p>Sort code: {$row['sort_code']}</p>\n";
 }
-function display_request_info_btc($uid, $reqid)
+function display_request_info_btc($reqid)
 {
     $query = "
         SELECT addy
@@ -46,7 +46,7 @@ function display_request_info_btc($uid, $reqid)
         return;
     echo "<p>Bitcoin address: {$row['addy']}</p>\n";
 }
-function display_request_info_intnl($uid, $reqid)
+function display_request_info_intnl($reqid)
 {
     $query = "
         SELECT iban, swift
@@ -131,9 +131,9 @@ else {
         <p>
         <?php
         # only one of these will return a result
-        display_request_info_aud($uid, $reqid);
-        display_request_info_btc($uid, $reqid);
-        display_request_info_intnl($uid, $reqid);
+        display_request_info_aud($reqid);
+        display_request_info_btc($reqid);
+        display_request_info_intnl($reqid);
         ?>
         </p>
         <p>
