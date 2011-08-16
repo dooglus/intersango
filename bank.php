@@ -72,9 +72,14 @@ function show_withdrawals()
             echo "<table class='display_data'>\n";
             echo "<tr><th>User</th><th>Amount</th></tr>\n";
         }
+        $reqid = $row['reqid'];
         $uid = $row['uid'];
         $amount = internal_to_numstr($row['amount']);
-        echo "<tr><td>$uid</td><td>$amount</td></tr>\n";
+        echo "<tr>";
+        echo active_table_row("me", "?page=view_request&reqid=$reqid");
+        echo "<td>$uid</td>";
+        echo "<td>$amount</td>";
+        echo "</tr>\n";
     }
 
     if ($first)
