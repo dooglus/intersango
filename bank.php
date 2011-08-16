@@ -96,7 +96,7 @@ function show_withdrawals()
         $acc_num = $row['acc_num'];
         $sort_code = $row['sort_code'];
         echo "<tr>";
-        echo active_table_row("me", "?page=view_request&reqid=$reqid");
+        echo active_table_row("me", "?page=view_request&reqid=$reqid&show_finalise");
         // echo "<td>$uid</td>";
         echo "<td>$amount</td>";
         echo "<td>$timest</td>";
