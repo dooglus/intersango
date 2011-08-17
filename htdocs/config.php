@@ -13,6 +13,9 @@ enable_errors();
 // path to a directory to use for per-user locks - must be writable by the user who runs PHP scripts
 define('LOCK_DIR', ABSPATH . "/locks");
 
+// if user account is already busy, whether to wait for it to finish (true) or fail with an error (false) 
+define('BLOCKING_LOCKS', true);
+
 // .------------------------------------------------------------------------
 // |  local time
 // `------------------------------------------------------------------------

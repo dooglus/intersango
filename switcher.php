@@ -13,7 +13,10 @@ function switcher($page)
 
         $lock = false;
         if ($is_logged_in) {
-            get_lock($is_logged_in, 1); // wait if nobody else is waiting, else throw error
+            if (BLOCKING_LOCKS)
+                wait_for_lock_if_no_others_are_waiting($is_logged_in);
+            else
+                get_lock_without_waiting($is_logged_in);
             $lock = $is_logged_in;
         }
 

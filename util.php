@@ -253,7 +253,7 @@ function get_wait_lock($uid)
     return $fp;
 }
 
-function release_wait_lock($lock)
+function release_wait_lock($fp)
 {
     flock($fp, LOCK_UN);
     fclose($fp);
@@ -265,7 +265,7 @@ $lock_fp = array();
 // $block = 0: fail instantly if already locked
 // $block = 1: wait for lock if nobody else is already waiting, else fail instantly
 // $block = 2: wait for lock, even if someone else is already waiting
-function get_lock($uid, $block = 1)
+function get_lock($uid, $block)
 {
     global $lock_count, $lock_fp;
 
@@ -326,6 +326,21 @@ function get_lock($uid, $block = 1)
     $lock_fp[$uid] = $fp;
 
     return;
+}
+
+function get_lock_without_waiting($uid)
+{
+    get_lock($uid, 0);
+}
+
+function wait_for_lock_if_no_others_are_waiting($uid)
+{
+    get_lock($uid, 1);
+}
+
+function wait_for_lock($uid)
+{
+    get_lock($uid, 2);
 }
 
 function release_lock($uid)
