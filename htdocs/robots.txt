@@ -3,3 +3,11 @@ Allow: /
 
 
 sitemap: http://cdn.attracta.com/sitemap/803422.xml.gz
+
+sitemap: http://cdn.attracta.com/sitemap/913164.xml.gz
+
+sitemap: http://cdn.attracta.com/sitemap/913165.xml.gz
+
+sitemap: http://cdn.attracta.com/sitemap/913166.xml.gz
+
+sitemap: http://cdn.attracta.com/sitemap/913167.xml.gz
