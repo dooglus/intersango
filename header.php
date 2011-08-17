@@ -14,25 +14,39 @@ function show_header($page, $is_logged_in, $base = false)
     <script type='text/javascript' src='js/jquery-1.4.4.min.js'></script>
     <script type='text/javascript' src='js/exchanger.js'></script>
 <?php 
-        $currencies = array('BTC', 'AUD');
-        $rates = array();
-        foreach ($currencies as $curr_a) {
-            $rates_a = array();
-            foreach ($currencies as $curr_b) {
-                if ($curr_a == $curr_b)
-                    continue;
-                $exchange_fields = calc_exchange_rate($curr_b, $curr_a, BASE_CURRENCY::B);        
-                if ($exchange_fields) {
-                    $curr_b = strtolower($curr_b);
-                    $rates_a[$curr_b] = (float)$exchange_fields[2];
-                }
-            }
-            $curr_a = strtolower($curr_a);
-            $rates[$curr_a] = $rates_a;
-        }
         echo "    <script type='text/javascript'>\n";
-        echo "        exchange_rates = ".json_encode($rates).";\n";
-        echo "    </script>\n";
+        if (isset($_GET['in']) && isset($_GET['have']) && isset($_GET['want'])) {
+            $have = internal_to_numstr(get('have'));
+            $want = internal_to_numstr(get('want'));
+            if (get('in') == 'BTC') {
+                $rate2 = bcdiv($have, $want, 8);
+                $rate1 = bcdiv($want, $have, 8);
+            } else {
+                $rate1 = bcdiv($have, $want, 8);
+                $rate2 = bcdiv($want, $have, 8);
+            }
+            
+            echo "        exchange_rates = {\"btc\":{\"aud\":$rate1},\"aud\":{\"btc\":$rate2}};\n";
+        } else {
+            $currencies = array('BTC', 'AUD');
+            $rates = array();
+            foreach ($currencies as $curr_a) {
+                $rates_a = array();
+                foreach ($currencies as $curr_b) {
+                    if ($curr_a == $curr_b)
+                        continue;
+                    $exchange_fields = calc_exchange_rate($curr_b, $curr_a, BASE_CURRENCY::B);        
+                    if ($exchange_fields) {
+                        $curr_b = strtolower($curr_b);
+                        $rates_a[$curr_b] = (float)$exchange_fields[2];
+                    }
+                }
+                $curr_a = strtolower($curr_a);
+                $rates[$curr_a] = $rates_a;
+            }
+            echo "        exchange_rates = ".json_encode($rates).";\n";
+        }
+            echo "    </script>\n";
     }
     if ($base) echo "    <base href=\"$base\" />\n"; ?>
     <link rel="stylesheet" type="text/css" href="style.css" />
