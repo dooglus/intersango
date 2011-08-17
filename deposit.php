@@ -22,8 +22,7 @@ $deposref = $row['deposref'];
 
 <div class='content_box'>
     <h3>Deposit AUD</h3>
-    <p><b>NOTICE: Please be aware that our bank details have changed; before making a deposit please make sure the details you are referring to are up-to-date. Funds already deposited into the old account will still be deposited. </b></p>
-    <p>Depositing is free by bank deposit. You are responsible for paying any incurred fees. If your deposit is insufficient to cover bank fees then it will be denied.</p>
+    <p><b>Depositing is free by bank deposit (EFT). You are responsible for paying any incurred fees. If your deposit is insufficient to cover bank fees then it will be denied.</b></p>
     <p>You will need to quote <?php echo $deposref; ?> in the transaction's reference field.</p>
     <table class='display_data'>
         <tr>
@@ -48,6 +47,12 @@ $deposref = $row['deposref'];
         </tr>
     </table>
     <p>Allow 3-5 working days for payments to pass through clearing.</p>
+    <p>For fast 24Hr clearing visit any ANZ bank to deposit funds.</p>
+    <p><b>Online Banking select your bank below to login.</b></p>
+    <p><a href="https://www.my.commbank.com.au/netbank/Logon/Logon.aspx" target="_blank" >CBA</a> - <a href="https://www.anz.com/INETBANK/bankmain.asp" target="_blank" >ANZ</a> - 
+    <a href="https://online.westpac.com.au/esis/Login/SrvPage/?h3&app=wol&referrer=http%3A%2F%2Fwww.westpac.com.au%2FHomepageAlternative%2F" target="_blank" >WESTPAC</a> - 
+    <a href="https://ib.nab.com.au/nabib/index.jsp" target="_blank" >NAB</a> - 
+    <a href="http://www.google.com.au/" target="_blank" >Other</a></p>
 </div>
 
 <div class='content_box'>
