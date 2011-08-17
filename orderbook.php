@@ -68,8 +68,10 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
     ";
     $result = do_query($query);
     while ($row = mysql_fetch_array($result)) {
-        $amount = internal_to_numstr($row['amount']);
-        $want_amount = internal_to_numstr($row['want_amount']);
+        $amount_i = $row['amount'];
+        $amount = internal_to_numstr($amount_i);
+        $want_amount_i = $row['want_amount'];
+        $want_amount = internal_to_numstr($want_amount_i);
         # MySQL kindly computes this for us.
         # we trim the excessive 0
         $rate = clean_sql_numstr($row['rate']);
@@ -78,7 +80,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
         if ($me)
             echo "    ", active_table_row("me", "?page=view_order&orderid={$row['orderid']}");
         else
-            echo "    <tr>\n";
+            echo "    ", active_table_row("them", "?page=trade&in=$curr_b&have=$want_amount_i&want=$amount_i");
         echo "        <td>$rate</td>\n";
         echo "        <td>$amount $curr_a</td>\n";
         echo "        <td>$want_amount $curr_b</td>\n";

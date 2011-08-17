@@ -219,6 +219,9 @@ tr.me {
     font-weight: bold;
     cursor: pointer;
 }
+tr.them {
+    cursor: pointer;
+}
 blockquote {
     margin-left: 20px;
 }
