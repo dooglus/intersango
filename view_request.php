@@ -61,15 +61,25 @@ function display_request_info_intnl($reqid)
     echo "<p>BIC/SWIFT: {$row['swift']}</p>\n";
 }
 
+function get_request_uid($reqid)
+{
+    $result = do_query("SELECT uid FROM requests WHERE reqid='$reqid'");
+    $row = mysql_fetch_assoc($result);
+    return $row['uid'];
+}
+
 $reqid = get('reqid');
 $uid = user_id();
 
 if (isset($_POST['cancel_request'])) {
     # cancel an order
-    if ($is_admin)
+    if ($is_admin) {
         $uid_check = "";
-    else
+        $request_uid = get_request_uid($reqid);
+        get_lock_without_waiting($request_uid);
+    } else
         $uid_check = "AND requests.uid='$uid'";
+
     $query = "
         UPDATE
             requests
@@ -88,6 +98,10 @@ if (isset($_POST['cancel_request'])) {
             AND req_type='WITHDR'
     ";
     do_query($query);
+
+    if ($is_admin)
+        release_lock($request_uid);
+
     ?><div class='content_box'>
         <h3>Cancelled!</h3>
         <p>Request <?php echo $reqid; ?> is no more.</p>
@@ -96,22 +110,33 @@ if (isset($_POST['cancel_request'])) {
     // mark an order's status as 'FINAL'
     if (!$is_admin) throw new Problem("Nope", "You don't have permission to do that");
 
-    $query = "
-        UPDATE
-            requests
-        SET
-            requests.status='FINAL'
-        WHERE
-            reqid='$reqid'
-            AND status='VERIFY'
-            AND req_type='WITHDR'
-            AND curr_type = 'AUD'
-    ";
-    do_query($query);
-    ?><div class='content_box'>
-        <h3>Finished!</h3>
-        <p>Request <?php echo $reqid; ?> has been set to '<?php echo translate_request_code("FINAL"); ?>' status.</p>
-    </div><?php
+    $request_uid = get_request_uid($reqid);
+    get_lock_without_waiting($request_uid);
+
+    $result = do_query("SELECT reqid FROM requests WHERE reqid='$reqid' AND status='VERIFY'");
+    if (has_results($result)) {
+        $query = "
+            UPDATE
+                requests
+            SET
+                requests.status='FINAL'
+            WHERE
+                reqid='$reqid'
+                AND status='VERIFY'
+                AND req_type='WITHDR'
+                AND curr_type = 'AUD'
+        ";
+        do_query($query);
+        echo "    <div class='content_box'>\n";
+        echo "        <h3>Finished!</h3>\n";
+        echo "        <p>Request $reqid has been set to ", translate_request_code("FINAL"), " status.</p>\n";
+    } else {
+        echo "    <div class='content_box'>\n";
+        echo "        <h3>Warning!</h3>\n";
+        echo "        <p>Request $reqid was cancelled before we could mark it as finished.</p>\n";
+    }
+    release_lock($request_uid);
+
 } else {
     if ($is_admin)
         $uid_check = "";
@@ -170,8 +195,9 @@ if (isset($_POST['cancel_request'])) {
             </form> 
             </p>
         <?php
-        if (isset($_GET['show_finish']) && $is_admin && $curr_type == 'AUD') { ?>
-            <p>Clicking 'Finish request' will mark this request as being '<?php echo translate_request_code("FINAL"); ?>':</p>
+        if (isset($_GET['show_finish']) && $is_admin && $curr_type == 'AUD') {
+            echo "            <p>Clicking 'Finish request' will mark this request as being ", translate_request_code("FINAL"), ":</p>\n"; ?>
+            <p>Click 'Finish', check to see that it worked (and that the order wasn't cancelled), then make the bank transfer.</p>
             <p>
             <form action='' class='indent_form' method='post'>
                 <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
