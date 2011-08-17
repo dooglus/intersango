@@ -111,7 +111,7 @@ function fulfill_order($our_orderid)
         $order_by = "initial_amount / initial_want_amount DESC";
 
     $query = "
-        SELECT *, timest AS timest_format
+        SELECT orderid, uid
         FROM orderbook
         WHERE
             status='OPEN'
@@ -122,10 +122,18 @@ function fulfill_order($our_orderid)
             AND uid!='{$our->uid}'
         ORDER BY $order_by, timest ASC;
     ";
+    wait_for_lock($our->uid);
     $result = b_query($query);
     while ($row = mysql_fetch_array($result)) {
-        $them = new OrderInfo($row);
-        echo "Found matching {$them->orderid}.\n";
+        echo "Found matching ", $row['orderid'], " from user ", $row['uid'], ".\n";
+        wait_for_lock($row['uid']);   // lock their account
+        $them = fetch_order_info($row['orderid']); // re-fetch their order now that they're locked
+        if ($them->status != 'OPEN') {
+            echo "order {$them->orderid} was cancelled on us\n";
+            release_lock($them->uid);
+            continue;
+        }
+
         if ($them->type != $our->want_type || $our->type != $them->want_type)
             throw Error('Problem', 'Urgent problem. Contact the site owner IMMEDIATELY.');
         # echo "  them: orderid {$them->orderid}, uid {$them->uid}, have {$them->amount} {$them->type}, want {$them->want_amount}\n";
@@ -143,6 +151,7 @@ function fulfill_order($our_orderid)
 
             pacman($them->orderid, $them->uid, $them->amount,   $them->type, $them->commission,
                    $our->orderid,  $our->uid,  $them->new_want, $our->type,  $our->commission);
+            release_lock($them->uid);
 
             # re-update as still haven't finished...
             # info needed for any further transactions
@@ -159,14 +168,15 @@ function fulfill_order($our_orderid)
 
             pacman($our->orderid,  $our->uid,  $our->amount,   $our->type,      $our->commission,
                    $them->orderid, $them->uid, $our->new_want, $our->want_type, $them->commission);
+            release_lock($them->uid);
             break;
         }
     }
+    release_lock($our->uid);
 }
 
 function process()
 {
-    do_query("LOCK TABLES orderbook WRITE, purses WRITE, transactions WRITE");
     do_query("SET div_precision_increment = 8");
 
     // find and cancel any active orders from users with negative BTC or AUD balances
@@ -231,7 +241,6 @@ function process()
         ";
         b_query($query);
     }
-    do_query("UNLOCK TABLES");
 }
 
 try {
