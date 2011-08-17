@@ -294,7 +294,8 @@ function get_lock($uid, $block)
         // try to get wait_lock.  don't care whether we get it or not, only doing it to tell others who care that we're waiting
         $wait_lock = get_wait_lock($uid);
         if (!flock($fp, $block_flags)) {
-            release_wait_lock($wait_lock);
+            if ($wait_lock)
+                release_wait_lock($wait_lock);
             umask($umask);
             throw new Error('Lock Error', "Can't get lock for user $uid, even after waiting.<br/>");
         }
