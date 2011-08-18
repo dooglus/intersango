@@ -8,6 +8,11 @@
         $out_amount = internal_to_numstr(get('want'));
     else
         $out_amount = '';
+
+    if (isset($_GET['rate']))
+        $rate = get('rate');
+    else
+        $rate = '';
 ?>
         <div class='content_box'>
             <h3>Currency converter</h3>
@@ -82,22 +87,25 @@
 
             <tr>
             <td>
-            <input id='inamount' name='amount' class='curramount' type="text" size="20" value="<?php echo $in_amount?>" onkeyup='typed_amount_in();'>
+            <input id='inamount' autocomplete='off' name='amount' class='curramount' type="text" size="20" value="<?php echo $in_amount?>" onkeyup='typed_amount_in(event);'>
             </td>
 
             <td>
-            <input id='outamount' name='want_amount' class='curramount' type="text" size="20" value="<?php echo $out_amount?>" onkeyup='typed_amount_out();'>
+            <input id='outamount' autocomplete='off' name='want_amount' class='curramount' type="text" size="20" value="<?php echo $out_amount?>" onkeyup='typed_amount_out(event);'>
             </td>
             </tr>
+        <tr><td>
+            <b>Price:</b>
+            <input id='price' autocomplete='off' name='price' class='price' type="text" size="20" value="<?php echo $rate?>" onkeyup='typed_amount_price(event);'>
+        </td><td>
     <?php
     if ($is_logged_in) { ?>
-        <tr><td></td><td>
                     <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
                     <input type='hidden' name='type' value='' />
                     <input type='hidden' name='want_type' value='' />
                     <input type='submit' onclick='return buy_clicked();' value='Buy' />
-        </td></tr>
     <?php } ?>
+        </td></tr>
         </table>
         </form>
 

@@ -155,6 +155,10 @@ CONTENT
     width: 300px;
     display: block;
 }
+#price {
+    display: inline;
+    width: 200px;
+}
 #input_address {
     width: 452px;
 }
@@ -214,6 +218,9 @@ CONTENT
     padding: 10px;
     padding-right: 30px;
     text-align: left;
+}
+tr {
+    vertical-align: top;
 }
 tr.me {
     font-weight: bold;

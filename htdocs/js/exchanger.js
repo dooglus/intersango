@@ -33,6 +33,9 @@ function set_currency_in(currency)
 {
     ic = $('#incurrency');
     set_currency(ic, currency);
+
+    if (!typed_price && currency in exchange_rates)
+        $('#price').attr('value', exchange_rates[currency]);
 }
 function set_currency_out(currency)
 {
@@ -93,46 +96,66 @@ function typed_amount(this_name, change_name)
 {
     this_obj = $('#' + this_name + 'amount');
     change_obj = $('#' + change_name + 'amount');
-    a_obj = $('#inamount');
-    b_obj = $('#outamount');
-    a_curr = jQuery('.currcode', '#incurrency').text();
-    b_curr = jQuery('.currcode', '#outcurrency').text();
-    if (a_curr in exchange_rates) {
-        a_curr_rates = exchange_rates[a_curr];
-        if (b_curr in a_curr_rates) {
-            text_field = this_obj.attr('value');
-            if (text_field == '') {
-                change_obj.attr('value', 0);
-                return;
-            }
-            else if (isNaN(text_field)) {
-                change_obj.attr('value', '-');
-                return;
-            }
-            rate = a_curr_rates[b_curr];
-            val = parseFloat(text_field);
-            val *= rate;
+    price_obj = $('#price');
 
-	    // toFixed(2) rounds 0.235001 up to 0.24, meaning the order doesn't quite match
-	    // take off 0.0049999 to make sure of a match
-	    val -= 0.0049999;
-            change_obj.attr('value', val.toFixed(2));
-        }
-        else {
-            b_obj.attr('value', 'N/A');
-        }
+    price_text = price_obj.attr('value');
+    this_text = this_obj.attr('value');
+
+    if (!price_text || !this_text)
+        return;
+
+    price = parseFloat(price_text);
+    this_amount = parseFloat(this_text);
+
+    if (      price <= 0 || !isFinite(      price) || isNaN(      price) ||
+        this_amount <= 0 || !isFinite(this_amount) || isNaN(this_amount)) {
+        change_obj.attr('value', '');
+        return;
     }
-    else {
-        b_obj.attr('value', 'N/A');
-    }
+
+    a_curr = jQuery('.currcode', '#incurrency').text();
+    if ((this_name == 'out' && a_curr == 'btc') ||
+        (this_name == 'in'  && a_curr != 'btc'))
+        price = 1.0/price;
+
+    val = this_amount * price;
+
+    // toFixed(2) rounds 0.235001 up to 0.24, meaning the order doesn't quite match
+    // add on / take off 0.0049999 to make sure of a match
+    if (this_name == 'out')
+        val += 0.000049999;
+    else
+        val -= 0.000049999;
+
+    val = val.toFixed(4)
+    val = val.replace(/([.].*?)0+$/, '$1'); // remove trailing zeroes after the decimal point
+    val = val.replace(/[.]$/, '');          // remove trailing decimal point
+    change_obj.attr('value', val);
 }
-function typed_amount_in()
+
+function is_typing(e)
 {
+    code = e.keyCode ? e.keyCode : e.charCode;
+    return (code == 8 || code > 31);
+}
+
+function typed_amount_in(e)
+{
+    if (!is_typing(e)) return;
     typed_amount('in', 'out');
 }
-function typed_amount_out()
+
+function typed_amount_out(e)
 {
-    //typed_amount('out', 'in');
+    if (!is_typing(e)) return;
+    typed_amount('out', 'in');
+}
+
+function typed_amount_price(e)
+{
+    if (!is_typing(e)) return;
+    typed_price = true;
+    typed_amount('in', 'out');
 }
 
 function buy_clicked()

@@ -15,38 +15,19 @@ function show_header($page, $is_logged_in, $base = false)
     <script type='text/javascript' src='js/exchanger.js'></script>
 <?php 
         echo "    <script type='text/javascript'>\n";
-        if (isset($_GET['in']) && isset($_GET['have']) && isset($_GET['want'])) {
-            $have = internal_to_numstr(get('have'));
-            $want = internal_to_numstr(get('want'));
-            if (get('in') == 'BTC') {
-                $rate2 = bcdiv($have, $want, 8);
-                $rate1 = bcdiv($want, $have, 8);
-            } else {
-                $rate1 = bcdiv($have, $want, 8);
-                $rate2 = bcdiv($want, $have, 8);
-            }
-            
-            echo "        exchange_rates = {\"btc\":{\"aud\":$rate1},\"aud\":{\"btc\":$rate2}};\n";
+        if (isset($_GET['rate'])) {
+            echo "        typed_price = true;\n";
         } else {
             $currencies = array('BTC', 'AUD');
             $rates = array();
-            foreach ($currencies as $curr_a) {
-                $rates_a = array();
-                foreach ($currencies as $curr_b) {
-                    if ($curr_a == $curr_b)
-                        continue;
-                    $exchange_fields = calc_exchange_rate($curr_b, $curr_a, BASE_CURRENCY::B);        
-                    if ($exchange_fields) {
-                        $curr_b = strtolower($curr_b);
-                        $rates_a[$curr_b] = (float)$exchange_fields[2];
-                    }
-                }
-                $curr_a = strtolower($curr_a);
-                $rates[$curr_a] = $rates_a;
-            }
+            $list = calc_exchange_rate('btc', 'aud', BASE_CURRENCY::A);
+            $rates['aud'] = $list[2];
+            $list = calc_exchange_rate('aud', 'btc', BASE_CURRENCY::B);
+            $rates['btc'] = $list[2];
             echo "        exchange_rates = ".json_encode($rates).";\n";
+            echo "        typed_price = false;\n";
         }
-            echo "    </script>\n";
+        echo "    </script>\n";
     }
     if ($base) echo "    <base href=\"$base\" />\n"; ?>
     <link rel="stylesheet" type="text/css" href="style.css" />
@@ -121,14 +102,16 @@ function show_content_header_ticker()
     if ($buy) {
         list ($buy_have, $buy_want, $worst_price) = find_total_trades_available_at_rate(bcmul($buy, $include_very_close_prices, 8), 'AUD');
         $buy_have = bcmul(bcmul($buy_want, $worst_price), $request_less_for_match);;
-        $buy_link = "<a $style href=\"?page=trade&in=BTC&have=$buy_want&want=$buy_have\">$buy</a>";
+        $worst_price = clean_sql_numstr($worst_price);
+        $buy_link = "<a $style href=\"?page=trade&in=BTC&have=$buy_want&want=$buy_have&rate=$worst_price\">$buy</a>";
     } else
         $buy_link = "none";
 
     if ($sell) {
         list ($sell_have, $sell_want, $worst_price) = find_total_trades_available_at_rate(bcdiv($sell, $include_very_close_prices, 8), 'BTC');
         $sell_have = bcmul(bcdiv($sell_want, $worst_price), $request_less_for_match);
-        $sell_link = "<a $style href=\"?page=trade&in=AUD&have=$sell_want&want=$sell_have\">$sell</a>";
+        $worst_price = clean_sql_numstr($worst_price);
+        $sell_link = "<a $style href=\"?page=trade&in=AUD&have=$sell_want&want=$sell_have&rate=$worst_price\">$sell</a>";
     } else
         $sell_link = "none";
 

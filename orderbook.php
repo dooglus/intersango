@@ -80,7 +80,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
         if ($me)
             echo "    ", active_table_row("me", "?page=view_order&orderid={$row['orderid']}");
         else
-            echo "    ", active_table_row("them", "?page=trade&in=$curr_b&have=$want_amount_i&want=$amount_i");
+            echo "    ", active_table_row("them", "?page=trade&in=$curr_b&have=$want_amount_i&want=$amount_i&rate=$rate");
         echo "        <td>$rate</td>\n";
         echo "        <td>$amount $curr_a</td>\n";
         echo "        <td>$want_amount $curr_b</td>\n";
