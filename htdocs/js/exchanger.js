@@ -133,8 +133,15 @@ function typed_amount(this_name, change_name)
     change_obj.attr('value', val);
 }
 
+function isdefined( variable)
+{
+    return (typeof(window[variable]) == "undefined") ? false : true;
+}
+
 function is_typing(e)
 {
+    // sometimes 'e' is undefined?
+    if (!isdefined(e)) return false;
     code = e.keyCode ? e.keyCode : e.charCode;
     return (code == 8 || code > 31);
 }
