@@ -79,7 +79,7 @@ function select_currency_in(caller)
     set_currency_in(curr);
     set_currency_out(twin_currency(curr), false);
     $('#inamount').attr('value', '');
-    typed_amount_in();
+    $('#outamount').attr('value', '');
 }
 function select_currency_out(caller)
 {
@@ -89,7 +89,7 @@ function select_currency_out(caller)
     set_currency_out(curr);
     set_currency_in(twin_currency(curr));
     $('#outamount').attr('value', '');
-    typed_amount_out();
+    $('#inamount').attr('value', '');
 }
 
 function typed_amount(this_name, change_name)
@@ -133,15 +133,8 @@ function typed_amount(this_name, change_name)
     change_obj.attr('value', val);
 }
 
-function isdefined( variable)
-{
-    return (typeof(window[variable]) == "undefined") ? false : true;
-}
-
 function is_typing(e)
 {
-    // sometimes 'e' is undefined?
-    if (!isdefined(e)) return false;
     code = e.keyCode ? e.keyCode : e.charCode;
     return (code == 8 || code > 31);
 }
