@@ -49,15 +49,6 @@ function show_users($precision)
         if ($omit_zero_balances && $aud == 0 && $c_aud == 0 && $btc == 0 && $c_btc == 0)
             continue;
 
-        if ($uid != 'fees') {
-            $count_funded_users++;
-            if ($aud < 1e5 && $c_aud < 1e5 && $btc < 1e5 && $c_btc < 1e5) {
-                $count_low_balance_users++;
-                if ($omit_very_low_balances)
-                    continue;
-            }
-        }
-
         if ($first) {
             $first = false;
 
@@ -87,6 +78,15 @@ function show_users($precision)
         $btc_total   = gmp_add($btc_total,   $btc);
         $c_btc_total = gmp_add($c_btc_total, $c_btc);
         $t_btc_total = gmp_add($t_btc_total, $t_btc);
+
+        if ($uid != 'fees') {
+            $count_funded_users++;
+            if ($aud < 1e5 && $c_aud < 1e5 && $btc < 1e5 && $c_btc < 1e5) {
+                $count_low_balance_users++;
+                if ($omit_very_low_balances)
+                    continue;
+            }
+        }
 
         if ($is_admin)
             echo "<tr style='font-weight: bold'>";
