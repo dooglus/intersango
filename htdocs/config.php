@@ -17,7 +17,7 @@ define('LOCK_DIR', ABSPATH . "/locks");
 // |  local time
 // `------------------------------------------------------------------------
 
-// which timezone should we use
+// which timezone should we use - something that exists in /usr/share/zoneinfo/ ?
 define('TIMEZONE', "Australia/Queensland");
 
 // how many minutes after midnight does the day start, for the purposes of limiting daily transfers
