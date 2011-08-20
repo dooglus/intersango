@@ -2,6 +2,7 @@
 function show_users($precision)
 {
     $omit_zero_balances = true;
+    $omit_very_low_balances = true;
 
     echo "<div class='content_box'>\n";
     echo "<h3>Users</h3>\n";
@@ -27,7 +28,7 @@ function show_users($precision)
     $aud_total = $c_aud_total = $t_aud_total = '0';
     $btc_total = $c_btc_total = $t_btc_total = '0';
     $first = true;
-    $count_users = $count_funded_users = 0;
+    $count_users = $count_funded_users = $count_low_balance_users = 0;
     while ($row = mysql_fetch_assoc($result)) {
         $uid = $row['uid'];
         $oidlogin = $row['oidlogin'];
@@ -48,8 +49,14 @@ function show_users($precision)
         if ($omit_zero_balances && $aud == 0 && $c_aud == 0 && $btc == 0 && $c_btc == 0)
             continue;
 
-        if ($uid != 'fees')
+        if ($uid != 'fees') {
             $count_funded_users++;
+            if ($aud < 1e5 && $c_aud < 1e5 && $btc < 1e5 && $c_btc < 1e5) {
+                $count_low_balance_users++;
+                if ($omit_very_low_balances)
+                    continue;
+            }
+        }
 
         if ($first) {
             $first = false;
@@ -113,6 +120,8 @@ function show_users($precision)
     }
 
     echo "<p>There are $count_funded_users users with funds, and $count_users in total.</p>\n";
+    if ($omit_very_low_balances && $count_low_balance_users)
+        echo "<p>$count_low_balance_users user(s) have very low balances, and aren't shown above.</p>\n";
 
     $bitcoin = connect_bitcoin();
     $balance = $bitcoin->getbalance('');
