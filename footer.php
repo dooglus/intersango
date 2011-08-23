@@ -22,6 +22,7 @@ function show_links($is_logged_in, $is_admin)
     if (!$is_logged_in) show_link('login',        'Login',        'Begin here'                     );
     show_link                    ('trade',        'Trade',        'Buy and sell'                   );
     if ($is_logged_in)  show_link('profile',      'Profile',      'Dox on you'                     );
+    if ($is_logged_in)  show_link('statement',    'Statement',    'Chronological ledger'           );
     if ($is_logged_in)  show_link('deposit',      'Deposit',      'Top up your account'            );
     if ($is_logged_in)  show_link('withdraw',     'Withdraw',     'Take out money'                 );
     show_link                    ('orderbook',    'Orderbook',    'Show orders'                    );
