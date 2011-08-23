@@ -61,7 +61,7 @@ function check_frozen()
 
 function sql_format_date($date)
 {
-    return "CONCAT(DATE_FORMAT($date, '%l:%i'), " .
+    return "CONCAT(DATE_FORMAT($date, '%h:%i'), " .
                   "LOWER(DATE_FORMAT($date, '%p')), " .
                   "DATE_FORMAT($date, ' %d-%b-%y'))";
 }
