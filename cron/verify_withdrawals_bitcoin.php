@@ -39,7 +39,7 @@ try {
         $uid = $row['uid'];
         try {
             echo "cancelling reqid $reqid (withdraw ", internal_to_numstr($amount), " BTC for user $uid) due to negative balance\n";
-            $lock = get_lock($uid);
+            wait_for_lock($uid);
             $query = "
     UPDATE requests
     SET status = 'CANCEL'
@@ -47,7 +47,7 @@ try {
         ";
             do_query($query);
             add_funds($uid, $amount, 'BTC');
-            release_lock($lock);
+            release_lock($uid);
         }
         catch (Error $e) {
             if ($e->getTitle() == 'Lock Error')
