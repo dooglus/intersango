@@ -40,6 +40,7 @@ function switcher($page)
             case 'deposit':
             case 'place_order':
             case 'profile':
+            case 'statement':
             case 'turn_on_duo':
             case 'view_order':
             case 'view_request':
