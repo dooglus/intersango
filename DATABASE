@@ -160,7 +160,7 @@ CREATE TABLE `uk_requests` (
   `reqid` int(10) unsigned NOT NULL,
   `name` varchar(40) NOT NULL,
   `bank` varchar(40) NOT NULL,
-  `acc_num` varchar(8) NOT NULL,
+  `acc_num` varchar(9) NOT NULL,
   `sort_code` varchar(6) NOT NULL,
   PRIMARY KEY (`reqid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
