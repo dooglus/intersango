@@ -389,6 +389,9 @@ function sync_to_bitcoin($uid)
     try {
         $balance = $bitcoin->getbalance($uid, CONFIRMATIONS_FOR_DEPOSIT);
 
+        if (is_float($balance))
+            throw new Error("bitcoind version error", "bitcoind getbalance should return an integer not a float");
+
         if (gmp_cmp($balance, '0') > 0) {
             $bitcoin->move($uid, '', $balance);
             $query = "
