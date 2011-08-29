@@ -28,7 +28,7 @@ function show_statement($userid)
         ON
             orderbook.orderid = transactions.a_orderid
         WHERE
-            uid=$userid AND b_amount != -1
+            uid='$userid' AND b_amount != -1
         UNION
         SELECT
             txid, b_orderid AS orderid,
@@ -45,7 +45,7 @@ function show_statement($userid)
         ON
             orderbook.orderid=transactions.b_orderid
         WHERE
-            uid=$userid AND b_amount != -1
+            uid='$userid' AND b_amount != -1
         UNION
         SELECT
             NULL, NULL,
@@ -58,7 +58,7 @@ function show_statement($userid)
         FROM
             requests
         WHERE
-            uid=$userid AND status != 'CANCEL'
+            uid='$userid' AND status != 'CANCEL'
         ORDER BY
             timest
     ";
