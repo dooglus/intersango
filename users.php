@@ -1,4 +1,5 @@
 <?php
+
 function show_users($precision)
 {
     $omit_zero_balances = true;
@@ -88,10 +89,16 @@ function show_users($precision)
             }
         }
 
-        if ($is_admin)
-            echo "<tr style='font-weight: bold'>";
+        if ($uid == 'fees')
+            $url = "?page=commission";
         else
-            echo "<tr>";
+            $url = "?page=statement&user=$uid";
+
+        if ($is_admin)
+            active_table_row('me', $url);
+        else
+            active_table_row('active', $url);
+
         echo "<td>$uid</td>";
 //      echo "<td>$oidlogin</td>";
         echo "<td>", internal_to_numstr($aud,   $precision), "</td>";
