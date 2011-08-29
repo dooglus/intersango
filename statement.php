@@ -12,6 +12,11 @@ function show_statement($userid)
     echo "<div class='content_box'>\n";
     echo "<h3>Statement (UID $userid)</h3>\n";
 
+    if ($userid == 'all')
+        $check_userid = "";
+    else
+        $check_userid = "uid='$userid' AND";
+
     $query = "
         SELECT
             txid, a_orderid AS orderid,
@@ -28,7 +33,8 @@ function show_statement($userid)
         ON
             orderbook.orderid = transactions.a_orderid
         WHERE
-            uid='$userid' AND b_amount != -1
+            $check_userid
+            b_amount != -1
         UNION
         SELECT
             txid, b_orderid AS orderid,
@@ -45,7 +51,8 @@ function show_statement($userid)
         ON
             orderbook.orderid=transactions.b_orderid
         WHERE
-            uid='$userid' AND b_amount != -1
+            $check_userid
+            b_amount != -1
         UNION
         SELECT
             NULL, NULL,
@@ -58,7 +65,8 @@ function show_statement($userid)
         FROM
             requests
         WHERE
-            uid='$userid' AND status != 'CANCEL'
+            $check_userid
+            status != 'CANCEL'
         ORDER BY
             timest
     ";
@@ -149,7 +157,7 @@ function show_statement($userid)
             $amount = $row['amount'];
             $curr_type = $row['curr_type'];
 
-            if ($req_type == 'DEPOS') {
+            if ($req_type == 'DEPOS') { /* deposit */
                 if ($curr_type == 'BTC') {
                     $btc = gmp_add($btc, $amount);
                     printf("<td><strong>Deposit %.{$btc_precision}f BTC</strong></td>", internal_to_numstr($amount, $btc_precision));
@@ -173,7 +181,7 @@ function show_statement($userid)
                         printf("<td>+%.{$aud_precision}f</td>", internal_to_numstr($amount, $aud_precision));
                     printf("<td>%.{$aud_precision}f</td>",  internal_to_numstr($aud,    $aud_precision));
                 }
-            } else {
+            } else {            /* withdrawal */
                 if ($curr_type == 'BTC') {
                     $btc = gmp_sub($btc, $amount);
                     printf("<td><strong>Withdraw %.{$btc_precision}f BTC</strong></td>", internal_to_numstr($amount, $btc_precision));
