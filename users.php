@@ -113,7 +113,7 @@ function show_users($precision)
 
     if (!$first) {
         echo "<tr><td></td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td></tr>\n";
-        echo "<tr>\n";
+        active_table_row('me', "?page=statement&user=all");
         echo "<td></td>";
         echo "<td>", internal_to_numstr($aud_total,   $precision), "</td>";
         echo "<td>", internal_to_numstr($c_aud_total, $precision), "</td>";
