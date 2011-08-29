@@ -23,7 +23,7 @@ function show_statement($userid)
             a_amount AS gave_amount, 'AUD' AS gave_curr,
             (b_amount-b_commission) AS got_amount,  'BTC' AS got_curr,
             NULL as reqid,  NULL as req_type,
-            NULL as amount, NULL as curr_type,
+            NULL as amount, NULL as curr_type, NULL as addy,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest
         FROM
@@ -41,7 +41,7 @@ function show_statement($userid)
             b_amount AS gave_amount, 'BTC' AS gave_curr,
             (a_amount-a_commission) AS got_amount,  'AUD' AS got_curr,
             NULL, NULL,
-            NULL, NULL,
+            NULL, NULL, NULL,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest
         FROM
@@ -59,11 +59,14 @@ function show_statement($userid)
             NULL, NULL,
             NULL, NULL,
             reqid,  req_type,
-            amount, curr_type,
+            amount, curr_type, addy,
             " . sql_format_date('timest') . " AS date,
             timest
         FROM
             requests
+        LEFT JOIN
+            bitcoin_requests
+        USING(reqid)
         WHERE
             $check_userid
             status != 'CANCEL'
@@ -184,7 +187,9 @@ function show_statement($userid)
             } else {            /* withdrawal */
                 if ($curr_type == 'BTC') {
                     $btc = gmp_sub($btc, $amount);
-                    printf("<td><strong>Withdraw %.{$btc_precision}f BTC</strong></td>", internal_to_numstr($amount, $btc_precision));
+                    printf("<td><strong title='%s'>Withdraw %.{$btc_precision}f BTC</strong></td>",
+                           $row['addy'],
+                           internal_to_numstr($amount, $btc_precision));
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
