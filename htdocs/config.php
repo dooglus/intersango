@@ -37,6 +37,18 @@ define('FREE_AUD_ON_SIGNUP', "0");
 define('FREE_BTC_ON_SIGNUP', "0");
 
 // .------------------------------------------------------------------------
+// |  vouchers
+// `------------------------------------------------------------------------
+
+// vouchers look like "WBX-BTC-5HZKF-PEL08-J39BK-JBEL8" - the first word is fixed to this value:
+define('VOUCHER_PREFIX', 'WBX');
+
+// which characters to use in the last 4 blocks of 5 characters
+// using 33 characters, in 4 blocks of 5 gives us 100 bits of entropy
+// http://xkcd.com/936/ says that's enough
+define('VOUCHER_CHARS', '0123456789ABCDEFGHJKLMNPRSTUVWXYZ'); // 0-9, A-Z without I, O, or Q
+
+// .------------------------------------------------------------------------
 // |  security
 // `------------------------------------------------------------------------
 
