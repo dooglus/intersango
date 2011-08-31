@@ -17,25 +17,47 @@ if (isset($_POST['amount']) && isset($_POST['curr_type']))
     }
 }
 
-function uk_withdraw($uid, $amount, $curr_type)
+function uk_withdraw($uid, $amount, $curr_type, &$voucher_code)
 {
-    $name = post('name_holder');
-    $bank = post('name_bank');
-    $acc_num = post('account_number');
-    $sort_code = post('sort_code');
-    syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code");
-    endlog();
+    $voucher = isset($_POST['voucher']);
 
-    $query = "
+    if ($voucher) {
+        echo "withdrawing to voucher<br/>\n";
+        syslog(LOG_NOTICE, "address=voucher");
+
+        $query = "
+            INSERT INTO requests (req_type, uid, amount, curr_type, status)
+            VALUES ('WITHDR', '$uid', '$amount', '$curr_type', 'FINAL');
+        ";
+    } else {
+        echo "withdrawing to bank account<br/>\n";
+        $name = post('name_holder');
+        $bank = post('name_bank');
+        $acc_num = post('account_number');
+        $sort_code = post('sort_code');
+        syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code");
+        $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type)
         VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
     ";
+    }
+    endlog();
+
     do_query($query);
     $reqid = mysql_insert_id();
-    $query = "
-        INSERT INTO uk_requests (reqid, name, bank, acc_num, sort_code)
-        VALUES ('$reqid', '$name', '$bank', '$acc_num', '$sort_code');
-    ";
+
+    if ($voucher) {
+        $voucher_code = fiat_voucher_code();
+            
+        $query = "
+            INSERT INTO voucher_requests (reqid, voucher)
+            VALUES ('$reqid', '$voucher_code');
+        ";
+    } else
+        $query = "
+            INSERT INTO uk_requests (reqid, name, bank, acc_num, sort_code)
+            VALUES ('$reqid', '$name', '$bank', '$acc_num', '$sort_code');
+        ";
     do_query($query);
 }
 
@@ -121,7 +143,7 @@ function save_details($uid, $amount, $curr_type, &$voucher)
     if ($curr_type == 'AUD') {
         $is_international = post('is_international') == 'true';
         if (!$is_international) {
-            uk_withdraw($uid, $amount, $curr_type);
+            uk_withdraw($uid, $amount, $curr_type, $voucher);
             return true;
         }
         else {
@@ -272,7 +294,29 @@ else {
 -->
 
     <div class='content_box'>
-    <h3>Withdraw BTC</h3>
+    <h3>Withdraw AUD to Voucher</h3>
+    <p>
+        Alternatively, you can withdraw AUD as a voucher.
+        This will give you a text code which can be redeemed for
+        AUD credit by any user of this exchange.  Specify the
+        amount of AUD to withdraw.
+    </p>
+    <p>
+        <form action='' class='indent_form' method='post'>
+            <label for='input_amount'>Amount</label>
+            <input type='text' id='input_amount' name='amount' value='0.00' />
+
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
+            <input type='hidden' name='curr_type' value='AUD' />
+            <input type='hidden' name='is_international' value='false' />
+            <input type='hidden' name='voucher' value='1' />
+            <input type='submit' value='Submit' />
+        </form>
+    </p>
+    </div>
+
+    <div class='content_box'>
+    <h3>Withdraw BTC to Bitcoin Address</h3>
 <?php
     $uid = user_id();
     $balances = fetch_balances($uid);
@@ -296,7 +340,6 @@ else {
     else if (gmp_cmp($available, '0') > 0) {
         echo "    <p>Enter an amount below to withdraw.  You have ", internal_to_numstr($btc), " BTC.</p>\n";
 ?>
-    <h4>Withdraw to Bitcoin Address</h4>
     <p>
         <form action='' class='indent_form' method='post'>
             <label for='input_address'>Address</label>
@@ -310,7 +353,11 @@ else {
             <input type='submit' value='Submit' />
         </form>
     </p>
-    <h4>Withdraw to Voucher</h4>
+    </div>
+
+    <div class='content_box'>
+    <h3>Withdraw BTC to Voucher</h3>
+
     <p>
         Alternatively, you can withdraw Bitcoins as a voucher.
         This will give you a text code which can be redeemed for
