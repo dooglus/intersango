@@ -235,6 +235,12 @@ blockquote {
 table {
     border-spacing: 0px;
 }
+.voucher {
+    font-weight: bold;
+    font-size: 18px;
+    font-family: "Courier New", Courier, monospace;
+    padding: 10px 20px;
+}
 
 /*---------------------------------
 LINKS
