@@ -42,9 +42,22 @@ function display_request_info_btc($reqid)
     ";
     $result = do_query($query);
     $row = mysql_fetch_assoc($result);
-    if (!$row)
+    if ($row) {
+        echo "<p>Bitcoin address: {$row['addy']}</p>\n";
         return;
-    echo "<p>Bitcoin address: {$row['addy']}</p>\n";
+    }
+
+    $query = "
+        SELECT voucher
+        FROM voucher_requests
+        WHERE reqid='$reqid'
+    ";
+    $result = do_query($query);
+    $row = mysql_fetch_assoc($result);
+    if ($row) {
+        echo "<p>Voucher: {$row['voucher']}</p>\n";
+        return;
+    }
 }
 function display_request_info_intnl($reqid)
 {
