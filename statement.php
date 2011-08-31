@@ -23,7 +23,7 @@ function show_statement($userid)
             a_amount AS gave_amount, 'AUD' AS gave_curr,
             (b_amount-b_commission) AS got_amount,  'BTC' AS got_curr,
             NULL as reqid,  NULL as req_type,
-            NULL as amount, NULL as curr_type, NULL as addy, NULL as voucher,
+            NULL as amount, NULL as curr_type, NULL as addy, NULL as voucher, NULL as bank, NULL as acc_num,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest
         FROM
@@ -41,7 +41,7 @@ function show_statement($userid)
             b_amount AS gave_amount, 'BTC' AS gave_curr,
             (a_amount-a_commission) AS got_amount,  'AUD' AS got_curr,
             NULL, NULL,
-            NULL, NULL, NULL, NULL,
+            NULL, NULL, NULL, NULL, NULL, NULL,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest
         FROM
@@ -59,7 +59,7 @@ function show_statement($userid)
             NULL, NULL,
             NULL, NULL,
             reqid,  req_type,
-            amount, curr_type, addy, voucher,
+            amount, curr_type, addy, voucher, bank, acc_num,
             " . sql_format_date('timest') . " AS date,
             timest
         FROM
@@ -69,6 +69,9 @@ function show_statement($userid)
         USING(reqid)
         LEFT JOIN
             voucher_requests
+        USING(reqid)
+        LEFT JOIN
+            uk_requests
         USING(reqid)
         WHERE
             $check_userid
@@ -162,9 +165,10 @@ function show_statement($userid)
             $req_type = $row['req_type'];
             $amount = $row['amount'];
             $curr_type = $row['curr_type'];
+            $voucher = $row['voucher'];
 
             if ($req_type == 'DEPOS') { /* deposit */
-                if ($curr_type == 'BTC') {
+                if ($curr_type == 'BTC') { /* deposit BTC */
                     $btc = gmp_add($btc, $amount);
                     printf("<td><strong>Deposit %.{$btc_precision}f BTC</strong></td>", internal_to_numstr($amount, $btc_precision));
                     if ($show_prices)
@@ -175,7 +179,7 @@ function show_statement($userid)
                     if ($show_increments)
                         printf("<td></td>");
                     printf("<td></td>");
-                } else {
+                } else {        /* deposit AUD */
                     $aud = gmp_add($aud, $amount);
                     printf("<td><strong>Deposit %.{$aud_precision}f AUD</strong></td>", internal_to_numstr($amount, $aud_precision));
                     if ($show_prices)
@@ -188,10 +192,9 @@ function show_statement($userid)
                     printf("<td>%.{$aud_precision}f</td>",  internal_to_numstr($aud,    $aud_precision));
                 }
             } else {            /* withdrawal */
-                if ($curr_type == 'BTC') {
+                if ($curr_type == 'BTC') { /* withdraw BTC */
                     $btc = gmp_sub($btc, $amount);
                     $addy = $row['addy'];
-                    $voucher = $row['voucher'];
                     if ($addy)
                         $title = sprintf("to Bitcoin address &quot;%s&quot;", $addy);
                     else if ($voucher)
@@ -208,9 +211,18 @@ function show_statement($userid)
                     if ($show_increments)
                         printf("<td></td>");
                     printf("<td></td>");
-                } else {
+                } else {        /* withdraw AUD */
                     $aud = gmp_sub($aud, $amount);
-                    printf("<td><strong>Withdraw %.{$aud_precision}f AUD</strong></td>", internal_to_numstr($amount, $aud_precision));
+                    $title = '';
+                    echo "voucher: $voucher; bank: ", $row['bank'], "<br/>\n";
+                    if ($voucher)
+                        $title = sprintf("to voucher &quot;%s&quot;", $voucher);
+                    else
+                        $title = sprintf("to account %s at %s", $row['acc_num'], $row['bank']);
+
+                    printf("<td><strong title='%s'>Withdraw %.{$aud_precision}f AUD</strong></td>",
+                           $title,
+                           internal_to_numstr($amount, $aud_precision));
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
