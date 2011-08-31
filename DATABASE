@@ -202,6 +202,22 @@ CREATE TABLE `user_sessions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `voucher_requests`
+--
+
+DROP TABLE IF EXISTS `voucher_requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `voucher_requests` (
+  `reqid` int(10) unsigned NOT NULL,
+  `voucher` varchar(33) NOT NULL,
+  `redeemed` timestamp NULL,
+  PRIMARY KEY (`reqid`),
+  UNIQUE KEY `voucher` (`voucher`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
