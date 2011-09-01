@@ -9,6 +9,7 @@ function escapestr($str)
 }
 function do_query($query)
 {
+    // echo "query: $query<br/>\n";
     $result = mysql_query($query);
     if (!$result)
         throw new Error("MySQL Error", mysql_error());
