@@ -31,6 +31,40 @@ function random_voucher_string($len)
     return $return;
 }
 
+function voucher_code_prefix($code)
+{
+    $length = strlen(VOUCHER_PREFIX . "-BTC-XXXXX");
+
+    return substr($code, 0, $length);
+}
+
+function encrypt_voucher_code($code, $salt)
+{
+    $hash = hash('sha256', $salt . $code);
+    return $hash;
+}
+
+function voucher_code_exists($code)
+{
+    $prefix = voucher_code_prefix($code);
+
+    $query = "
+        SELECT reqid, redeem_reqid, salt, hash, uid, amount, curr_type, status
+        FROM voucher_requests
+        JOIN requests
+        USING(reqid)
+        WHERE prefix = '$prefix'
+    ";
+
+    $result = do_query($query);
+
+    while ($row = mysql_fetch_array($result))
+        if (encrypt_voucher_code($code, $row['salt']) == $row['hash'])
+            return $row;
+
+    return false;
+}
+
 function check_voucher_code($code)
 {
     $from = array();
@@ -43,12 +77,11 @@ function check_voucher_code($code)
     if (VOUCHER_FORCE_UPPERCASE)
         $code = strtoupper($code);
     $code = str_replace($from, $to, $code);
-    $query = "SELECT reqid, redeem_reqid, uid, amount, curr_type, status FROM voucher_requests JOIN requests USING(reqid) WHERE voucher = '$code'";
-    $result = do_query($query);
-    if (!has_results($result))
+
+    $row = voucher_code_exists($code);
+    if (!$row)
         throw new Exception("no such voucher exists");
 
-    $row = get_row($result);
     $reqid = $row['reqid'];
     $redeem_reqid = $row['redeem_reqid'];
     $uid = $row['uid'];
@@ -70,8 +103,15 @@ function check_voucher_code($code)
     return array($reqid, $uid, $amount, $curr_type);
 }
 
+function random_voucher_salt()
+{
+    return random_voucher_string(5);
+}
+
 function store_new_voucher_code($reqid, $type)
 {
+    // $nonce = 0;
+
     do {
         $code = sprintf("%s-%s-%s-%s-%s-%s",
                         VOUCHER_PREFIX,
@@ -80,18 +120,17 @@ function store_new_voucher_code($reqid, $type)
                         random_voucher_string(5),
                         random_voucher_string(5),
                         random_voucher_string(5));
-        $query = "
-            SELECT COUNT(*) AS count FROM voucher_requests
-            WHERE voucher = '$code'
-        ";
-        $result = do_query($query);
-        $row = mysql_fetch_array($result);
-        $count = $row['count'];
-    } while ($count == 1);
+
+        // $code = sprintf("%s-%s-TEST1-00000-00000-%05d", VOUCHER_PREFIX, $type, $nonce++);
+    } while (voucher_code_exists($code));
+
+    $prefix = voucher_code_prefix($code);
+    $salt = random_voucher_salt();
+    $hash = encrypt_voucher_code($code, $salt);
 
     $query = "
-        INSERT INTO voucher_requests (reqid, voucher)
-        VALUES ('$reqid', '$code');
+        INSERT INTO voucher_requests (reqid, prefix, salt, hash)
+        VALUES ('$reqid', '$prefix', '$salt', '$hash');
     ";
     do_query($query);
 
