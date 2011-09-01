@@ -118,7 +118,7 @@ function bitcoin_withdraw($uid, $amount, $curr_type, &$voucher_code)
     $reqid = mysql_insert_id();
   
     if ($voucher)
-        $voucher_code = store_new_bitcoin_voucher_code();
+        $voucher_code = store_new_bitcoin_voucher_code($reqid);
     else {
         $query = "
             INSERT INTO bitcoin_requests (reqid, addy)
