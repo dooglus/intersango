@@ -22,7 +22,6 @@ function uk_withdraw($uid, $amount, $curr_type, &$voucher_code)
     $voucher = isset($_POST['voucher']);
 
     if ($voucher) {
-        echo "withdrawing to voucher<br/>\n";
         syslog(LOG_NOTICE, "address=voucher");
 
         $query = "
@@ -30,7 +29,6 @@ function uk_withdraw($uid, $amount, $curr_type, &$voucher_code)
             VALUES ('WITHDR', '$uid', '$amount', '$curr_type', 'FINAL');
         ";
     } else {
-        echo "withdrawing to bank account<br/>\n";
         $name = post('name_holder');
         $bank = post('name_bank');
         $acc_num = post('account_number');
@@ -82,7 +80,6 @@ function bitcoin_withdraw($uid, $amount, $curr_type, &$voucher_code)
     $voucher = isset($_POST['voucher']);
 
     if ($voucher) {
-        echo "withdrawing to voucher<br/>\n";
         syslog(LOG_NOTICE, "address=voucher");
 
         $query = "
@@ -90,7 +87,6 @@ function bitcoin_withdraw($uid, $amount, $curr_type, &$voucher_code)
             VALUES ('WITHDR', '$uid', '$amount', '$curr_type', 'FINAL');
         ";
     } else {
-        echo "withdrawing to bitcoin network<br/>\n";
         $addy = post('address');
         $bitcoin = connect_bitcoin();
         try {
