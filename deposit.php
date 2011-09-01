@@ -3,7 +3,7 @@ require_once 'util.php';
 $uid = user_id();
 $bitcoin = connect_bitcoin();
 try {
-    $addy = $bitcoin->getaccountaddress((string)$uid);
+    $addy = @$bitcoin->getaccountaddress((string)$uid);
 } catch (Exception $e) {
     if ($e->getMessage() != 'Unable to connect.')
         throw $e;
