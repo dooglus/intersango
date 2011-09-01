@@ -46,19 +46,15 @@ function uk_withdraw($uid, $amount, $curr_type, &$voucher_code)
     do_query($query);
     $reqid = mysql_insert_id();
 
-    if ($voucher) {
-        $voucher_code = fiat_voucher_code();
-            
-        $query = "
-            INSERT INTO voucher_requests (reqid, voucher)
-            VALUES ('$reqid', '$voucher_code');
-        ";
-    } else
+    if ($voucher)
+        $voucher_code = store_new_fiat_voucher_code($reqid);
+    else {
         $query = "
             INSERT INTO uk_requests (reqid, name, bank, acc_num, sort_code)
             VALUES ('$reqid', '$name', '$bank', '$acc_num', '$sort_code');
         ";
-    do_query($query);
+        do_query($query);
+    }
 }
 
 function international_withdraw($uid, $amount, $curr_type)
@@ -121,19 +117,15 @@ function bitcoin_withdraw($uid, $amount, $curr_type, &$voucher_code)
     do_query($query);
     $reqid = mysql_insert_id();
   
-    if ($voucher) {
-        $voucher_code = bitcoin_voucher_code();
-            
-        $query = "
-            INSERT INTO voucher_requests (reqid, voucher)
-            VALUES ('$reqid', '$voucher_code');
-        ";
-    } else
+    if ($voucher)
+        $voucher_code = store_new_bitcoin_voucher_code();
+    else {
         $query = "
             INSERT INTO bitcoin_requests (reqid, addy)
             VALUES ('$reqid', '$addy');
         ";
-    do_query($query);
+        do_query($query);
+    }
 }
 
 function save_details($uid, $amount, $curr_type, &$voucher)

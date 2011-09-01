@@ -31,7 +31,31 @@ function random_voucher_string($len)
     return $return;
 }
 
-function voucher_code($type)
+function check_voucher_code($code)
+{
+    $from = array();
+    $to = array();
+    foreach (explode(',', VOUCHER_REPLACE) as $pair) {
+        array_push($from, $pair[0]);
+        array_push($to  , $pair[1]);
+    }
+
+    echo "code: $code<br/>\n";
+    if (VOUCHER_FORCE_UPPERCASE)
+        $code = strtoupper($code);
+    echo "code: $code<br/>\n";
+    $code = str_replace($from, $to, $code);
+    echo "code: $code<br/>\n";
+    $query = "SELECT reqid FROM voucher_requests WHERE voucher = '$code'";
+    $result = do_query($query);
+    if (!has_results($result))
+        return false;
+
+    $row = get_row($result);
+    return $row['reqid'];
+}
+
+function store_new_voucher_code($reqid, $type)
 {
     do {
         $code = sprintf("%s-%s-%s-%s-%s-%s",
@@ -50,17 +74,25 @@ function voucher_code($type)
         $count = $row['count'];
     } while ($count == 1);
 
+    $query = "
+        INSERT INTO voucher_requests (reqid, voucher)
+        VALUES ('$reqid', '$code');
+    ";
+    do_query($query);
+
     return $code;
 }
 
-function bitcoin_voucher_code()
+function store_new_bitcoin_voucher_code($reqid)
 {
-    return voucher_code('BTC');
+    return store_new_voucher_code($reqid, 'BTC');
 }
 
-function fiat_voucher_code()
+function store_new_fiat_voucher_code($reqid)
 {
-    return voucher_code('AUD');
+    return store_new_voucher_code($reqid, 'AUD');
 }
+
+check_voucher_code("0123-GHIJKLMNOPQRST-0oOqQ-1iI");
 
 ?>
