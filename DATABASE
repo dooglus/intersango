@@ -211,8 +211,8 @@ DROP TABLE IF EXISTS `voucher_requests`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voucher_requests` (
   `reqid` int(10) unsigned NOT NULL,
+  `redeem_reqid` int(10) unsigned,
   `voucher` varchar(33) NOT NULL,
-  `redeemed` timestamp NULL,
   PRIMARY KEY (`reqid`),
   UNIQUE KEY `voucher` (`voucher`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
