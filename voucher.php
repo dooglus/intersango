@@ -40,12 +40,9 @@ function check_voucher_code($code)
         array_push($to  , $pair[1]);
     }
 
-    echo "code: $code<br/>\n";
     if (VOUCHER_FORCE_UPPERCASE)
         $code = strtoupper($code);
-    echo "code: $code<br/>\n";
     $code = str_replace($from, $to, $code);
-    echo "code: $code<br/>\n";
     $query = "SELECT reqid FROM voucher_requests WHERE voucher = '$code'";
     $result = do_query($query);
     if (!has_results($result))
@@ -92,7 +89,5 @@ function store_new_fiat_voucher_code($reqid)
 {
     return store_new_voucher_code($reqid, 'AUD');
 }
-
-check_voucher_code("0123-GHIJKLMNOPQRST-0oOqQ-1iI");
 
 ?>
