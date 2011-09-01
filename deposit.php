@@ -1,24 +1,63 @@
 <?php
 require_once 'util.php';
-$uid = user_id();
-$bitcoin = connect_bitcoin();
-try {
-    $addy = @$bitcoin->getaccountaddress((string)$uid);
-} catch (Exception $e) {
-    if ($e->getMessage() != 'Unable to connect.')
-        throw $e;
-    $addy = '';
+
+if (isset($_POST['amount']) && isset($_POST['curr_type']))
+{
+    if(isset($_POST['csrf_token']))
+    {
+        if($_SESSION['csrf_token'] != $_POST['csrf_token'])
+        {
+            throw new Error("csrf","csrf token mismatch!");
+        }
+    }
+    else
+    {
+        throw new Error("csrf","csrf token missing");
+    }
 }
 
-$query = "
-    SELECT deposref
-    FROM users
-    WHERE uid='$uid';
-";
-$result = do_query($query);
-$row = get_row($result);
-$deposref = $row['deposref'];
+if (isset($_POST['code'])) {
+    echo "tbd<br/>\n";
+} else {
+    $uid = user_id();
+    $bitcoin = connect_bitcoin();
+    try {
+        $addy = @$bitcoin->getaccountaddress((string)$uid);
+    } catch (Exception $e) {
+        if ($e->getMessage() != 'Unable to connect.')
+            throw $e;
+        $addy = '';
+    }
+
+    $query = "
+        SELECT deposref
+        FROM users
+        WHERE uid='$uid';
+    ";
+    $result = do_query($query);
+    $row = get_row($result);
+    $deposref = $row['deposref'];
 ?>
+
+<div class='content_box'>
+    <h3>Deposit Voucher</h3>
+    <p>It's possible to withdraw BTC or AUD as 'vouchers' on the
+       withdraw page.  These vouchers can be given to other exchange
+       users and redeemed here.
+    </p>
+    <p>
+       If you have received a voucher for this exchange, please
+       copy/paste the voucher code into the box below to redeem it:
+    </p>
+    <p>
+        <form action='' class='indent_form' method='post'>
+            <label for='input_code'>Voucher</label>
+            <input type='text' id='input_code' name='code' value='' />
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
+            <input type='submit' value='Submit' />
+        </form>
+    </p>
+</div>
 
 <div class='content_box'>
     <h3>Deposit AUD</h3>
@@ -58,11 +97,11 @@ $deposref = $row['deposref'];
 <div class='content_box'>
     <h3>Deposit BTC</h3>
 <?php
-if ($addy) {
-    echo "    <p>You can deposit to <b>$addy</b></p>\n";
-    echo "    <p>The above address is specific to your account.  Each time you deposit, a new address will be generated for you.</p>\n";
-    echo "    <p>It takes ", CONFIRMATIONS_FOR_DEPOSIT, " confirmations before funds are added to your account.</p>\n";
-} else
-    echo "    <p>We are currently experiencing trouble connecting to the Bitcoin network.  Please try again in a few minutes.</p>\n";
-?>
-</div>
+    if ($addy) {
+        echo "    <p>You can deposit to <b>$addy</b></p>\n";
+        echo "    <p>The above address is specific to your account.  Each time you deposit, a new address will be generated for you.</p>\n";
+        echo "    <p>It takes ", CONFIRMATIONS_FOR_DEPOSIT, " confirmations before funds are added to your account.</p>\n";
+    } else
+        echo "    <p>We are currently experiencing trouble connecting to the Bitcoin network.  Please try again in a few minutes.</p>\n";
+    echo "</div>\n";
+}
