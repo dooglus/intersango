@@ -48,6 +48,17 @@ define('VOUCHER_PREFIX', 'WBX');
 // http://xkcd.com/936/ says that's enough
 define('VOUCHER_CHARS', '0123456789ABCDEFGHJKLMNPRSTUVWXYZ'); // 0-9, A-Z without I, O, or Q
 
+// should we convert input voucher strings to all uppercase before
+// checking for validity?
+define('VOUCHER_FORCE_UPPERCASE', true);
+
+// there are no I, O, or Q characters in vouchers.  If the user types
+// an 'O' when redeeming a voucher, replace it with a '0'.  this is a
+// comma separated list of (from,to) pairs of characters.  This is
+// case sensitive, but is done after forcing the input voucher to all
+// uppercase if VOUCHER_FORCE_UPPERCASE is true
+define('VOUCHER_REPLACE', 'I1,O0,Q0');
+
 // .------------------------------------------------------------------------
 // |  security
 // `------------------------------------------------------------------------
