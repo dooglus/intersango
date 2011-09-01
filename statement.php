@@ -23,7 +23,7 @@ function show_statement($userid)
             a_amount AS gave_amount, 'AUD' AS gave_curr,
             (b_amount-b_commission) AS got_amount,  'BTC' AS got_curr,
             NULL as reqid,  NULL as req_type,
-            NULL as amount, NULL as curr_type, NULL as addy, NULL as voucher, NULL as bank, NULL as acc_num,
+            NULL as amount, NULL as curr_type, NULL as addy, NULL as voucher, NULL as final, NULL as bank, NULL as acc_num,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest
         FROM
@@ -35,13 +35,15 @@ function show_statement($userid)
         WHERE
             $check_userid
             b_amount != -1
-        UNION
+
+    UNION
+
         SELECT
             txid, b_orderid AS orderid,
             b_amount AS gave_amount, 'BTC' AS gave_curr,
             (a_amount-a_commission) AS got_amount,  'AUD' AS got_curr,
             NULL, NULL,
-            NULL, NULL, NULL, NULL, NULL, NULL,
+            NULL, NULL, NULL, NULL, NULL, NULL, NULL,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest
         FROM
@@ -53,31 +55,38 @@ function show_statement($userid)
         WHERE
             $check_userid
             b_amount != -1
-        UNION
+
+    UNION
+
         SELECT
             NULL, NULL,
             NULL, NULL,
             NULL, NULL,
-            reqid,  req_type,
-            amount, curr_type, addy, voucher, bank, acc_num,
+            requests.reqid,  req_type,
+            amount, curr_type, addy, voucher, status = 'FINAL', bank, acc_num,
             " . sql_format_date('timest') . " AS date,
             timest
         FROM
             requests
         LEFT JOIN
             bitcoin_requests
-        USING(reqid)
+        ON
+            requests.reqid = bitcoin_requests.reqid
         LEFT JOIN
             voucher_requests
-        USING(reqid)
+        ON
+            (requests.reqid = voucher_requests.reqid OR
+             requests.reqid = voucher_requests.redeem_reqid)
         LEFT JOIN
             uk_requests
-        USING(reqid)
+        ON
+            requests.reqid = uk_requests.reqid
         WHERE
             $check_userid
             status != 'CANCEL'
-        ORDER BY
-            timest
+
+    ORDER BY
+        timest
     ";
 
     $first = true;
@@ -113,6 +122,7 @@ function show_statement($userid)
     printf("<td>%.{$aud_precision}f</td>", 0);
     echo "</tr>\n";
 
+    $all_final = true;
     while ($row = mysql_fetch_array($result)) {
 
         echo "<tr>";
@@ -166,11 +176,25 @@ function show_statement($userid)
             $amount = $row['amount'];
             $curr_type = $row['curr_type'];
             $voucher = $row['voucher'];
+            $final = $row['final'];
+            // echo "final is $final<br/>\n";
+
+            if (!$final)
+                $all_final = false;
 
             if ($req_type == 'DEPOS') { /* deposit */
+                $title = '';
+                if ($voucher)
+                    $title = sprintf("from voucher &quot;%s&quot;", $voucher);
+
                 if ($curr_type == 'BTC') { /* deposit BTC */
                     $btc = gmp_add($btc, $amount);
-                    printf("<td><strong>Deposit %.{$btc_precision}f BTC</strong></td>", internal_to_numstr($amount, $btc_precision));
+                    printf("<td><strong title='%s'>%s%s %.{$btc_precision}f BTC%s</strong></td>",
+                           $title,
+                           $final ? "" : "* ",
+                           $voucher ? "Redeem" : "Deposit",
+                           internal_to_numstr($amount, $btc_precision),
+                           $final ? "" : " *");
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
@@ -181,7 +205,12 @@ function show_statement($userid)
                     printf("<td></td>");
                 } else {        /* deposit AUD */
                     $aud = gmp_add($aud, $amount);
-                    printf("<td><strong>Deposit %.{$aud_precision}f AUD</strong></td>", internal_to_numstr($amount, $aud_precision));
+                    printf("<td><strong title='%s'>%s%s %.{$aud_precision}f AUD%s</strong></td>",
+                           $title,
+                           $final ? "" : "* ",
+                           $voucher ? "Redeem" : "Deposit",
+                           internal_to_numstr($amount, $aud_precision),
+                           $final ? "" : " *");
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
@@ -197,12 +226,18 @@ function show_statement($userid)
                     $addy = $row['addy'];
                     if ($addy)
                         $title = sprintf("to Bitcoin address &quot;%s&quot;", $addy);
-                    else if ($voucher)
-                        $title = sprintf("to voucher &quot;%s&quot;", $voucher);
+                    else if ($voucher) {
+                        $title = sprintf("to %svoucher &quot;%s&quot;",
+                                         $final ? "" : "unredeemed ",
+                                         $voucher);
+                    }
                     
-                    printf("<td><strong title='%s'>Withdraw %.{$btc_precision}f BTC</strong></td>",
+                    printf("<td><strong title='%s'>%s%s %.{$btc_precision}f BTC%s</strong></td>",
                            $title,
-                           internal_to_numstr($amount, $btc_precision));
+                           $final ? "" : "* ",
+                           $voucher ? "Voucher" : "Withdraw",
+                           internal_to_numstr($amount, $btc_precision),
+                           $final ? "" : " *");
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
@@ -214,15 +249,19 @@ function show_statement($userid)
                 } else {        /* withdraw AUD */
                     $aud = gmp_sub($aud, $amount);
                     $title = '';
-                    echo "voucher: $voucher; bank: ", $row['bank'], "<br/>\n";
-                    if ($voucher)
-                        $title = sprintf("to voucher &quot;%s&quot;", $voucher);
-                    else
+                    if ($voucher) {
+                        $title = sprintf("to %svoucher &quot;%s&quot;",
+                                         $final ? "" : "unredeemed ",
+                                         $voucher);
+                    } else
                         $title = sprintf("to account %s at %s", $row['acc_num'], $row['bank']);
 
-                    printf("<td><strong title='%s'>Withdraw %.{$aud_precision}f AUD</strong></td>",
+                    printf("<td><strong title='%s'>%s%s %.{$aud_precision}f AUD%s</strong></td>",
                            $title,
-                           internal_to_numstr($amount, $aud_precision));
+                           $final ? "" : "* ",
+                           $voucher ? "Voucher" : "Withdraw",
+                           internal_to_numstr($amount, $aud_precision),
+                           $final ? "" : " *");
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
@@ -239,6 +278,11 @@ function show_statement($userid)
     }
 
     echo "</table>\n";
+    if (!$all_final) {
+        echo "<p>Items marked with '*' are not yet final.</p>\n";
+        echo "<p>Any such withdrawals and vouchers can be cancelled.</p>\n";
+        echo "<p>Any such deposits are pending, and should be finalised within a minute or two.</p>\n";
+    }
     echo "</div>";
 }
 
