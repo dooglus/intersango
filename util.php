@@ -387,7 +387,7 @@ function sync_to_bitcoin($uid)
         
     $bitcoin = connect_bitcoin();
     try {
-        $balance = $bitcoin->getbalance($uid, CONFIRMATIONS_FOR_DEPOSIT);
+        $balance = @$bitcoin->getbalance($uid, CONFIRMATIONS_FOR_DEPOSIT);
 
         if (is_float($balance))
             throw new Error("bitcoind version error", "bitcoind getbalance should return an integer not a float");
