@@ -48,14 +48,14 @@ function display_request_info_btc($reqid)
     }
 
     $query = "
-        SELECT voucher
+        SELECT prefix
         FROM voucher_requests
         WHERE reqid='$reqid'
     ";
     $result = do_query($query);
     $row = mysql_fetch_assoc($result);
     if ($row) {
-        echo "<p>Voucher: {$row['voucher']}</p>\n";
+        echo "<p>Voucher: {$row['prefix']}-...</p>\n";
         return;
     }
 }
