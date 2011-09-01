@@ -1,5 +1,6 @@
 <?php
 require_once 'util.php';
+require_once 'voucher.php';
 
 if (isset($_POST['amount']) && isset($_POST['curr_type']))
 {
@@ -16,10 +17,36 @@ if (isset($_POST['amount']) && isset($_POST['curr_type']))
     }
 }
 
+function show_deposit_voucher_form($code = '')
+{ ?>
+    <p>
+        <form action='' class='indent_form' method='post'>
+            <label for='input_code'>Voucher</label>
+            <input type='text' onClick='select();' autocomplete='off' id='input_code' name='code' value='<?php echo $code; ?>' />
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
+            <input type='submit' value='Submit' />
+        </form>
+    </p>
+<?php
+}
+
 if (isset($_POST['code'])) {
-    echo "tbd<br/>\n";
+    echo "<div class='content_box'>\n";
+    echo "<h3>Deposit Voucher</h3>\n";
+    $code = post('code', '-');
+    try {
+        redeem_voucher($code, $is_logged_in);
+        echo "<p>got any more?</p>\n";
+        show_deposit_voucher_form($code);
+    } catch (Exception $e) {
+        $message = $e->getMessage();
+        echo "<p>error: $message</p>\n";
+        echo "<p>try again?</p>\n";
+        show_deposit_voucher_form($code);
+    }
+    echo "</div>\n";
 } else {
-    $uid = user_id();
+    $uid = $is_logged_in;
     $bitcoin = connect_bitcoin();
     try {
         $addy = @$bitcoin->getaccountaddress((string)$uid);
@@ -49,14 +76,7 @@ if (isset($_POST['code'])) {
        If you have received a voucher for this exchange, please
        copy/paste the voucher code into the box below to redeem it:
     </p>
-    <p>
-        <form action='' class='indent_form' method='post'>
-            <label for='input_code'>Voucher</label>
-            <input type='text' id='input_code' name='code' value='' />
-            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
-            <input type='submit' value='Submit' />
-        </form>
-    </p>
+<?php show_deposit_voucher_form(); ?>
 </div>
 
 <div class='content_box'>
