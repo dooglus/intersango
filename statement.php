@@ -63,7 +63,7 @@ function show_statement($userid)
             NULL, NULL,
             NULL, NULL,
             requests.reqid,  req_type,
-            amount, curr_type, addy, voucher, status = 'FINAL', bank, acc_num,
+            amount, curr_type, addy, CONCAT(prefix, '-...') as voucher, status = 'FINAL', bank, acc_num,
             " . sql_format_date('timest') . " AS date,
             timest
         FROM
