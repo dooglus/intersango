@@ -25,8 +25,8 @@ function uk_withdraw($uid, $amount, $curr_type, &$voucher_code)
         syslog(LOG_NOTICE, "address=voucher");
 
         $query = "
-            INSERT INTO requests (req_type, uid, amount, curr_type, status)
-            VALUES ('WITHDR', '$uid', '$amount', '$curr_type', 'FINAL');
+            INSERT INTO requests (req_type, uid, amount, curr_type)
+            VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
         ";
     } else {
         $name = post('name_holder');
@@ -83,8 +83,8 @@ function bitcoin_withdraw($uid, $amount, $curr_type, &$voucher_code)
         syslog(LOG_NOTICE, "address=voucher");
 
         $query = "
-            INSERT INTO requests (req_type, uid, amount, curr_type, status)
-            VALUES ('WITHDR', '$uid', '$amount', '$curr_type', 'FINAL');
+            INSERT INTO requests (req_type, uid, amount, curr_type)
+            VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
         ";
     } else {
         $addy = post('address');
