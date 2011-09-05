@@ -68,13 +68,13 @@ while ($row = mysql_fetch_assoc($result)) {
         echo "<tr>";
 
     echo "<td>$txid</td>";
-    if ($is_admin) echo "<td>$a_uid</td>";
+    if ($is_admin) active_table_cell_link_to_user_statement($a_uid);
     if ($a_is_me) {
         $mine++;
         echo "<td style='font-weight:bold;'>", internal_to_numstr($a_amount,4), "</td>";
     } else
         echo "<td>", internal_to_numstr($a_amount,4), "</td>";
-    if ($is_admin) echo "<td>$b_uid</td>";
+    if ($is_admin) active_table_cell_link_to_user_statement($b_uid);
     if ($b_is_me) {
         $mine++;
         echo "<td style='font-weight:bold;'>", internal_to_numstr($b_amount,4), "</td>";
