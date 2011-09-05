@@ -1,6 +1,6 @@
 <?php
 
-function show_users($precision)
+function show_users()
 {
     $omit_zero_balances = true;
     $omit_very_low_balances = true;
@@ -101,12 +101,12 @@ function show_users($precision)
 
         echo "<td>$uid</td>";
 //      echo "<td>$oidlogin</td>";
-        echo "<td>", internal_to_numstr($aud,   $precision), "</td>";
-        echo "<td>", internal_to_numstr($c_aud, $precision), "</td>";
-        echo "<td>", internal_to_numstr($t_aud, $precision), "</td>";
-        echo "<td>", internal_to_numstr($btc,   $precision), "</td>";
-        echo "<td>", internal_to_numstr($c_btc, $precision), "</td>";
-        echo "<td>", internal_to_numstr($t_btc, $precision), "</td>";
+        echo "<td>", internal_to_numstr($aud,   FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($c_aud, FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($t_aud, FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($btc,    BTC_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($c_btc,  BTC_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($t_btc,  BTC_PRECISION), "</td>";
 //      echo "<td>$timest</td>";
         echo "</tr>\n";
     }
@@ -115,12 +115,12 @@ function show_users($precision)
         echo "<tr><td></td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td></tr>\n";
         active_table_row('me', "?page=statement&user=all");
         echo "<td></td>";
-        echo "<td>", internal_to_numstr($aud_total,   $precision), "</td>";
-        echo "<td>", internal_to_numstr($c_aud_total, $precision), "</td>";
-        echo "<td>", internal_to_numstr($t_aud_total, $precision), "</td>";
-        echo "<td>", internal_to_numstr($btc_total,   $precision), "</td>";
-        echo "<td>", internal_to_numstr($c_btc_total, $precision), "</td>";
-        echo "<td>", internal_to_numstr($t_btc_total, $precision), "</td>";
+        echo "<td>", internal_to_numstr($aud_total,   FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($c_aud_total, FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($t_aud_total, FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($btc_total,    BTC_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($c_btc_total,  BTC_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($t_btc_total,  BTC_PRECISION), "</td>";
         echo "</tr>\n";
         echo "</table>\n";
         echo "<p>Admins are shown in bold type, and at the top of the table.</p>\n";
@@ -133,7 +133,7 @@ function show_users($precision)
     $bitcoin = connect_bitcoin();
     $balance = $bitcoin->getbalance('');
 
-    echo "<p>The Bitcoin wallet has ", internal_to_numstr($balance), " BTC.<br/></p>\n";
+    echo "<p>The Bitcoin wallet has ", internal_to_numstr($balance, BTC_PRECISION), " BTC.<br/></p>\n";
 
     $diff = gmp_sub($t_btc_total, $balance);
 
@@ -142,12 +142,12 @@ function show_users($precision)
     if ($cmp == 0)
         echo "<p>That's the exact right amount</p>\n";
     else if ($cmp > 0)
-        echo "<p>That's ", internal_to_numstr($diff), " BTC less than is on deposit</p>\n";
+        echo "<p>That's ", internal_to_numstr($diff, BTC_PRECISION), " BTC less than is on deposit</p>\n";
     else
-        echo "<p>That's ", internal_to_numstr(gmp_mul("-1", $diff)), " BTC more than is on deposit</p>\n";
+        echo "<p>That's ", internal_to_numstr(gmp_mul("-1", $diff), BTC_PRECISION), " BTC more than is on deposit</p>\n";
 
     echo "</div>\n";
 }
 
-show_users($precision = 4);
+show_users();
 ?>

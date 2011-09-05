@@ -42,6 +42,8 @@ function internal_to_numstr($num, $precision=8)
     $repr = gmp_strval($num);
     $repr = bcdiv($repr, pow(10, 8), $precision);
     // now tidy output...
+    if ($precision != 8)
+        return sprintf("%.{$precision}f", clean_sql_numstr($repr));
     return clean_sql_numstr($repr);
 }
 
