@@ -596,6 +596,15 @@ function active_table_row($class, $url)
             "onclick=\"document.location='$url';\"");
 }
 
+function active_table_cell_link_to_user_statement($user)
+{
+    $url = "?page=statement&user=$user";
+    printf("<td class='active' %s %s %s>$user</td>",
+           "onmouseover=\"style.backgroundColor='#8ae3bf';\"",
+           "onmouseout=\"style.backgroundColor='#7ad3af';\"",
+           "onclick=\"document.location='$url'\"");
+}
+
 class OrderInfo
 {
     public $orderid, $uid, $initial_amount, $amount, $type, $initial_want_amount, $want_amount, $want_type, $commission, $status, $timest, $processed;
