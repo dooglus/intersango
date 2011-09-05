@@ -269,6 +269,16 @@ else { ?>
 </div>
 
 <div class='content_box'>
+<h3>AUD Withdraws</h3>
+<p>
+    To withdraw funds to any nominated Australian Bank Account, please provide the correct
+    B.S.B and Account Number; any incorrect details will result in a <strong>"cancel"</strong>
+    status, All funds will be returned to the user's account on the exchange and
+    you will be required to re-submit the withdraw.
+</p>
+</div>
+
+<div class='content_box'>
 <h3>Account limits</h3>
 <p>
     <strong>Daily Bitcoin transfer limits:</strong> Default Bitcoin
