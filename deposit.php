@@ -106,12 +106,15 @@ if (isset($_POST['code'])) {
         </tr>
     </table>
     <p>Allow 3-5 working days for payments to pass through clearing.</p>
-    <p>For fast 24Hr clearing visit any ANZ bank to deposit funds.</p>
     <p><b>Online Banking select your bank below to login.</b></p>
     <p><a href="https://www.my.commbank.com.au/netbank/Logon/Logon.aspx" target="_blank" >CBA</a> - <a href="https://www.anz.com/INETBANK/bankmain.asp" target="_blank" >ANZ</a> - 
     <a href="https://online.westpac.com.au/esis/Login/SrvPage/?h3&app=wol&referrer=http%3A%2F%2Fwww.westpac.com.au%2FHomepageAlternative%2F" target="_blank" >WESTPAC</a> - 
     <a href="https://ib.nab.com.au/nabib/index.jsp" target="_blank" >NAB</a> - 
     <a href="http://www.google.com.au/" target="_blank" >Other</a></p>
+    <br>
+    <strong><p>For fast 24Hr clearing visit any ANZ bank to deposit funds.</p></strong>
+    <p>(you will be required to use your<strong><a href="?page=profile"> 'User ID'</a></strong> as reference)</p></br>
+
 </div>
 
 <div class='content_box'>
