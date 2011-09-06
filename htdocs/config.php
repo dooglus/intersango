@@ -101,6 +101,9 @@ define('COMMISSION_CAP_IN_AUD', '0.25');
 // commission cap, in BTC, when buying BTC; '0' for no cap
 define('COMMISSION_CAP_IN_BTC', '0.025');
 
+// percentage commission to charge on deposits received via MtGox vouchers
+define('COMMISSION_PERCENTAGE_FOR_MTGOX_VOUCHER', '3.0');
+
 // .------------------------------------------------------------------------
 // |  lower limits
 // `------------------------------------------------------------------------
