@@ -34,6 +34,29 @@ define('FREE_AUD_ON_SIGNUP', "0");
 define('FREE_BTC_ON_SIGNUP', "0");
 
 // .------------------------------------------------------------------------
+// |  vouchers
+// `------------------------------------------------------------------------
+
+// vouchers look like "WBX-BTC-5HZKF-PEL08-J39BK-JBEL8" - the first word is fixed to this value:
+define('VOUCHER_PREFIX', 'WBX');
+
+// which characters to use in the last 4 blocks of 5 characters
+// using 33 characters, in 4 blocks of 5 gives us 100 bits of entropy
+// http://xkcd.com/936/ says that's enough
+define('VOUCHER_CHARS', '0123456789ABCDEFGHJKLMNPRSTUVWXYZ'); // 0-9, A-Z without I, O, or Q
+
+// should we convert input voucher strings to all uppercase before
+// checking for validity?
+define('VOUCHER_FORCE_UPPERCASE', true);
+
+// there are no I, O, or Q characters in vouchers.  If the user types
+// an 'O' when redeeming a voucher, replace it with a '0'.  this is a
+// comma separated list of (from,to) pairs of characters.  This is
+// case sensitive, but is done after forcing the input voucher to all
+// uppercase if VOUCHER_FORCE_UPPERCASE is true
+define('VOUCHER_REPLACE', 'I1,O0,Q0');
+
+// .------------------------------------------------------------------------
 // |  security
 // `------------------------------------------------------------------------
 
