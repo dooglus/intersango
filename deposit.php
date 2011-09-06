@@ -1,24 +1,76 @@
 <?php
 require_once 'util.php';
-$uid = user_id();
-$bitcoin = connect_bitcoin();
-try {
-    $addy = $bitcoin->getaccountaddress((string)$uid);
-} catch (Exception $e) {
-    if ($e->getMessage() != 'Unable to connect.')
-        throw $e;
-    $addy = '';
+require_once 'voucher.php';
+
+if (isset($_POST['amount']) && isset($_POST['curr_type']))
+{
+    if(isset($_POST['csrf_token']))
+    {
+        if($_SESSION['csrf_token'] != $_POST['csrf_token'])
+        {
+            throw new Error("csrf","csrf token mismatch!");
+        }
+    }
+    else
+    {
+        throw new Error("csrf","csrf token missing");
+    }
 }
 
-$query = "
-    SELECT deposref
-    FROM users
-    WHERE uid='$uid';
-";
-$result = do_query($query);
-$row = get_row($result);
-$deposref = $row['deposref'];
+function show_deposit_voucher_form($code = '')
+{ ?>
+    <p>
+        <form action='' class='indent_form' method='post'>
+            <label for='input_code'>Voucher</label>
+            <input type='text' onClick='select();' autocomplete='off' id='input_code' name='code' value='<?php echo $code; ?>' />
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
+            <input type='submit' value='Submit' />
+        </form>
+    </p>
+<?php
+}
+
+if (isset($_POST['code'])) {
+    echo "<div class='content_box'>\n";
+    echo "<h3>Deposit Voucher</h3>\n";
+    $code = post('code', '-');
+    try {
+        redeem_mtgox_aud_voucher($code, $is_logged_in);
+        echo "<p>got any more?</p>\n";
+        show_deposit_voucher_form($code);
+    } catch (Exception $e) {
+        $message = $e->getMessage();
+        echo "<p>error: $message</p>\n";
+        echo "<p>try again?</p>\n";
+        show_deposit_voucher_form($code);
+    }
+    echo "</div>\n";
+} else {
+    $uid = user_id();
+    $bitcoin = connect_bitcoin();
+    try {
+        $addy = $bitcoin->getaccountaddress((string)$uid);
+    } catch (Exception $e) {
+        if ($e->getMessage() != 'Unable to connect.')
+            throw $e;
+        $addy = '';
+    }
+
+    $query = "
+        SELECT deposref
+        FROM users
+        WHERE uid='$uid';
+    ";
+    $result = do_query($query);
+    $row = get_row($result);
+    $deposref = $row['deposref'];
 ?>
+
+<div class='content_box'>
+    <h3>Deposit MtGox AUD Voucher</h3>
+    <p>If you have an AUD voucher from MtGox, you can deposit it here for instant credit on this exchange.</p>
+<?php show_deposit_voucher_form(); ?>
+</div>
 
 <div class='content_box'>
     <h3>Deposit AUD</h3>
@@ -61,11 +113,11 @@ $deposref = $row['deposref'];
 <div class='content_box'>
     <h3>Deposit BTC</h3>
 <?php
-if ($addy) {
-    echo "    <p>You can deposit to <b>$addy</b></p>\n";
-    echo "    <p>The above address is specific to your account.  Each time you deposit, a new address will be generated for you.</p>\n";
-    echo "    <p>It takes ", CONFIRMATIONS_FOR_DEPOSIT, " confirmations before funds are added to your account.</p>\n";
-} else
-    echo "    <p>We are currently experiencing trouble connecting to the Bitcoin network.  Please try again in a few minutes.</p>\n";
-?>
-</div>
+    if ($addy) {
+        echo "    <p>You can deposit to <b>$addy</b></p>\n";
+        echo "    <p>The above address is specific to your account.  Each time you deposit, a new address will be generated for you.</p>\n";
+        echo "    <p>It takes ", CONFIRMATIONS_FOR_DEPOSIT, " confirmations before funds are added to your account.</p>\n";
+    } else
+        echo "    <p>We are currently experiencing trouble connecting to the Bitcoin network.  Please try again in a few minutes.</p>\n";
+    echo "</div>\n";
+}
