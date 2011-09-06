@@ -189,14 +189,17 @@ function redeem_mtgox_aud_voucher($code, $uid)
     $status = cleanup_string($result['status']);
 
     // echo "<p>When we tried to redeem that voucher into our account, MtGox said: <strong>$status</strong></p>\n";
+    $commission = commission_on_mtgox_voucher($amount);
+    $amount = gmp_strval(gmp_sub($amount, $commission));
 
     $query = "
-        INSERT INTO requests (req_type, uid, amount, curr_type, status)
-        VALUES ('DEPOS', '$uid', '$amount', '$curr_type', 'FINAL');
+        INSERT INTO requests (req_type, uid, amount, commission, curr_type, status)
+        VALUES ('DEPOS', '$uid', '$amount', '$commission', '$curr_type', 'FINAL');
     ";
     do_query($query);
 
-    add_funds($uid, $amount, $curr_type);
+    add_funds(1,    $commission, $curr_type);
+    add_funds($uid, $amount,     $curr_type);
 
     echo "<p><strong>", internal_to_numstr($amount), " $curr_type has been credited to your account.</strong></p>\n";
 }
