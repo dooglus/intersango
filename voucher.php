@@ -2,6 +2,7 @@
 
 require_once "db.php";
 require_once "util.php";
+require_once "mtgox_api.php";
 
 function random_voucher_string($len)
 {
@@ -152,6 +153,52 @@ function redeemed_voucher_code($issuing_reqid, $redeeming_reqid)
         WHERE reqid = $issuing_reqid
     ";
     do_query($query);
+}
+
+function redeem_mtgox_aud_voucher($code, $uid)
+{
+    if (substr($code, 0, 10) != "MTGOX-AUD-")
+        throw new Exception("please enter an MtGox AUD voucher");
+
+    $mtgox = new MtGox_API(MTGOX_KEY, MTGOX_SECRET);
+
+    $result = $mtgox->deposit_coupon($code);
+    // echo "result: <pre>" . var_dump($result) . "</pre><br/>\n";
+
+    // successful coupon deposit:
+    //
+    // array(4) {
+    //   ["amount"]=>  float(0.01)
+    //   ["currency"]=>  string(3) "BTC"
+    //   ["reference"]=>  string(36) "beabf9ce-07b6-4852-ae71-4cfc671ff35d"
+    //   ["status"]=>     string(49) "Your account has been credited by 0.01000000 BTC"
+    // }
+
+    // trying to redeem an already-spent code - note no 'status':
+    //
+    // array(1) {
+    //   ["error"]=>  string(59) "This code cannot be redeemed (non existing or already used)"
+    // }
+
+    if (isset($result['error']))
+        throw new Exception($result['error']);
+
+    $amount = numstr_to_internal(cleanup_string($result['amount']));
+    $curr_type = cleanup_string($result['currency']);
+    // $reference = cleanup_string($result['reference'], '-');
+    $status = cleanup_string($result['status']);
+
+    // echo "<p>When we tried to redeem that voucher into our account, MtGox said: <strong>$status</strong></p>\n";
+
+    $query = "
+        INSERT INTO requests (req_type, uid, amount, curr_type, status)
+        VALUES ('DEPOS', '$uid', '$amount', '$curr_type', 'FINAL');
+    ";
+    do_query($query);
+
+    add_funds($uid, $amount, $curr_type);
+
+    echo "<p><strong>", internal_to_numstr($amount), " $curr_type has been credited to your account.</strong></p>\n";
 }
 
 function redeem_voucher($code, $uid)
