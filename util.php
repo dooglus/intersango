@@ -258,22 +258,22 @@ function release_lock($fp)
     flock($fp, LOCK_UN);
 }
 
-function cleanup_string($val)
+function cleanup_string($val, $extra='')
 {
-    $val = preg_replace('/[^A-Za-z0-9 .]/', '', $val);
+    $val = preg_replace("/[^A-Za-z0-9 .$extra]/", '', $val);
     return mysql_real_escape_string($val);
 }
-function post($key)
+function post($key, $extra='')
 {
     if (!isset($_POST[$key]))
         throw new Error('Ooops!', "Missing posted value $key!");
-    return cleanup_string($_POST[$key]);
+    return cleanup_string($_POST[$key], $extra);
 }
-function get($key)
+function get($key, $extra='')
 {
     if (!isset($_GET[$key]))
         throw new Error('Ooops!', "Missing get value $key!");
-    return cleanup_string($_GET[$key]);
+    return cleanup_string($_GET[$key], $extra);
 }
 
 function sync_to_bitcoin($uid)
