@@ -118,6 +118,7 @@ CREATE TABLE `requests` (
   `req_type` varchar(6) NOT NULL,
   `uid` int(10) unsigned NOT NULL,
   `amount` bigint(20) unsigned NOT NULL,
+  `commission` bigint(20) NOT NULL,
   `curr_type` varchar(6) NOT NULL,
   `timest` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(6) NOT NULL DEFAULT 'VERIFY',
