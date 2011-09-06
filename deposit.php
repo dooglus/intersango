@@ -35,7 +35,7 @@ if (isset($_POST['code'])) {
     echo "<h3>Deposit Voucher</h3>\n";
     $code = post('code', '-');
     try {
-        redeem_mtgox_aud_voucher($code, $is_logged_in);
+        redeem_voucher($code, $is_logged_in);
         echo "<p>got any more?</p>\n";
         show_deposit_voucher_form($code);
     } catch (Exception $e) {
@@ -46,10 +46,10 @@ if (isset($_POST['code'])) {
     }
     echo "</div>\n";
 } else {
-    $uid = user_id();
+    $uid = $is_logged_in;
     $bitcoin = connect_bitcoin();
     try {
-        $addy = $bitcoin->getaccountaddress((string)$uid);
+        $addy = @$bitcoin->getaccountaddress((string)$uid);
     } catch (Exception $e) {
         if ($e->getMessage() != 'Unable to connect.')
             throw $e;
@@ -67,8 +67,19 @@ if (isset($_POST['code'])) {
 ?>
 
 <div class='content_box'>
-    <h3>Deposit MtGox AUD Voucher</h3>
-    <p>If you have an AUD voucher from MtGox, you can deposit it here for instant credit on this exchange.</p>
+    <h3>Deposit Voucher</h3>
+    <p>It's possible to withdraw BTC or AUD as 'vouchers' on the
+       withdraw page.  These vouchers can be given to other exchange
+       users and redeemed here.
+    </p>
+    <p>
+       If you have received a voucher for this exchange, please
+       copy/paste the voucher code into the box below to redeem it.
+    </p>
+    <p>
+       We also accept MTGOX-AUD-... vouchers for instant transfers
+       of AUD from MtGox to this exchange.
+    </p>
 <?php show_deposit_voucher_form(); ?>
 </div>
 

@@ -9,7 +9,10 @@ function escapestr($str)
 }
 function do_query($query)
 {
-    $result = mysql_query($query) or die(mysql_error());
+    // echo "query: $query<br/>\n";
+    $result = mysql_query($query);
+    if (!$result)
+        throw new Error("MySQL Error", mysql_error());
     return $result;
 }
 function has_results($result)
@@ -39,6 +42,8 @@ function internal_to_numstr($num, $precision=8)
     $repr = gmp_strval($num);
     $repr = bcdiv($repr, pow(10, 8), $precision);
     // now tidy output...
+    if ($precision != 8)
+        return sprintf("%.{$precision}f", clean_sql_numstr($repr));
     return clean_sql_numstr($repr);
 }
 

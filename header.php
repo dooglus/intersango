@@ -150,13 +150,18 @@ function show_content_header($is_logged_in)
 {
     echo "<div class='content_header'>\n";
 
-    show_content_header_time();
-    show_content_header_ticker();
+    try {
+        show_content_header_time();
+        show_content_header_ticker();
 
-    if ($is_logged_in)
-        show_content_header_balances($is_logged_in);
+        if ($is_logged_in)
+            show_content_header_balances($is_logged_in);
 
-    show_content_header_frozen();
+        show_content_header_frozen();
+    } catch (Error $a) {
+        echo "</div>\n";
+        throw $a;
+    }
 
     echo "</div>\n";
 }

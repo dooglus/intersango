@@ -12,7 +12,13 @@ function switcher($page)
             show_header($page, $is_logged_in);
 
         $lock = false;
-        if ($is_logged_in) $lock = get_lock($is_logged_in);
+        if ($is_logged_in) {
+            if (BLOCKING_LOCKS)
+                wait_for_lock_if_no_others_are_waiting($is_logged_in);
+            else
+                get_lock_without_waiting($is_logged_in);
+            $lock = $is_logged_in;
+        }
 
         switch($page) {
 
@@ -34,6 +40,7 @@ function switcher($page)
             case 'deposit':
             case 'place_order':
             case 'profile':
+            case 'statement':
             case 'turn_on_duo':
             case 'view_order':
             case 'view_request':

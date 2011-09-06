@@ -2,83 +2,37 @@
 require_once "../config.php";
 require_once ABSPATH . "/util.php";
 
-$asks = array();
-$bids = array();
+function fetch_depth($rate_query, $field, $have, $want)
+{
+    $ret = array();
 
-$query = "
+    $query = "
     SELECT
-        initial_want_amount / initial_amount AS rate,
-        amount
+        $rate_query AS rate,
+        $field as amount
     FROM
         orderbook
     WHERE
-        type='BTC'
-        AND want_type='AUD'
+        type='$have'
+        AND want_type='$want'
         AND status='OPEN'
     ORDER BY
         rate DESC
     ";
-$result = do_query($query);
-$asks = array();
-while ($row = mysql_fetch_assoc($result)) {
-    $amount = internal_to_numstr($row['amount']);
-    $rate = $row['rate'];
-    
-    //bitcoincharts uses NUMERIC(18,8)
-    if($rate < 1000000000)
-        array_push($asks, "[$rate, $amount]");
+    $result = do_query($query);
+    while ($row = mysql_fetch_assoc($result)) {
+        $amount = internal_to_numstr($row['amount']);
+        $rate = $row['rate'];
+
+        //bitcoincharts uses NUMERIC(18,8)
+        if ($rate < 1000000000)
+            array_push($ret, "[$rate, $amount]");
+    }
+
+    return implode($ret, ", ");
 }
 
-// find exchange rate
-$query = "
-    SELECT
-        MIN(initial_want_amount / initial_amount) AS rate,
-        amount
-    FROM
-        orderbook
-    WHERE
-        type='BTC'
-        AND want_type='AUD'
-        AND status='OPEN'
-    ";
-$result = do_query($query);
-$row = get_row($result);
-$best_rate = $row['rate'];
-
-if (!$best_rate)
-    $best_rate = get_last_price();
-
-if (!$best_rate)
-    $best_rate = "(amount / want_amount)";
-
-$query = "
-    SELECT
-        initial_amount / initial_want_amount AS rate,
-        ROUND (
-            amount / $best_rate,
-            0
-        ) AS amount
-    FROM                        
-        orderbook
-    WHERE
-        type='AUD'
-        AND want_type='BTC'
-        AND status='OPEN'
-    ORDER BY
-        rate DESC
-    ";
-$result = do_query($query);
-while ($row = mysql_fetch_assoc($result)) {
-    $amount = clean_sql_numstr($row['amount']);
-    $amount = internal_to_numstr($amount);
-    
-    $rate = $row['rate'];
-    
-    //bitcoincharts uses NUMERIC(18,8)
-    if($rate < 1000000000)
-        array_push($bids, "[$rate, $amount]");
-}
-
-echo '{"asks": [', implode($asks, ", "), '], "bids": [', implode($bids, ", "), "]}";
-
+printf('{"asks": [%s], "bids": [%s]}',
+       fetch_depth("initial_want_amount / initial_amount",      "amount", "BTC", "AUD"),
+       fetch_depth("initial_amount / initial_want_amount", "want_amount", "AUD", "BTC"));
 ?>

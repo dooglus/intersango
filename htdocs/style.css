@@ -99,14 +99,14 @@ CONTENT
     width: 980px;
     background: url('images/panel_tile.png') repeat;
     width: 770px;
-    min-height: 800px;
+    min-height: 900px;
     height: 100%;
     left: 0px;
 }
 #content_sideshadow {
     background: url('images/panel_border.png') repeat-y top right;
     height: 100%;
-    min-height: 800px;
+    min-height: 900px;
     padding: 0;
 }
 .content_header {
@@ -234,6 +234,12 @@ blockquote {
 }
 table {
     border-spacing: 0px;
+}
+.voucher {
+    font-weight: bold;
+    font-size: 18px;
+    font-family: "Courier New", Courier, monospace;
+    padding: 10px 20px;
 }
 
 /*---------------------------------

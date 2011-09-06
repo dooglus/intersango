@@ -1,5 +1,6 @@
 <?php
 require_once 'util.php';
+require_once 'voucher.php';
 
 if (isset($_POST['amount']) && isset($_POST['curr_type']))
 {
@@ -16,26 +17,42 @@ if (isset($_POST['amount']) && isset($_POST['curr_type']))
     }
 }
 
-function uk_withdraw($uid, $amount, $curr_type)
+function uk_withdraw($uid, $amount, $curr_type, &$voucher_code)
 {
-    $name = post('name_holder');
-    $bank = post('name_bank');
-    $acc_num = post('account_number');
-    $sort_code = post('sort_code');
-    syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code");
-    endlog();
+    $voucher = isset($_POST['voucher']);
 
-    $query = "
+    if ($voucher) {
+        syslog(LOG_NOTICE, "address=voucher");
+
+        $query = "
+            INSERT INTO requests (req_type, uid, amount, curr_type)
+            VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
+        ";
+    } else {
+        $name = post('name_holder');
+        $bank = post('name_bank');
+        $acc_num = post('account_number');
+        $sort_code = post('sort_code');
+        syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code");
+        $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type)
         VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
     ";
+    }
+    endlog();
+
     do_query($query);
     $reqid = mysql_insert_id();
-    $query = "
-        INSERT INTO uk_requests (reqid, name, bank, acc_num, sort_code)
-        VALUES ('$reqid', '$name', '$bank', '$acc_num', '$sort_code');
-    ";
-    do_query($query);
+
+    if ($voucher)
+        $voucher_code = store_new_fiat_voucher_code($reqid);
+    else {
+        $query = "
+            INSERT INTO uk_requests (reqid, name, bank, acc_num, sort_code)
+            VALUES ('$reqid', '$name', '$bank', '$acc_num', '$sort_code');
+        ";
+        do_query($query);
+    }
 }
 
 function international_withdraw($uid, $amount, $curr_type)
@@ -58,44 +75,63 @@ function international_withdraw($uid, $amount, $curr_type)
     do_query($query);
 }
 
-function bitcoin_withdraw($uid, $amount, $curr_type)
+function bitcoin_withdraw($uid, $amount, $curr_type, &$voucher_code)
 {
-    $addy = post('address');
-    $bitcoin = connect_bitcoin();
-    try {
-        $validaddy = $bitcoin->validateaddress($addy);
-        if (!$validaddy['isvalid'])
-            throw new Problem('Bitcoin says no', 'That address you supplied was invalid.');
-        syslog(LOG_NOTICE, "address=$addy");
-        endlog();
+    $voucher = isset($_POST['voucher']);
+
+    if ($voucher) {
+        syslog(LOG_NOTICE, "address=voucher");
 
         $query = "
             INSERT INTO requests (req_type, uid, amount, curr_type)
             VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
         ";
-        do_query($query);
-        $reqid = mysql_insert_id();
+    } else {
+        $addy = post('address');
+        $bitcoin = connect_bitcoin();
+        try {
+            $validaddy = $bitcoin->validateaddress($addy);
+        } catch (Exception $e) {
+            if ($e->getMessage() != 'Unable to connect.')
+                throw $e;
+            throw new Problem("Sorry...",
+                              "We are currently experiencing trouble connecting to the Bitcoin network and so cannot verify that you entered a valid Bitcoin address.</p><p>Your withdrawal request has been cancelled.</p><p>Please try again in a few minutes.");
+        }
+
+        if (!$validaddy['isvalid'])
+            throw new Problem('Bitcoin says no', 'That address you supplied was invalid.');
+        syslog(LOG_NOTICE, "address=$addy");
+
+        $query = "
+            INSERT INTO requests (req_type, uid, amount, curr_type)
+            VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
+        ";
+    }
+
+    endlog();
+
+    do_query($query);
+    $reqid = mysql_insert_id();
+  
+    if ($voucher)
+        $voucher_code = store_new_bitcoin_voucher_code($reqid);
+    else {
         $query = "
             INSERT INTO bitcoin_requests (reqid, addy)
             VALUES ('$reqid', '$addy');
         ";
         do_query($query);
-    } catch (Exception $e) {
-        if ($e->getMessage() != 'Unable to connect.')
-            throw $e;
-        throw new Problem("Sorry...",
-                          "We are currently experiencing trouble connecting to the Bitcoin network and so cannot verify that you entered a valid Bitcoin address.</p><p>Your withdrawal request has been cancelled.</p><p>Please try again in a few minutes.");
     }
 }
 
-function save_details($uid, $amount, $curr_type)
+function save_details($uid, $amount, $curr_type, &$voucher)
 {
     beginlog();
     syslog(LOG_NOTICE, "Withdrawing $amount $curr_type:");
     if ($curr_type == 'AUD') {
         $is_international = post('is_international') == 'true';
         if (!$is_international) {
-            uk_withdraw($uid, $amount, $curr_type);
+            uk_withdraw($uid, $amount, $curr_type, $voucher);
             return true;
         }
         else {
@@ -104,7 +140,7 @@ function save_details($uid, $amount, $curr_type)
         }
     }
     else if ($curr_type == 'BTC') {
-        bitcoin_withdraw($uid, $amount, $curr_type);
+        bitcoin_withdraw($uid, $amount, $curr_type, $voucher);
         return true;
     }
     else {
@@ -127,6 +163,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     $amount_disp = post('amount');
     $curr_type = post('curr_type');
     $amount = numstr_to_internal($amount_disp);
+    $voucher = isset($_POST['voucher']);
 
     // dollar amounts should be truncated to cents, but Bitcoins are more divisible
     if ($curr_type == 'BTC')
@@ -139,7 +176,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     enough_money_check($amount, $curr_type);
     check_withdraw_limit($uid, $amount, $curr_type);
 
-    if (!save_details($uid, $amount, $curr_type))
+    if (!save_details($uid, $amount, $curr_type, $voucher_code))
         throw Error('We had to admit it sometime...', 'Stop trading on thie site. Contact the admin FAST.');
     # actually take the money now
     deduct_funds($amount, $curr_type);
@@ -147,7 +184,10 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
 
     echo "<div class='content_box'>\n";
     echo "<h3>Withdraw $curr_type</h3>\n";
-    echo "<p>Your request to withdraw $amount_disp $curr_type has been submitted. Visit your <a href='?page=profile'>profile</a> to check on the status of your request.</p>\n";
+    if ($voucher)
+        echo "<p>Your voucher for $amount_disp $curr_type is:</p><p class='voucher'>$voucher_code</p>\n";
+    else
+        echo "<p>Your request to withdraw $amount_disp $curr_type has been submitted. Visit your <a href='?page=profile'>profile</a> to check on the status of your request.</p>\n";
     echo "</div>\n";
 }
 else {
@@ -242,7 +282,29 @@ else {
 -->
 
     <div class='content_box'>
-    <h3>Withdraw BTC</h3>
+    <h3>Withdraw AUD to Voucher</h3>
+    <p>
+        Alternatively, you can withdraw AUD as a voucher.
+        This will give you a text code which can be redeemed for
+        AUD credit by any user of this exchange.  Specify the
+        amount of AUD to withdraw.
+    </p>
+    <p>
+        <form action='' class='indent_form' method='post'>
+            <label for='input_amount'>Amount</label>
+            <input type='text' id='input_amount' name='amount' value='0.00' />
+
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
+            <input type='hidden' name='curr_type' value='AUD' />
+            <input type='hidden' name='is_international' value='false' />
+            <input type='hidden' name='voucher' value='1' />
+            <input type='submit' value='Submit' />
+        </form>
+    </p>
+    </div>
+
+    <div class='content_box'>
+    <h3>Withdraw BTC to Bitcoin Address</h3>
 <?php
     $uid = user_id();
     $balances = fetch_balances($uid);
@@ -276,6 +338,28 @@ else {
 
             <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
             <input type='hidden' name='curr_type' value='BTC' />
+            <input type='submit' value='Submit' />
+        </form>
+    </p>
+    </div>
+
+    <div class='content_box'>
+    <h3>Withdraw BTC to Voucher</h3>
+
+    <p>
+        Alternatively, you can withdraw Bitcoins as a voucher.
+        This will give you a text code which can be redeemed for
+        Bitcoins by any user of this exchange.  Specify the
+        number of Bitcoins to withdraw.
+    </p>
+    <p>
+        <form action='' class='indent_form' method='post'>
+            <label for='input_amount'>Amount</label>
+            <input type='text' id='input_amount' name='amount' value='0.00' />
+
+            <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
+            <input type='hidden' name='curr_type' value='BTC' />
+            <input type='hidden' name='voucher' value='1' />
             <input type='submit' value='Submit' />
         </form>
     </p>
