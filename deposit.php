@@ -74,7 +74,11 @@ if (isset($_POST['code'])) {
     </p>
     <p>
        If you have received a voucher for this exchange, please
-       copy/paste the voucher code into the box below to redeem it:
+       copy/paste the voucher code into the box below to redeem it.
+    </p>
+    <p>
+       We also accept MTGOX-AUD-... vouchers for instant transfers
+       of AUD from MtGox to this exchange.
     </p>
 <?php show_deposit_voucher_form(); ?>
 </div>

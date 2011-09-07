@@ -155,11 +155,13 @@ function redeemed_voucher_code($issuing_reqid, $redeeming_reqid)
     do_query($query);
 }
 
+function looks_like_mtgox_aud_voucher($code)
+{
+    return substr($code, 0, 10) == "MTGOX-AUD-";
+}
+
 function redeem_mtgox_aud_voucher($code, $uid)
 {
-    if (substr($code, 0, 10) != "MTGOX-AUD-")
-        throw new Exception("please enter an MtGox AUD voucher");
-
     $mtgox = new MtGox_API(MTGOX_KEY, MTGOX_SECRET);
 
     $result = $mtgox->deposit_coupon($code);
@@ -206,6 +208,9 @@ function redeem_mtgox_aud_voucher($code, $uid)
 
 function redeem_voucher($code, $uid)
 {
+    if (looks_like_mtgox_aud_voucher($code))
+        return redeem_mtgox_aud_voucher($code, $uid);
+
     list($issuing_reqid, $issuing_uid, $amount, $curr_type) = check_voucher_code($code);
     // echo "issued in request $issuing_reqid by user $issuing_uid for amount $amount of $curr_type<br/>\n";
 
