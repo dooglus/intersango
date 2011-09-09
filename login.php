@@ -136,7 +136,7 @@ try {
                     do_query($query);
                     $uid = (string)mysql_insert_id();
 
-                    $free_aud = numstr_to_internal(FREE_AUD_ON_SIGNUP);
+                    $free_aud = numstr_to_internal(FREE_FIAT_ON_SIGNUP);
                     $free_btc = numstr_to_internal(FREE_BTC_ON_SIGNUP);
 
                     $query = "

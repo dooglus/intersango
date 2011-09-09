@@ -199,7 +199,7 @@ else {
     $balances = fetch_balances($uid);
     $aud = $balances['AUD'];
     $transferred = aud_transferred_today($uid);
-    $limit = numstr_to_internal(MAXIMUM_DAILY_AUD_TRANSFER);
+    $limit = numstr_to_internal(MAXIMUM_DAILY_FIAT_TRANSFER);
     $available = gmp_sub($limit, $transferred);
     if (gmp_cmp($aud, $available) > 0) {
         echo "    <p>You can transfer up to ", internal_to_numstr($limit), " AUD each day (", day_time_range_string(), ")</p>\n";

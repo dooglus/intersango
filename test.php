@@ -68,8 +68,8 @@ echo "</ul></div>\n";
 
 echo "<div class='content_box'>\n";
 echo "<h3>Commission selling BTC</h3>\n";
-echo "<p>rate is ", COMMISSION_PERCENTAGE_FOR_AUD, "%",
-    " and cap is ", COMMISSION_CAP_IN_AUD, " AUD</p>\n";
+echo "<p>rate is ", COMMISSION_PERCENTAGE_FOR_FIAT, "%",
+    " and cap is ", COMMISSION_CAP_IN_FIAT, " AUD</p>\n";
 echo "<ul>\n";
 test_aud_commission('0.0001', '1');
 test_aud_commission('0.0001', '0.012');

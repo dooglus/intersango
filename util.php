@@ -748,8 +748,8 @@ function show_commission_rates()
         echo " when buying BTC</p>\n";
     }
 
-    $cap = COMMISSION_CAP_IN_AUD;
-    $rate = COMMISSION_PERCENTAGE_FOR_AUD;
+    $cap = COMMISSION_CAP_IN_FIAT;
+    $rate = COMMISSION_PERCENTAGE_FOR_FIAT;
     if ($rate == 0)
         echo "<p>buying AUD is free of commission</p>\n";
     else {
@@ -803,8 +803,8 @@ function commission($amount, $percentage, $cap = false, $already_paid = false)
 function commission_on_aud($aud, $already_paid)
 {
     return commission($aud,
-                      COMMISSION_PERCENTAGE_FOR_AUD,
-                      COMMISSION_CAP_IN_AUD,
+                      COMMISSION_PERCENTAGE_FOR_FIAT,
+                      COMMISSION_CAP_IN_FIAT,
                       $already_paid);
 }
 
@@ -908,14 +908,14 @@ function btc_withdrawn_today($uid)
 function check_aud_balance_limit($uid, $amount)
 {
     $balance = total_aud_balance($uid);
-    $limit = numstr_to_internal(MAXIMUM_AUD_BALANCE);
+    $limit = numstr_to_internal(MAXIMUM_FIAT_BALANCE);
     echo "<p>Maximum balance is ", internal_to_numstr($limit), " AUD and you have ", internal_to_numstr($balance), " AUD.</p>\n";
 }
 
 function check_aud_transfer_limit($uid, $amount)
 {
     $withdrawn = aud_transferred_today($uid);
-    $limit = numstr_to_internal(MAXIMUM_DAILY_AUD_TRANSFER);
+    $limit = numstr_to_internal(MAXIMUM_DAILY_FIAT_TRANSFER);
     $available = gmp_sub($limit, $withdrawn);
 
     if (gmp_cmp($amount, $available) > 0)

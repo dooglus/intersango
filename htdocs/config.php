@@ -17,6 +17,14 @@ define('LOCK_DIR', ABSPATH . "/locks");
 define('BLOCKING_LOCKS', true);
 
 // .------------------------------------------------------------------------
+// |  currency
+// `------------------------------------------------------------------------
+
+define('CURRENCY', 'AUD');
+define('CURRENCY_FULL', 'Australian Dollar');
+define('CURRENCY_FULL_PLURAL', 'Australian Dollars');
+
+// .------------------------------------------------------------------------
 // |  local time
 // `------------------------------------------------------------------------
 
@@ -30,8 +38,8 @@ define('DAY_STARTS_MINUTES_AFTER_MIDNIGHT', 9*60 + 0); // day starts at 9:00am
 // |  free money! (set to zero before going live!!)
 // `------------------------------------------------------------------------
 
-// how much free AUD to give new accounts on signup
-define('FREE_AUD_ON_SIGNUP', "0");
+// how much free FIAT to give new accounts on signup
+define('FREE_FIAT_ON_SIGNUP', "0");
 
 // how much free BTC to give new accounts on signup
 define('FREE_BTC_ON_SIGNUP', "0");
@@ -89,14 +97,14 @@ define('CONFIRMATIONS_FOR_DEPOSIT', 4);
 // |  commission
 // `------------------------------------------------------------------------
 
-// percentage commission to charge on each AUD received; 0 for no commission
-define('COMMISSION_PERCENTAGE_FOR_AUD', '0.6');
+// percentage commission to charge on each FIAT received; 0 for no commission
+define('COMMISSION_PERCENTAGE_FOR_FIAT', '0.6');
 
 // percentage commission to charge on each BTC received; 0 for no commission
 define('COMMISSION_PERCENTAGE_FOR_BTC', '0.1');
 
-// commission cap, in AUD, when buying AUD; '0' for no cap
-define('COMMISSION_CAP_IN_AUD', '0.25');
+// commission cap, in FIAT, when buying FIAT; '0' for no cap
+define('COMMISSION_CAP_IN_FIAT', '0.25');
 
 // commission cap, in BTC, when buying BTC; '0' for no cap
 define('COMMISSION_CAP_IN_BTC', '0.025');
@@ -114,7 +122,7 @@ define('MINIMUM_HAVE_AMOUNT', '0.0005');
 // the smallest you can say you 'want' when placing an order
 define('MINIMUM_WANT_AMOUNT', '0.0005');
 
-// the smallest you can withdraw (it's the same for AUD and BTC)
+// the smallest you can withdraw (it's the same for FIAT and BTC)
 define('MINIMUM_WITHDRAW', '0.5');
 
 // how many decimal places allowed in BTC withdrawal (0 through 8)
@@ -129,10 +137,10 @@ define('BTC_WITHDRAW_DECIMAL_PLACES', '8');
 // the total amount of BTC each user can withdraw per day
 define('MAXIMUM_DAILY_BTC_WITHDRAW', '100');
 
-// the total amount of AUD each user can transfer (in + out) per day
-define('MAXIMUM_DAILY_AUD_TRANSFER', '500');
+// the total amount of FIAT each user can transfer (in + out) per day
+define('MAXIMUM_DAILY_FIAT_TRANSFER', '500');
 
-// the maximum amount of AUD each user can hold at once
-define('MAXIMUM_AUD_BALANCE', '5000');
+// the maximum amount of FIAT each user can hold at once
+define('MAXIMUM_FIAT_BALANCE', '5000');
 
 ?>

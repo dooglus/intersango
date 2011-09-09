@@ -16,7 +16,7 @@
 ?>
         <div class='content_box'>
             <h3>Currency converter</h3>
-            <p><b>World Bitcoin Exchange allows you to trade Australian Dollars (AUD) for Bitcoins (BTC) or Bitcoins for Australian Dollars with other World Bitcoin Exchange users.</a></b></p>
+        <p><b>World Bitcoin Exchange allows you to trade <?php echo CURRENCY_FULL_PLURAL; ?> (<?php echo CURRENCY; ?>) for Bitcoins (BTC) or Bitcoins for <?php echo CURRENCY_FULL_PLURAL; ?> with other World Bitcoin Exchange users.</a></b></p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
@@ -30,15 +30,15 @@
                     </div>
 
                     <img class='currflag' src='images/aud_flag.png' />
-                    <span class='currname'>Australian Dollar</span>
+                    <span class='currname'><?php echo CURRENCY_FULL; ?></span>
                 </div>
                 <div id='currsel_in'>
                     <div class='currsel_entry' onclick='javascript:select_currency_in(this, true);'>
                         <div class='currbox_right'>
-                            <b class='currcode'>AUD</b>
+                            <b class='currcode'><?php echo CURRENCY; ?></b>
                         </div>
                         <img class='currflag' src='images/aud_flag.png' />
-                        <span class='currname'>Australian Dollar</span>
+                        <span class='currname'><?php echo CURRENCY_FULL; ?></span>
                     </div>
                     <div class='currsel_entry' onclick='javascript:select_currency_in(this, true);'>
                         <div class='currbox_right'>
@@ -65,10 +65,10 @@
                 <div id='currsel_out'>
                     <div class='currsel_entry' onclick='javascript:select_currency_out(this, true);'>
                         <div class='currbox_right'>
-                            <b class='currcode'>AUD</b>
+                            <b class='currcode'><?php echo CURRENCY; ?></b>
                         </div>
                         <img class='currflag' src='images/aud_flag.png' />
-                        <span class='currname'>Australian Dollar</span>
+                        <span class='currname'><?php echo CURRENCY_FULL; ?></span>
                     </div>
                     <div class='currsel_entry' onclick='javascript:select_currency_out(this, true);'>
                         <div class='currbox_right'>
@@ -133,7 +133,7 @@
         <div class='content_box'>
             <h3>Commission</h3>
 <?php
-    if (COMMISSION_PERCENTAGE_FOR_AUD == 0 && COMMISSION_PERCENTAGE_FOR_BTC == 0)
+    if (COMMISSION_PERCENTAGE_FOR_FIAT == 0 && COMMISSION_PERCENTAGE_FOR_BTC == 0)
         echo "<p>All trades are free of commission</p>\n";
     else {
         echo "<p>Commission is charged at the following rates:</p>\n";

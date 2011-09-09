@@ -256,7 +256,7 @@
 <h3>Fees and comissions</h3>
 <p>
 <?php
-if (COMMISSION_PERCENTAGE_FOR_AUD == 0 && COMMISSION_PERCENTAGE_FOR_BTC == 0)
+if (COMMISSION_PERCENTAGE_FOR_FIAT == 0 && COMMISSION_PERCENTAGE_FOR_BTC == 0)
     echo "All trades are free of commission\n";
 else { ?>
     In order to pay for server space, bandwidth, programmers,
