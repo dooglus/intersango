@@ -53,7 +53,7 @@ function show_statement($userid)
     $query = "
         SELECT
             txid, a_orderid AS orderid,
-            a_amount AS gave_amount, 'AUD' AS gave_curr,
+            a_amount AS gave_amount, '" . CURRENCY . "' AS gave_curr,
             (b_amount-b_commission) AS got_amount,  'BTC' AS got_curr,
             NULL as reqid,  NULL as req_type,
             NULL as amount, NULL as curr_type, NULL as addy, NULL as voucher, NULL as final, NULL as bank, NULL as acc_num,
@@ -74,7 +74,7 @@ function show_statement($userid)
         SELECT
             txid, b_orderid AS orderid,
             b_amount AS gave_amount, 'BTC' AS gave_curr,
-            (a_amount-a_commission) AS got_amount,  'AUD' AS got_curr,
+            (a_amount-a_commission) AS got_amount,  '" . CURRENCY . "' AS got_curr,
             NULL, NULL,
             NULL, NULL, NULL, NULL, NULL, NULL, NULL,
             " . sql_format_date('transactions.timest') . " AS date,
@@ -142,7 +142,7 @@ function show_statement($userid)
     echo "<th>BTC</th>";
     if ($show_increments)
         echo "<th>+/-</th>";
-    echo "<th>AUD</th>";
+    echo "<th>" . CURRENCY . "</th>";
     echo "</tr>";
 
     echo "<tr>";
@@ -246,15 +246,16 @@ function show_statement($userid)
                     if ($show_increments)
                         printf("<td></td>");
                     printf("<td></td>");
-                } else {        /* deposit AUD */
+                } else {        /* deposit FIAT */
                     $aud = gmp_add($aud, $amount);
                     $total_aud_deposit = gmp_add($total_aud_deposit, $amount);
 
-                    printf("<td><strong title='%s'>%s%s %s AUD%s</strong></td>",
+                    printf("<td><strong title='%s'>%s%s %s %s%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
                            $voucher ? "Redeem" : "Deposit",
                            internal_to_numstr($amount, FIAT_PRECISION),
+                           CURRENCY,
                            $final ? "" : " *");
                     if ($show_prices)
                         printf("<td></td>");
@@ -293,7 +294,7 @@ function show_statement($userid)
                     if ($show_increments)
                         printf("<td></td>");
                     printf("<td></td>");
-                } else {        /* withdraw AUD */
+                } else {        /* withdraw FIAT */
                     $aud = gmp_sub($aud, $amount);
                     $total_aud_withdrawal = gmp_add($total_aud_withdrawal, $amount);
 
@@ -305,11 +306,12 @@ function show_statement($userid)
                     } else
                         $title = sprintf("to account %s at %s", $row['acc_num'], $row['bank']);
 
-                    printf("<td><strong title='%s'>%s%s %s AUD%s</strong></td>",
+                    printf("<td><strong title='%s'>%s%s %s %s%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
                            $voucher ? "Voucher" : "Withdraw",
                            internal_to_numstr($amount, FIAT_PRECISION),
+                           CURRENCY,
                            $final ? "" : " *");
                     if ($show_prices)
                         printf("<td></td>");
@@ -340,9 +342,9 @@ function show_statement($userid)
 
     echo "<table class='display_data'>\n";
     foreach (array(
-                 "total AUD deposited"   => internal_to_numstr($total_aud_deposit,    FIAT_PRECISION),
-                 "total AUD withdrawn"   => internal_to_numstr($total_aud_withdrawal, FIAT_PRECISION),
-                 "net AUD $net_aud_word" => internal_to_numstr($net_aud,              FIAT_PRECISION),
+                 "total " . CURRENCY . " deposited"   => internal_to_numstr($total_aud_deposit,    FIAT_PRECISION),
+                 "total " . CURRENCY . " withdrawn"   => internal_to_numstr($total_aud_withdrawal, FIAT_PRECISION),
+                 "net " . CURRENCY . " $net_aud_word" => internal_to_numstr($net_aud,              FIAT_PRECISION),
                  ""                      => "",
                  "total BTC deposited"   => internal_to_numstr($total_btc_deposit,    BTC_PRECISION ),
                  "total BTC withdrawn"   => internal_to_numstr($total_btc_withdrawal, BTC_PRECISION ),
@@ -352,13 +354,13 @@ function show_statement($userid)
         echo "<tr><td>$a</td><td>$b</td></tr>\n";
     foreach (array(
                  "total BTC bought"      => array(internal_to_numstr($total_btc_got,        BTC_PRECISION ) . " BTC", "for",
-                                                  internal_to_numstr($total_aud_given,      FIAT_PRECISION) . " AUD",
+                                                  internal_to_numstr($total_aud_given,      FIAT_PRECISION) . " " . CURRENCY,
                                                   $bought_price),
                  "total BTC sold"        => array(internal_to_numstr($total_btc_given,      BTC_PRECISION ) . " BTC", "for",
-                                                  internal_to_numstr($total_aud_got,        FIAT_PRECISION) . " AUD",
+                                                  internal_to_numstr($total_aud_got,        FIAT_PRECISION) . " " . CURRENCY,
                                                   $sold_price),
                  "net BTC $trade_word"   => array(internal_to_numstr($trade_btc,            BTC_PRECISION ) . " BTC", "for",
-                                                  internal_to_numstr($trade_aud,            FIAT_PRECISION) . " AUD",
+                                                  internal_to_numstr($trade_aud,            FIAT_PRECISION) . " " . CURRENCY,
                                                   $net_price),
                  ) as $a => $b) {
         echo "<tr><td>$a</td>";

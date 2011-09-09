@@ -69,7 +69,7 @@ function show_withdrawals()
         JOIN uk_requests
         ON uk_requests.reqid = requests.reqid
         WHERE req_type = 'WITHDR'
-          AND curr_type = 'AUD'
+          AND curr_type = '" . CURRENCY . "'
           AND status = 'VERIFY'");
     $first = true;
     while ($row = mysql_fetch_assoc($result)) {
@@ -79,7 +79,7 @@ function show_withdrawals()
             echo "<table class='display_data'>\n";
             echo "<tr>";
             // echo "<th>User</th>";
-            echo "<th>AUD</th>";
+            echo "<th>" . CURRENCY . "</th>";
             echo "<th>Time</th>";
             echo "<th>Name</th>";
             echo "<th>Bank</th>";

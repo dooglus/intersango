@@ -36,7 +36,7 @@ while ($row = mysql_fetch_assoc($result)) {
         echo "<tr>";
         echo "<th>TID</th>";
         if ($is_admin) echo "<th>User</th>";
-        echo "<th>AUD</th>";
+        echo "<th>" . CURRENCY . "</th>";
         if ($is_admin) echo "<th>User</th>";
         echo "<th>BTC</th>";
         echo "<th>Price</th>";

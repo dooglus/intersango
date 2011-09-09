@@ -17,7 +17,7 @@ function update_req($reqid, $status)
 try {
     check_frozen();
 
-    // find and cancel any active requests from users with negative BTC or AUD balances
+    // find and cancel any active requests from users with negative BTC or FIAT balances
     // this should never happen unless someone is trying to double-spend their balance
     $query = "
     SELECT

@@ -109,6 +109,6 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
 
 global $is_logged_in, $is_admin;
 
-display_double_entry('BTC', 'AUD', BASE_CURRENCY::A, $is_logged_in, $is_admin);
-display_double_entry('AUD', 'BTC', BASE_CURRENCY::B, $is_logged_in, $is_admin);
+display_double_entry('BTC', CURRENCY, BASE_CURRENCY::A, $is_logged_in, $is_admin);
+display_double_entry(CURRENCY, 'BTC', BASE_CURRENCY::B, $is_logged_in, $is_admin);
 ?>

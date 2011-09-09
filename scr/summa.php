@@ -71,6 +71,6 @@ function summa($type)
 }
 
 summa('BTC');    
-summa('AUD');    
+summa(CURRENCY);    
 ?>
 

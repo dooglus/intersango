@@ -130,7 +130,7 @@ function find_total_trades_available_at_rate($rate, $have_curr)
     FROM
         orderbook
     WHERE
-        type='AUD'
+        type='" . CURRENCY . "'
         AND status='OPEN'
         AND initial_amount/initial_want_amount >= $rate
         ";
@@ -409,7 +409,7 @@ function sync_to_bitcoin($uid)
 function fetch_committed_balances($uid)
 {
     // returns an array of amounts of balances currently committed in unfilled orders
-    $balances = array('AUD'=>'0','BTC'=>'0');
+    $balances = array(CURRENCY=>'0','BTC'=>'0');
     sync_to_bitcoin($uid);
     $query = "
         SELECT sum(amount) as amount, type
@@ -452,7 +452,7 @@ function show_committed_balances($uid, $indent=false)
         echo "<p class='indent'>";
     else
         echo "<p>";
-    echo "You have ", internal_to_numstr($balances['AUD']), " AUD and ",
+    echo "You have ", internal_to_numstr($balances[CURRENCY]), " " . CURRENCY . " and ",
         internal_to_numstr($balances['BTC']), " BTC ",
         "tied up in the orderbook.</p>\n";
 }
@@ -554,13 +554,13 @@ function get_ticker_data()
     } else
         $high = $low = $avg = $vwap = $vol = 0;
 
-    $exchange_fields = calc_exchange_rate('AUD', 'BTC', BASE_CURRENCY::B);
+    $exchange_fields = calc_exchange_rate(CURRENCY, 'BTC', BASE_CURRENCY::B);
     if (!$exchange_fields)
         $buy = 0;
     else
         list($total_amount, $total_want_amount, $buy) = $exchange_fields; 
 
-    $exchange_fields = calc_exchange_rate('BTC', 'AUD', BASE_CURRENCY::A);
+    $exchange_fields = calc_exchange_rate('BTC', CURRENCY, BASE_CURRENCY::A);
     if (!$exchange_fields)
         $sell = 0;
     else
@@ -648,7 +648,7 @@ function deduct_funds($amount, $curr_type)
 
 function curr_supported_check($curr_type)
 {
-    $supported_currencies = array('AUD', 'BTC');
+    $supported_currencies = array(CURRENCY, 'BTC');
     if (!in_array($curr_type, $supported_currencies))
         throw new Error('Ooops!', 'Bad currency supplied.');
 }
@@ -751,11 +751,11 @@ function show_commission_rates()
     $cap = COMMISSION_CAP_IN_FIAT;
     $rate = COMMISSION_PERCENTAGE_FOR_FIAT;
     if ($rate == 0)
-        echo "<p>buying AUD is free of commission</p>\n";
+        echo "<p>buying " . CURRENCY . " is free of commission</p>\n";
     else {
         echo "<p>$rate%";
         if ($cap)
-            echo " (capped at $cap AUD)";
+            echo " (capped at $cap " . CURRENCY . ")";
         else
             echo " (uncapped)";
         echo " when selling BTC</p>\n";
@@ -826,13 +826,13 @@ function commission_on_mtgox_voucher($amount)
 // calculate and return the commission to pay on $amount of type $curr_type if $already_paid has already been paid on this order
 function commission_on_type($amount, $curr_type, $already_paid)
 {
-    if ($curr_type == 'AUD')
+    if ($curr_type == CURRENCY)
         return commission_on_aud($amount, $already_paid);
 
     if ($curr_type == 'BTC')
         return commission_on_btc($amount, $already_paid);
 
-    throw new Error('Unknown currency type', "Type $curr_type isn't AUD or BTC");
+    throw new Error('Unknown currency type', "Type $curr_type isn't " . CURRENCY . " or BTC");
 }
 
 function day_time_range_string()
@@ -852,12 +852,12 @@ function minutes_past_midnight_as_time_string($minutes)
     return str_replace(' ', '', strftime("%l:%M%P", mktime(0,0,0) + $minutes*60));
 }
 
-// sum available and committed AUD amounts
+// sum available and committed FIAT amounts
 function total_aud_balance($uid)
 {
     $balances = fetch_balances($uid);
     $committed_balances = fetch_committed_balances($uid);
-    $total_aud_balance = gmp_add($balances['AUD'], $committed_balances['AUD']);
+    $total_aud_balance = gmp_add($balances[CURRENCY], $committed_balances[CURRENCY]);
     return $total_aud_balance;
 }
 
@@ -873,7 +873,7 @@ function aud_transferred_today($uid)
                      + INTERVAL $midnight_offset MINUTE
         AND uid = $uid
         AND req_type in ('WITHDR', 'DEPOS')
-        AND curr_type = 'AUD'
+        AND curr_type = '" . CURRENCY . "'
         AND status != 'CANCEL'
     ";
     $result = do_query($query);
@@ -909,7 +909,7 @@ function check_aud_balance_limit($uid, $amount)
 {
     $balance = total_aud_balance($uid);
     $limit = numstr_to_internal(MAXIMUM_FIAT_BALANCE);
-    echo "<p>Maximum balance is ", internal_to_numstr($limit), " AUD and you have ", internal_to_numstr($balance), " AUD.</p>\n";
+    echo "<p>Maximum balance is ", internal_to_numstr($limit), " " . CURRENCY . " and you have ", internal_to_numstr($balance), " " . CURRENCY . ".</p>\n";
 }
 
 function check_aud_transfer_limit($uid, $amount)
@@ -919,7 +919,7 @@ function check_aud_transfer_limit($uid, $amount)
     $available = gmp_sub($limit, $withdrawn);
 
     if (gmp_cmp($amount, $available) > 0)
-        throw new Problem('Daily limit exceeded', 'You can only transfer '.internal_to_numstr($limit).' AUD per day.');
+        throw new Problem('Daily limit exceeded', 'You can only transfer '.internal_to_numstr($limit).' ' . CURRENCY . ' per day.');
 }
 
 function check_btc_withdraw_limit($uid, $amount)

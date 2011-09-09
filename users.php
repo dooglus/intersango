@@ -16,7 +16,7 @@ function show_users()
     JOIN
         purses as a
     ON
-        a.uid = u.uid AND a.type = 'AUD'
+        a.uid = u.uid AND a.type = '" . CURRENCY . "'
     JOIN
         purses as b
     ON
@@ -38,7 +38,7 @@ function show_users()
         $aud = $row['aud'];
         $btc = $row['btc'];
         $committed = fetch_committed_balances($uid);
-        $c_aud = $committed['AUD'];
+        $c_aud = $committed[CURRENCY];
         $c_btc = $committed['BTC'];
         $t_aud = gmp_add($aud, $c_aud);
         $t_btc = gmp_add($btc, $c_btc);
@@ -57,7 +57,7 @@ function show_users()
             echo "<tr>";
             echo "<th></th>";
 //          echo "<th></th>";
-            echo "<th colspan='3' style='text-align: center;'>AUD</th>";
+            echo "<th colspan='3' style='text-align: center;'>" . CURRENCY . "</th>";
             echo "<th colspan='3' style='text-align: center;'>BTC</th>";
             echo "</tr>\n";
             echo "<tr>";

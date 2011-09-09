@@ -157,7 +157,8 @@ function redeemed_voucher_code($issuing_reqid, $redeeming_reqid)
 
 function looks_like_mtgox_aud_voucher($code)
 {
-    return substr($code, 0, 10) == "MTGOX-AUD-";
+    $prefix = "MTGOX-" . CURRENCY . "-";
+    return substr($code, 0, strlen($prefix)) == $prefix;
 }
 
 function redeem_mtgox_aud_voucher($code, $uid)
@@ -234,7 +235,7 @@ function store_new_bitcoin_voucher_code($reqid)
 
 function store_new_fiat_voucher_code($reqid)
 {
-    return store_new_voucher_code($reqid, 'AUD');
+    return store_new_voucher_code($reqid, CURRENCY);
 }
 
 ?>

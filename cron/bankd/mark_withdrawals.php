@@ -7,7 +7,7 @@ $query = "
     WHERE
         req_type='WITHDR'
         AND status='VERIFY'
-        AND curr_type='AUD'
+        AND curr_type='" . CURRENCY . "'
     ";
 do_query($query);
 

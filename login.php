@@ -143,7 +143,7 @@ try {
                         INSERT INTO purses
                             (uid, amount, type)
                         VALUES
-                            (LAST_INSERT_ID(), $free_aud, 'AUD');
+                            (LAST_INSERT_ID(), $free_aud, '" . CURRENCY . "');
                     ";
                     do_query($query);
                     $query = "
@@ -162,7 +162,7 @@ try {
                     if (gmp_cmp($free_aud, 0) > 0 or gmp_cmp($free_btc, 0))
                         echo "                        <p>We've given you ",
                             internal_to_numstr($free_btc), " BTC and ",
-                            internal_to_numstr($free_aud), " AUD to test the exchange with.</p>\n";
+                            internal_to_numstr($free_aud), " " . CURRENCY . " to test the exchange with.</p>\n";
                     echo "                        <p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>\n";
                 }
 

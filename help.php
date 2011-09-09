@@ -269,7 +269,7 @@ else { ?>
 </div>
 
 <div class='content_box'>
-<h3>AUD Withdraws</h3>
+<h3><?php echo CURRENCY; ?> Withdraws</h3>
 <p>
     To withdraw funds to any nominated Australian Bank Account, please provide the correct
     B.S.B and Account Number; any incorrect details will result in a <strong>"cancel"</strong>
@@ -290,11 +290,11 @@ else { ?>
 <p>
     <strong>Daily money transfer limits:</strong> Unlike Bitcoins,
     flow of money is heavily regulated by law. So the maximum amount
-    you can transfer is capped at AUD 500 per day. Withdrawals and
+    you can transfer is capped at <?php echo CURRENCY; ?> 500 per day. Withdrawals and
     deposits both count towards this limit.
 </p>
 <p>
-    Default maximum account size limit is AUD 5,000; if you would like
+    Default maximum account size limit is <?php echo CURRENCY; ?> 5,000; if you would like
     to raise this limit, please submit a Request to Support and we
     will guide you through the AML/CFT process as mandated under the
     Anti-Money Laundering and Counter-Terrorism Financing Act 2006.

@@ -46,7 +46,7 @@ while ($row = mysql_fetch_assoc($result)) {
         echo "<table class='display_data'>\n";
         echo "<tr>";
         echo "<th></th>";
-        echo "<th style='text-align: center;' colspan=2>AUD</th>";
+        echo "<th style='text-align: center;' colspan=2>" . CURRENCY . "</th>";
         echo "<th style='text-align: center;' colspan=2>BTC</th>";
         echo "</tr>";
         echo "<tr>";
@@ -112,7 +112,7 @@ if (!$first) {
 
 $commissions = fetch_balances('1');
 echo "<p>In the commission purse, there is ",
-    internal_to_numstr($commissions['AUD'], FIAT_PRECISION), " AUD and ",
+    internal_to_numstr($commissions[CURRENCY], FIAT_PRECISION), " " . CURRENCY . " and ",
     internal_to_numstr($commissions['BTC'],  BTC_PRECISION), " BTC.\n";
 echo "Hopefully that matches with the totals shown above.</p>\n";
 ?>

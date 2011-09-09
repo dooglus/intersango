@@ -179,7 +179,7 @@ function process()
 {
     do_query("SET div_precision_increment = 8");
 
-    // find and cancel any active orders from users with negative BTC or AUD balances
+    // find and cancel any active orders from users with negative BTC or FIAT balances
     // this should never happen unless someone is trying to double-spend their balance
     $query = "
         SELECT orderid, orderbook.amount as amount, orderbook.type, orderbook.uid as uid

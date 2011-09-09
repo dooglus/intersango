@@ -18,7 +18,7 @@ function show_header($page, $is_logged_in, $base = false)
         if (isset($_GET['rate'])) {
             echo "        typed_price = true;\n";
         } else {
-            $currencies = array('BTC', 'AUD');
+            $currencies = array('BTC', CURRENCY);
             $rates = array();
             $list = calc_exchange_rate('btc', 'aud', BASE_CURRENCY::A);
             $rates['aud'] = $list[2];
@@ -67,17 +67,17 @@ define('SPACE', '&nbsp;&nbsp;&nbsp;&nbsp;');
 function show_content_header_balances($uid)
 {
     $balances = fetch_balances($uid);
-    $aud = internal_to_numstr($balances['AUD'], 4);
+    $aud = internal_to_numstr($balances[CURRENCY], 4);
     $btc = internal_to_numstr($balances['BTC'], 4);
 
     $c_balances = fetch_committed_balances($uid);
-    $c_aud = internal_to_numstr($c_balances['AUD'], 4);
+    $c_aud = internal_to_numstr($c_balances[CURRENCY], 4);
     $c_btc = internal_to_numstr($c_balances['BTC'], 4);
 
     echo "    <div class='content_header_box'>\n";
     echo "        ", SPACE, "balances:", SPACE, "$aud ";
     if ($c_aud > 0) echo "(+$c_aud) ";
-    echo "AUD", SPACE, "$btc ";
+    echo CURRENCY, SPACE, "$btc ";
     if ($c_btc > 0) echo "(+$c_btc) ";
     echo "BTC\n";
     echo "    </div>\n";
@@ -100,7 +100,7 @@ function show_content_header_ticker()
     $request_less_for_match    = '1';
 
     if ($buy) {
-        list ($buy_have, $buy_want, $worst_price) = find_total_trades_available_at_rate(bcmul($buy, $include_very_close_prices, 8), 'AUD');
+        list ($buy_have, $buy_want, $worst_price) = find_total_trades_available_at_rate(bcmul($buy, $include_very_close_prices, 8), CURRENCY);
         $buy_have = bcmul(bcmul($buy_want, $worst_price), $request_less_for_match);;
         $worst_price = clean_sql_numstr($worst_price);
         $buy_link = "<a $style href=\"?page=trade&in=BTC&have=$buy_want&want=$buy_have&rate=$worst_price\">$buy</a>";
@@ -111,7 +111,7 @@ function show_content_header_ticker()
         list ($sell_have, $sell_want, $worst_price) = find_total_trades_available_at_rate(bcdiv($sell, $include_very_close_prices, 8), 'BTC');
         $sell_have = bcmul(bcdiv($sell_want, $worst_price), $request_less_for_match);
         $worst_price = clean_sql_numstr($worst_price);
-        $sell_link = "<a $style href=\"?page=trade&in=AUD&have=$sell_want&want=$sell_have&rate=$worst_price\">$sell</a>";
+        $sell_link = "<a $style href=\"?page=trade&in=" . CURRENCY . "&have=$sell_want&want=$sell_have&rate=$worst_price\">$sell</a>";
     } else
         $sell_link = "none";
 

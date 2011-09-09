@@ -33,6 +33,6 @@ function fetch_depth($rate_query, $field, $have, $want)
 }
 
 printf('{"asks": [%s], "bids": [%s]}',
-       fetch_depth("initial_want_amount / initial_amount",      "amount", "BTC", "AUD"),
-       fetch_depth("initial_amount / initial_want_amount", "want_amount", "AUD", "BTC"));
+       fetch_depth("initial_want_amount / initial_amount",      "amount", "BTC", CURRENCY),
+       fetch_depth("initial_amount / initial_want_amount", "want_amount", CURRENCY, "BTC"));
 ?>

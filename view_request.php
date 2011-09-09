@@ -137,7 +137,7 @@ if (isset($_POST['cancel_request'])) {
                 reqid='$reqid'
                 AND status='VERIFY'
                 AND req_type='WITHDR'
-                AND curr_type = 'AUD'
+                AND curr_type = '" . CURRENCY . "'
         ";
         do_query($query);
         echo "    <div class='content_box'>\n";
@@ -208,7 +208,7 @@ if (isset($_POST['cancel_request'])) {
             </form> 
             </p>
         <?php
-        if (isset($_GET['show_finish']) && $is_admin && $curr_type == 'AUD') {
+        if (isset($_GET['show_finish']) && $is_admin && $curr_type == CURRENCY) {
             echo "            <p>Clicking 'Finish request' will mark this request as being ", translate_request_code("FINAL"), ":</p>\n"; ?>
             <p>Click 'Finish', check to see that it worked (and that the order wasn't cancelled), then make the bank transfer.</p>
             <p>

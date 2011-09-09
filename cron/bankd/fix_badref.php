@@ -51,7 +51,7 @@ $query = "
         'DEPOS',
         $uid,
         $amount,
-        'AUD'
+        '" . CURRENCY . "'
     )";
 do_query($query);
 $query = "

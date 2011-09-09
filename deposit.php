@@ -68,7 +68,7 @@ if (isset($_POST['code'])) {
 
 <div class='content_box'>
     <h3>Deposit Voucher</h3>
-    <p>It's possible to withdraw BTC or AUD as 'vouchers' on the
+    <p>It's possible to withdraw BTC or <?php echo CURRENCY; ?> as 'vouchers' on the
        withdraw page.  These vouchers can be given to other exchange
        users and redeemed here.
     </p>
@@ -77,14 +77,14 @@ if (isset($_POST['code'])) {
        copy/paste the voucher code into the box below to redeem it.
     </p>
     <p>
-       We also accept MTGOX-AUD-... vouchers for instant transfers
-       of AUD from MtGox to this exchange.
+       We also accept MTGOX-<?php echo CURRENCY; ?>-... vouchers for instant transfers
+       of <?php echo CURRENCY; ?> from MtGox to this exchange.
     </p>
 <?php show_deposit_voucher_form(); ?>
 </div>
 
 <div class='content_box'>
-    <h3>Deposit AUD</h3>
+    <h3>Deposit <?php echo CURRENCY; ?></h3>
     <p><b>Depositing is free by bank deposit (EFT). You are responsible for paying any incurred fees. If your deposit is insufficient to cover bank fees then it will be denied.</b></p>
     <p>You will need to quote <?php echo $deposref; ?> in the transaction's reference field.</p>
     <table class='display_data'>

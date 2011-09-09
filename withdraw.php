@@ -128,7 +128,7 @@ function save_details($uid, $amount, $curr_type, &$voucher)
 {
     beginlog();
     syslog(LOG_NOTICE, "Withdrawing $amount $curr_type:");
-    if ($curr_type == 'AUD') {
+    if ($curr_type == CURRENCY) {
         $is_international = post('is_international') == 'true';
         if (!$is_international) {
             uk_withdraw($uid, $amount, $curr_type, $voucher);
@@ -193,29 +193,29 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
 else {
 ?>
     <div class='content_box'>
-    <h3>Withdraw AUD (Australian residents)</h3>
+    <h3>Withdraw <?php echo CURRENCY; ?> (Australian residents)</h3>
 <?php
     $uid = user_id();
     $balances = fetch_balances($uid);
-    $aud = $balances['AUD'];
+    $aud = $balances[CURRENCY];
     $transferred = aud_transferred_today($uid);
     $limit = numstr_to_internal(MAXIMUM_DAILY_FIAT_TRANSFER);
     $available = gmp_sub($limit, $transferred);
     if (gmp_cmp($aud, $available) > 0) {
-        echo "    <p>You can transfer up to ", internal_to_numstr($limit), " AUD each day (", day_time_range_string(), ")</p>\n";
+        echo "    <p>You can transfer up to ", internal_to_numstr($limit), " " . CURRENCY . " each day (", day_time_range_string(), ")</p>\n";
         if ($transferred) {
-            echo "    <p>You have transferred ", internal_to_numstr($transferred), " AUD today\n";
+            echo "    <p>You have transferred ", internal_to_numstr($transferred), " " . CURRENCY . " today\n";
             if (gmp_cmp($available, '0') > 0)
-                echo "    and so can withdraw up to ", internal_to_numstr($available), " AUD more.";
+                echo "    and so can withdraw up to ", internal_to_numstr($available), " " . CURRENCY . " more.";
             else
                 echo "    and so cannot withdraw any more until tomorrow.";
             echo "</p>\n";
         }
     }
     if (gmp_cmp($aud, '0') <= 0)
-        echo "    <p>You don't have any AUD to withdraw.</p>\n";
+        echo "    <p>You don't have any " . CURRENCY . " to withdraw.</p>\n";
     else if (gmp_cmp($available, '0') > 0) {
-        echo "    <p>Enter an amount below to withdraw.  You have ", internal_to_numstr($aud), " AUD.</p>\n";
+        echo "    <p>Enter an amount below to withdraw.  You have ", internal_to_numstr($aud), " " . CURRENCY . ".</p>\n";
 ?>
     <p>We charge no fee.
     You are responsible for paying any incurred fees. If your deposit 
@@ -243,7 +243,7 @@ else {
             <input type='text' id='input_amount' name='amount' value='0.00' />
             
             <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
-            <input type='hidden' name='curr_type' value='AUD' />
+            <input type='hidden' name='curr_type' value='<?php echo CURRENCY; ?>' />
             <input type='hidden' name='is_international' value='false' />
             <input type='submit' value='Submit' />
         </form>
@@ -254,8 +254,8 @@ else {
 
 <!-- DISABLED
     <div class='content_box'>
-    <h3>Withdraw AUD (international)</h3>
-    <p>Enter an amount below to submit a withdrawal request. A fee of 20 AUD for amounts below 5000 AUD and 35 AUD otherwise, applies. Your bank may charge an additional processing fee on their end.</p>
+    <h3>Withdraw <?php echo CURRENCY; ?> (international)</h3>
+    <p>Enter an amount below to submit a withdrawal request. A fee of 20 <?php echo CURRENCY; ?> for amounts below 5000 <?php echo CURRENCY; ?> and 35 <?php echo CURRENCY; ?> otherwise, applies. Your bank may charge an additional processing fee on their end.</p>
     <p>Please also contact support@britcoin.co.uk</p>
     <p>
         <form action='' class='indent_form' method='post'>
@@ -273,7 +273,7 @@ else {
             <label for='input_amount'>Amount</label>
             <input type='text' id='input_amount' name='amount' value='0.00' />
 
-            <input type='hidden' name='curr_type' value='AUD' />
+            <input type='hidden' name='curr_type' value='<?php echo CURRENCY; ?>' />
             <input type='hidden' name='is_international' value='true' />
             <input type='submit' value='Submit' />
         </form>
@@ -282,12 +282,12 @@ else {
 -->
 
     <div class='content_box'>
-    <h3>Withdraw AUD to Voucher</h3>
+    <h3>Withdraw <?php echo CURRENCY; ?> to Voucher</h3>
     <p>
-        Alternatively, you can withdraw AUD as a voucher.
+        Alternatively, you can withdraw <?php echo CURRENCY; ?> as a voucher.
         This will give you a text code which can be redeemed for
-        AUD credit by any user of this exchange.  Specify the
-        amount of AUD to withdraw.
+        <?php echo CURRENCY; ?> credit by any user of this exchange.  Specify the
+        amount of <?php echo CURRENCY; ?> to withdraw.
     </p>
     <p>
         <form action='' class='indent_form' method='post'>
@@ -295,7 +295,7 @@ else {
             <input type='text' id='input_amount' name='amount' value='0.00' />
 
             <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
-            <input type='hidden' name='curr_type' value='AUD' />
+            <input type='hidden' name='curr_type' value='<?php echo CURRENCY; ?>' />
             <input type='hidden' name='is_international' value='false' />
             <input type='hidden' name='voucher' value='1' />
             <input type='submit' value='Submit' />

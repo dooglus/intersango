@@ -75,10 +75,11 @@ if (isset($_POST['deposit_cash'])) {
 
         $query = "
             INSERT INTO requests (req_type, curr_type, uid,   amount )
-            VALUES               ('DEPOS',  'AUD',     $user, $amount_internal)
+            VALUES               ('DEPOS',  '" . CURRENCY . "',     $user, $amount_internal)
         ";
         do_query($query);
-        echo "<p><span style='font-weight: bold;'>added request to deposit $amount AUD to user $user's purse (reference $reference)</span></p>\n";
+        echo "<p><span style='font-weight: bold;'>added request to deposit $amount " . CURRENCY .
+            " to user $user's purse (reference $reference)</span></p>\n";
         echo "<p>deposit should show up in their account <string>in a minute or two</strong></p>\n";
         echo "<p>make another deposit?</p>\n";
         $amount= $reference = '';
