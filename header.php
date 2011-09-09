@@ -15,16 +15,19 @@ function show_header($page, $is_logged_in, $base = false)
     <script type='text/javascript' src='js/exchanger.js'></script>
 <?php 
         echo "    <script type='text/javascript'>\n";
+        $fiat_currency = strtolower(CURRENCY);
         if (isset($_GET['rate'])) {
             echo "        typed_price = true;\n";
         } else {
             $currencies = array('BTC', CURRENCY);
             $rates = array();
-            $list = calc_exchange_rate('btc', 'fiat', BASE_CURRENCY::A);
-            $rates['fiat'] = $list[2];
-            $list = calc_exchange_rate('fiat', 'btc', BASE_CURRENCY::B);
+            $list = calc_exchange_rate('btc', $fiat_currency, BASE_CURRENCY::A);
+            $rates[$fiat_currency] = $list[2];
+            $list = calc_exchange_rate($fiat_currency, 'btc', BASE_CURRENCY::B);
             $rates['btc'] = $list[2];
             echo "        exchange_rates = ".json_encode($rates).";\n";
+            echo "        fiat_currency = '$fiat_currency';\n";
+            echo "        fiat_currency_full = '" . CURRENCY_FULL . "';\n";
             echo "        typed_price = false;\n";
         }
         echo "    </script>\n";
@@ -40,16 +43,16 @@ if ($page == 'trade') {
         if (get('in') == 'BTC')
             $in = 'btc';
         else
-            $in = 'fiat';
+            $in = $fiat_currency;
     } else if (isset($_SESSION['currency_in']) && $_SESSION['currency_in'] == 'BTC')
         $in = 'btc';
     else
-        $in = 'fiat';
+        $in = $fiat_currency;
 
     if ($in == 'btc')
-        echo "<body onload='set_currency_in(\"btc\"); set_currency_out(\"fiat\");'>\n";
+        echo "<body onload='set_currency_in(\"btc\"); set_currency_out(\"$fiat_currency\");'>\n";
     else
-        echo "<body onload='set_currency_in(\"fiat\"); set_currency_out(\"btc\");'>\n";
+        echo "<body onload='set_currency_in(\"$fiat_currency\"); set_currency_out(\"btc\");'>\n";
 } else
     echo "<body>\n"; ?>
     <img id='flower' src='images/flower.png' />

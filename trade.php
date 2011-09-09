@@ -25,11 +25,11 @@
             <div class='currbox_wrapper'>
                 <div id='incurrency' class='currbox' onclick='javascript:rolldown_in();'>
                     <div class='currbox_right'>
-                        <b class='currcode'>aud</b>
+                        <b class='currcode'><?php echo CURRENCY; ?></b>
                         <img src='images/arrow_down.png' />
                     </div>
 
-                    <img class='currflag' src='images/aud_flag.png' />
+                    <img class='currflag' src='images/<?php echo strtolower(CURRENCY) ?>_flag.png' />
                     <span class='currname'><?php echo CURRENCY_FULL; ?></span>
                 </div>
                 <div id='currsel_in'>
@@ -37,7 +37,7 @@
                         <div class='currbox_right'>
                             <b class='currcode'><?php echo CURRENCY; ?></b>
                         </div>
-                        <img class='currflag' src='images/aud_flag.png' />
+                        <img class='currflag' src='images/<?php echo strtolower(CURRENCY) ?>_flag.png' />
                         <span class='currname'><?php echo CURRENCY_FULL; ?></span>
                     </div>
                     <div class='currsel_entry' onclick='javascript:select_currency_in(this, true);'>
@@ -67,7 +67,7 @@
                         <div class='currbox_right'>
                             <b class='currcode'><?php echo CURRENCY; ?></b>
                         </div>
-                        <img class='currflag' src='images/aud_flag.png' />
+                        <img class='currflag' src='images/<?php echo strtolower(CURRENCY) ?>_flag.png' />
                         <span class='currname'><?php echo CURRENCY_FULL; ?></span>
                     </div>
                     <div class='currsel_entry' onclick='javascript:select_currency_out(this, true);'>

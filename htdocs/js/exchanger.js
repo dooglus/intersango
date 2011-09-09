@@ -8,8 +8,8 @@ function set_currency(elem, currency)
 {
     switch(currency)
     {
-        case 'aud':
-            set_curr_block(elem, 'aud', 'Australian Dollar');
+        case fiat_currency:
+            set_curr_block(elem, fiat_currency, fiat_currency_full);
         break;
 
         case 'btc':
@@ -22,8 +22,8 @@ function twin_currency(currency)
     switch(currency)
     {
         case 'btc':
-            return 'aud';
-        case 'aud':
+            return fiat_currency;
+        case fiat_currency:
         default:
             return 'btc';
     }
