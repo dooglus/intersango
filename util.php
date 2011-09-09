@@ -479,7 +479,7 @@ function get_last_price($precision = 8)
     FROM
         transactions
     WHERE
-        b_amount >= 0
+        b_amount > 0
     ORDER BY
         timest DESC
     LIMIT 1
