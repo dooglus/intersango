@@ -45,13 +45,16 @@ function show_statement($userid)
     echo "<div class='content_box'>\n";
     echo "<h3>Statement (UID $userid)</h3>\n";
 
-    if ($userid == 'all')
+    $all_users = ($userid == 'all');
+
+    if ($all_users)
         $check_userid = "";
     else
         $check_userid = "uid='$userid' AND";
 
     $query = "
         SELECT
+            uid,
             txid, a_orderid AS orderid,
             a_amount AS gave_amount, '" . CURRENCY . "' AS gave_curr,
             (b_amount-b_commission) AS got_amount,  'BTC' AS got_curr,
@@ -72,6 +75,7 @@ function show_statement($userid)
     UNION
 
         SELECT
+            uid,
             txid, b_orderid AS orderid,
             b_amount AS gave_amount, 'BTC' AS gave_curr,
             (a_amount-a_commission) AS got_amount,  '" . CURRENCY . "' AS got_curr,
@@ -92,6 +96,7 @@ function show_statement($userid)
     UNION
 
         SELECT
+            uid,
             NULL, NULL,
             NULL, NULL,
             NULL, NULL,
@@ -134,6 +139,8 @@ function show_statement($userid)
     echo "<table class='display_data'>\n";
     echo "<tr>";
     echo "<th>Date</th>";
+    if ($all_users)
+        echo "<th>User</th>";
     echo "<th>Description</th>";
     if ($show_prices)
         echo "<th>Price</th>";
@@ -147,6 +154,8 @@ function show_statement($userid)
 
     echo "<tr>";
     echo "<td></td>";
+    if ($all_users)
+        echo "<td></td>";
     echo "<td></td>";
     if ($show_prices)
         echo "<td></td>";
@@ -163,6 +172,8 @@ function show_statement($userid)
 
         echo "<tr>";
         echo "<td>{$row['date']}</td>";
+        if ($all_users)
+            echo active_table_cell_link_to_user_statement($row['uid']);
 
         if (isset($row['txid'])) { /* buying or selling */
             $txid = $row['txid'];
