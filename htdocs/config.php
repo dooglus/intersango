@@ -20,13 +20,9 @@ define('BLOCKING_LOCKS', true);
 // |  currency
 // `------------------------------------------------------------------------
 
-// define('CURRENCY', 'AUD');
-// define('CURRENCY_FULL', 'Australian Dollar');
-// define('CURRENCY_FULL_PLURAL', 'Australian Dollars');
-
-define('CURRENCY', 'CAD');
-define('CURRENCY_FULL', 'Canadian Dollar');
-define('CURRENCY_FULL_PLURAL', 'Canadian Dollars');
+define('CURRENCY',             'AUD');
+define('CURRENCY_FULL',        'Australian Dollar');
+define('CURRENCY_FULL_PLURAL', 'Australian Dollars');
 
 // .------------------------------------------------------------------------
 // |  local time
