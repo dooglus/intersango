@@ -124,11 +124,11 @@ function show_statement($userid)
 
     $first = true;
     $result = do_query($query);
-    $aud = 0;
+    $fiat = 0;
     $btc = 0;
 
-    $total_aud_deposit = $total_aud_withdrawal = $total_btc_deposit = $total_btc_withdrawal = numstr_to_internal(0);
-    $total_aud_got = $total_aud_given = $total_btc_got = $total_btc_given = numstr_to_internal(0);
+    $total_fiat_deposit = $total_fiat_withdrawal = $total_btc_deposit = $total_btc_withdrawal = numstr_to_internal(0);
+    $total_fiat_got = $total_fiat_given = $total_btc_got = $total_btc_given = numstr_to_internal(0);
 
     $first = false;
     echo "<table class='display_data'>\n";
@@ -177,11 +177,11 @@ function show_statement($userid)
                        internal_to_numstr($got_amount, BTC_PRECISION), $got_curr,
                        internal_to_numstr($gave_amount, FIAT_PRECISION), $gave_curr);
 
-                $aud = gmp_sub($aud, $gave_amount);
+                $fiat = gmp_sub($fiat, $gave_amount);
                 $btc = gmp_add($btc, $got_amount);
 
                 $total_btc_got   = gmp_add($total_btc_got  , $got_amount );
-                $total_aud_given = gmp_add($total_aud_given, $gave_amount);
+                $total_fiat_given = gmp_add($total_fiat_given, $gave_amount);
 
                 if ($show_prices)
                     printf("<td>%s</td>", trade_price($got_amount, $gave_amount, PRICE_PRECISION));
@@ -190,16 +190,16 @@ function show_statement($userid)
                 printf("<td> %s</td>",  internal_to_numstr($btc, BTC_PRECISION));
                 if ($show_increments)
                     printf("<td>- %s</td>", internal_to_numstr($gave_amount, FIAT_PRECISION));
-                printf("<td> %s</td>",  internal_to_numstr($aud, FIAT_PRECISION));
+                printf("<td> %s</td>",  internal_to_numstr($fiat, FIAT_PRECISION));
             } else {
                 printf("<td>Sell %s %s for %s %s</td>",
                        internal_to_numstr($gave_amount, BTC_PRECISION), $gave_curr,
                        internal_to_numstr($got_amount, FIAT_PRECISION), $got_curr);
 
-                $aud = gmp_add($aud, $got_amount);
+                $fiat = gmp_add($fiat, $got_amount);
                 $btc = gmp_sub($btc, $gave_amount);
 
-                $total_aud_got   = gmp_add($total_aud_got  , $got_amount );
+                $total_fiat_got   = gmp_add($total_fiat_got  , $got_amount );
                 $total_btc_given = gmp_add($total_btc_given, $gave_amount);
 
                 if ($show_prices)
@@ -209,7 +209,7 @@ function show_statement($userid)
                 printf("<td>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
                 if ($show_increments)
                     printf("<td>+%s</td>", internal_to_numstr($got_amount, FIAT_PRECISION));
-                printf("<td>%s</td>", internal_to_numstr($aud, FIAT_PRECISION));
+                printf("<td>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
             }
         } else {                /* withdrawal or deposit */
             $reqid = $row['reqid'];
@@ -247,8 +247,8 @@ function show_statement($userid)
                         printf("<td></td>");
                     printf("<td></td>");
                 } else {        /* deposit FIAT */
-                    $aud = gmp_add($aud, $amount);
-                    $total_aud_deposit = gmp_add($total_aud_deposit, $amount);
+                    $fiat = gmp_add($fiat, $amount);
+                    $total_fiat_deposit = gmp_add($total_fiat_deposit, $amount);
 
                     printf("<td><strong title='%s'>%s%s %s %s%s</strong></td>",
                            $title,
@@ -264,7 +264,7 @@ function show_statement($userid)
                     printf("<td></td>");
                     if ($show_increments)
                         printf("<td>+%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
-                    printf("<td>%s</td>", internal_to_numstr($aud, FIAT_PRECISION));
+                    printf("<td>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
                 }
             } else {            /* withdrawal */
                 if ($curr_type == 'BTC') { /* withdraw BTC */
@@ -295,8 +295,8 @@ function show_statement($userid)
                         printf("<td></td>");
                     printf("<td></td>");
                 } else {        /* withdraw FIAT */
-                    $aud = gmp_sub($aud, $amount);
-                    $total_aud_withdrawal = gmp_add($total_aud_withdrawal, $amount);
+                    $fiat = gmp_sub($fiat, $amount);
+                    $total_fiat_withdrawal = gmp_add($total_fiat_withdrawal, $amount);
 
                     $title = '';
                     if ($voucher) {
@@ -320,7 +320,7 @@ function show_statement($userid)
                     printf("<td></td>");
                     if ($show_increments)
                         printf("<td>-%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
-                    printf("<td>%s</td>", internal_to_numstr($aud, FIAT_PRECISION));
+                    printf("<td>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
                 }
             }
         }
@@ -328,23 +328,23 @@ function show_statement($userid)
         echo "</tr>";
     }
 
-    list ($net_aud, $net_aud_word) = deposited_or_withdrawn($total_aud_deposit, $total_aud_withdrawal);
+    list ($net_fiat, $net_fiat_word) = deposited_or_withdrawn($total_fiat_deposit, $total_fiat_withdrawal);
     list ($net_btc, $net_btc_word) = deposited_or_withdrawn($total_btc_deposit, $total_btc_withdrawal);
 
-    list ($trade_word, $trade_btc, $trade_aud) = bought_or_sold($total_btc_got, $total_aud_given,
-                                                                $total_btc_given, $total_aud_got);
+    list ($trade_word, $trade_btc, $trade_fiat) = bought_or_sold($total_btc_got, $total_fiat_given,
+                                                                $total_btc_given, $total_fiat_got);
 
-    $bought_price = trade_price($total_btc_got,   $total_aud_given, PRICE_PRECISION, 'verbose');
-    $sold_price   = trade_price($total_btc_given, $total_aud_got,   PRICE_PRECISION, 'verbose');
-    $net_price    = trade_price($trade_btc,       $trade_aud,       PRICE_PRECISION, 'verbose');
+    $bought_price = trade_price($total_btc_got,   $total_fiat_given, PRICE_PRECISION, 'verbose');
+    $sold_price   = trade_price($total_btc_given, $total_fiat_got,   PRICE_PRECISION, 'verbose');
+    $net_price    = trade_price($trade_btc,       $trade_fiat,       PRICE_PRECISION, 'verbose');
 
     echo "</table>\n";
 
     echo "<table class='display_data'>\n";
     foreach (array(
-                 "total " . CURRENCY . " deposited"   => internal_to_numstr($total_aud_deposit,    FIAT_PRECISION),
-                 "total " . CURRENCY . " withdrawn"   => internal_to_numstr($total_aud_withdrawal, FIAT_PRECISION),
-                 "net " . CURRENCY . " $net_aud_word" => internal_to_numstr($net_aud,              FIAT_PRECISION),
+                 "total " . CURRENCY . " deposited"   => internal_to_numstr($total_fiat_deposit,    FIAT_PRECISION),
+                 "total " . CURRENCY . " withdrawn"   => internal_to_numstr($total_fiat_withdrawal, FIAT_PRECISION),
+                 "net " . CURRENCY . " $net_fiat_word" => internal_to_numstr($net_fiat,              FIAT_PRECISION),
                  ""                      => "",
                  "total BTC deposited"   => internal_to_numstr($total_btc_deposit,    BTC_PRECISION ),
                  "total BTC withdrawn"   => internal_to_numstr($total_btc_withdrawal, BTC_PRECISION ),
@@ -354,13 +354,13 @@ function show_statement($userid)
         echo "<tr><td>$a</td><td>$b</td></tr>\n";
     foreach (array(
                  "total BTC bought"      => array(internal_to_numstr($total_btc_got,        BTC_PRECISION ) . " BTC", "for",
-                                                  internal_to_numstr($total_aud_given,      FIAT_PRECISION) . " " . CURRENCY,
+                                                  internal_to_numstr($total_fiat_given,      FIAT_PRECISION) . " " . CURRENCY,
                                                   $bought_price),
                  "total BTC sold"        => array(internal_to_numstr($total_btc_given,      BTC_PRECISION ) . " BTC", "for",
-                                                  internal_to_numstr($total_aud_got,        FIAT_PRECISION) . " " . CURRENCY,
+                                                  internal_to_numstr($total_fiat_got,        FIAT_PRECISION) . " " . CURRENCY,
                                                   $sold_price),
                  "net BTC $trade_word"   => array(internal_to_numstr($trade_btc,            BTC_PRECISION ) . " BTC", "for",
-                                                  internal_to_numstr($trade_aud,            FIAT_PRECISION) . " " . CURRENCY,
+                                                  internal_to_numstr($trade_fiat,            FIAT_PRECISION) . " " . CURRENCY,
                                                   $net_price),
                  ) as $a => $b) {
         echo "<tr><td>$a</td>";

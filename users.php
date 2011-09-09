@@ -10,7 +10,7 @@ function show_users()
 
     $query = "
     SELECT
-        u.uid, oidlogin, is_admin, timest, a.amount as aud, b.amount as btc
+        u.uid, oidlogin, is_admin, timest, a.amount as fiat, b.amount as btc
     FROM
         users as u
     JOIN
@@ -26,7 +26,7 @@ function show_users()
     ";
 
     $result = do_query($query);
-    $aud_total = $c_aud_total = $t_aud_total = '0';
+    $fiat_total = $c_fiat_total = $t_fiat_total = '0';
     $btc_total = $c_btc_total = $t_btc_total = '0';
     $first = true;
     $count_users = $count_funded_users = $count_low_balance_users = 0;
@@ -35,19 +35,19 @@ function show_users()
         $oidlogin = $row['oidlogin'];
         $is_admin = $row['is_admin'];
         $timest = $row['timest'];
-        $aud = $row['aud'];
+        $fiat = $row['fiat'];
         $btc = $row['btc'];
         $committed = fetch_committed_balances($uid);
-        $c_aud = $committed[CURRENCY];
+        $c_fiat = $committed[CURRENCY];
         $c_btc = $committed['BTC'];
-        $t_aud = gmp_add($aud, $c_aud);
+        $t_fiat = gmp_add($fiat, $c_fiat);
         $t_btc = gmp_add($btc, $c_btc);
         if ($uid == '1')
             $uid = "fees";
         else
             $count_users++;
 
-        if ($omit_zero_balances && $aud == 0 && $c_aud == 0 && $btc == 0 && $c_btc == 0)
+        if ($omit_zero_balances && $fiat == 0 && $c_fiat == 0 && $btc == 0 && $c_btc == 0)
             continue;
 
         if ($first) {
@@ -73,16 +73,16 @@ function show_users()
             echo "</tr>\n";
         }
 
-        $aud_total   = gmp_add($aud_total,   $aud);
-        $c_aud_total = gmp_add($c_aud_total, $c_aud);
-        $t_aud_total = gmp_add($t_aud_total, $t_aud);
+        $fiat_total   = gmp_add($fiat_total,   $fiat);
+        $c_fiat_total = gmp_add($c_fiat_total, $c_fiat);
+        $t_fiat_total = gmp_add($t_fiat_total, $t_fiat);
         $btc_total   = gmp_add($btc_total,   $btc);
         $c_btc_total = gmp_add($c_btc_total, $c_btc);
         $t_btc_total = gmp_add($t_btc_total, $t_btc);
 
         if ($uid != 'fees') {
             $count_funded_users++;
-            if ($aud < 1e5 && $c_aud < 1e5 && $btc < 1e5 && $c_btc < 1e5) {
+            if ($fiat < 1e5 && $c_fiat < 1e5 && $btc < 1e5 && $c_btc < 1e5) {
                 $count_low_balance_users++;
                 if ($omit_very_low_balances)
                     continue;
@@ -101,9 +101,9 @@ function show_users()
 
         echo "<td>$uid</td>";
 //      echo "<td>$oidlogin</td>";
-        echo "<td>", internal_to_numstr($aud,   FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($c_aud, FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($t_aud, FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($fiat,   FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($c_fiat, FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($t_fiat, FIAT_PRECISION), "</td>";
         echo "<td>", internal_to_numstr($btc,    BTC_PRECISION), "</td>";
         echo "<td>", internal_to_numstr($c_btc,  BTC_PRECISION), "</td>";
         echo "<td>", internal_to_numstr($t_btc,  BTC_PRECISION), "</td>";
@@ -115,9 +115,9 @@ function show_users()
         echo "<tr><td></td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td></tr>\n";
         active_table_row('me', "?page=statement&user=all");
         echo "<td></td>";
-        echo "<td>", internal_to_numstr($aud_total,   FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($c_aud_total, FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($t_aud_total, FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($fiat_total,   FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($c_fiat_total, FIAT_PRECISION), "</td>";
+        echo "<td>", internal_to_numstr($t_fiat_total, FIAT_PRECISION), "</td>";
         echo "<td>", internal_to_numstr($btc_total,    BTC_PRECISION), "</td>";
         echo "<td>", internal_to_numstr($c_btc_total,  BTC_PRECISION), "</td>";
         echo "<td>", internal_to_numstr($t_btc_total,  BTC_PRECISION), "</td>";

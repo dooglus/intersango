@@ -136,14 +136,14 @@ try {
                     do_query($query);
                     $uid = (string)mysql_insert_id();
 
-                    $free_aud = numstr_to_internal(FREE_FIAT_ON_SIGNUP);
+                    $free_fiat = numstr_to_internal(FREE_FIAT_ON_SIGNUP);
                     $free_btc = numstr_to_internal(FREE_BTC_ON_SIGNUP);
 
                     $query = "
                         INSERT INTO purses
                             (uid, amount, type)
                         VALUES
-                            (LAST_INSERT_ID(), $free_aud, '" . CURRENCY . "');
+                            (LAST_INSERT_ID(), $free_fiat, '" . CURRENCY . "');
                     ";
                     do_query($query);
                     $query = "
@@ -159,10 +159,10 @@ try {
                     echo "                    <div class='content_box'>\n";
                     echo "                        <h3>Successful login!</h3>\n";
                     echo "                        <p>Nice to finally see you here, <i>new</i> user.</p>\n";
-                    if (gmp_cmp($free_aud, 0) > 0 or gmp_cmp($free_btc, 0))
+                    if (gmp_cmp($free_fiat, 0) > 0 or gmp_cmp($free_btc, 0))
                         echo "                        <p>We've given you ",
                             internal_to_numstr($free_btc), " BTC and ",
-                            internal_to_numstr($free_aud), " " . CURRENCY . " to test the exchange with.</p>\n";
+                            internal_to_numstr($free_fiat), " " . CURRENCY . " to test the exchange with.</p>\n";
                     echo "                        <p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>\n";
                 }
 

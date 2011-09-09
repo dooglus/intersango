@@ -197,11 +197,11 @@ else {
 <?php
     $uid = user_id();
     $balances = fetch_balances($uid);
-    $aud = $balances[CURRENCY];
-    $transferred = aud_transferred_today($uid);
+    $fiat = $balances[CURRENCY];
+    $transferred = fiat_transferred_today($uid);
     $limit = numstr_to_internal(MAXIMUM_DAILY_FIAT_TRANSFER);
     $available = gmp_sub($limit, $transferred);
-    if (gmp_cmp($aud, $available) > 0) {
+    if (gmp_cmp($fiat, $available) > 0) {
         echo "    <p>You can transfer up to ", internal_to_numstr($limit), " " . CURRENCY . " each day (", day_time_range_string(), ")</p>\n";
         if ($transferred) {
             echo "    <p>You have transferred ", internal_to_numstr($transferred), " " . CURRENCY . " today\n";
@@ -212,10 +212,10 @@ else {
             echo "</p>\n";
         }
     }
-    if (gmp_cmp($aud, '0') <= 0)
+    if (gmp_cmp($fiat, '0') <= 0)
         echo "    <p>You don't have any " . CURRENCY . " to withdraw.</p>\n";
     else if (gmp_cmp($available, '0') > 0) {
-        echo "    <p>Enter an amount below to withdraw.  You have ", internal_to_numstr($aud), " " . CURRENCY . ".</p>\n";
+        echo "    <p>Enter an amount below to withdraw.  You have ", internal_to_numstr($fiat), " " . CURRENCY . ".</p>\n";
 ?>
     <p>We charge no fee.
     You are responsible for paying any incurred fees. If your deposit 

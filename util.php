@@ -800,9 +800,9 @@ function commission($amount, $percentage, $cap = false, $already_paid = false)
     return min(gmp_strval($commission), $cap);
 }
 
-function commission_on_aud($aud, $already_paid)
+function commission_on_fiat($fiat, $already_paid)
 {
-    return commission($aud,
+    return commission($fiat,
                       COMMISSION_PERCENTAGE_FOR_FIAT,
                       COMMISSION_CAP_IN_FIAT,
                       $already_paid);
@@ -827,7 +827,7 @@ function commission_on_mtgox_voucher($amount)
 function commission_on_type($amount, $curr_type, $already_paid)
 {
     if ($curr_type == CURRENCY)
-        return commission_on_aud($amount, $already_paid);
+        return commission_on_fiat($amount, $already_paid);
 
     if ($curr_type == 'BTC')
         return commission_on_btc($amount, $already_paid);
@@ -853,15 +853,15 @@ function minutes_past_midnight_as_time_string($minutes)
 }
 
 // sum available and committed FIAT amounts
-function total_aud_balance($uid)
+function total_fiat_balance($uid)
 {
     $balances = fetch_balances($uid);
     $committed_balances = fetch_committed_balances($uid);
-    $total_aud_balance = gmp_add($balances[CURRENCY], $committed_balances[CURRENCY]);
-    return $total_aud_balance;
+    $total_fiat_balance = gmp_add($balances[CURRENCY], $committed_balances[CURRENCY]);
+    return $total_fiat_balance;
 }
 
-function aud_transferred_today($uid)
+function fiat_transferred_today($uid)
 {
     $midnight_offset = DAY_STARTS_MINUTES_AFTER_MIDNIGHT;
     $query = "
@@ -905,16 +905,16 @@ function btc_withdrawn_today($uid)
     return $sum;
 }
 
-function check_aud_balance_limit($uid, $amount)
+function check_fiat_balance_limit($uid, $amount)
 {
-    $balance = total_aud_balance($uid);
+    $balance = total_fiat_balance($uid);
     $limit = numstr_to_internal(MAXIMUM_FIAT_BALANCE);
     echo "<p>Maximum balance is ", internal_to_numstr($limit), " " . CURRENCY . " and you have ", internal_to_numstr($balance), " " . CURRENCY . ".</p>\n";
 }
 
-function check_aud_transfer_limit($uid, $amount)
+function check_fiat_transfer_limit($uid, $amount)
 {
-    $withdrawn = aud_transferred_today($uid);
+    $withdrawn = fiat_transferred_today($uid);
     $limit = numstr_to_internal(MAXIMUM_DAILY_FIAT_TRANSFER);
     $available = gmp_sub($limit, $withdrawn);
 
@@ -937,7 +937,7 @@ function check_withdraw_limit($uid, $amount, $curr_type)
     if ($curr_type == 'BTC')
         check_btc_withdraw_limit($uid, $amount);
     else
-        check_aud_transfer_limit($uid, $amount);
+        check_fiat_transfer_limit($uid, $amount);
 }
 
 ?>

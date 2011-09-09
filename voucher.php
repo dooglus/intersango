@@ -155,13 +155,13 @@ function redeemed_voucher_code($issuing_reqid, $redeeming_reqid)
     do_query($query);
 }
 
-function looks_like_mtgox_aud_voucher($code)
+function looks_like_mtgox_fiat_voucher($code)
 {
     $prefix = "MTGOX-" . CURRENCY . "-";
     return substr($code, 0, strlen($prefix)) == $prefix;
 }
 
-function redeem_mtgox_aud_voucher($code, $uid)
+function redeem_mtgox_fiat_voucher($code, $uid)
 {
     $mtgox = new MtGox_API(MTGOX_KEY, MTGOX_SECRET);
 
@@ -209,8 +209,8 @@ function redeem_mtgox_aud_voucher($code, $uid)
 
 function redeem_voucher($code, $uid)
 {
-    if (looks_like_mtgox_aud_voucher($code))
-        return redeem_mtgox_aud_voucher($code, $uid);
+    if (looks_like_mtgox_fiat_voucher($code))
+        return redeem_mtgox_fiat_voucher($code, $uid);
 
     list($issuing_reqid, $issuing_uid, $amount, $curr_type) = check_voucher_code($code);
     // echo "issued in request $issuing_reqid by user $issuing_uid for amount $amount of $curr_type<br/>\n";

@@ -37,8 +37,8 @@ $query = "
 ";
 $result = do_query($query);
 $first = true;
-$commission_aud_total = $commission_btc_total = '0';
-$amount_aud_total = $amount_btc_total = '0';
+$commission_fiat_total = $commission_btc_total = '0';
+$amount_fiat_total = $amount_btc_total = '0';
 $cells = array();
 while ($row = mysql_fetch_assoc($result)) {
     if ($first) {
@@ -70,10 +70,10 @@ while ($row = mysql_fetch_assoc($result)) {
     $a_uid = $row['a_uid'];
     $b_uid = $row['b_uid'];
 
-    $amount_aud_total = gmp_add($amount_aud_total, $a_amount);
+    $amount_fiat_total = gmp_add($amount_fiat_total, $a_amount);
     $amount_btc_total = gmp_add($amount_btc_total, $b_amount);
 
-    $commission_aud_total = gmp_add($commission_aud_total, $a_commission);
+    $commission_fiat_total = gmp_add($commission_fiat_total, $a_commission);
     $commission_btc_total = gmp_add($commission_btc_total, $b_commission);
 
     if (isset($cells[$a_orderid]))
@@ -102,8 +102,8 @@ if (!$first) {
     echo "    </tr>\n";
     echo "    <tr>\n";
     echo "        <td></td>";
-    echo "        <td>", internal_to_numstr($amount_aud_total,     FIAT_PRECISION), "</td>";
-    echo "        <td>", internal_to_numstr($commission_aud_total, FIAT_PRECISION), "</td>";
+    echo "        <td>", internal_to_numstr($amount_fiat_total,     FIAT_PRECISION), "</td>";
+    echo "        <td>", internal_to_numstr($commission_fiat_total, FIAT_PRECISION), "</td>";
     echo "        <td>", internal_to_numstr($amount_btc_total,      BTC_PRECISION), "</td>";
     echo "        <td>", internal_to_numstr($commission_btc_total,  BTC_PRECISION), "</td>";
     echo "    </tr>\n";

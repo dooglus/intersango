@@ -20,9 +20,9 @@ function show_header($page, $is_logged_in, $base = false)
         } else {
             $currencies = array('BTC', CURRENCY);
             $rates = array();
-            $list = calc_exchange_rate('btc', 'aud', BASE_CURRENCY::A);
-            $rates['aud'] = $list[2];
-            $list = calc_exchange_rate('aud', 'btc', BASE_CURRENCY::B);
+            $list = calc_exchange_rate('btc', 'fiat', BASE_CURRENCY::A);
+            $rates['fiat'] = $list[2];
+            $list = calc_exchange_rate('fiat', 'btc', BASE_CURRENCY::B);
             $rates['btc'] = $list[2];
             echo "        exchange_rates = ".json_encode($rates).";\n";
             echo "        typed_price = false;\n";
@@ -40,16 +40,16 @@ if ($page == 'trade') {
         if (get('in') == 'BTC')
             $in = 'btc';
         else
-            $in = 'aud';
+            $in = 'fiat';
     } else if (isset($_SESSION['currency_in']) && $_SESSION['currency_in'] == 'BTC')
         $in = 'btc';
     else
-        $in = 'aud';
+        $in = 'fiat';
 
     if ($in == 'btc')
-        echo "<body onload='set_currency_in(\"btc\"); set_currency_out(\"aud\");'>\n";
+        echo "<body onload='set_currency_in(\"btc\"); set_currency_out(\"fiat\");'>\n";
     else
-        echo "<body onload='set_currency_in(\"aud\"); set_currency_out(\"btc\");'>\n";
+        echo "<body onload='set_currency_in(\"fiat\"); set_currency_out(\"btc\");'>\n";
 } else
     echo "<body>\n"; ?>
     <img id='flower' src='images/flower.png' />
@@ -67,16 +67,16 @@ define('SPACE', '&nbsp;&nbsp;&nbsp;&nbsp;');
 function show_content_header_balances($uid)
 {
     $balances = fetch_balances($uid);
-    $aud = internal_to_numstr($balances[CURRENCY], 4);
+    $fiat = internal_to_numstr($balances[CURRENCY], 4);
     $btc = internal_to_numstr($balances['BTC'], 4);
 
     $c_balances = fetch_committed_balances($uid);
-    $c_aud = internal_to_numstr($c_balances[CURRENCY], 4);
+    $c_fiat = internal_to_numstr($c_balances[CURRENCY], 4);
     $c_btc = internal_to_numstr($c_balances['BTC'], 4);
 
     echo "    <div class='content_header_box'>\n";
-    echo "        ", SPACE, "balances:", SPACE, "$aud ";
-    if ($c_aud > 0) echo "(+$c_aud) ";
+    echo "        ", SPACE, "balances:", SPACE, "$fiat ";
+    if ($c_fiat > 0) echo "(+$c_fiat) ";
     echo CURRENCY, SPACE, "$btc ";
     if ($c_btc > 0) echo "(+$c_btc) ";
     echo "BTC\n";
