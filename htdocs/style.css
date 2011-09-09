@@ -215,8 +215,7 @@ CONTENT
     margin-left: 20px;
 }
 .display_data th, .display_data td {
-    padding: 10px;
-    padding-right: 30px;
+    padding: 5px 10px;
     text-align: left;
 }
 tr {
