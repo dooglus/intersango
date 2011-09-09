@@ -119,7 +119,7 @@ function show_statement($userid)
             status != 'CANCEL'
 
     ORDER BY
-        timest
+        timest, txid, got_curr
     ";
 
     $first = true;
