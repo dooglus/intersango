@@ -192,7 +192,7 @@ function redeem_mtgox_fiat_voucher($code, $uid)
     $status = cleanup_string($result['status']);
 
     // echo "<p>When we tried to redeem that voucher into our account, MtGox said: <strong>$status</strong></p>\n";
-    $commission = commission_on_mtgox_voucher($amount);
+    $commission = commission_on_deposit_mtgox_fiat_voucher($amount);
     $amount = gmp_strval(gmp_sub($amount, $commission));
 
     $query = "

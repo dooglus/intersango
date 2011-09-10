@@ -176,6 +176,23 @@ class MtGox_API
                                  'amount' => $amount));
     }
 
+    // amount: 0.01
+    // code: USD2CODE
+    //   string(53) "Generated new code: MTGOX-USD-EUSCF-JFLF2-ALZ7F-AE50E"
+    // 
+    // amount: 0.01
+    // code: AUD2CODE
+    //   string(23) "Invalid withdraw method"
+    function withdraw_fiat_coupon($amount) /* only works for USD? */
+    {
+        $code = CURRENCY . '2CODE';
+        echo "amount: " . $amount . "\n";
+        echo "code: $code\n";
+        return self::query('0/withdraw.php',
+                           array('group1' => $code,
+                                 'amount' => $amount));
+    }
+
     ////////////////////////////////////////////////////////////////////////
     // * 0/btcAddress.php
     // 

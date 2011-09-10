@@ -787,7 +787,7 @@ function take_commission($amount, $curr_type, $orderid)
     ");
 }
 
-function commission($amount, $percentage, $cap = false, $already_paid = false)
+function commission($amount, $percentage, $cap = false, $already_paid = '0')
 {
     $commission = gmp_div(gmp_mul((string)$amount,
                                   numstr_to_internal((string)$percentage)),
@@ -816,12 +816,19 @@ function commission_on_btc($btc, $already_paid)
                       $already_paid);
 }
 
-function commission_on_mtgox_voucher($amount)
+function commission_on_deposit_mtgox_fiat_voucher($amount)
 {
     return commission($amount,
-                      COMMISSION_PERCENTAGE_FOR_MTGOX_VOUCHER);
+                      COMMISSION_PERCENTAGE_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER,
+                      COMMISSION_CAP_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER);
 }
 
+// function commission_on_withdraw_mtgox_fiat_voucher($amount)
+// {
+//     return commission($amount,
+//                       COMMISSION_PERCENTAGE_FOR_WITHDRAW_MTGOX_FIAT_VOUCHER,
+//                       COMMISSION_CAP_FOR_WITHDRAW_MTGOX_FIAT_VOUCHER);
+// }
 
 // calculate and return the commission to pay on $amount of type $curr_type if $already_paid has already been paid on this order
 function commission_on_type($amount, $curr_type, $already_paid)

@@ -109,8 +109,17 @@ define('COMMISSION_CAP_IN_FIAT', '0.25');
 // commission cap, in BTC, when buying BTC; '0' for no cap
 define('COMMISSION_CAP_IN_BTC', '0.025');
 
-// percentage commission to charge on deposits received via MtGox vouchers
-define('COMMISSION_PERCENTAGE_FOR_MTGOX_VOUCHER', '3.0');
+// percentage commission to charge on fiat deposits received via MtGox vouchers
+define('COMMISSION_PERCENTAGE_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER', '3.0');
+
+// commission cap on fiat deposits received via MtGox vouchers
+define('COMMISSION_CAP_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER', '5.0');
+
+// // percentage commission to charge on fiat withdrawals made via MtGox vouchers
+// define('COMMISSION_PERCENTAGE_FOR_WITHDRAW_MTGOX_FIAT_VOUCHER', '3.0');
+// 
+// // commission cap on fiat withdrawals made via MtGox vouchers
+// define('COMMISSION_CAP_FOR_WITHDRAW_MTGOX_FIAT_VOUCHER', '5.0');
 
 // .------------------------------------------------------------------------
 // |  lower limits
