@@ -138,6 +138,14 @@ function test_mtgox_withdraw_fiat_coupon()
     var_dump($ret);
 }
 
-test_mtgox_withdraw_fiat_coupon();
+// test_mtgox_withdraw_fiat_coupon();
+
+function test_gettext()
+{
+    require_once "localization.php";
+    echo _("Hello World!") . "\n";
+}
+
+test_gettext();
 
 ?>
