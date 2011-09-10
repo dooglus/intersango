@@ -6,9 +6,9 @@ function deposited_or_withdrawn($deposit, $withdraw)
     $abs = gmp_abs($net);
 
     if (gmp_cmp($net, 0) < 0)
-        $word = "withdrawn";
+        $word = _("withdrawn");
     else
-        $word = "deposited";
+        $word = _("deposited");
 
     return array($abs, $word);
 }
@@ -16,11 +16,11 @@ function deposited_or_withdrawn($deposit, $withdraw)
 function bought_or_sold($bought, $bought_for, $sold, $sold_for)
 {
     if (gmp_cmp($bought, $sold) < 0) {
-        $word = "sold";
+        $word = _("sold");
         $net     = gmp_sub($sold,     $bought    );
         $net_for = gmp_sub($sold_for, $bought_for);
     } else {
-        $word = "bought";
+        $word = _("bought");
         $net     = gmp_sub($bought,     $sold    );
         $net_for = gmp_sub($bought_for, $sold_for);
     }
@@ -32,7 +32,7 @@ function trade_price($btc, $for, $precision, $verbose = false) {
     if (gmp_cmp($btc, 0) == 0)
         return '';
     if ($verbose)
-        return "(price " . bcdiv(gmp_strval($for), gmp_strval($btc), $precision) . ")";
+        return "(" . _("price") . " " . bcdiv(gmp_strval($for), gmp_strval($btc), $precision) . ")";
     else
         return bcdiv(gmp_strval($for), gmp_strval($btc), $precision);
 }
@@ -43,7 +43,7 @@ function show_statement($userid)
     $show_prices = true;
 
     echo "<div class='content_box'>\n";
-    echo "<h3>Statement (UID $userid)</h3>\n";
+    echo "<h3>" . _("Statement") . " (UID $userid)</h3>\n";
 
     $all_users = ($userid == 'all');
 
@@ -138,12 +138,12 @@ function show_statement($userid)
     $first = false;
     echo "<table class='display_data'>\n";
     echo "<tr>";
-    echo "<th>Date</th>";
+    echo "<th>" . _("Date") . "</th>";
     if ($all_users)
-        echo "<th>User</th>";
-    echo "<th>Description</th>";
+        echo "<th>" . _("User") . "</th>";
+    echo "<th>" . _("Description") . "</th>";
     if ($show_prices)
-        echo "<th>Price</th>";
+        echo "<th>" . _("Price") . "</th>";
     if ($show_increments)
         echo "<th>+/-</th>";
     echo "<th>BTC</th>";
@@ -184,7 +184,7 @@ function show_statement($userid)
             $got_curr = $row['got_curr'];
 
             if ($got_curr == 'BTC') {
-                printf("<td>Buy %s %s for %s %s</td>",
+                printf("<td>" . _("Buy %s %s for %s %s") . "</td>",
                        internal_to_numstr($got_amount, BTC_PRECISION), $got_curr,
                        internal_to_numstr($gave_amount, FIAT_PRECISION), $gave_curr);
 
@@ -203,7 +203,7 @@ function show_statement($userid)
                     printf("<td>- %s</td>", internal_to_numstr($gave_amount, FIAT_PRECISION));
                 printf("<td> %s</td>",  internal_to_numstr($fiat, FIAT_PRECISION));
             } else {
-                printf("<td>Sell %s %s for %s %s</td>",
+                printf("<td>" . _("Sell %s %s for %s %s") . "</td>",
                        internal_to_numstr($gave_amount, BTC_PRECISION), $gave_curr,
                        internal_to_numstr($got_amount, FIAT_PRECISION), $got_curr);
 
@@ -237,7 +237,7 @@ function show_statement($userid)
             if ($req_type == 'DEPOS') { /* deposit */
                 $title = '';
                 if ($voucher)
-                    $title = sprintf("from voucher &quot;%s&quot;", $voucher);
+                    $title = sprintf(_("from voucher") . " &quot;%s&quot;", $voucher);
 
                 if ($curr_type == 'BTC') { /* deposit BTC */
                     $btc = gmp_add($btc, $amount);
@@ -246,7 +246,7 @@ function show_statement($userid)
                     printf("<td><strong title='%s'>%s%s %s BTC%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
-                           $voucher ? "Redeem" : "Deposit",
+                           $voucher ? _("Redeem") : _("Deposit"),
                            internal_to_numstr($amount, BTC_PRECISION),
                            $final ? "" : " *");
                     if ($show_prices)
@@ -264,7 +264,7 @@ function show_statement($userid)
                     printf("<td><strong title='%s'>%s%s %s %s%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
-                           $voucher ? "Redeem" : "Deposit",
+                           $voucher ? _("Redeem") : _("Deposit"),
                            internal_to_numstr($amount, FIAT_PRECISION),
                            CURRENCY,
                            $final ? "" : " *");
@@ -284,17 +284,17 @@ function show_statement($userid)
 
                     $addy = $row['addy'];
                     if ($addy)
-                        $title = sprintf("to Bitcoin address &quot;%s&quot;", $addy);
+                        $title = sprintf(_("to Bitcoin address") . " &quot;%s&quot;", $addy);
                     else if ($voucher) {
-                        $title = sprintf("to %svoucher &quot;%s&quot;",
-                                         $final ? "" : "unredeemed ",
+                        $title = sprintf(_("to %svoucher") . " &quot;%s&quot;",
+                                         $final ? "" : (_("unredeemed") . " "),
                                          $voucher);
                     }
                     
                     printf("<td><strong title='%s'>%s%s %s BTC%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
-                           $voucher ? "Voucher" : "Withdraw",
+                           $voucher ? _("Voucher") : _("Withdraw"),
                            internal_to_numstr($amount, BTC_PRECISION),
                            $final ? "" : " *");
                     if ($show_prices)
@@ -311,16 +311,16 @@ function show_statement($userid)
 
                     $title = '';
                     if ($voucher) {
-                        $title = sprintf("to %svoucher &quot;%s&quot;",
-                                         $final ? "" : "unredeemed ",
+                        $title = sprintf(_("to %svoucher") . " &quot;%s&quot;",
+                                         $final ? "" : (_("unredeemed") . " "),
                                          $voucher);
                     } else
-                        $title = sprintf("to account %s at %s", $row['acc_num'], $row['bank']);
+                        $title = sprintf(_("to account %s at %s"), $row['acc_num'], $row['bank']);
 
                     printf("<td><strong title='%s'>%s%s %s %s%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
-                           $voucher ? "Voucher" : "Withdraw",
+                           $voucher ? _("Voucher") : _("Withdraw"),
                            internal_to_numstr($amount, FIAT_PRECISION),
                            CURRENCY,
                            $final ? "" : " *");
@@ -353,26 +353,26 @@ function show_statement($userid)
 
     echo "<table class='display_data'>\n";
     foreach (array(
-                 "total " . CURRENCY . " deposited"   => internal_to_numstr($total_fiat_deposit,    FIAT_PRECISION),
-                 "total " . CURRENCY . " withdrawn"   => internal_to_numstr($total_fiat_withdrawal, FIAT_PRECISION),
-                 "net " . CURRENCY . " $net_fiat_word" => internal_to_numstr($net_fiat,              FIAT_PRECISION),
+                 _("total") . " " . CURRENCY . " " . _("deposited")   => internal_to_numstr($total_fiat_deposit,    FIAT_PRECISION),
+                 _("total") . " " . CURRENCY . " " . _("withdrawn")   => internal_to_numstr($total_fiat_withdrawal, FIAT_PRECISION),
+                 _("net") . " " . CURRENCY . " $net_fiat_word" => internal_to_numstr($net_fiat,              FIAT_PRECISION),
                  ""                      => "",
-                 "total BTC deposited"   => internal_to_numstr($total_btc_deposit,    BTC_PRECISION ),
-                 "total BTC withdrawn"   => internal_to_numstr($total_btc_withdrawal, BTC_PRECISION ),
-                 "net BTC $net_btc_word" => internal_to_numstr($net_btc,              BTC_PRECISION ),
+                 _("total") . " BTC " . _("deposited")   => internal_to_numstr($total_btc_deposit,    BTC_PRECISION ),
+                 _("total") . " BTC " . _("withdrawn")   => internal_to_numstr($total_btc_withdrawal, BTC_PRECISION ),
+                 _("net") . " BTC $net_btc_word" => internal_to_numstr($net_btc,              BTC_PRECISION ),
                  " "                     => "",
                  ) as $a => $b)
         echo "<tr><td>$a</td><td>$b</td></tr>\n";
     foreach (array(
-                 "total BTC bought"      => array(internal_to_numstr($total_btc_got,        BTC_PRECISION ) . " BTC", "for",
-                                                  internal_to_numstr($total_fiat_given,      FIAT_PRECISION) . " " . CURRENCY,
-                                                  $bought_price),
-                 "total BTC sold"        => array(internal_to_numstr($total_btc_given,      BTC_PRECISION ) . " BTC", "for",
-                                                  internal_to_numstr($total_fiat_got,        FIAT_PRECISION) . " " . CURRENCY,
-                                                  $sold_price),
-                 "net BTC $trade_word"   => array(internal_to_numstr($trade_btc,            BTC_PRECISION ) . " BTC", "for",
-                                                  internal_to_numstr($trade_fiat,            FIAT_PRECISION) . " " . CURRENCY,
-                                                  $net_price),
+                 _("total") . " BTC " . _("bought") => array(internal_to_numstr($total_btc_got,     BTC_PRECISION) . " BTC", "for",
+                                                             internal_to_numstr($total_fiat_given, FIAT_PRECISION) . " " . CURRENCY,
+                                                             $bought_price),
+                 _("total") . " BTC " . _("sold")   => array(internal_to_numstr($total_btc_given,   BTC_PRECISION) . " BTC", "for",
+                                                             internal_to_numstr($total_fiat_got,   FIAT_PRECISION) . " " . CURRENCY,
+                                                             $sold_price),
+                 _("net")   . " BTC " . $trade_word => array(internal_to_numstr($trade_btc,         BTC_PRECISION) . " BTC", "for",
+                                                             internal_to_numstr($trade_fiat,       FIAT_PRECISION) . " " . CURRENCY,
+                                                             $net_price),
                  ) as $a => $b) {
         echo "<tr><td>$a</td>";
         foreach ($b as $c)
@@ -382,9 +382,9 @@ function show_statement($userid)
     echo "</table>\n";
 
     if (!$all_final) {
-        echo "<p>Items marked with '*' are not yet final.</p>\n";
-        echo "<p>Any such withdrawals and vouchers can be cancelled.</p>\n";
-        echo "<p>Any such deposits are pending, and should be finalised within a minute or two.</p>\n";
+        echo "<p>" . _("Items marked with '*' are not yet final.") . "</p>\n";
+        echo "<p>" . _("Any such withdrawals and vouchers can be cancelled.") . "</p>\n";
+        echo "<p>" . _("Any such deposits are pending, and should be finalised within a minute or two.") . "</p>\n";
     }
     echo "</div>";
 }
