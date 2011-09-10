@@ -9,6 +9,7 @@ ob_start();
 
 require_once "config.php";
 require_once ABSPATH . "/util.php";
+require_once ABSPATH . "/localization.php";
 require_once ABSPATH . "/header.php";
 require_once ABSPATH . "/switcher.php";
 require_once ABSPATH . "/footer.php";
