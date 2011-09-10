@@ -16,6 +16,9 @@ define('LOCK_DIR', ABSPATH . "/locks");
 // if user account is already busy, whether to wait for it to finish (true) or fail with an error (false) 
 define('BLOCKING_LOCKS', true);
 
+// what locale to use for translations
+define('LOCALE', 'de_DE');
+
 // .------------------------------------------------------------------------
 // |  currency
 // `------------------------------------------------------------------------
