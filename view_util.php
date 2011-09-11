@@ -72,20 +72,20 @@ function display_transactions($uid, $orderid)
             <h3>
 <?php
     if ($is_logged_in == $uid)
-        echo "Your trades ";
+        echo _("Your trades") . " ";
     else
-        echo "Trades ";
-    if ($orderid) echo 'for this order'; ?></h3>
+        echo _("Trades") . " ";
+    if ($orderid) echo _('for this order'); ?></h3>
             <table class='display_data'>
                 <tr>
 <?php if (!$orderid) { ?>
-                    <th>Order</th>
+                    <th><?php echo _("Order"); ?></th>
 <?php } ?>
-                    <th>You gave</th>
-                    <th>You got</th>
-                    <th>Commission</th>
-                    <th>Price</th>
-                    <th>Time</th>
+                    <th><?php echo _("You gave)"; ?></th>
+                    <th><?php echo _("You got)"; ?></th>
+                    <th><?php echo _("Commission)"; ?></th>
+                    <th><?php echo _("Price"); ?></th>
+                    <th><?php echo _("Time"); ?></th>
                 </tr><?php
         }
 
@@ -153,8 +153,8 @@ function display_transactions($uid, $orderid)
         }
 
         echo "</table>\n";
-        echo "<p>The 'you got' column is the amount you received after commission was taken off.</p>";
-        echo "<p>The 'price' column shows the effective price of the trade, after commission.</p>";
+        echo "<p>" . _("The 'you got' column is the amount you received after commission was taken off.") . "</p>";
+        echo "<p>" . _("The 'price' column shows the effective price of the trade, after commission.") . "</p>";
         echo "</div>\n";
     }
 }

@@ -66,8 +66,13 @@ do_query("COMMIT");
 ?>
 
 <div class='content_box'>
-    <h3>Order placed</h3>
-    <p><?php echo "Your order offering $amount_disp $type for $want_amount_disp $want_type has been placed."; ?></p>
-    <p>You may view your <a href="?page=view_order&orderid=<?php echo $orderid; ?>">new order</a> or
-       visit the <a href="?page=orderbook">orderbook</a>.</p>
+    <h3><?php echo _("Order placed"); ?></h3>
+    <p><?php printf(_("Your order offering %s for %s has been placed."),
+                    $amount_disp . " " . $type,
+                    $want_amount_disp . " " . $want_type); ?></p>
+    <p><?php printf(_("You may view your %snew order%s or visit the %sorderbook%s."),
+                    '<a href="?page=view_order&orderid=' . $orderid . '">',
+                    '</a>',
+                    '<a href="?page=orderbook">',
+                    '</a>'); ?></p>
 </div>

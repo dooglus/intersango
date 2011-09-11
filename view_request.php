@@ -43,7 +43,7 @@ function display_request_info_btc($reqid)
     $result = do_query($query);
     $row = mysql_fetch_assoc($result);
     if ($row) {
-        echo "<p>Bitcoin address: {$row['addy']}</p>\n";
+        echo "<p>" . _("Bitcoin address") . ": {$row['addy']}</p>\n";
         return;
     }
 
@@ -55,7 +55,7 @@ function display_request_info_btc($reqid)
     $result = do_query($query);
     $row = mysql_fetch_assoc($result);
     if ($row) {
-        echo "<p>Voucher: {$row['prefix']}-...</p>\n";
+        echo "<p>" . _("Voucher") . ": {$row['prefix']}-...</p>\n";
         return;
     }
 }
@@ -70,8 +70,8 @@ function display_request_info_intnl($reqid)
     $row = mysql_fetch_assoc($result);
     if (!$row)
         return;
-    echo "<p>IBAN: {$row['iban']}</p>\n";
-    echo "<p>BIC/SWIFT: {$row['swift']}</p>\n";
+    echo "<p>" . _("IBAN") . ": {$row['iban']}</p>\n";
+    echo "<p>" . _("BIC/SWIFT") . ": {$row['swift']}</p>\n";
 }
 
 function get_request_uid($reqid)
@@ -116,8 +116,8 @@ if (isset($_POST['cancel_request'])) {
         release_lock($request_uid);
 
     ?><div class='content_box'>
-        <h3>Cancelled!</h3>
-        <p>Request <?php echo $reqid; ?> is no more.</p>
+        <h3><?php echo "Cancelled!"; ?></h3>
+        <p><?php printf(_("Request %s is no more."), $reqid); ?></p>
     </div><?php
 } else if (isset($_POST['finish_request'])) {
     // mark an order's status as 'FINAL'
@@ -141,12 +141,15 @@ if (isset($_POST['cancel_request'])) {
         ";
         do_query($query);
         echo "    <div class='content_box'>\n";
-        echo "        <h3>Finished!</h3>\n";
-        echo "        <p>Request $reqid has been set to ", translate_request_code("FINAL"), " status.</p>\n";
+        echo "        <h3>" . _("Finished!") . "</h3>\n";
+        echo "        <p>" . sprintf(_("Request %s has been set to %s status."),
+                                     $reqid,
+                                     translate_request_code("FINAL")) . "</p>\n";
     } else {
         echo "    <div class='content_box'>\n";
-        echo "        <h3>Warning!</h3>\n";
-        echo "        <p>Request $reqid was cancelled before we could mark it as finished.</p>\n";
+        echo "        <h3>" . _("Warning!") . "</h3>\n";
+        echo "        <p>" . sprintf(_("Request %s was cancelled before we could mark it as finished."),
+                                     $reqid) . "</p>\n";
     }
     release_lock($request_uid);
 
@@ -176,13 +179,13 @@ if (isset($_POST['cancel_request'])) {
     $timest = $row['timest'];
     $status = $row['status'];
     ?> <div class='content_box'>
-        <h3>Order info</h3>
+        <h3><?php echo _("Order info"); ?></h3>
         <p>
-        Request <?php echo $reqid; ?>
+        <?php printf(_("Request %s"), $reqid); ?>
         </p>
         <?php
         if ($req_type == 'WITHDR') {
-            echo "<p>Withdrawing $amount $curr_type.</p>\n";
+            echo "<p>" . sprintf(_("Withdrawing %s."), "$amount $curr_type") . "</p>\n";
         }
         ?>
         <p>
@@ -194,7 +197,7 @@ if (isset($_POST['cancel_request'])) {
         ?>
         </p>
         <p>
-        Made <?php echo $timest; ?>
+        <?php printf(_("Made %s"), $timest); ?>
         </p>
         <p>
         <?php echo translate_request_code($status); ?>
@@ -209,13 +212,14 @@ if (isset($_POST['cancel_request'])) {
             </p>
         <?php
         if (isset($_GET['show_finish']) && $is_admin && $curr_type == CURRENCY) {
-            echo "            <p>Clicking 'Finish request' will mark this request as being ", translate_request_code("FINAL"), ":</p>\n"; ?>
-            <p>Click 'Finish', check to see that it worked (and that the order wasn't cancelled), then make the bank transfer.</p>
+            echo "            <p>" . sprintf(_("Clicking 'Finish request' will mark this request as being %s"),
+                                             translate_request_code("FINAL")) . ":</p>\n"; ?>
+            <p><?php echo _("Click 'Finish', check to see that it worked (and that the order wasn't cancelled), then make the bank transfer."); ?></p>
             <p>
             <form action='' class='indent_form' method='post'>
                 <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
                 <input type='hidden' name='finish_request' value='true' />
-                <input type='submit' value='Finish request' />
+                <input type='submit' value='<?php echo _("Finish request"); ?>' />
             </form> 
             </p>
             <?php }

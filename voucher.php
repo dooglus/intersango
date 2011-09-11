@@ -81,7 +81,7 @@ function check_voucher_code($code)
 
     $row = voucher_code_exists($code);
     if (!$row)
-        throw new Exception("no such voucher exists");
+        throw new Exception(_("no such voucher exists"));
 
     $reqid = $row['reqid'];
     $redeem_reqid = $row['redeem_reqid'];
@@ -93,13 +93,13 @@ function check_voucher_code($code)
     // echo "reqid: '$reqid'; redeem_reqid: '$redeem_reqid'; uid: $uid; amount: $amount; curr_type: $curr_type; status: $status<br/>\n";
 
     if ($redeem_reqid)
-        throw new Exception("this voucher has already been redeemed");
+        throw new Exception(_("this voucher has already been redeemed"));
 
     if ($status == 'CANCEL')
-        throw new Exception("this voucher has been cancelled by the user who issued it");
+        throw new Exception(_("this voucher has been cancelled by the user who issued it"));
 
     if ($status != 'VERIFY')
-        throw new Exception("coding error; voucher wasn't redeemed or cancelled, but isn't in state 'VERIFY'");
+        throw new Exception(_("coding error; voucher wasn't redeemed or cancelled, but isn't in state 'VERIFY'"));
 
     return array($reqid, $uid, $amount, $curr_type);
 }
@@ -225,7 +225,10 @@ function redeem_voucher($code, $uid)
     redeemed_voucher_code($issuing_reqid, $reqid);
     add_funds($uid, $amount, $curr_type);
 
-    echo "<p><strong>", internal_to_numstr($amount), " $curr_type has been credited to your account.</strong></p>\n";
+    echo "<p><strong>" .
+        sprintf("%s has been credited to your account.",
+                internal_to_numstr($amount) . " $curr_type") .
+        "</strong></p>\n";
 }
 
 function store_new_bitcoin_voucher_code($reqid)

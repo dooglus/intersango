@@ -19,7 +19,7 @@ if(isset($_POST['cancel_order']))
 }
 
 if (!isset($_GET['orderid']))
-    throw new Problem('No order selected', 'Hit back and select an order.');
+    throw new Problem(_('No order selected'), _('Hit back and select an order.'));
 $orderid = get('orderid');
 $uid = user_id();
 $info = fetch_order_info($orderid);
@@ -44,7 +44,7 @@ if (isset($_POST['cancel_order'])) {
         if (mysql_affected_rows() > 1) 
             throw new Error('Serious...', 'More rows updated than should be. Contact the sysadmin ASAP.');
         else if (mysql_affected_rows() == 0) 
-            throw new Problem('Cannot...', 'Your order got bought up before you were able to cancel.');
+            throw new Problem(_('Cannot...'), _('Your order got bought up before you were able to cancel.'));
         else 
             throw new Error('Serious...', 'Internal error. Contact sysadmin ASAP.');
     }
@@ -77,16 +77,18 @@ else {
     ?> <div class='content_box'>
         <h3>Order info</h3>
         <p>
-        Order <?php echo $orderid; ?>
+        <?php printf(_("Order %s"), $orderid); ?>
         </p>
         <p>
-        When the order was placed: <?php echo "$initial_amount $type"; ?> for <?php echo "$initial_want_amount $want_type"; ?>
+        <?php printf(_("When the order was placed: %s for %s"),
+                     "$initial_amount $type",
+                     "$initial_want_amount $want_type"); ?>
         </p>
         <?php if ($status == 'OPEN') {
             echo "<p>$amount $type for $want_amount $want_type remaining.</p>";
         } ?>
         <p>
-        Made <?php echo $timest; if ($is_logged_in != $uid) echo " by user $uid"; ?>
+        <?php printf(_("Made %s"), $timest); if ($is_logged_in != $uid) echo " " . sprintf(_("by user %s"), $uid); ?>
         </p>
         <p>
         <?php echo translate_order_code($status); ?>
@@ -104,4 +106,3 @@ else {
     display_transactions($uid, $orderid);
 }
 ?>
-

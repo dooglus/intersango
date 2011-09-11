@@ -34,13 +34,13 @@ while ($row = mysql_fetch_assoc($result)) {
         $first = false;
         echo "<table class='display_data'>\n";
         echo "<tr>";
-        echo "<th>TID</th>";
+        echo "<th><?php echo _("TID"); ?></th>";
         if ($is_admin) echo "<th>User</th>";
         echo "<th>" . CURRENCY . "</th>";
-        if ($is_admin) echo "<th>User</th>";
-        echo "<th>BTC</th>";
-        echo "<th>Price</th>";
-        echo "<th>Date</th>";
+        if ($is_admin) echo "<th><?php echo _("User"); ?></th>";
+        echo "<th><?php echo _("BTC"); ?></th>";
+        echo "<th><?php echo _("Price"); ?></th>";
+        echo "<th><?php echo _("Date"); ?></th>";
         echo "</tr>";
     }
     
@@ -105,12 +105,13 @@ else {
     echo "    </tr>\n";
     echo "</table>\n";
 
-    if ($mine) {
-        if ($mine == 1)
-            echo "<p>The amount you <span style='font-weight: bold;'>gave</span> is in <span style='font-weight: bold;'>bold</span>.</p>\n";
-        else
-            echo "<p>The $mine amounts you <span style='font-weight: bold;'>gave</span> are in <span style='font-weight: bold;'>bold</span>.</p>\n";
-    }
+    if ($mine)
+        echo "<p>" . sprintf(_("The %s amount(s) you %sgave%s are shown in %sbold%s."),
+                             $mine,
+                             "<span style='font-weight: bold;'>"
+                             "</span>"
+                             "<span style='font-weight: bold;'>"
+                             "</span>") . "</p>\n";
 }
 
 ?>

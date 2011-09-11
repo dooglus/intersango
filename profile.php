@@ -4,16 +4,16 @@ require_once 'util.php';
 require_once 'view_util.php';
 
 if (!isset($_SESSION['uid']))
-    throw new Error('Denied', 'Go away.');
+    throw new Error(_('Denied'), _('Go away.'));
 
 echo "   <div class='content_box'>\n";
-echo "<h3>Private user info</h3>\n";
+echo "<h3>" . _("Private user info") . "</h3>\n";
 # main info
-echo "<p>You are logged in.</p>\n";
+echo "<p>" . _("You are logged in.") . "</p>\n";
 $uid = $_SESSION['uid'];
 $oidlogin = $_SESSION['oidlogin'];
-echo "<p>User ID: $uid</p>\n";
-echo "<p>OpenID: $oidlogin</p>\n";
+echo "<p>" . _("User ID") . ": $uid</p>\n";
+echo "<p>" . _("OpenID") . ": $oidlogin</p>\n";
 show_balances($uid);
 show_committed_balances($uid);
 check_fiat_balance_limit($uid, "0");
@@ -37,15 +37,15 @@ $result = do_query($query);
 $row = mysql_fetch_assoc($result);
 if ($row) { ?>
     <div class='content_box'>
-    <h3>Your orders</h3>
+    <h3><?php echo _("Your orders"); ?></h3>
     <table class='display_data'>
         <tr>
-            <th>Giving</th>
-            <th>Wanted</th>
-            <th>Price</th>
-            <th>Time</th>
-            <th>Status<br/>(% matched)</th>
-            <th>Trades</th>
+            <th><?php echo _("Giving"); ?></th>
+            <th><?php echo _("Wanted"); ?></th>
+            <th><?php echo _("Price"); ?></th>
+            <th><?php echo _("Time"); ?></th>
+            <th><?php echo _("Status"); ?><br/>(<?php echo _("% matched"); ?>)</th>
+            <th><?php echo _("Trades"); ?></th>
         </tr><?php
     do {
         $orderid = $row['orderid'];
@@ -95,12 +95,12 @@ $result = do_query($query);
 $row = mysql_fetch_assoc($result);
 if ($row) { ?>
     <div class='content_box'>
-    <h3>Your requests</h3>
+    <h3><?php echo _("Your requests"); ?></h3>
     <table class='display_data'>
         <tr>
-            <th>Amount</th>
-            <th>Time</th>
-            <th>Status</th>
+            <th><?php echo _("Amount"); ?></th>
+            <th><?php echo _("Time"); ?></th>
+            <th><?php echo _("Status"); ?></th>
             <th></th>
         </tr><?php
     do {
@@ -129,12 +129,12 @@ try {
 
     if ($balance != $bitcoin->getbalance($uid, 0)) { ?>
     <div class='content_box'>
-    <h3>Pending bitcoin deposits</h3>
+    <h3><?php echo _("Pending bitcoin deposits"); ?></h3>
     <table class='display_data'>
         <tr>
-            <th>Amount</th>
-            <th>Confirmations Received</th>
-            <th>More Confirmations Needed</th>
+            <th><?php echo _("Amount"); ?></th>
+            <th><?php echo _("Confirmations Received"); ?></th>
+            <th><?php echo _("More Confirmations Needed"); ?></th>
         </tr>
     <?php
         for ($conf = $needed_conf; $conf >= 0; $conf--) {
@@ -151,9 +151,9 @@ try {
     if ($e->getMessage() != 'Unable to connect.')
         throw $e;
     echo "<div class='content_box'>\n";
-    echo "<h3>Pending bitcoin deposits</h3>\n";
-    echo "<p>Normally this area would display any Bitcoin deposits you have made that are awaiting confirmations, but we are having trouble connecting to the Bitcoin network at the moment, so it doesn't.</p>\n";
-    echo "<p>Please try again in a few minutes.</p>\n";
+    echo "<h3>" . _("Pending bitcoin deposits") . "</h3>\n";
+    echo "<p>" . _("Normally this area would display any Bitcoin deposits you have made that are awaiting confirmations, but we are having trouble connecting to the Bitcoin network at the moment, so it doesn't.") . "</p>\n";
+    echo "<p>" . _("Please try again in a few minutes.") . "</p>\n";
     echo "</div>";
 }
 ?>

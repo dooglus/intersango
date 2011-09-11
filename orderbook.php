@@ -10,21 +10,21 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
     
     echo "<div class='content_box'>\n";
     if ($curr_a == 'BTC')
-        echo "<h3>People selling $curr_a for $curr_b</h3>\n";
+        echo "<h3>" . sprintf(_("People selling %s for %s"), $curr_a, $curr_b) . "</h3>\n";
     else
-        echo "<h3>People buying $curr_b for $curr_a</h3>\n";
+        echo "<h3>" . sprintf(_("People buying %s for %s"), $curr_b, $curr_a) . "</h3>\n";
 
     $exchange_fields = calc_exchange_rate($curr_a, $curr_b, $base_curr);        
     if (!$exchange_fields) {
         if ($curr_a == 'BTC')
-            echo "<p>Nobody is selling $curr_a for $curr_b.</p>";
+            echo "<p>" . sprintf(_("Nobody is selling %s for %s."), $curr_a, $curr_b) . "</p>";
         else
-            echo "<p>Nobody is buying $curr_b for $curr_a.</p>";
+            echo "<p>" . sprintf(_("Nobody is buying %s for %s."), $curr_b, $curr_a) . "</p>";
         echo "</div>";
         return;
     }
     list($total_amount, $total_want_amount, $rate) = $exchange_fields; 
-    echo "<p>Best exchange rate is ";
+    echo "<p>" . _("Best exchange rate is") . " ";
     if ($base_curr == BASE_CURRENCY::A)
         echo "<b>$rate $curr_b/$curr_a</b>";
     else
@@ -32,15 +32,15 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
     echo ".</p>";
 
     if (!$show_all)
-        echo "<p>Showing top 5 entries:</p>";
+        echo "<p>" . _("Showing top 5 entries") . ":</p>";
 
 ?><table class='display_data'>
         <tr>
-            <th>Cost / BTC</th>
-            <th>Giving</th>
-            <th>Wanted</th>
+            <th><?php echo _("Cost / BTC"); ?></th>
+            <th><?php echo _("Giving"); ?></th>
+            <th><?php echo _("Wanted"); ?></th>
 <?php if ($is_admin) { ?>
-            <th>User</th>
+            <th><?php echo _("User"); ?></th>
 <?php } ?>
         </tr><?php
 
@@ -90,7 +90,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
     }
 
     echo "    <tr>\n";
-    echo "        <td>Total:</td>\n";
+    echo "        <td>" . _("Total") . ":</td>\n";
     # strstr's 3rd argument only works in PHP 5.3.0 and newer
     #   http://php.net/manual/en/function.strstr.php
     # use explode instead
@@ -101,9 +101,9 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
     echo "    </tr>\n";
     echo "</table>\n";
     if ($show_all)
-        echo "<p><a href='?page=orderbook&show_all=false'>&gt;&gt; hide</a></p>\n";
+        echo "<p><a href='?page=orderbook&show_all=false'>&gt;&gt; " . _("hide") . "</a></p>\n";
     else
-        echo "<p><a href='?page=orderbook&show_all=true'>&gt;&gt; show all</a></p>\n";
+        echo "<p><a href='?page=orderbook&show_all=true'>&gt;&gt; " . _("show all") . "</a></p>\n";
     echo "</div>\n";
 }
 

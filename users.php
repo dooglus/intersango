@@ -61,15 +61,15 @@ function show_users()
             echo "<th colspan='3' style='text-align: center;'>BTC</th>";
             echo "</tr>\n";
             echo "<tr>";
-            echo "<th>UID</th>";
-//          echo "<th>OID</th>";
-            echo "<th>On Hand</th>";
-            echo "<th>In Book</th>";
-            echo "<th>Total</th>";
-            echo "<th>On Hand</th>";
-            echo "<th>In Book</th>";
-            echo "<th>Total</th>";
-//          echo "<th>Registered</th>";
+            echo "<th>" . _("UID") . "</th>";
+//          echo "<th>" . _("OID") . "</th>";
+            echo "<th>" . _("On Hand") . "</th>";
+            echo "<th>" . _("In Book") . "</th>";
+            echo "<th>" . _("Total") . "</th>";
+            echo "<th>" . _("On Hand") . "</th>";
+            echo "<th>" . _("In Book") . "</th>";
+            echo "<th>" . _("Total") . "</th>";
+//          echo "<th>" . _("Registered") . "</th>";
             echo "</tr>\n";
         }
 
@@ -123,28 +123,35 @@ function show_users()
         echo "<td>", internal_to_numstr($t_btc_total,  BTC_PRECISION), "</td>";
         echo "</tr>\n";
         echo "</table>\n";
-        echo "<p>Admins are shown in bold type, and at the top of the table.</p>\n";
+        echo "<p>" . _("Admins are shown in bold type, and at the top of the table.") . "</p>\n";
     }
 
-    echo "<p>There are $count_funded_users users with funds, and $count_users in total.</p>\n";
+    echo "<p>" . sprintf(_("There are %s users with funds, and %s in total."),
+                         $count_funded_users,
+                         $count_users) . "</p>\n";
     if ($omit_very_low_balances && $count_low_balance_users)
-        echo "<p>$count_low_balance_users user(s) have very low balances, and aren't shown above.</p>\n";
+        echo "<p>" . sprintf(_("%d user(s) have very low balances, and aren't shown above."),
+                             $count_low_balance_users) . "</p>\n";
 
     $bitcoin = connect_bitcoin();
     $balance = $bitcoin->getbalance('');
 
-    echo "<p>The Bitcoin wallet has ", internal_to_numstr($balance, BTC_PRECISION), " BTC.<br/></p>\n";
+    echo "<p>" . sprintf(_("The Bitcoin wallet has %s BTC."), internal_to_numstr($balance, BTC_PRECISION)) . "<br/></p>\n";
 
     $diff = gmp_sub($t_btc_total, $balance);
 
     $cmp = gmp_cmp($diff, 0);
 
     if ($cmp == 0)
-        echo "<p>That's the exact right amount</p>\n";
+        echo "<p>" . _("That's the exact right amount.") . "</p>\n";
     else if ($cmp > 0)
-        echo "<p>That's ", internal_to_numstr($diff, BTC_PRECISION), " BTC less than is on deposit</p>\n";
+        echo "<p>" .
+            sprintf(_("That's %s BTC less than is on deposit"), internal_to_numstr($diff, BTC_PRECISION)) .
+            "</p>\n";
     else
-        echo "<p>That's ", internal_to_numstr(gmp_mul("-1", $diff), BTC_PRECISION), " BTC more than is on deposit</p>\n";
+        echo "<p>" .
+            sprintf(_("That's %s BTC more than is on deposit"), internal_to_numstr(gmp_mul("-1", $diff), BTC_PRECISION)) .
+            "</p>\n";
 
     echo "</div>\n";
 }
