@@ -6,7 +6,7 @@ function show_users()
     $omit_very_low_balances = true;
 
     echo "<div class='content_box'>\n";
-    echo "<h3>Users</h3>\n";
+    echo "<h3>" . _("Users") . "</h3>\n";
 
     $query = "
     SELECT

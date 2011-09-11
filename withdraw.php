@@ -189,8 +189,8 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
     echo "<div class='content_box'>\n";
     echo "<h3>" . sprintf(_("Withdraw %s"), $curr_type) . "</h3>\n";
     if ($voucher)
-        echo "<p>" . sprintf(_("Your voucher for %s is:",
-                               "$amount_disp $curr_type") . "</p><p class='voucher'>$voucher_code</p>\n";
+        echo "<p>" . sprintf(_("Your voucher for %s is:"),
+                             "$amount_disp $curr_type") . "</p><p class='voucher'>$voucher_code</p>\n";
     else
         echo "<p>" . sprintf(_("Your request to withdraw %s has been submitted. Visit your %sprofile%s to check on the status of your request."),
                              "$amount_disp $curr_type",
@@ -201,7 +201,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
 else {
 ?>
     <div class='content_box'>
-    <h3>Withdraw <?php echo CURRENCY; ?> (Australian residents)</h3>
+    <h3><?php printf(_("Withdraw %s (%s residents)"), CURRENCY, CURRENCY_NATIONALITY); ?></h3>
 <?php
     $uid = user_id();
     $balances = fetch_balances($uid);
@@ -226,7 +226,7 @@ else {
     if (gmp_cmp($fiat, '0') <= 0)
         echo "    <p>" . sprintf(_("You don't have any %s to withdraw."), CURRENCY) . "</p>\n";
     else if (gmp_cmp($available, '0') > 0) {
-        echo "    <p>" . sprintf(_("Enter an amount below to withdraw.  You have %s.")
+        echo "    <p>" . sprintf(_("Enter an amount below to withdraw.  You have %s."),
                                  internal_to_numstr($fiat) . " " . CURRENCY) . "</p>\n";
 ?>
     <p><?php echo _("We charge no fee.

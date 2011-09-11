@@ -81,9 +81,9 @@ function display_transactions($uid, $orderid)
 <?php if (!$orderid) { ?>
                     <th><?php echo _("Order"); ?></th>
 <?php } ?>
-                    <th><?php echo _("You gave)"; ?></th>
-                    <th><?php echo _("You got)"; ?></th>
-                    <th><?php echo _("Commission)"; ?></th>
+                    <th><?php echo _("You gave"); ?></th>
+                    <th><?php echo _("You got"); ?></th>
+                    <th><?php echo _("Commission"); ?></th>
                     <th><?php echo _("Price"); ?></th>
                     <th><?php echo _("Time"); ?></th>
                 </tr><?php

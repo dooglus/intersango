@@ -28,7 +28,7 @@ function show_statement($xero, $account, $from = '', $to = '')
     $result = $xero->BankStatement("?bankaccountid=$account$from$to");
     if ($result['Status'] == 'OK') {
         echo "<div class='content_box'>\n";
-        echo "<h3>Statement</h3>\n";
+        echo "<h3>" . _("Statement") . "</h3>\n";
 
         $report = $result['Reports']['Report'];
         echo "<p>Titles: ", implode($report['ReportTitles']['ReportTitle'], ' - '), "</p>\n";
@@ -62,7 +62,7 @@ function show_statement($xero, $account, $from = '', $to = '')
 function show_withdrawals()
 {
     echo "<div class='content_box'>\n";
-    echo "<h3>Withdraw requests</h3>\n";
+    echo "<h3>" . _("Withdraw requests") . "</h3>\n";
     $result = do_query("
         SELECT requests.reqid as reqid, uid, amount, " . sql_format_date("timest") . " as timest, name, bank, acc_num, sort_code
         FROM requests

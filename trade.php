@@ -137,7 +137,7 @@
         </div>
 
         <div class='content_box'>
-            <h3>Commission</h3>
+            <h3><?php echo _("Commission"); ?></h3>
 <?php
     if (COMMISSION_PERCENTAGE_FOR_FIAT == 0 && COMMISSION_PERCENTAGE_FOR_BTC == 0)
         echo "<p>" . _("All trades are free of commission") . "</p>\n";

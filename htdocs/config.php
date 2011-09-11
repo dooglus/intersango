@@ -24,6 +24,7 @@ define('LOCALE', 'de_DE');
 // `------------------------------------------------------------------------
 
 define('CURRENCY',             'AUD');
+define('CURRENCY_NATIONALITY', 'Australian');
 define('CURRENCY_FULL',        'Australian Dollar');
 define('CURRENCY_FULL_PLURAL', 'Australian Dollars');
 

@@ -364,13 +364,13 @@ function show_statement($userid)
                  ) as $a => $b)
         echo "<tr><td>$a</td><td>$b</td></tr>\n";
     foreach (array(
-                 _("total") . " BTC " . _("bought") => array(internal_to_numstr($total_btc_got,     BTC_PRECISION) . " BTC", "for",
+                 _("total") . " BTC " . _("bought") => array(internal_to_numstr($total_btc_got,     BTC_PRECISION) . " BTC", _("for"),
                                                              internal_to_numstr($total_fiat_given, FIAT_PRECISION) . " " . CURRENCY,
                                                              $bought_price),
-                 _("total") . " BTC " . _("sold")   => array(internal_to_numstr($total_btc_given,   BTC_PRECISION) . " BTC", "for",
+                 _("total") . " BTC " . _("sold")   => array(internal_to_numstr($total_btc_given,   BTC_PRECISION) . " BTC", _("for"),
                                                              internal_to_numstr($total_fiat_got,   FIAT_PRECISION) . " " . CURRENCY,
                                                              $sold_price),
-                 _("net")   . " BTC " . $trade_word => array(internal_to_numstr($trade_btc,         BTC_PRECISION) . " BTC", "for",
+                 _("net")   . " BTC " . $trade_word => array(internal_to_numstr($trade_btc,         BTC_PRECISION) . " BTC", _("for"),
                                                              internal_to_numstr($trade_fiat,       FIAT_PRECISION) . " " . CURRENCY,
                                                              $net_price),
                  ) as $a => $b) {

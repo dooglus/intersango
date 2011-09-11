@@ -8,7 +8,7 @@ function active_table_cell($uid, $txid, $orderid, $sub, $amount, $precision)
 
 ?>
 <div class='content_box'>
-<h3>Rates</h3>
+<h3><?php echo _("Rates"); ?></h3>
 <?php
 show_commission_rates();
 echo "</div>\n";

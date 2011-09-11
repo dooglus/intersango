@@ -680,11 +680,11 @@ function translate_order_code($code)
     switch ($code)
     {
         case 'OPEN':
-            return 'Open';
+            return _('Open');
         case 'CANCEL':
-            return 'Cancelled';
+            return _('Cancelled');
         case 'CLOSED':
-            return 'Completed';
+            return _('Completed');
         default:
             throw new Error(_('No such order'), _('This order is wrong...'));
     }
@@ -695,9 +695,9 @@ function translate_request_type($type)
     switch ($type)
     {
         case 'WITHDR':
-            return 'Withdraw';
+            return _('Withdraw');
         case 'DEPOS':
-            return 'Deposit';
+            return _('Deposit');
         default:
             throw new Error(_('No such request type'), _('This request is wrong...'));
     }

@@ -116,7 +116,7 @@ if ($row) { ?>
         echo "        <td>$req_type $amount $curr_type</td>\n";
         echo "        <td>$timest</td>\n";
         echo "        <td>$status</td>\n";
-        echo "        <td><a href='?page=view_request&reqid=$reqid'>View request</a></td>\n";
+        echo "        <td><a href='?page=view_request&reqid=$reqid'>" . _("View request") . "</a></td>\n";
         echo "    </tr>\n";
     } while ($row = mysql_fetch_assoc($result));
     echo "</table></div>";
