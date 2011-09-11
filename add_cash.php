@@ -31,8 +31,8 @@ function show_similar_codes($reference)
         if ($score >= 50) {
             if ($first) {
                 $first = false;
-                echo "<p>Did you mean one of these?  Higher percentage = closer match.</p>\n";
-                echo "<p>Click an entry to copy it to the form below, then click 'Deposit' again.</p>\n";
+                echo "<p>" . _("Did you mean one of these?  Higher percentage = closer match.") . "</p>\n";
+                echo "<p>" . _("Click an entry to copy it to the form below, then click 'Deposit' again.") . "</p>\n";
                 echo "<table class='display_data'>\n";
             }
             echo "<tr",
@@ -56,7 +56,7 @@ if (isset($_POST['make_deposit'])) {
 }
 
 echo "<div class='content_box'>\n";
-echo "<h3>Deposit cash</h3>\n";
+echo "<h3>" . _("Deposit cash") . "</h3>\n";
 
 if (!$is_admin) throw new Error("GTFO", "How did you get here?");
 
@@ -78,15 +78,16 @@ if (isset($_POST['deposit_cash'])) {
             VALUES               ('DEPOS',  '" . CURRENCY . "',     $user, $amount_internal)
         ";
         do_query($query);
-        echo "<p><span style='font-weight: bold;'>added request to deposit $amount " . CURRENCY .
-            " to user $user's purse (reference $reference)</span></p>\n";
-        echo "<p>deposit should show up in their account <string>in a minute or two</strong></p>\n";
-        echo "<p>make another deposit?</p>\n";
+        printf("<p><span style='font-weight: bold;'>" . _("added request to deposit %s to user %s's purse (reference %s)") . "</span></p>\n",
+               ($amount . " " . CURRENCY), $user, $reference);
+        echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
+        echo "<p>" . _("make another deposit?") . "</p>\n";
         $amount= $reference = '';
     } else {
-        echo "<p>'$reference' isn't a valid reference code\n";
+        printf("<p>" . _("'%s' isn't a valid reference code") . "</p>\n",
+               $reference);
         show_similar_codes($reference);
-        echo "<p>try again?</p>\n";
+        echo "<p>" . _("try again?") . "</p>\n";
     }
 } else
     $amount = $reference = '';
@@ -95,10 +96,10 @@ if (isset($_POST['deposit_cash'])) {
         <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
         <input type='hidden' name='deposit_cash' value='true' />
 
-        <label for='reference'>Reference</label>
+        <label for='reference'><?php echo _("Reference"); ?></label>
         <input id='reference' type='text' name='reference' value='<?php echo $reference; ?>'/>
 
-        <label for='amount'>Amount</label>
+        <label for='amount'><?php echo _("Amount"); ?></label>
         <input id='amount' type='text' name='amount' value='<?php echo $amount; ?>' />
 
         <input type='submit' value='Deposit' />

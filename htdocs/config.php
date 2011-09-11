@@ -27,6 +27,31 @@ define('CURRENCY',             'AUD');
 define('CURRENCY_FULL',        'Australian Dollar');
 define('CURRENCY_FULL_PLURAL', 'Australian Dollars');
 
+define('CONTACT_EMAIL_ADDRESS', 'support@intersango.com.au');
+define('CONTACT_SKYPE_ADDRESS', 'worldbitcoinexchange');
+define('CONTACT_FACEBOOK_URL',  'http://www.facebook.com/pages/World-Bitcoin-Exchange/227118550652605');
+define('CONTACT_FACEBOOK_NAME', 'worldbitcoinexchange');
+define('CONTACT_TWITTER_NAME',  'worldbitcoinx');
+define('CONTACT_PHONE_NUMBER',  '+617 3102-9666');
+define('CONTACT_OFFICE_HOURS',  'Mon-Fri 9am to 5pm');
+define('CONTACT_TIME_ZONE',     'UTC/GMT +10 hours');
+define('CONTACT_ADDRESS_ETC',   "<b>High Net Worth Property Pty Ltd</b><br/>
+                                 Trading As: World Bitcoin Exchange<br/>
+                                 ACN: 61 131 700 779<br/>
+                                 Gold Coast<br/>
+                                 Queensland<br/>
+                                 Australia<br/>
+                                 4208");
+
+// .------------------------------------------------------------------------
+// |  bank account details for deposits
+// `------------------------------------------------------------------------
+
+define('DEPOSIT_BANK_ACCOUNT_TITLE',  'High Net Worth Property PTY LTD');
+define('DEPOSIT_BANK_NAME',           'ANZ');
+define('DEPOSIT_BANK_ACCOUNT_NUMBER', '2034-65422');
+define('DEPOSIT_BANK_BRANCH_ID',      '014-506');
+
 // .------------------------------------------------------------------------
 // |  local time
 // `------------------------------------------------------------------------

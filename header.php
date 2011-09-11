@@ -123,7 +123,7 @@ function show_content_header_ticker()
     echo "    <div class='content_header_box'>\n";
     echo "        ", SPACE;
     echo "buy: $buy_link${spaces}sell: $sell_link";
-    echo SPACE, "last: $last", SPACE, "high: $high", SPACE, "low: $low", SPACE, "avg: $vwap\n";
+    echo SPACE, _("last") . ": $last", SPACE, _("high") . ": $high", SPACE, _("low") . ": $low", SPACE, _("avg") . ": $vwap\n";
     echo "    </div>\n";
 }
 
@@ -142,9 +142,9 @@ function show_content_header_frozen()
 {
     if (is_frozen()) {
         echo "    <div class='content_header_box'>\n";
-        echo "        <span style='color: #fff;'>trading on the exchange is currently frozen; no orders will be matched</span>\n";
+        echo "        <span style='color: #fff;'>" . _("trading on the exchange is currently frozen; no orders will be matched") . "</span>\n";
         global $is_admin;
-        if ($is_admin) echo "&nbsp;&nbsp;&nbsp;&nbsp;<a style='color: red;' href=\"?page=freeze\">unfreeze</a>\n";
+        if ($is_admin) echo "&nbsp;&nbsp;&nbsp;&nbsp;<a style='color: red;' href=\"?page=freeze\">" . _("unfreeze") . "</a>\n";
         echo "    </div>\n";
     }
 }

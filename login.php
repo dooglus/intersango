@@ -46,8 +46,8 @@ try {
 
             show_header('login', $uid);
             echo "                    <div class='content_box'>\n";
-            echo "                    <h3>Successful login!</h3>\n";
-            echo "                    <p>Welcome back commander. Welcome back.</p>\n";
+            echo "                    <h3>" . _("Successful login!") . "</h3>\n";
+            echo "                    <p>" . _("Welcome back commander. Welcome back.") . "</p>\n";
         }
         else {
             show_header('login', 0);
@@ -65,8 +65,8 @@ try {
             show_header('login', 0);
 ?>
 <div class='content_box'>
-<h3>Login</h3>
-<p>Enter your OpenID login below:</p>
+<h3><?php echo _("Login"); ?></h3>
+<p><?php echo _("Enter your OpenID login below:"); ?></p>
 <p>
     <form action='' class='indent_form' method='get'>
         <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
@@ -75,13 +75,15 @@ try {
         <input type='submit' value='Submit' />
     </form>
 </p>
-<p>If you do not have an OpenID login then we recommend <a href="https://www.myopenid.com/">MyOpenID</a>.</p>
-<p>Alternatively you may sign in using <a href="?page=login&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=<?php echo $_SESSION['csrf_token']; ?>">Google</a> or <a href="?page=login&openid_identifier=me.yahoo.com&csrf_token=<?php echo $_SESSION['csrf_token']; ?>">Yahoo</a>.</p>
+<p><?php printf(_("If you do not have an OpenID login then we recommend %s."), "<a href=\"https://www.myopenid.com/\">MyOpenID</a>"); ?></p>
+<p><?php printf(_("Alternatively you may sign in using %s or %s."),
+                "<a href=\"?page=login&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=" . $_SESSION['csrf_token'] . "\">Google</a>"
+                "<a href=\"?page=login&openid_identifier=me.yahoo.com&csrf_token=" . $_SESSION['csrf_token'] . "\">Yahoo</a>"); ?></p>
 <?php
         }
         else if ($openid->mode == 'cancel') {
             show_header('login', 0);
-            throw new Problem(":(", "Login was cancelled.");
+            throw new Problem(":(", _("Login was cancelled."));
         }
         else if ($openid->validate()) {
             # protect against session hijacking now we've escalated privilege level
@@ -120,8 +122,8 @@ try {
                 if (has_results($result)) {
                     show_header('login', $uid);
                     echo "                    <div class='content_box'>\n";
-                    echo "                        <h3>Successful login!</h3>\n";
-                    echo "                        <p>Welcome back commander. Welcome back.</p>\n";
+                    echo "                        <h3>" . _("Successful login!") . "</h3>\n";
+                    echo "                        <p>" . _("Welcome back commander. Welcome back.") . "</p>\n";
                 } else {
                     // generate random str for deposit reference
                     $query = "
@@ -157,13 +159,19 @@ try {
                     show_header('login', $uid);
 
                     echo "                    <div class='content_box'>\n";
-                    echo "                        <h3>Successful login!</h3>\n";
-                    echo "                        <p>Nice to finally see you here, <i>new</i> user.</p>\n";
+                    echo "                        <h3>" . _("Successful login!") . "</h3>\n";
+                    echo "                        <p>" . _("Nice to finally see you here, <i>new</i> user.") . "</p>\n";
                     if (gmp_cmp($free_fiat, 0) > 0 or gmp_cmp($free_btc, 0))
-                        echo "                        <p>We've given you ",
-                            internal_to_numstr($free_btc), " BTC and ",
-                            internal_to_numstr($free_fiat), " " . CURRENCY . " to test the exchange with.</p>\n";
-                    echo "                        <p>Now you may wish <a href='?page=deposit'>deposit</a> funds before continuing.</p>\n";
+                        echo "                        <p>" .
+                            sprintf("We've given you %s and %s to test the exchange with.",
+                                    internal_to_numstr($free_btc) . " BTC",
+                                    internal_to_numstr($free_fiat) . " " . CURRENCY) .
+                            "</p>\n";
+                    echo "                        <p>" .
+                        sprintf("Now you may wish to %sdeposit%s funds before continuing.",
+                                '<a href="?page=deposit">'
+                                '</a>') .
+                        "</p>\n";
                 }
 
                 // store for later
@@ -172,7 +180,9 @@ try {
             }
         } else {
             show_header('login', 0);
-            throw new Problem(":(", "Unable to login.  Please <a href='?page=login'>try again</a>.");
+            throw new Problem(":(", sprintf(_("Unable to login.  Please %stry again%s."),
+                                            '<a href="?page=login">'
+                                            '</a>'));
         }
     }
 }

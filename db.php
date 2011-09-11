@@ -12,7 +12,7 @@ function do_query($query)
     // echo "query: $query<br/>\n";
     $result = mysql_query($query);
     if (!$result)
-        throw new Error("MySQL Error", mysql_error());
+        throw new Error(_("MySQL Error"), mysql_error());
     return $result;
 }
 function has_results($result)

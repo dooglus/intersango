@@ -9,25 +9,33 @@ class BASE_CURRENCY
 }
 
 function show_contact_info()
-{ ?>
-<h3>Contact info</h3>
-<p>Email: <a href="mailto:support@intersango.com.au">support@Intersango.com.au</a></p>
-<p>Skype: <a href="skype:worldbitcoinexchange?call">worldbitcoinexchange</a></p>
-<p>Facebook: <a target="_blank" href="http://www.facebook.com/pages/World-Bitcoin-Exchange/227118550652605">worldbitcoinexchange</a></p>
-<p>Twitter: <a target="_blank" href="http://twitter.com/worldbitcoinx">@worldbitcoinx</a></p>
-<p>Call +617 3102-9666</p>
-<p>Office Hours Mon-Fri 9am to 5pm</p> 
-<p>(Standard time zone: UTC/GMT +10 hours - it is currently <?php require_once "util.php"; echo get_time_text(); ?>)</p>
-<p>
-<b>High Net Worth Property Pty Ltd <br /></b>
-Trading As: World Bitcoin Exchange <br />
-ACN: 61 131 700 779 <br />
-Gold Coast <br />
-Queensland <br />
-Australia <br />
-4208
-</p>
-<?php }
+{
+    echo "<h3>" . _("Contact info") . "</h3>\n";
+    printf("<p>%s: <a href=\"mailto:%s\">%s</a></p>\n",
+           _("Email"),
+           CONTACT_EMAIL_ADDRESS, CONTACT_EMAIL_ADDRESS);
+    printf("<p>%s: <a href=\"skype:%s?call\">%s</a></p>\n",
+           _("Skype"),
+           CONTACT_SKYPE_ADDRESS, CONTACT_SKYPE_ADDRESS);
+    printf("<p>%s: <a target=\"_blank\" href=\"%s\">%s</a></p>\n",
+           _("Facebook"),
+           CONTACT_FACEBOOK_URL, CONTACT_FACEBOOK_NAME);
+    printf("<p>%s: <a target=\"_blank\" href=\"http://twitter.com/%s\">@%s</a></p>\n",
+           _("Twitter"),
+           CONTACT_TWITTER_NAME, CONTACT_TWITTER_NAME);
+    printf("<p>%s: %s</p>\n",
+           _("Call"),
+           CONTACT_PHONE_NUMBER);
+    printf("<p>%s: %s</p> \n",
+           _("Office Hours"),
+           CONTACT_OFFICE_HOURS);
+    printf("<p>(%s: %s - %s %s)</p>\n",
+           _("Standard time zone"),
+           CONTACT_TIME_ZONE,
+           _("it is currently"), get_time_text());
+    printf("<p>%s</p>\n",
+           CONTACT_ADDRESS_ETC);
+}
 
 function freeze_file()
 {
@@ -56,7 +64,7 @@ function is_frozen()
 function check_frozen()
 {
     if (is_frozen())
-        throw new Error("Frozen", "Trading on the exchange is temporarily frozen");
+        throw new Error(_("Frozen"), _("Trading on the exchange is temporarily frozen"));
 }
 
 function sql_format_date($date)
@@ -241,7 +249,7 @@ function get_wait_lock($uid)
     $umask = umask(0);
     if (!($fp = fopen($lock, "w"))) {
         umask($umask);
-        throw new Error('Lock Error', "Can't create wait lockfile for $uid");
+        throw new Error(_('Lock Error'), "Can't create wait lockfile for $uid");
     }
 
     if (!flock($fp, LOCK_EX|LOCK_NB)) {
@@ -279,7 +287,7 @@ function get_lock($uid, $block)
     $umask = umask(0);
     if (!($fp = fopen($lock, "w"))) {
         umask($umask);
-        throw new Error('Lock Error', "Can't create lockfile for $uid");
+        throw new Error(_('Lock Error'), "Can't create lockfile for $uid");
     }
 
     $block_flags = LOCK_EX;
@@ -288,7 +296,7 @@ function get_lock($uid, $block)
     if ($block == 0) {
         if (!flock($fp, $no_block_flags)) {
             umask($umask);
-            throw new Error('Lock Error', "User $uid is already doing stuff.<br/>");
+            throw new Error(_('Lock Error'), sprintf(_("User %s is already doing stuff."), $uid) . "<br/>");
         }
     } else if ($block == 2) {
         // try to get wait_lock.  don't care whether we get it or not, only doing it to tell others who care that we're waiting
@@ -297,7 +305,7 @@ function get_lock($uid, $block)
             if ($wait_lock)
                 release_wait_lock($wait_lock);
             umask($umask);
-            throw new Error('Lock Error', "Can't get lock for user $uid, even after waiting.<br/>");
+            throw new Error(_('Lock Error'), sprintf(_("Can't get lock for user %s, even after waiting."), $uid) . "<br/>");
         }
         if ($wait_lock)
             release_wait_lock($wait_lock);
@@ -311,12 +319,12 @@ function get_lock($uid, $block)
                 if (!flock($fp, $block_flags)) {
                     release_wait_lock($wait_lock);
                     umask($umask);
-                    throw new Error('Lock Error', "Can't get lock for user $uid, even after waiting.<br/>");
+                    throw new Error(_('Lock Error'), sprintf(_("Can't get lock for user %s, even after waiting."), $uid) . "<br/>");
                 }
                 release_wait_lock($wait_lock);
             } else {
                 umask($umask);
-                throw new Error('Lock Error', "User $uid is already doing stuff, and also already waiting for lock.<br/>");
+                throw new Error(_('Lock Error'), sprintf(_("User %s is already doing stuff, and also already waiting for lock."), $uid) . "<br/>");
             }
         }
     }
@@ -390,7 +398,7 @@ function sync_to_bitcoin($uid)
         $balance = @$bitcoin->getbalance($uid, CONFIRMATIONS_FOR_DEPOSIT);
 
         if (is_float($balance))
-            throw new Error("bitcoind version error", "bitcoind getbalance should return an integer not a float");
+            throw new Error(_("bitcoind version error"), _("bitcoind getbalance should return an integer not a float"));
 
         if (gmp_cmp($balance, '0') > 0) {
             $bitcoin->move($uid, '', $balance);
@@ -655,15 +663,15 @@ function curr_supported_check($curr_type)
 function order_worthwhile_check($amount, $amount_disp, $min_str='0.5')
 {
     if (!is_numeric($amount_disp))
-        throw new Problem('Numbers. Numbers.', 'The value you entered was not a number.');
+        throw new Problem(_('Numbers. Numbers.'), _('The value you entered was not a number.'));
     $min = numstr_to_internal($min_str);
     if ($amount < $min)
-        throw new Problem("Try again...", "Your order size is too small. The minimum is $min_str.");
+        throw new Problem(_("Try again..."), sprintf(_("Your order size is too small. The minimum is %s."), $min_str));
 }
 function enough_money_check($amount, $curr_type)
 {
     if (!has_enough($amount, $curr_type))
-        throw new Problem("Where's the gold?", "You don't have enough $curr_type.");
+        throw new Problem(sprintf(_("Where's the gold?", "You don't have enough %s."), $curr_type));
 }
 
 function translate_order_code($code)
@@ -678,7 +686,7 @@ function translate_order_code($code)
         case 'CLOSED':
             return 'Completed';
         default:
-            throw new Error('No such order', 'This order is wrong...');
+            throw new Error(_('No such order'), _('This order is wrong...'));
     }
 }
 
@@ -691,7 +699,7 @@ function translate_request_type($type)
         case 'DEPOS':
             return 'Deposit';
         default:
-            throw new Error('No such request type', 'This request is wrong...');
+            throw new Error(_('No such request type'), _('This request is wrong...'));
     }
 }
 function translate_request_code($code)
@@ -704,19 +712,19 @@ function translate_request_code($code)
     switch ($code)
     {
         case 'VERIFY':
-            return 'Verifying';
+            return _('Verifying');
         case 'PROCES':
-            return 'Processing';
+            return _('Processing');
         case 'FINAL':
-            return 'Finished';
+            return _('Finished');
         case 'IGNORE':
-            return 'Ignored';
+            return _('Ignored');
         case 'REJECT':
-            return 'Rejected';
+            return _('Rejected');
         case 'CANCEL':
-            return 'Cancelled';
+            return _('Cancelled');
         default:
-            throw new Error('No such request', 'This request is wrong...');
+            throw new Error(_('No such request'), _('This request is wrong...'));
     }
 }
 
@@ -738,27 +746,27 @@ function show_commission_rates()
     $cap = COMMISSION_CAP_IN_BTC;
     $rate = COMMISSION_PERCENTAGE_FOR_BTC;
     if ($rate == 0)
-        echo "<p>buying BTC is free of commission</p>\n";
+        printf("<p>" . _("buying %s is free of commission") . "</p>\n", "BTC");;
     else {
         echo "<p>$rate%";
         if ($cap)
-            echo " (capped at $cap BTC)";
+            echo " (" . _("capped at") . " $cap BTC)";
         else
-            echo " (uncapped)";
-        echo " when buying BTC</p>\n";
+            echo " (" . _("uncapped") . ")";
+        echo " " . _("when buying BTC") . "</p>\n";
     }
 
     $cap = COMMISSION_CAP_IN_FIAT;
     $rate = COMMISSION_PERCENTAGE_FOR_FIAT;
     if ($rate == 0)
-        echo "<p>buying " . CURRENCY . " is free of commission</p>\n";
+        printf("<p>" . _("buying %s is free of commission") . "</p>\n", CURRENCY);
     else {
         echo "<p>$rate%";
         if ($cap)
-            echo " (capped at $cap " . CURRENCY . ")";
+            echo " (" . _("capped at") . " $cap " . CURRENCY . ")";
         else
-            echo " (uncapped)";
-        echo " when selling BTC</p>\n";
+            echo " (" . _("uncapped") . ")";
+        echo " " . _("when selling BTC") . "</p>\n";
     }
 
     echo "</blockquote>\n";
@@ -851,10 +859,10 @@ function day_time_range_string()
 function minutes_past_midnight_as_time_string($minutes)
 {
     if ($minutes == 0)
-        return "midnight";
+        return _("midnight");
 
     if ($minutes == 12*60)
-        return "noon";
+        return _("noon");
 
     return str_replace(' ', '', strftime("%l:%M%P", mktime(0,0,0) + $minutes*60));
 }
@@ -916,7 +924,9 @@ function check_fiat_balance_limit($uid, $amount)
 {
     $balance = total_fiat_balance($uid);
     $limit = numstr_to_internal(MAXIMUM_FIAT_BALANCE);
-    echo "<p>Maximum balance is ", internal_to_numstr($limit), " " . CURRENCY . " and you have ", internal_to_numstr($balance), " " . CURRENCY . ".</p>\n";
+    printf("<p>" . _("Maximum balance is %s and you have %s") . "</p>\n",
+           internal_to_numstr($limit)   . " " . CURRENCY,
+           internal_to_numstr($balance) . " " . CURRENCY);
 }
 
 function check_fiat_transfer_limit($uid, $amount)
@@ -926,7 +936,8 @@ function check_fiat_transfer_limit($uid, $amount)
     $available = gmp_sub($limit, $withdrawn);
 
     if (gmp_cmp($amount, $available) > 0)
-        throw new Problem('Daily limit exceeded', 'You can only transfer '.internal_to_numstr($limit).' ' . CURRENCY . ' per day.');
+        throw new Problem(_('Daily limit exceeded'), sprintf(_('You can only transfer %s per day.'),
+                                                             internal_to_numstr($limit) . ' ' . CURRENCY));
 }
 
 function check_btc_withdraw_limit($uid, $amount)
@@ -936,7 +947,8 @@ function check_btc_withdraw_limit($uid, $amount)
     $available = gmp_sub($limit, $withdrawn);
 
     if (gmp_cmp($amount, $available) > 0)
-        throw new Problem('Daily limit exceeded', 'You can only withdraw '.internal_to_numstr($limit).' BTC per day.');
+        throw new Problem(_('Daily limit exceeded'), sprintf(_('You can only withdraw %s per day.'),
+                                                             internal_to_numstr($limit) . ' BTC'));
 }
 
 function check_withdraw_limit($uid, $amount, $curr_type)

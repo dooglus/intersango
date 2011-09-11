@@ -14,7 +14,7 @@ show_commission_rates();
 echo "</div>\n";
 
 echo "<div class='content_box'>\n";
-echo "<h3>Commission</h3>\n";
+echo "<h3>" . _("Commission") . "</h3>\n";
 
 $query = "
     SELECT txid,
@@ -50,12 +50,12 @@ while ($row = mysql_fetch_assoc($result)) {
         echo "<th style='text-align: center;' colspan=2>BTC</th>";
         echo "</tr>";
         echo "<tr>";
-        echo "<th>TID</th>";
-        echo "<th>Got</th>";
-        echo "<th>Fee</th>";
-        echo "<th>Got</th>";
-        echo "<th>Fee</th>";
-        echo "<th>Date</th>";
+        echo "<th>" . _("TID") . "</th>";
+        echo "<th>" . _("Got") . "</th>";
+        echo "<th>" . _("Fee") . "</th>";
+        echo "<th>" . _("Got") . "</th>";
+        echo "<th>" . _("Fee") . "</th>";
+        echo "<th>" . _("Date") . "</th>";
         echo "</tr>";
     }
     
@@ -111,10 +111,12 @@ if (!$first) {
 }
 
 $commissions = fetch_balances('1');
-echo "<p>In the commission purse, there is ",
-    internal_to_numstr($commissions[CURRENCY], FIAT_PRECISION), " " . CURRENCY . " and ",
-    internal_to_numstr($commissions['BTC'],  BTC_PRECISION), " BTC.\n";
-echo "Hopefully that matches with the totals shown above.</p>\n";
+printf("<p>" . _("In the commission purse, there is %s %s and %s %s.") . "\n",
+       internal_to_numstr($commissions[CURRENCY], FIAT_PRECISION),
+       CURRENCY,
+       internal_to_numstr($commissions['BTC'],  BTC_PRECISION),
+       "BTC");
+echo _("Hopefully that matches with the totals shown above.") . "</p>\n";
 ?>
 <script type="text/javascript">
 var tx = [];
