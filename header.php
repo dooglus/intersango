@@ -78,7 +78,7 @@ function show_content_header_balances($uid)
     $c_btc = internal_to_numstr($c_balances['BTC'], 4);
 
     echo "    <div class='content_header_box'>\n";
-    echo "        ", SPACE, "balances:", SPACE, "$fiat ";
+    echo "        ", SPACE, _("balances"), ":", SPACE, "$fiat ";
     if ($c_fiat > 0) echo "(+$c_fiat) ";
     echo CURRENCY, SPACE, "$btc ";
     if ($c_btc > 0) echo "(+$c_btc) ";
@@ -119,17 +119,17 @@ function show_content_header_ticker()
         $sell_link = "none";
 
     echo "    <div class='content_header_box'>\n";
-    echo "    ", SPACE, "24 hour volume: <a href=\"?page=view_trades\">$vol BTC</a></div>\n";
+    echo "    ", SPACE, _("24 hour volume"), ": <a href=\"?page=view_trades\">$vol BTC</a></div>\n";
     echo "    <div class='content_header_box'>\n";
     echo "        ", SPACE;
-    echo "buy: $buy_link${spaces}sell: $sell_link";
+    echo _("buy") . ": $buy_link${spaces}" . _("sell") . ": $sell_link";
     echo SPACE, _("last") . ": $last", SPACE, _("high") . ": $high", SPACE, _("low") . ": $low", SPACE, _("avg") . ": $vwap\n";
     echo "    </div>\n";
 }
 
 function show_content_header_time()
 {
-    $help_link = "<a target=\"_blank\" href=\"?page=help#ticker\">help</a>";
+    $help_link = "<a target=\"_blank\" href=\"?page=help#ticker\">" . _("help") . "</a>";
     $spaces = '&nbsp;&nbsp;&nbsp;&nbsp;';
 
     echo "    <div class='content_header_box' style='float: right;'>\n";

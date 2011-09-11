@@ -72,12 +72,12 @@ try {
         <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
         <input type='text' name='openid_identifier' />
         <input type='hidden' name='page' value='login' />
-        <input type='submit' value='Submit' />
+        <input type='submit' value='<?php echo _("Submit"); ?>' />
     </form>
 </p>
 <p><?php printf(_("If you do not have an OpenID login then we recommend %s."), "<a href=\"https://www.myopenid.com/\">MyOpenID</a>"); ?></p>
 <p><?php printf(_("Alternatively you may sign in using %s or %s."),
-                "<a href=\"?page=login&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=" . $_SESSION['csrf_token'] . "\">Google</a>"
+                "<a href=\"?page=login&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=" . $_SESSION['csrf_token'] . "\">Google</a>",
                 "<a href=\"?page=login&openid_identifier=me.yahoo.com&csrf_token=" . $_SESSION['csrf_token'] . "\">Yahoo</a>"); ?></p>
 <?php
         }
@@ -169,7 +169,7 @@ try {
                             "</p>\n";
                     echo "                        <p>" .
                         sprintf("Now you may wish to %sdeposit%s funds before continuing.",
-                                '<a href="?page=deposit">'
+                                '<a href="?page=deposit">',
                                 '</a>') .
                         "</p>\n";
                 }
@@ -181,7 +181,7 @@ try {
         } else {
             show_header('login', 0);
             throw new Problem(":(", sprintf(_("Unable to login.  Please %stry again%s."),
-                                            '<a href="?page=login">'
+                                            '<a href="?page=login">',
                                             '</a>'));
         }
     }

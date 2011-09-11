@@ -746,7 +746,7 @@ function show_commission_rates()
     $cap = COMMISSION_CAP_IN_BTC;
     $rate = COMMISSION_PERCENTAGE_FOR_BTC;
     if ($rate == 0)
-        printf("<p>" . _("buying %s is free of commission") . "</p>\n", "BTC");;
+        printf("<p>" . _("buying %s is free of commission") . "</p>\n", "BTC");
     else {
         echo "<p>$rate%";
         if ($cap)
