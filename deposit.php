@@ -68,7 +68,7 @@ if (isset($_POST['code'])) {
 
 <div class='content_box'>
      <h3><?php echo _("Deposit Voucher"); ?></h3>
-                                                  <p><?php printf(
+    <p><?php printf(
     _("It's possible to withdraw BTC or %s as 'vouchers' on the
        withdraw page.  These vouchers can be given to other exchange
        users and redeemed here."), CURRENCY); ?>
@@ -78,8 +78,12 @@ if (isset($_POST['code'])) {
        copy/paste the voucher code into the box below to redeem it.")); ?>
     </p>
     <p><?php printf(
-    _("We also accept MTGOX-%s-... vouchers for instant transfers
-       of %s from MtGox to this exchange."), CURRENCY, CURRENCY); ?>
+    _("We also accept %sMTGOX-%s-...%s vouchers for instant transfers
+       of %s from MtGox to this exchange."), "<strong>", CURRENCY, "</strong>", CURRENCY); ?>
+    <p><?php printf(
+    _("Note that there will be a %s%% fee (capped at %s) taken for processing of MtGox vouchers."),
+    COMMISSION_PERCENTAGE_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER,
+    sprintf("%.2f %s", COMMISSION_CAP_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER, CURRENCY)); ?>
     </p>
 <?php show_deposit_voucher_form(); ?>
 </div>
