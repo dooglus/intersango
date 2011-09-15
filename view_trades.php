@@ -34,13 +34,13 @@ while ($row = mysql_fetch_assoc($result)) {
         $first = false;
         echo "<table class='display_data'>\n";
         echo "<tr>";
-        echo "<th><?php echo _("TID"); ?></th>";
+        echo "<th>" . _("TID") . "</th>";
         if ($is_admin) echo "<th>User</th>";
         echo "<th>" . CURRENCY . "</th>";
-        if ($is_admin) echo "<th><?php echo _("User"); ?></th>";
-        echo "<th><?php echo _("BTC"); ?></th>";
-        echo "<th><?php echo _("Price"); ?></th>";
-        echo "<th><?php echo _("Date"); ?></th>";
+        if ($is_admin) echo "<th>" . _("User") . "</th>";
+        echo "<th>" . _("BTC") . "</th>";
+        echo "<th>" . _("Price") . "</th>";
+        echo "<th>" . _("Date") . "</th>";
         echo "</tr>";
     }
     
@@ -108,9 +108,9 @@ else {
     if ($mine)
         echo "<p>" . sprintf(_("The %s amount(s) you %sgave%s are shown in %sbold%s."),
                              $mine,
-                             "<span style='font-weight: bold;'>"
-                             "</span>"
-                             "<span style='font-weight: bold;'>"
+                             "<span style='font-weight: bold;'>",
+                             "</span>",
+                             "<span style='font-weight: bold;'>",
                              "</span>") . "</p>\n";
 }
 
