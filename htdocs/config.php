@@ -17,7 +17,7 @@ define('LOCK_DIR', ABSPATH . "/locks");
 define('BLOCKING_LOCKS', true);
 
 // what locale to use for translations
-define('LOCALE', 'de_DE');
+define('LOCALE', 'en_CA');
 
 // .------------------------------------------------------------------------
 // |  currency
