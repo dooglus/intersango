@@ -32,7 +32,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
     echo ".</p>";
 
     if (!$show_all)
-        echo "<p>" . _("Showing top 5 entries") . ":</p>";
+        echo "<p>" . sprintf(_("Showing top %d entries"), DEFAULT_ORDERBOOK_DEPTH) . ":</p>";
 
 ?><table class='display_data'>
         <tr>
@@ -42,9 +42,13 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
 <?php if ($is_admin) { ?>
             <th><?php echo _("User"); ?></th>
 <?php } ?>
+<?php if (SHOW_CUMULATIVE_DEPTH) { ?>
+            <th><?php echo _("Cumulative Give"); ?></th>
+            <th><?php echo _("Cumulative Want"); ?></th>
+<?php } ?>
         </tr><?php
 
-    $show_query = 'LIMIT 5';
+    $show_query = 'LIMIT ' . DEFAULT_ORDERBOOK_DEPTH;
     if ($show_all)
         $show_query = '';
 
@@ -67,11 +71,23 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
         $show_query
     ";
     $result = do_query($query);
+    $cumulative_curr_a = 0;
+    $cumulative_curr_b = 0;
+    if ($curr_a == 'BTC') {
+        $precision_a = BTC_PRECISION;
+        $precision_b = FIAT_PRECISION;
+    } else {
+        $precision_a = FIAT_PRECISION;
+        $precision_b = BTC_PRECISION;
+    }
+
     while ($row = mysql_fetch_array($result)) {
         $amount_i = $row['amount'];
-        $amount = internal_to_numstr($amount_i);
+        $amount = internal_to_numstr($amount_i, $precision_a);
+        $cumulative_curr_a = gmp_add($cumulative_curr_a, $amount_i);
         $want_amount_i = $row['want_amount'];
-        $want_amount = internal_to_numstr($want_amount_i);
+        $want_amount = internal_to_numstr($want_amount_i, $precision_b);
+        $cumulative_curr_b = gmp_add($cumulative_curr_b, $want_amount_i);
         # MySQL kindly computes this for us.
         # we trim the excessive 0
         $rate = clean_sql_numstr($row['rate']);
@@ -86,6 +102,10 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
         echo "        <td>$want_amount $curr_b</td>\n";
         if ($is_admin)
             echo "        <td>$uid</td>\n";
+        if (SHOW_CUMULATIVE_DEPTH) {
+            echo "        <td>" . internal_to_numstr($cumulative_curr_a, $precision_a) . " $curr_a</td>\n";
+            echo "        <td>" . internal_to_numstr($cumulative_curr_b, $precision_b) . " $curr_b</td>\n";
+        }
         echo "    </tr>\n";
     }
 
