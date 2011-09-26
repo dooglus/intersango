@@ -181,4 +181,14 @@ define('MAXIMUM_DAILY_FIAT_TRANSFER', '500');
 // the maximum amount of FIAT each user can hold at once
 define('MAXIMUM_FIAT_BALANCE', '5000');
 
+// .------------------------------------------------------------------------
+// |  orderbook
+// `------------------------------------------------------------------------
+
+// how many buy and sell orders to show in the orderbook by default
+define('DEFAULT_ORDERBOOK_DEPTH', 8);
+
+// should we show cumulative depths in the orderbook?
+define('SHOW_CUMULATIVE_DEPTH', true);
+
 ?>
