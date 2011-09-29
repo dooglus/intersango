@@ -33,3 +33,31 @@ log = /var/log/mysql/mysql.log
 6. import DATABASE into mysql
 
 7. edit crontab -e, mark /var/tmp/error-reports.log as rw for users
+
+translations:
+------------
+
+1. install poedit:
+
+   $ sudo apt-get install poedit
+
+2. make folder for translation:
+
+   $ mkdir locale/de_DE/LC_MESSAGES/
+
+3. generate locale:
+
+   $ sudo locale-gen de_DE
+
+4. restart apache:
+
+   $ sudo /etc/init.d/apache2 restart
+
+5. default locale can be set in htdocs/config.php:
+
+     // what locale to use for translations
+     define('LOCALE', 'en_CA');
+
+   or tested on a specific page by appending &locale=... to the URL:
+
+     http://whatever.com?page=statement&user=all&locale=de_DE
