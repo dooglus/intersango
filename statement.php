@@ -217,10 +217,10 @@ function show_statement($userid)
                     printf("<td>%s</td>", trade_price($gave_amount, $got_amount, PRICE_PRECISION));
                 if ($show_increments)
                     printf("<td>-%s</td>", internal_to_numstr($gave_amount, BTC_PRECISION));
-                printf("<td>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
+                printf("<td>%s</td>", $all_users ? "" : internal_to_numstr($btc, BTC_PRECISION));
                 if ($show_increments)
                     printf("<td>+%s</td>", internal_to_numstr($got_amount, FIAT_PRECISION));
-                printf("<td>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                printf("<td>%s</td>", $all_users ? "" : internal_to_numstr($fiat, FIAT_PRECISION));
             }
         } else {                /* withdrawal or deposit */
             $reqid = $row['reqid'];
