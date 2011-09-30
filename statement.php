@@ -143,13 +143,13 @@ function show_statement($userid)
         echo "<th>" . _("User") . "</th>";
     echo "<th>" . _("Description") . "</th>";
     if ($show_prices)
-        echo "<th>" . _("Price") . "</th>";
+        echo "<th class='right'>" . _("Price") . "</th>";
     if ($show_increments)
-        echo "<th>+/-</th>";
-    echo "<th>BTC</th>";
+        echo "<th class='right'>+/-</th>";
+    echo "<th class='right'>BTC</th>";
     if ($show_increments)
-        echo "<th>+/-</th>";
-    echo "<th>" . CURRENCY . "</th>";
+        echo "<th class='right'>+/-</th>";
+    echo "<th class='right'>" . CURRENCY . "</th>";
     echo "</tr>";
 
     echo "<tr>";
@@ -161,10 +161,10 @@ function show_statement($userid)
         echo "<td></td>";
     if ($show_increments)
         echo "<td></td>";
-    printf("<td>%s</td>", internal_to_numstr('0',  BTC_PRECISION));
+    printf("<td class='right'>%s</td>", internal_to_numstr('0',  BTC_PRECISION));
     if ($show_increments)
         echo "<td></td>";
-    printf("<td>%s</td>", internal_to_numstr('0',  FIAT_PRECISION));
+    printf("<td class='right'>%s</td>", internal_to_numstr('0',  FIAT_PRECISION));
     echo "</tr>\n";
 
     $all_final = true;
@@ -197,11 +197,11 @@ function show_statement($userid)
                 if ($show_prices)
                     printf("<td>%s</td>", trade_price($got_amount, $gave_amount, PRICE_PRECISION));
                 if ($show_increments)
-                    printf("<td>+ %s</td>", internal_to_numstr($got_amount, BTC_PRECISION));
-                printf("<td> %s</td>",  internal_to_numstr($btc, BTC_PRECISION));
+                    printf("<td class='right'>+ %s</td>", internal_to_numstr($got_amount, BTC_PRECISION));
+                printf("<td class='right'> %s</td>",  internal_to_numstr($btc, BTC_PRECISION));
                 if ($show_increments)
-                    printf("<td>- %s</td>", internal_to_numstr($gave_amount, FIAT_PRECISION));
-                printf("<td> %s</td>",  internal_to_numstr($fiat, FIAT_PRECISION));
+                    printf("<td class='right'>- %s</td>", internal_to_numstr($gave_amount, FIAT_PRECISION));
+                printf("<td class='right'> %s</td>",  internal_to_numstr($fiat, FIAT_PRECISION));
             } else {
                 printf("<td>" . _("Sell %s %s for %s %s") . "</td>",
                        internal_to_numstr($gave_amount, BTC_PRECISION), $gave_curr,
@@ -216,11 +216,11 @@ function show_statement($userid)
                 if ($show_prices)
                     printf("<td>%s</td>", trade_price($gave_amount, $got_amount, PRICE_PRECISION));
                 if ($show_increments)
-                    printf("<td>-%s</td>", internal_to_numstr($gave_amount, BTC_PRECISION));
-                printf("<td>%s</td>", $all_users ? "" : internal_to_numstr($btc, BTC_PRECISION));
+                    printf("<td class='right'>-%s</td>", internal_to_numstr($gave_amount, BTC_PRECISION));
+                printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($btc, BTC_PRECISION));
                 if ($show_increments)
-                    printf("<td>+%s</td>", internal_to_numstr($got_amount, FIAT_PRECISION));
-                printf("<td>%s</td>", $all_users ? "" : internal_to_numstr($fiat, FIAT_PRECISION));
+                    printf("<td class='right'>+%s</td>", internal_to_numstr($got_amount, FIAT_PRECISION));
+                printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($fiat, FIAT_PRECISION));
             }
         } else {                /* withdrawal or deposit */
             $reqid = $row['reqid'];
@@ -252,8 +252,8 @@ function show_statement($userid)
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
-                        printf("<td>+%s</td>", internal_to_numstr($amount, BTC_PRECISION));
-                    printf("<td>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
+                        printf("<td class='right'>+%s</td>", internal_to_numstr($amount, BTC_PRECISION));
+                    printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
                     if ($show_increments)
                         printf("<td></td>");
                     printf("<td></td>");
@@ -274,8 +274,8 @@ function show_statement($userid)
                         printf("<td></td>");
                     printf("<td></td>");
                     if ($show_increments)
-                        printf("<td>+%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
-                    printf("<td>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                        printf("<td class='right'>+%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
+                    printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
                 }
             } else {            /* withdrawal */
                 if ($curr_type == 'BTC') { /* withdraw BTC */
@@ -300,8 +300,8 @@ function show_statement($userid)
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
-                        printf("<td>-%s</td>", internal_to_numstr($amount, BTC_PRECISION));
-                    printf("<td>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
+                        printf("<td class='right'>-%s</td>", internal_to_numstr($amount, BTC_PRECISION));
+                    printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
                     if ($show_increments)
                         printf("<td></td>");
                     printf("<td></td>");
@@ -330,8 +330,8 @@ function show_statement($userid)
                         printf("<td></td>");
                     printf("<td></td>");
                     if ($show_increments)
-                        printf("<td>-%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
-                    printf("<td>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                        printf("<td class='right'>-%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
+                    printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
                 }
             }
         }
@@ -362,7 +362,7 @@ function show_statement($userid)
                  _("net") . " BTC $net_btc_word" => internal_to_numstr($net_btc,              BTC_PRECISION ),
                  " "                     => "",
                  ) as $a => $b)
-        echo "<tr><td>$a</td><td>$b</td></tr>\n";
+        echo "<tr><td>$a</td><td class='right'>$b</td></tr>\n";
     foreach (array(
                  _("total") . " BTC " . _("bought") => array(internal_to_numstr($total_btc_got,     BTC_PRECISION) . " BTC", _("for"),
                                                              internal_to_numstr($total_fiat_given, FIAT_PRECISION) . " " . CURRENCY,
@@ -376,7 +376,7 @@ function show_statement($userid)
                  ) as $a => $b) {
         echo "<tr><td>$a</td>";
         foreach ($b as $c)
-            echo "<td>$c</td>";
+            echo "<td class='right'>$c</td>";
         echo "</tr>\n";
     }
     echo "</table>\n";
