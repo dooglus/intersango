@@ -8,6 +8,16 @@ class BASE_CURRENCY
     const B = 1;
 }
 
+function fiat_to_numstr($num)
+{
+    return sprintf("%." . FIAT_PRECISION . "f %s", $num, CURRENCY);
+}
+
+function btc_to_numstr($num)
+{
+    return sprintf("%." . BTC_PRECISION . "f %s", $num, "BTC");
+}
+
 function show_contact_info()
 {
     echo "<h3>" . _("Contact info") . "</h3>\n";
@@ -750,7 +760,7 @@ function show_commission_rates()
     else {
         echo "<p>$rate%";
         if ($cap)
-            echo " (" . _("capped at") . " $cap BTC)";
+            echo " (" . _("capped at") . " " . btc_to_numstr($cap) . ")";
         else
             echo " (" . _("uncapped") . ")";
         echo " " . _("when buying BTC") . "</p>\n";
@@ -763,10 +773,24 @@ function show_commission_rates()
     else {
         echo "<p>$rate%";
         if ($cap)
-            echo " (" . _("capped at") . " $cap " . CURRENCY . ")";
+            echo " (" . _("capped at") . " " . fiat_to_numstr($cap) . ")";
         else
             echo " (" . _("uncapped") . ")";
         echo " " . _("when selling BTC") . "</p>\n";
+    }
+
+    $cap = COMMISSION_CAP_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER;
+    $rate = COMMISSION_PERCENTAGE_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER;
+    $item = sprintf("MtGox %s vouchers", CURRENCY);
+    if ($rate == 0)
+        printf("<p>" . _("depositing %s is free of commission") . "</p>\n", $item);
+    else {
+        echo "<p>$rate%";
+        if ($cap)
+            echo " (" . _("capped at") . " " . fiat_to_numstr($cap) . ")";
+        else
+            echo " (" . _("uncapped") . ")";
+        echo " " . sprintf(_("when depositing %s"), $item) . "</p>\n";
     }
 
     echo "</blockquote>\n";
