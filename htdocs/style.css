@@ -228,6 +228,9 @@ tr.me {
 tr.them {
     cursor: pointer;
 }
+td.right, th.right {
+    text-align: right;
+}
 blockquote {
     margin-left: 20px;
 }
