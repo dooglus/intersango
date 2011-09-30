@@ -212,14 +212,13 @@ DROP TABLE IF EXISTS `voucher_requests`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voucher_requests` (
   `reqid` int(10) unsigned NOT NULL,
-  `redeem_reqid` int(10) unsigned,
+  `redeem_reqid` int(10) unsigned DEFAULT NULL,
   `prefix` varchar(15) NOT NULL,
   `salt` varchar(5) NOT NULL,
   `hash` varchar(64) NOT NULL,
   PRIMARY KEY (`reqid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
