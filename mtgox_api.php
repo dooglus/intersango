@@ -46,6 +46,7 @@ class MtGox_API
         curl_setopt($ch, CURLOPT_URL, 'https://mtgox.com/api/' . $path);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_CAINFO, ABSPATH . "/cert/facacbc6.0");
  
         // run the query
         $res = curl_exec($ch);
