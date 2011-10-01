@@ -35,6 +35,7 @@ if (isset($_POST['code'])) {
     echo "<h3>" . _("Deposit Voucher") . "</h3>\n";
     $code = post('code', '-');
     try {
+        get_lock("redeem_voucher", 2);
         redeem_voucher($code, $is_logged_in);
         echo "<p>" . _("got any more?") . "</p>\n";
         show_deposit_voucher_form($code);
@@ -44,6 +45,7 @@ if (isset($_POST['code'])) {
         echo "<p>" . _("try again?") . "</p>\n";
         show_deposit_voucher_form($code);
     }
+    release_lock("redeem_voucher");
     echo "</div>\n";
 } else {
     $uid = $is_logged_in;
