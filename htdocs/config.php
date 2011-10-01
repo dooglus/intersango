@@ -186,7 +186,7 @@ define('MAXIMUM_FIAT_BALANCE', '5000');
 // `------------------------------------------------------------------------
 
 // how many buy and sell orders to show in the orderbook by default
-define('DEFAULT_ORDERBOOK_DEPTH', 8);
+define('DEFAULT_ORDERBOOK_DEPTH', 10);
 
 // should we show cumulative depths in the orderbook?
 define('SHOW_CUMULATIVE_DEPTH', true);
