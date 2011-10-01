@@ -211,6 +211,8 @@ function redeem_mtgox_fiat_voucher($code, $uid)
 
 function redeem_voucher($code, $uid)
 {
+    $code = trim($code);
+
     if (looks_like_mtgox_fiat_voucher($code))
         return redeem_mtgox_fiat_voucher($code, $uid);
 
