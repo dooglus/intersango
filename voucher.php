@@ -59,6 +59,8 @@ function voucher_code_exists($code)
 
     $result = do_query($query);
 
+    usleep(rand(1e6, 2e6)); // don't give any timing clues as to whether that's a valid prefix; be too slow to brute-force
+
     while ($row = mysql_fetch_array($result))
         if (encrypt_voucher_code($code, $row['salt']) == $row['hash'])
             return $row;
