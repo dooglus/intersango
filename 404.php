@@ -3,6 +3,7 @@
   <p>
 <?php $page = getenv("REQUEST_URI");
       addlog("  '$page' doesn't exist");
+      sleep(3);
       printf(_("Sorry, but %sthat page%s no longer exists."),
              sprintf('<a href="%s">', $page),
              "</a>"); ?>

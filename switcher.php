@@ -79,6 +79,7 @@ function switcher($page)
                 break;
 
             default:
+                sleep(3);
                 log_badpage($page);
                 break;
         }
