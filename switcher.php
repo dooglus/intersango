@@ -7,6 +7,9 @@ function switcher($page)
     global $is_logged_in, $is_admin;
 
     try {
+        if (!preg_match("/^[0-9_a-z]*$/", $page))
+            $page = 'junk';
+
         // delay showing the header when logging in until we know whether the login worked or not
         if ($page != 'login')
             show_header($page, $is_logged_in);
