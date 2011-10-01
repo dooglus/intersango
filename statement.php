@@ -249,7 +249,7 @@ function show_statement($userid)
                     printf("<td><strong title='%s'>%s%s %s BTC%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
-                           $voucher ? _("Redeem") : _("Deposit"),
+                           $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
                            internal_to_numstr($amount, BTC_PRECISION),
                            $final ? "" : " *");
                     if ($show_prices)
@@ -267,7 +267,7 @@ function show_statement($userid)
                     printf("<td><strong title='%s'>%s%s %s %s%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
-                           $voucher ? _("Redeem") : _("Deposit"),
+                           $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
                            internal_to_numstr($amount, FIAT_PRECISION),
                            CURRENCY,
                            $final ? "" : " *");
@@ -297,7 +297,7 @@ function show_statement($userid)
                     printf("<td><strong title='%s'>%s%s %s BTC%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
-                           $voucher ? _("Voucher") : _("Withdraw"),
+                           $voucher ? _("Create voucher") . ":" : _("Withdraw"),
                            internal_to_numstr($amount, BTC_PRECISION),
                            $final ? "" : " *");
                     if ($show_prices)
@@ -323,7 +323,7 @@ function show_statement($userid)
                     printf("<td><strong title='%s'>%s%s %s %s%s</strong></td>",
                            $title,
                            $final ? "" : "* ",
-                           $voucher ? _("Voucher") : _("Withdraw"),
+                           $voucher ? _("Create voucher") . ":" : _("Withdraw"),
                            internal_to_numstr($amount, FIAT_PRECISION),
                            CURRENCY,
                            $final ? "" : " *");
