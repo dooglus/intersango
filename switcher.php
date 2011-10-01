@@ -20,7 +20,7 @@ function switcher($page)
             $lock = $is_logged_in;
         }
 
-        addlog(sprintf("visit page '%s'", $page));
+        addlog(sprintf("[%s] visit page '%s'", getenv("REMOTE_ADDR"), $page));
 
         switch($page) {
 
