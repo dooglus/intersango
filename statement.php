@@ -39,11 +39,14 @@ function trade_price($btc, $for, $precision, $verbose = false) {
 
 function show_statement($userid)
 {
+    $openid = get_openid_for_user($userid);
     $show_increments = false;
     $show_prices = true;
 
     echo "<div class='content_box'>\n";
     echo "<h3>" . _("Statement") . " (UID $userid)</h3>\n";
+
+    echo "<p>" . _("OpenID") . ": <a href=\"$openid\">$openid</a></p>\n";
 
     $all_users = ($userid == 'all');
 
