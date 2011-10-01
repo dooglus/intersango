@@ -1,6 +1,6 @@
 <?php
 
-function active_table_cell($uid, $txid, $orderid, $sub, $amount, $precision)
+function active_table_cell_link_for_commission($uid, $txid, $orderid, $sub, $amount, $precision)
 {
     $url = "?page=view_order&orderid=$orderid&uid=$uid";
     echo "<td class='active' id='cell_${txid}_${orderid}_$sub' onmouseover='In(\"$orderid\");' onmouseout='Out(\"$orderid\");' onclick='document.location=\"$url\"'>", internal_to_numstr($amount, $precision), "</td>";
@@ -88,10 +88,10 @@ while ($row = mysql_fetch_assoc($result)) {
 
     echo "<tr>";
     echo "<td>$txid</td>";
-    active_table_cell($a_uid, $txid, $b_orderid, 'amount', $a_amount    , FIAT_PRECISION);
-    active_table_cell($a_uid, $txid, $b_orderid, 'comm',   $a_commission, FIAT_PRECISION);
-    active_table_cell($b_uid, $txid, $a_orderid, 'amount', $b_amount    ,  BTC_PRECISION);
-    active_table_cell($b_uid, $txid, $a_orderid, 'comm',   $b_commission,  BTC_PRECISION);
+    active_table_cell_link_for_commission($a_uid, $txid, $b_orderid, 'amount', $a_amount    , FIAT_PRECISION);
+    active_table_cell_link_for_commission($a_uid, $txid, $b_orderid, 'comm',   $a_commission, FIAT_PRECISION);
+    active_table_cell_link_for_commission($b_uid, $txid, $a_orderid, 'amount', $b_amount    ,  BTC_PRECISION);
+    active_table_cell_link_for_commission($b_uid, $txid, $a_orderid, 'comm',   $b_commission,  BTC_PRECISION);
     echo "<td>$timest</td>";
     echo "</tr>\n";
 }
