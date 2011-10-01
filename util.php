@@ -998,4 +998,18 @@ function check_withdraw_limit($uid, $amount, $curr_type)
         check_fiat_transfer_limit($uid, $amount);
 }
 
+function addlog($text)
+{
+    global $is_logged_in;
+
+    $text = sprintf("%s %4s %s\n", date('r'), $is_logged_in, $text);
+
+    wait_for_lock('log');
+    if ($fp = @fopen(LOGFILE, 'a')) {
+        fwrite($fp, $text);
+        fclose($fp);
+    }
+    release_lock('log');
+}
+
 ?>
