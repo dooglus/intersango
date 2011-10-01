@@ -247,12 +247,13 @@ function show_statement($userid)
                     $btc = gmp_add($btc, $amount);
                     $total_btc_deposit = gmp_add($total_btc_deposit, $amount);
                     
-                    printf("<td><strong title='%s'>%s%s %s BTC%s</strong></td>",
-                           $title,
-                           $final ? "" : "* ",
-                           $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
-                           internal_to_numstr($amount, BTC_PRECISION),
-                           $final ? "" : " *");
+                    active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s BTC%s</strong>",
+                                                          $title,
+                                                          $final ? "" : "* ",
+                                                          $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
+                                                          internal_to_numstr($amount, BTC_PRECISION),
+                                                          $final ? "" : " *"),
+                                                  $reqid);
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
@@ -265,13 +266,14 @@ function show_statement($userid)
                     $fiat = gmp_add($fiat, $amount);
                     $total_fiat_deposit = gmp_add($total_fiat_deposit, $amount);
 
-                    printf("<td><strong title='%s'>%s%s %s %s%s</strong></td>",
-                           $title,
-                           $final ? "" : "* ",
-                           $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
-                           internal_to_numstr($amount, FIAT_PRECISION),
-                           CURRENCY,
-                           $final ? "" : " *");
+                    active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s %s%s</strong>",
+                                                          $title,
+                                                          $final ? "" : "* ",
+                                                          $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
+                                                          internal_to_numstr($amount, FIAT_PRECISION),
+                                                          CURRENCY,
+                                                          $final ? "" : " *"),
+                                                  $reqid);
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
@@ -295,12 +297,13 @@ function show_statement($userid)
                                          $voucher);
                     }
                     
-                    printf("<td><strong title='%s'>%s%s %s BTC%s</strong></td>",
-                           $title,
-                           $final ? "" : "* ",
-                           $voucher ? _("Create voucher") . ":" : _("Withdraw"),
-                           internal_to_numstr($amount, BTC_PRECISION),
-                           $final ? "" : " *");
+                    active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s BTC%s</strong>",
+                                                          $title,
+                                                          $final ? "" : "* ",
+                                                          $voucher ? _("Create voucher") . ":" : _("Withdraw"),
+                                                          internal_to_numstr($amount, BTC_PRECISION),
+                                                          $final ? "" : " *"),
+                                                  $reqid);
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
@@ -321,13 +324,14 @@ function show_statement($userid)
                     } else
                         $title = sprintf(_("to account %s at %s"), $row['acc_num'], $row['bank']);
 
-                    printf("<td><strong title='%s'>%s%s %s %s%s</strong></td>",
-                           $title,
-                           $final ? "" : "* ",
-                           $voucher ? _("Create voucher") . ":" : _("Withdraw"),
-                           internal_to_numstr($amount, FIAT_PRECISION),
-                           CURRENCY,
-                           $final ? "" : " *");
+                    active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s %s%s</strong>",
+                                                          $title,
+                                                          $final ? "" : "* ",
+                                                          $voucher ? _("Create voucher") . ":" : _("Withdraw"),
+                                                          internal_to_numstr($amount, FIAT_PRECISION),
+                                                          CURRENCY,
+                                                          $final ? "" : " *"),
+                                                  $reqid);
                     if ($show_prices)
                         printf("<td></td>");
                     if ($show_increments)
