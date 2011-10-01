@@ -16,6 +16,8 @@ function show_header($page, $is_logged_in, $base = false)
 <?php 
         echo "    <script type='text/javascript'>\n";
         $fiat_currency = strtolower(CURRENCY);
+        echo "        fiat_currency = '$fiat_currency';\n";
+        echo "        fiat_currency_full = '" . CURRENCY_FULL . "';\n";
         if (isset($_GET['rate'])) {
             echo "        typed_price = true;\n";
         } else {
@@ -25,10 +27,8 @@ function show_header($page, $is_logged_in, $base = false)
             $rates[$fiat_currency] = $list[2];
             $list = calc_exchange_rate($fiat_currency, 'btc', BASE_CURRENCY::B);
             $rates['btc'] = $list[2];
-            echo "        exchange_rates = ".json_encode($rates).";\n";
-            echo "        fiat_currency = '$fiat_currency';\n";
-            echo "        fiat_currency_full = '" . CURRENCY_FULL . "';\n";
             echo "        typed_price = false;\n";
+            echo "        exchange_rates = ".json_encode($rates).";\n";
         }
         echo "    </script>\n";
     }
