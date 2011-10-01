@@ -653,6 +653,21 @@ function active_table_row($class, $url)
             "onclick=\"document.location='$url';\"");
 }
 
+function active_table_cell($content, $url)
+{
+    printf ("<td %s %s %s %s>%s</td>",
+            "class='active'",
+            'onmouseover="style.backgroundColor=\'#8ae3bf\';"',
+            'onmouseout="style.backgroundColor=\'#7ad3af\';"',
+            "onclick=\"document.location='$url';\"",
+            $content);
+}
+
+function active_table_cell_for_request($content, $reqid)
+{
+    active_table_cell($content, "?page=view_request&reqid=$reqid");
+}
+
 function active_table_cell_link_to_user_statement($user)
 {
     $url = "?page=statement&user=$user";
