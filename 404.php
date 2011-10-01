@@ -1,8 +1,10 @@
 <div class='content_box'>
   <h3><?php echo _("Page Not Found"); ?></h3>
   <p>
-<?php printf(_("Sorry, but %sthat page%s no longer exists."),
-             sprintf('<a href="%s">', getenv("REQUEST_URI")),
+<?php $page = getenv("REQUEST_URI");
+      addlog("  '$page' doesn't exist");
+      printf(_("Sorry, but %sthat page%s no longer exists."),
+             sprintf('<a href="%s">', $page),
              "</a>"); ?>
   </p>
   <p>
