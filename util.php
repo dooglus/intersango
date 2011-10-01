@@ -663,6 +663,11 @@ function active_table_cell($content, $url)
             $content);
 }
 
+function active_table_cell_for_order($content, $orderid)
+{
+    active_table_cell($content, "?page=view_order&orderid=$orderid");
+}
+
 function active_table_cell_for_request($content, $reqid)
 {
     active_table_cell($content, "?page=view_request&reqid=$reqid");
