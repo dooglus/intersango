@@ -229,6 +229,21 @@ function get_login_status()
     logout();
 }
 
+function get_openid_for_user($uid)
+{
+    $result = do_query("
+        SELECT oidlogin
+        FROM users
+        WHERE uid = '$uid'
+    ");
+
+    if (!has_results($result))
+        throw new Error("Unknown User", "User ID $uid isn't known");
+
+    $row = mysql_fetch_array($result);
+    return $row['oidlogin'];
+}
+
 // not used any more - call get_login_status() instead
 // function is_logged_in()
 // {
