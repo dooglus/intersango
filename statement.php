@@ -50,8 +50,9 @@ function show_statement($userid)
         echo "<h3>" . _("Statement for All Users") . "</h3>\n";
         $check_userid = "";
     } else {
+        $openid = get_openid_for_user($userid);
         echo "<h3>" . sprintf(_("Statement for UID %s"), $userid) . "</h3>\n";
-        echo "<p>" . _("OpenID") . ": <a href=\"$openid\">" . get_openid_for_user($userid) . "</a></p>\n";
+        echo "<p>" . _("OpenID") . ": <a href=\"$openid\">$openid</a></p>\n";
         $check_userid = "uid='$userid' AND";
     }
 
