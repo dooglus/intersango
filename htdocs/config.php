@@ -19,6 +19,9 @@ define('BLOCKING_LOCKS', true);
 // what locale to use for translations
 define('LOCALE', 'en_CA');
 
+// where to write logs
+define('LOGFILE', ABSPATH . '/log.txt');
+
 // .------------------------------------------------------------------------
 // |  currency
 // `------------------------------------------------------------------------
