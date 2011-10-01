@@ -20,6 +20,8 @@ function switcher($page)
             $lock = $is_logged_in;
         }
 
+        addlog(sprintf("visit page '%s'", $page));
+
         switch($page) {
 
             ////////////////////////////////////////////////////////////////////////
