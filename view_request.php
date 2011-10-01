@@ -33,6 +33,7 @@ function display_request_info_fiat($reqid)
     echo "<p>Account number: {$row['acc_num']}</p>\n";
     echo "<p>Sort code: {$row['sort_code']}</p>\n";
 }
+
 function display_request_info_btc($reqid)
 {
     $query = "
@@ -46,11 +47,14 @@ function display_request_info_btc($reqid)
         echo "<p>" . _("Bitcoin address") . ": {$row['addy']}</p>\n";
         return;
     }
+}
 
+function display_request_info_voucher($reqid)
+{
     $query = "
         SELECT prefix
         FROM voucher_requests
-        WHERE reqid='$reqid'
+        WHERE reqid='$reqid' OR redeem_reqid='$reqid'
     ";
     $result = do_query($query);
     $row = mysql_fetch_assoc($result);
@@ -59,6 +63,7 @@ function display_request_info_btc($reqid)
         return;
     }
 }
+
 function display_request_info_intnl($reqid)
 {
     $query = "
@@ -184,15 +189,17 @@ if (isset($_POST['cancel_request'])) {
         <?php printf(_("Request %s"), $reqid); ?>
         </p>
         <?php
-        if ($req_type == 'WITHDR') {
+        if ($req_type == 'WITHDR')
             echo "<p>" . sprintf(_("Withdrawing %s."), "$amount $curr_type") . "</p>\n";
-        }
+        else
+            echo "<p>" . sprintf(_("Depositing %s."), "$amount $curr_type") . "</p>\n";
         ?>
         <p>
         <?php
         # only one of these will return a result
         display_request_info_fiat($reqid);
         display_request_info_btc($reqid);
+        display_request_info_voucher($reqid);
         display_request_info_intnl($reqid);
         ?>
         </p>
@@ -227,4 +234,3 @@ if (isset($_POST['cancel_request'])) {
     </div> <?php
 }
 ?>
-
