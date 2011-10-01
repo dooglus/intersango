@@ -188,9 +188,10 @@ function show_statement($userid)
             $got_curr = $row['got_curr'];
 
             if ($got_curr == 'BTC') {
-                printf("<td>" . _("Buy %s %s for %s %s") . "</td>",
-                       internal_to_numstr($got_amount, BTC_PRECISION), $got_curr,
-                       internal_to_numstr($gave_amount, FIAT_PRECISION), $gave_curr);
+                active_table_cell_for_order(sprintf(_("Buy %s %s for %s %s"),
+                                                    internal_to_numstr($got_amount, BTC_PRECISION), $got_curr,
+                                                    internal_to_numstr($gave_amount, FIAT_PRECISION), $gave_curr),
+                                            $orderid);
 
                 $fiat = gmp_sub($fiat, $gave_amount);
                 $btc = gmp_add($btc, $got_amount);
@@ -207,9 +208,10 @@ function show_statement($userid)
                     printf("<td class='right'>- %s</td>", internal_to_numstr($gave_amount, FIAT_PRECISION));
                 printf("<td class='right'> %s</td>",  internal_to_numstr($fiat, FIAT_PRECISION));
             } else {
-                printf("<td>" . _("Sell %s %s for %s %s") . "</td>",
-                       internal_to_numstr($gave_amount, BTC_PRECISION), $gave_curr,
-                       internal_to_numstr($got_amount, FIAT_PRECISION), $got_curr);
+                active_table_cell_for_order(sprintf(_("Sell %s %s for %s %s"),
+                                                    internal_to_numstr($gave_amount, BTC_PRECISION), $gave_curr,
+                                                    internal_to_numstr($got_amount, FIAT_PRECISION), $got_curr),
+                                            $orderid);
 
                 $fiat = gmp_add($fiat, $got_amount);
                 $btc = gmp_sub($btc, $gave_amount);
