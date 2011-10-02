@@ -18,13 +18,24 @@ function btc_to_numstr($num)
     return sprintf("%." . BTC_PRECISION . "f %s", $num, "BTC");
 }
 
-function fiat_and_btc_to_price($fiat, $btc, $round = true)
+function fiat_and_btc_to_price($fiat, $btc, $round = 'round')
 {
-    if ($round) {
+    if ($round == 'round') {
         $price = bcdiv($fiat, $btc, PRICE_PRECISION+1);
         return sprintf("%." . PRICE_PRECISION . "f", $price);
+    } else if ($round == 'down') {
+        $price = bcdiv($fiat, $btc, PRICE_PRECISION);
+        // echo "rounding $fiat / $btc = " . bcdiv($fiat, $btc, 8) . " down to $price<br/>\n";
+        return $price;
+    } else if ($round == 'up') {
+        $raw = bcdiv($fiat, $btc, 8);
+        $adjust = bcsub(bcdiv(1, pow(10, PRICE_PRECISION), 8),
+                        '0.00000001', 8);
+        $price = bcadd($raw, $adjust, PRICE_PRECISION);
+        // echo "rounding $fiat / $btc = $raw up to $price<br/>\n";
+        return $price;
     } else
-        return bcdiv($fiat, $btc, PRICE_PRECISION);
+            throw new Error("Bad Argument", "fiat_and_btc_to_price() has round = '$round'");
 }
 
 function show_contact_info()
