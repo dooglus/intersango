@@ -514,6 +514,15 @@ function show_committed_balances($uid, $indent=false)
         "tied up in the orderbook.</p>\n";
 }
 
+function balances_text($uid)
+{
+    $balances = fetch_balances($uid);
+
+    return sprintf("%s %s and %s %s",
+                   internal_to_numstr($balances[CURRENCY], FIAT_PRECISION, false), CURRENCY,
+                   internal_to_numstr($balances['BTC'],    BTC_PRECISION,  false), 'BTC'   );
+}
+
 function show_balances($uid, $indent=false)
 {
     $balances = fetch_balances($uid);
