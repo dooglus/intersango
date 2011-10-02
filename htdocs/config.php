@@ -194,4 +194,6 @@ define('DEFAULT_ORDERBOOK_DEPTH', 10);
 // should we show cumulative depths in the orderbook?
 define('SHOW_CUMULATIVE_DEPTH', true);
 
+// at what percentage above (or below) the best price should we cut off showing the orderbook?
+define('ORDERBOOK_PRICE_RANGE_PERCENTAGE', 25);
 ?>
