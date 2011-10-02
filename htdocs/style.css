@@ -9,7 +9,7 @@ body {
 }
 
 .currbox_wrapper {
-    margin: 10px;
+    margin: 0px 10px;
 }
 .currbox {
     width: 300px;
@@ -37,11 +37,11 @@ input[type=text]:focus {
     color: inherit;
     font-weight: inherit;
     background-color: inherit;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     margin-left: 10px;
 }
 #exchanger td {
-    padding: 10px;
+    padding: 5px 10px;
 }
 .currbox p {
     margin: 0;
@@ -191,7 +191,7 @@ CONTENT
 }
 .content_box form {
     margin-bottom: 10px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 .content_box a {
     color: #444;
