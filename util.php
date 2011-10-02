@@ -671,10 +671,10 @@ function active_table_row($class, $url)
             "onclick=\"document.location='$url';\"");
 }
 
-function active_table_cell($content, $url)
+function active_table_cell($content, $url, $right=false)
 {
-    printf ("<td %s %s %s %s>%s</td>",
-            "class='active'",
+    printf ("<td class='active%s' %s %s %s>%s</td>",
+            $right ? " right" : "",
             'onmouseover="style.backgroundColor=\'#8ae3bf\';"',
             'onmouseout="style.backgroundColor=\'#7ad3af\';"',
             "onclick=\"document.location='$url';\"",
