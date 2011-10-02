@@ -131,9 +131,9 @@ function show_mini_orderbook()
 ?>
         <div class='content_box'>
             <h3><?php echo _("Currency converter"); ?></h3>
-        <p><b><?php printf(_("World Bitcoin Exchange allows you to trade %s for Bitcoins (BTC) or Bitcoins for %s with other World Bitcoin Exchange users."),
+        <p><b><?php printf(_("World Bitcoin Exchange allows you to trade %s for Bitcoins (BTC) or BTC for %s with other users."),
                            CURRENCY_FULL_PLURAL . " (" . CURRENCY . ")",
-                           CURRENCY_FULL_PLURAL); ?></a></b></p>
+                           CURRENCY); ?></a></b></p>
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
