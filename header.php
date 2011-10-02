@@ -70,12 +70,12 @@ define('SPACE', '&nbsp;&nbsp;&nbsp;&nbsp;');
 function show_content_header_balances($uid)
 {
     $balances = fetch_balances($uid);
-    $fiat = internal_to_numstr($balances[CURRENCY], 4);
-    $btc = internal_to_numstr($balances['BTC'], 4);
+    $fiat = internal_to_numstr($balances[CURRENCY], FIAT_PRECISION, false);
+    $btc  = internal_to_numstr($balances['BTC'],     BTC_PRECISION, false);
 
     $c_balances = fetch_committed_balances($uid);
-    $c_fiat = internal_to_numstr($c_balances[CURRENCY], 4);
-    $c_btc = internal_to_numstr($c_balances['BTC'], 4);
+    $c_fiat = internal_to_numstr($c_balances[CURRENCY], FIAT_PRECISION);
+    $c_btc  = internal_to_numstr($c_balances['BTC'],     BTC_PRECISION);
 
     echo "    <div class='content_header_box'>\n";
     echo "        ", SPACE, _("balances"), ":", SPACE, "$fiat ";
