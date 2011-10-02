@@ -758,7 +758,7 @@ function order_worthwhile_check($amount, $amount_disp, $min_str='0.5')
 function enough_money_check($amount, $curr_type)
 {
     if (!has_enough($amount, $curr_type))
-        throw new Problem(sprintf(_("Where's the gold?", "You don't have enough %s."), $curr_type));
+        throw new Problem(_("Where's the gold?"), sprintf(_("You don't have enough %s."), $curr_type));
 }
 
 function translate_order_code($code)
