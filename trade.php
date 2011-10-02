@@ -1,8 +1,92 @@
 <?php
 
+function show_mini_orderbook_table($bids)
+{
+    global $buy, $sell;
+
+    echo "<table class='display_data'>";
+    echo "<tr><th colspan=3 style='text-align: center;'>" .
+        ($bids
+         ? sprintf(_("People Selling BTC for %s"), CURRENCY)
+         : sprintf(_("People Buying BTC for %s" ), CURRENCY)) .
+        "</th></tr>" .
+        "<tr><th valign='bottom' class='right'>" .
+        sprintf(_("Price<br/>(%s per BTC)"), CURRENCY) . "</th>" .
+        "<th valign='bottom' class='right'>" . _("Depth<br/>(in BTC)") . "</th>" .
+        "<th valign='bottom' class='right'>" . _("Cumulative<br/>Depth<br/>(in BTC)") . "</th>" .
+        "</tr>";
+
+    $limit = '';
+    if ($bids) {
+        $price = "amount/want_amount";
+        $amount = "want_amount";
+        $type = CURRENCY;
+        $order = "DESC";
+        if ($buy) $limit = "AND $price > " . $buy * (1 - ORDERBOOK_PRICE_RANGE_PERCENTAGE/100);
+    } else {
+        $price = "want_amount/amount";
+        $amount = "amount";
+        $type = "BTC";
+        $order = "ASC";
+        if ($sell) $limit = "AND $price < " . $sell * (1 + ORDERBOOK_PRICE_RANGE_PERCENTAGE/100);
+    }
+
+    $result = do_query("
+        SELECT
+            $amount as btc_amount,
+            amount,
+            want_amount
+        FROM
+            orderbook
+        WHERE
+            type = '$type' AND
+            status='OPEN'
+            $limit
+        ORDER BY
+            $price $order, timest ASC
+    ");
+
+    $last_price = 0;
+    $btc_amount_at_price = "0";
+    $total_btc_amount = "0";
+    while ($row = mysql_fetch_array($result)) {
+        $btc_amount = $row['btc_amount'];
+        if ($bids)
+            $price = bcdiv($row['amount'], $row['want_amount'], PRICE_PRECISION);
+        else
+            $price = bcdiv($row['want_amount'], $row['amount'], PRICE_PRECISION);
+        if ($price == $last_price)
+            $btc_amount_at_price = gmp_add($btc_amount_at_price, $btc_amount);
+        else {
+            if ($last_price)
+                echo "<tr>" .
+                    "<td class='right'>$last_price</td>" .
+                    "<td class='right'>" . internal_to_numstr($btc_amount_at_price, BTC_PRECISION) . "</td>" .
+                    "<td class='right'>" . internal_to_numstr($total_btc_amount, BTC_PRECISION) . "</td>" .
+                    "</tr>\n";
+            $last_price = $price;
+            $btc_amount_at_price = $btc_amount;
+        }
+        $total_btc_amount = gmp_add($total_btc_amount, $btc_amount);
+    }
+    if ($last_price)
+        echo "<tr>" .
+            "<td class='right'>$last_price</td>" .
+            "<td class='right'>" . internal_to_numstr($btc_amount_at_price, BTC_PRECISION) . "</td>" .
+            "<td class='right'>" . internal_to_numstr($total_btc_amount, BTC_PRECISION) . "</td>" .
+            "</tr>\n";
+
+    echo "</table>\n";
+}
+
 function show_mini_orderbook()
 {
-    echo "this will soon show the orderbook<br/>\n";
+    echo "<table><tr><td>\n";
+    show_mini_orderbook_table(true);
+    echo "</td><td>";
+    show_mini_orderbook_table(false);
+    echo "</td></tr></table>";
+    echo "<p>" . sprintf(_("Showing all orders within %s%% of the best price."), ORDERBOOK_PRICE_RANGE_PERCENTAGE) . "</p>\n";
 }
 
     if (isset($_GET['have']))
@@ -126,7 +210,7 @@ function show_mini_orderbook()
             <p><?php echo _("This is a Two-Factor Authentication Security Supported Exchange, for more Info see our help section."); ?></p>.
     <?php }
 
-    // show_mini_orderbook();
+    show_mini_orderbook();
 ?>
         </div>
 
