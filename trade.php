@@ -1,5 +1,29 @@
 <?php
 
+function show_mini_orderbook_table_cell($curr, $price, $have, $want, $depth)
+{
+    if ($curr == 'BTC') {
+        $h = gmp_strval($depth);
+        $w = gmp_strval(gmp_div(gmp_mul($depth, $have), $want));
+        $p = clean_sql_numstr(bcdiv($have, $want, 8));
+    } else {
+        $h = gmp_strval(gmp_div(gmp_mul($depth, $want), $have));
+        $w = gmp_strval($depth);
+        $p = clean_sql_numstr(bcdiv($want, $have, 8));
+    }
+
+    active_table_cell(internal_to_numstr($depth, BTC_PRECISION), "?page=trade&in=$curr&have=$h&want=$w&rate=$p", 'right');
+}
+
+function show_mini_orderbook_table_row($curr, $price, $have, $want, $this_btc, $sum_btc)
+{
+    echo "<tr>";
+    echo "<td class='right'>$price</td>";
+    show_mini_orderbook_table_cell($curr, $price, $have, $want, $this_btc);
+    show_mini_orderbook_table_cell($curr, $price, $have, $want, $sum_btc);
+    echo "</tr>\n";
+}
+
 function show_mini_orderbook_table($bids)
 {
     global $buy, $sell;
@@ -20,61 +44,62 @@ function show_mini_orderbook_table($bids)
     if ($bids) {
         $price = "amount/want_amount";
         $amount = "want_amount";
-        $type = CURRENCY;
+        $want_type = "BTC";
         $order = "DESC";
         if ($buy) $limit = "AND $price > " . $buy * (1 - ORDERBOOK_PRICE_RANGE_PERCENTAGE/100);
     } else {
         $price = "want_amount/amount";
         $amount = "amount";
-        $type = "BTC";
+        $want_type = CURRENCY;
         $order = "ASC";
         if ($sell) $limit = "AND $price < " . $sell * (1 + ORDERBOOK_PRICE_RANGE_PERCENTAGE/100);
     }
 
     $result = do_query("
         SELECT
-            $amount as btc_amount,
             amount,
             want_amount
         FROM
             orderbook
         WHERE
-            type = '$type' AND
+            want_type = '$want_type' AND
             status='OPEN'
             $limit
         ORDER BY
             $price $order, timest ASC
     ");
 
-    $last_price = 0;
-    $btc_amount_at_price = "0";
-    $total_btc_amount = "0";
+    $last_price = $btc_amount_at_price = $total_btc_amount = "0";
     while ($row = mysql_fetch_array($result)) {
-        $btc_amount = $row['btc_amount'];
-        if ($bids)
-            $price = fiat_and_btc_to_price($row['amount'], $row['want_amount']);
-        else
-            $price = fiat_and_btc_to_price($row['want_amount'], $row['amount']);
+        $have_amount = $row['amount'];
+        $want_amount = $row['want_amount'];
+
+        if ($bids) {
+            $btc_amount  = $want_amount;
+            $fiat_amount = $have_amount;
+        } else {
+            $btc_amount  = $have_amount;
+            $fiat_amount = $want_amount;
+        }
+
+        $price = fiat_and_btc_to_price($fiat_amount, $btc_amount);
+
         if ($price == $last_price)
             $btc_amount_at_price = gmp_add($btc_amount_at_price, $btc_amount);
         else {
             if ($last_price)
-                echo "<tr>" .
-                    "<td class='right'>$last_price</td>" .
-                    "<td class='right'>" . internal_to_numstr($btc_amount_at_price, BTC_PRECISION) . "</td>" .
-                    "<td class='right'>" . internal_to_numstr($total_btc_amount, BTC_PRECISION) . "</td>" .
-                    "</tr>\n";
+                show_mini_orderbook_table_row($want_type, $last_price, $last_have, $last_want, $btc_amount_at_price, $total_btc_amount);
+                                              
             $last_price = $price;
+            $last_have = $have_amount;
+            $last_want = $want_amount;
             $btc_amount_at_price = $btc_amount;
         }
+
         $total_btc_amount = gmp_add($total_btc_amount, $btc_amount);
     }
     if ($last_price)
-        echo "<tr>" .
-            "<td class='right'>$last_price</td>" .
-            "<td class='right'>" . internal_to_numstr($btc_amount_at_price, BTC_PRECISION) . "</td>" .
-            "<td class='right'>" . internal_to_numstr($total_btc_amount, BTC_PRECISION) . "</td>" .
-            "</tr>\n";
+        show_mini_orderbook_table_row($want_type, $last_price, $last_have, $last_want, $btc_amount_at_price, $total_btc_amount);
 
     echo "</table>\n";
 }
