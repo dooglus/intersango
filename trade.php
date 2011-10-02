@@ -82,7 +82,7 @@ function show_mini_orderbook_table($bids)
             $fiat_amount = $want_amount;
         }
 
-        $price = fiat_and_btc_to_price($fiat_amount, $btc_amount);
+        $price = fiat_and_btc_to_price($fiat_amount, $btc_amount, $bids ? 'down' : 'up');
 
         if ($price == $last_price)
             $btc_amount_at_price = gmp_add($btc_amount_at_price, $btc_amount);
@@ -91,11 +91,11 @@ function show_mini_orderbook_table($bids)
                 show_mini_orderbook_table_row($want_type, $last_price, $last_have, $last_want, $btc_amount_at_price, $total_btc_amount);
                                               
             $last_price = $price;
-            $last_have = $have_amount;
-            $last_want = $want_amount;
             $btc_amount_at_price = $btc_amount;
         }
 
+        $last_have = $have_amount;
+        $last_want = $want_amount;
         $total_btc_amount = gmp_add($total_btc_amount, $btc_amount);
     }
     if ($last_price)
