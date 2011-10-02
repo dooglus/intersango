@@ -86,8 +86,12 @@ function show_content_header_balances($uid)
     echo "    </div>\n";
 }
 
+$buy = $sell = false;
+
 function show_content_header_ticker()
 {
+    global $buy, $sell;
+
     $spaces = '&nbsp;&nbsp;&nbsp;&nbsp;';
     list($high, $low, $avg, $vwap, $vol, $last, $buy, $sell) = get_ticker_data();
     if ($buy > $sell && $buy != 0 && $sell != 0)
