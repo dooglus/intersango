@@ -28,13 +28,13 @@ function bought_or_sold($bought, $bought_for, $sold, $sold_for)
     return array($word, $net, $net_for);
 }
 
-function trade_price($btc, $for, $precision, $verbose = false) {
+function trade_price($btc, $fiat, $verbose = false) {
     if (gmp_cmp($btc, 0) == 0)
         return '';
     if ($verbose)
-        return "(" . _("price") . " " . bcdiv(gmp_strval($for), gmp_strval($btc), $precision) . ")";
+        return "(" . _("price") . " " . fiat_and_btc_to_price(gmp_strval($fiat), gmp_strval($btc)) . ")";
     else
-        return bcdiv(gmp_strval($for), gmp_strval($btc), $precision);
+        return fiat_and_btc_to_price(gmp_strval($fiat), gmp_strval($btc));
 }
 
 function show_statement($userid)
@@ -200,7 +200,7 @@ function show_statement($userid)
                 $total_fiat_given = gmp_add($total_fiat_given, $gave_amount);
 
                 if ($show_prices)
-                    printf("<td>%s</td>", trade_price($got_amount, $gave_amount, PRICE_PRECISION));
+                    printf("<td>%s</td>", trade_price($got_amount, $gave_amount));
                 if ($show_increments)
                     printf("<td class='right'>+ %s</td>", internal_to_numstr($got_amount, BTC_PRECISION));
                 printf("<td class='right'> %s</td>",  internal_to_numstr($btc, BTC_PRECISION));
@@ -220,7 +220,7 @@ function show_statement($userid)
                 $total_btc_given = gmp_add($total_btc_given, $gave_amount);
 
                 if ($show_prices)
-                    printf("<td>%s</td>", trade_price($gave_amount, $got_amount, PRICE_PRECISION));
+                    printf("<td>%s</td>", trade_price($gave_amount, $got_amount));
                 if ($show_increments)
                     printf("<td class='right'>-%s</td>", internal_to_numstr($gave_amount, BTC_PRECISION));
                 printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($btc, BTC_PRECISION));
@@ -355,9 +355,9 @@ function show_statement($userid)
     list ($trade_word, $trade_btc, $trade_fiat) = bought_or_sold($total_btc_got, $total_fiat_given,
                                                                 $total_btc_given, $total_fiat_got);
 
-    $bought_price = trade_price($total_btc_got,   $total_fiat_given, PRICE_PRECISION, 'verbose');
-    $sold_price   = trade_price($total_btc_given, $total_fiat_got,   PRICE_PRECISION, 'verbose');
-    $net_price    = trade_price($trade_btc,       $trade_fiat,       PRICE_PRECISION, 'verbose');
+    $bought_price = trade_price($total_btc_got,   $total_fiat_given, 'verbose');
+    $sold_price   = trade_price($total_btc_given, $total_fiat_got,   'verbose');
+    $net_price    = trade_price($trade_btc,       $trade_fiat,       'verbose');
 
     echo "</table>\n";
 

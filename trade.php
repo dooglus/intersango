@@ -52,9 +52,9 @@ function show_mini_orderbook_table($bids)
     while ($row = mysql_fetch_array($result)) {
         $btc_amount = $row['btc_amount'];
         if ($bids)
-            $price = bcdiv($row['amount'], $row['want_amount'], PRICE_PRECISION);
+            $price = fiat_and_btc_to_price($row['amount'], $row['want_amount']);
         else
-            $price = bcdiv($row['want_amount'], $row['amount'], PRICE_PRECISION);
+            $price = fiat_and_btc_to_price($row['want_amount'], $row['amount']);
         if ($price == $last_price)
             $btc_amount_at_price = gmp_add($btc_amount_at_price, $btc_amount);
         else {

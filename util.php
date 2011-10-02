@@ -18,6 +18,15 @@ function btc_to_numstr($num)
     return sprintf("%." . BTC_PRECISION . "f %s", $num, "BTC");
 }
 
+function fiat_and_btc_to_price($fiat, $btc, $round = true)
+{
+    if ($round) {
+        $price = bcdiv($fiat, $btc, PRICE_PRECISION+1);
+        return sprintf("%." . PRICE_PRECISION . "f", $price);
+    } else
+        return bcdiv($fiat, $btc, PRICE_PRECISION);
+}
+
 function show_contact_info()
 {
     echo "<h3>" . _("Contact info") . "</h3>\n";
