@@ -3,11 +3,13 @@
 function show_mini_orderbook_table_cell($curr, $price, $have, $want, $depth)
 {
     if ($curr == 'BTC') {
+        list ($w, $r) = gmp_div_qr(gmp_mul($depth, $have), $want);
+        $w = gmp_strval(gmp_cmp($r, 0) ? gmp_sub($w, 1) : $w);
         $h = gmp_strval($depth);
-        $w = gmp_strval(gmp_div(gmp_mul($depth, $have), $want));
         $p = clean_sql_numstr(bcdiv($have, $want, 8));
     } else {
-        $h = gmp_strval(gmp_div(gmp_mul($depth, $want), $have));
+        list ($h, $r) = gmp_div_qr(gmp_mul($depth, $want), $have);
+        $h = gmp_strval(gmp_cmp($r,0) ? gmp_add($h, 1) : $h);
         $w = gmp_strval($depth);
         $p = clean_sql_numstr(bcdiv($want, $have, 8));
     }
@@ -131,9 +133,13 @@ function show_mini_orderbook()
 ?>
         <div class='content_box'>
             <h3><?php echo _("Currency converter"); ?></h3>
+
+<?php if (!$is_logged_in) { ?>
         <p><b><?php printf(_("World Bitcoin Exchange allows you to trade %s for Bitcoins (BTC) or BTC for %s with other users."),
                            CURRENCY_FULL_PLURAL . " (" . CURRENCY . ")",
                            CURRENCY); ?></a></b></p>
+<?php } ?>
+
         <form id='buy_form' action='?page=place_order' method='post'>
             <table id='exchanger'>
             <tr><td>
@@ -224,16 +230,20 @@ function show_mini_orderbook()
         </form>
 
     <?php
-    if ($is_logged_in) { ?>
-            <p>
-            <?php printf(_("You have %s."), balances_text($is_logged_in)); ?>
-            </p>
-    <?php }
-    else { ?>
-            <p><?php echo _("To begin trading you will need an OpenID account."); ?></p>
-            <p><?php echo _("If you do not have an OpenID login then we recommend"); ?> <a href="https://www.myopenid.com/">MyOpenID</a></p>
-            <p><?php echo _("This is a Two-Factor Authentication Security Supported Exchange, for more Info see our help section."); ?></p>.
-    <?php }
+    if ($is_logged_in)
+        echo "<p>" .
+            sprintf(_("You have %s."), balances_text($is_logged_in)) .
+            " " .
+            _("You can click the 'Depth' amounts below to automatically fill the above form.") .
+            "</p>\n";
+    else
+        echo "<p>" .
+            _("To begin trading you will need an OpenID account.") .
+            "</p><p>" .
+            _("If you do not have an OpenID login then we recommend") . " " . '<a href="https://www.myopenid.com/">MyOpenID</a>' .
+            "</p><p>" .
+            _("This is a Two-Factor Authentication Security Supported Exchange, for more Info see our help section.") .
+            "</p>";
 
     show_mini_orderbook();
 ?>
