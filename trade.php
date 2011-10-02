@@ -7,8 +7,8 @@ function show_mini_orderbook_table($bids)
     echo "<table class='display_data'>";
     echo "<tr><th colspan=3 style='text-align: center;'>" .
         ($bids
-         ? sprintf(_("People Selling BTC for %s"), CURRENCY)
-         : sprintf(_("People Buying BTC for %s" ), CURRENCY)) .
+         ? sprintf(_("People Buying BTC for %s"),   CURRENCY)
+         : sprintf(_("People Selling BTC for %s" ), CURRENCY)) .
         "</th></tr>" .
         "<tr><th valign='bottom' class='right'>" .
         sprintf(_("Price<br/>(%s per BTC)"), CURRENCY) . "</th>" .
