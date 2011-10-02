@@ -1,4 +1,10 @@
 <?php
+
+function show_mini_orderbook()
+{
+    echo "this will soon show the orderbook<br/>\n";
+}
+
     if (isset($_GET['have']))
         $in_amount = internal_to_numstr(get('have'));
     else
@@ -111,18 +117,17 @@
     <?php
     if ($is_logged_in) { ?>
             <p>
-            <?php echo _("Use the above to give you an indication of the current exchange rates."); ?>
-            </p>
-        <?php show_balances($is_logged_in, $indent=true); ?>
-            <p>
-            <?php echo _("Select the currency you wish to buy on the left, then click Buy."); ?>
+            <?php printf(_("You have %s."), balances_text($is_logged_in)); ?>
             </p>
     <?php }
     else { ?>
             <p><?php echo _("To begin trading you will need an OpenID account."); ?></p>
             <p><?php echo _("If you do not have an OpenID login then we recommend"); ?> <a href="https://www.myopenid.com/">MyOpenID</a></p>
             <p><?php echo _("This is a Two-Factor Authentication Security Supported Exchange, for more Info see our help section."); ?></p>.
-    <?php } ?>
+    <?php }
+
+    // show_mini_orderbook();
+?>
         </div>
 
         <div class='content_box'>
