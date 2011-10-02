@@ -35,12 +35,13 @@ function numstr_to_internal($numstr)
     return bcmul($numstr, pow(10, 8), 0);
 }
 
-function internal_to_numstr($num, $precision=8)
+function internal_to_numstr($num, $precision=8, $round = true)
 {
     if (!is_string($num) && !is_resource($num))
         throw new Error('Coding error!', "internal_to_numstr argument has type '" . gettype($num) . "'");
     $repr = gmp_strval($num);
-    $repr = bcadd($repr, pow(10, (8 - $precision)) / 2);
+    if ($round)
+        $repr = bcadd($repr, pow(10, (8 - $precision)) / 2);
     $repr = bcdiv($repr, pow(10, 8), $precision);
     // now tidy output...
     if ($precision != 8)
