@@ -152,21 +152,26 @@ function test_price($fiat, $btc) {
     echo "full: " .
         bcdiv($fiat, $btc, 8) . 
         " rounded: " .
-        fiat_and_btc_to_price($fiat, $btc) .
-        " and truncated: " .
-        fiat_and_btc_to_price($fiat, $btc, false) .
+        fiat_and_btc_to_price($fiat, $btc, 'round') .
+        "; up: " .
+        fiat_and_btc_to_price($fiat, $btc, 'up') .
+        "; down: " .
+        fiat_and_btc_to_price($fiat, $btc, 'down') .
         "<br>\n";
 }
 
 function test_prices() {
     echo "<div class='content_box'>\n";
     echo "<h3>Prices</h3><p>\n";
-    test_price(200, 6);
-    test_price(200, 3);
-    test_price(1, 7);
-    test_price("22224999", "100000000");
-    test_price("22225000", "100000000");
-    test_price("22225001", "100000000");
+    // test_price(200, 6);
+    // test_price(200, 3);
+    // test_price(1, 7);
+    test_price( "4999", "100000000");
+    test_price( "5000", "100000000");
+    test_price( "5001", "100000000");
+    test_price( "9999", "100000000");
+    test_price("10000", "100000000");
+    test_price("10001", "100000000");
     echo "</p></div>\n";
 }
 
