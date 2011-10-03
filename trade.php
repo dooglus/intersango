@@ -17,18 +17,26 @@ function show_mini_orderbook_table_cell($curr, $price, $have, $want, $depth)
     active_table_cell(internal_to_numstr($depth, BTC_PRECISION), "?page=trade&in=$curr&have=$h&want=$w&rate=$p", 'right');
 }
 
-function show_mini_orderbook_table_row($curr, $price, $have, $want, $this_btc, $sum_btc)
+function show_mini_orderbook_table_row($curr, $price, $have, $want, $this_btc, $sum_btc, $mine)
 {
-    echo "<tr>";
-    echo "<td class='right'>$price</td>";
-    show_mini_orderbook_table_cell($curr, $price, $have, $want, $this_btc);
-    show_mini_orderbook_table_cell($curr, $price, $have, $want, $sum_btc);
+    if ($mine) {
+        active_table_row("me", "?page=view_order&orderid=$mine");
+        echo "<td class='right'>$price</td>";
+        echo "<td class='right'>" . internal_to_numstr($this_btc, BTC_PRECISION) . "</td>\n";
+        echo "<td class='right'>" . internal_to_numstr($sum_btc, BTC_PRECISION) . "</td>\n";
+        echo "</tr>\n";
+    } else {
+        echo "<tr>";
+        echo "<td class='right'>$price</td>";
+        show_mini_orderbook_table_cell($curr, $price, $have, $want, $this_btc);
+        show_mini_orderbook_table_cell($curr, $price, $have, $want, $sum_btc);
+    }
     echo "</tr>\n";
 }
 
 function show_mini_orderbook_table($bids)
 {
-    global $buy, $sell;
+    global $buy, $sell, $is_logged_in;
 
     echo "<table class='display_data'>";
     echo "<tr><th colspan=3 style='text-align: center;'>" .
@@ -59,6 +67,8 @@ function show_mini_orderbook_table($bids)
 
     $result = do_query("
         SELECT
+            uid = $is_logged_in as me,
+            orderid,
             amount,
             want_amount
         FROM
@@ -72,6 +82,7 @@ function show_mini_orderbook_table($bids)
     ");
 
     $last_price = $btc_amount_at_price = $total_btc_amount = "0";
+    $mine = $mine_count = 0;
     while ($row = mysql_fetch_array($result)) {
         $have_amount = $row['amount'];
         $want_amount = $row['want_amount'];
@@ -89,8 +100,10 @@ function show_mini_orderbook_table($bids)
         if ($price == $last_price)
             $btc_amount_at_price = gmp_add($btc_amount_at_price, $btc_amount);
         else {
-            if ($last_price)
-                show_mini_orderbook_table_row($want_type, $last_price, $last_have, $last_want, $btc_amount_at_price, $total_btc_amount);
+            if ($last_price) {
+                show_mini_orderbook_table_row($want_type, $last_price, $last_have, $last_want, $btc_amount_at_price, $total_btc_amount, $mine);
+                $mine = 0;
+            }
                                               
             $last_price = $price;
             $btc_amount_at_price = $btc_amount;
@@ -99,21 +112,31 @@ function show_mini_orderbook_table($bids)
         $last_have = $have_amount;
         $last_want = $want_amount;
         $total_btc_amount = gmp_add($total_btc_amount, $btc_amount);
+
+        if ($row['me']) {
+            $mine = $row['orderid'];
+            $mine_count++;
+        }
     }
     if ($last_price)
-        show_mini_orderbook_table_row($want_type, $last_price, $last_have, $last_want, $btc_amount_at_price, $total_btc_amount);
+        show_mini_orderbook_table_row($want_type, $last_price, $last_have, $last_want, $btc_amount_at_price, $total_btc_amount, $mine);
 
     echo "</table>\n";
+
+    return $mine_count;
 }
 
 function show_mini_orderbook()
 {
     echo "<table><tr><td>\n";
-    show_mini_orderbook_table(true);
+    $mine = show_mini_orderbook_table(true);
     echo "</td><td>";
-    show_mini_orderbook_table(false);
+    $mine += show_mini_orderbook_table(false);
     echo "</td></tr></table>";
     echo "<p>" . sprintf(_("Showing all orders within %s%% of the best price."), ORDERBOOK_PRICE_RANGE_PERCENTAGE) . "</p>\n";
+
+    if ($mine)
+        echo "<p>" . _("The bold lines indicate prices at which you have orders.  Note that other users may have orders at the same price, and so the depth shown isn't necessarily all due to your order.  You can click the bold lines to view or cancel your orders.") . "</p>\n";
 }
 
     if (isset($_GET['have']))
