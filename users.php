@@ -63,12 +63,12 @@ function show_users()
             echo "<tr>";
             echo "<th>" . _("UID") . "</th>";
 //          echo "<th>" . _("OID") . "</th>";
-            echo "<th>" . _("On Hand") . "</th>";
-            echo "<th>" . _("In Book") . "</th>";
-            echo "<th>" . _("Total") . "</th>";
-            echo "<th>" . _("On Hand") . "</th>";
-            echo "<th>" . _("In Book") . "</th>";
-            echo "<th>" . _("Total") . "</th>";
+            echo "<th class='right'>" . _("On Hand") . "</th>";
+            echo "<th class='right'>" . _("In Book") . "</th>";
+            echo "<th class='right'>" . _("Total") . "</th>";
+            echo "<th class='right'>" . _("On Hand") . "</th>";
+            echo "<th class='right'>" . _("In Book") . "</th>";
+            echo "<th class='right'>" . _("Total") . "</th>";
 //          echo "<th>" . _("Registered") . "</th>";
             echo "</tr>\n";
         }
@@ -101,26 +101,26 @@ function show_users()
 
         echo "<td>$uid</td>";
 //      echo "<td>$oidlogin</td>";
-        echo "<td>", internal_to_numstr($fiat,   FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($c_fiat, FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($t_fiat, FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($btc,    BTC_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($c_btc,  BTC_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($t_btc,  BTC_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($fiat,   FIAT_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($c_fiat, FIAT_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($t_fiat, FIAT_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($btc,    BTC_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($c_btc,  BTC_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($t_btc,  BTC_PRECISION), "</td>";
 //      echo "<td>$timest</td>";
         echo "</tr>\n";
     }
 
     if (!$first) {
-        echo "<tr><td></td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td><td>--------</td></tr>\n";
+        echo "<tr><td></td><td class='right'>--------</td><td class='right'>--------</td><td class='right'>--------</td><td class='right'>--------</td><td class='right'>--------</td><td class='right'>--------</td></tr>\n";
         active_table_row('me', "?page=statement&user=all");
         echo "<td></td>";
-        echo "<td>", internal_to_numstr($fiat_total,   FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($c_fiat_total, FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($t_fiat_total, FIAT_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($btc_total,    BTC_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($c_btc_total,  BTC_PRECISION), "</td>";
-        echo "<td>", internal_to_numstr($t_btc_total,  BTC_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($fiat_total,   FIAT_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($c_fiat_total, FIAT_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($t_fiat_total, FIAT_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($btc_total,    BTC_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($c_btc_total,  BTC_PRECISION), "</td>";
+        echo "<td class='right'>", internal_to_numstr($t_btc_total,  BTC_PRECISION), "</td>";
         echo "</tr>\n";
         echo "</table>\n";
         echo "<p>" . _("Admins are shown in bold type, and at the top of the table.") . "</p>\n";
