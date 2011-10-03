@@ -3,7 +3,7 @@
 function active_table_cell_link_for_commission($uid, $txid, $orderid, $sub, $amount, $precision)
 {
     $url = "?page=view_order&orderid=$orderid&uid=$uid";
-    echo "<td class='active' id='cell_${txid}_${orderid}_$sub' onmouseover='In(\"$orderid\");' onmouseout='Out(\"$orderid\");' onclick='document.location=\"$url\"'>", internal_to_numstr($amount, $precision), "</td>";
+    echo "<td class='active right' id='cell_${txid}_${orderid}_$sub' onmouseover='In(\"$orderid\");' onmouseout='Out(\"$orderid\");' onclick='document.location=\"$url\"'>", internal_to_numstr($amount, $precision), "</td>";
 }
 
 ?>
@@ -51,10 +51,10 @@ while ($row = mysql_fetch_assoc($result)) {
         echo "</tr>";
         echo "<tr>";
         echo "<th>" . _("TID") . "</th>";
-        echo "<th>" . _("Got") . "</th>";
-        echo "<th>" . _("Fee") . "</th>";
-        echo "<th>" . _("Got") . "</th>";
-        echo "<th>" . _("Fee") . "</th>";
+        echo "<th class='right'>" . _("Got") . "</th>";
+        echo "<th class='right'>" . _("Fee") . "</th>";
+        echo "<th class='right'>" . _("Got") . "</th>";
+        echo "<th class='right'>" . _("Fee") . "</th>";
         echo "<th>" . _("Date") . "</th>";
         echo "</tr>";
     }
@@ -98,7 +98,7 @@ while ($row = mysql_fetch_assoc($result)) {
 
 if (!$first) {
     echo "    <tr>\n";
-    echo "        <td></td><td>--------</td><td>--------</td><td>--------</td><td>--------</td>\n";
+    echo "        <td></td><td class='right'>--------</td><td class='right'>--------</td><td class='right'>--------</td><td class='right'>--------</td>\n";
     echo "    </tr>\n";
     echo "    <tr>\n";
     echo "        <td></td>";
