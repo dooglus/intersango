@@ -76,9 +76,10 @@ function switcher($page)
 
                     // we just tried to log in, so check whether or not it worked before showing the footer
                     list($is_logged_in, $is_admin) = get_login_status();
-                }
-                else
+                } else {
+                    addlog("  already logged in");
                     log_badpage($page);
+                }
                 break;
 
             case 'logout':
