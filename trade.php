@@ -1,35 +1,54 @@
 <?php
 
-function show_mini_orderbook_table_cell($curr, $price, $have, $want, $depth)
+function active_table_cell_trade($id, $index, $content, $url, $right=false)
 {
+    printf("<td id='$id$index' class='active%s' %s %s %s>%s</td>\n",
+           $right ? " right" : "",
+           'onmouseover="ObjById(\''.$id.'l\').style.backgroundColor=\'#8ae3bf\'; ObjById(\''.$id.'r\').style.backgroundColor=\'#8ae3bf\';"',
+           'onmouseout="ObjById(\''.$id.'l\').style.backgroundColor=\'#7ad3af\'; ObjById(\''.$id.'r\').style.backgroundColor=\'#7ad3af\';"',
+           "onclick=\"document.location='$url';\"",
+           $content);
+}
+
+function show_mini_orderbook_table_cell($id, $curr, $price, $have, $want, $fiat_depth, $btc_depth)
+{
+    // $have and $want is what the 'worst priced' existing order has and wants, and is used here to set the price
+    // $fiat_depth and $btc_depth are combined amounts available which we want to match, and may include orders at better prices
+    // $curr is the currency type they want
+
     if ($curr == 'BTC') {
-        list ($w, $r) = gmp_div_qr(gmp_mul($depth, $have), $want);
-        $w = gmp_strval(gmp_cmp($r, 0) ? gmp_sub($w, 1) : $w);
-        $h = gmp_strval($depth);
+        // we are selling BTC
+        $depth = $btc_depth;
         $p = clean_sql_numstr(bcdiv($have, $want, 8));
     } else {
-        list ($h, $r) = gmp_div_qr(gmp_mul($depth, $want), $have);
-        $h = gmp_strval(gmp_cmp($r,0) ? gmp_add($h, 1) : $h);
-        $w = gmp_strval($depth);
+        // we are buying BTC
+        $depth = $fiat_depth;
         $p = clean_sql_numstr(bcdiv($want, $have, 8));
     }
 
-    active_table_cell(internal_to_numstr($depth, BTC_PRECISION), "?page=trade&in=$curr&have=$h&want=$w&rate=$p", 'right');
+    list ($w, $r) = gmp_div_qr(gmp_mul($depth, $have), $want);
+    $w = gmp_strval(gmp_cmp($r, 0) ? gmp_sub($w, 1) : $w);
+    $h = gmp_strval($depth);
+
+    active_table_cell_trade($id, 'l', internal_to_numstr($btc_depth,  BTC_PRECISION),  "?page=trade&in=$curr&have=$h&want=$w&rate=$p", 'right');
+    active_table_cell_trade($id, 'r', internal_to_numstr($fiat_depth, FIAT_PRECISION), "?page=trade&in=$curr&have=$h&want=$w&rate=$p", 'right');
 }
 
-function show_mini_orderbook_table_row($curr, $price, $have, $want, $this_btc, $sum_btc, $mine)
+function show_mini_orderbook_table_row($id, $curr, $price, $have, $want, $this_fiat, $this_btc, $sum_fiat, $sum_btc, $mine)
 {
     if ($mine) {
         active_table_row("me", "?page=view_order&orderid=$mine");
-        echo "<td class='right'>$price</td>";
+        echo "<td class='right'>$price</td>\n";
         echo "<td class='right'>" . internal_to_numstr($this_btc, BTC_PRECISION) . "</td>\n";
+        echo "<td class='right'>" . internal_to_numstr($this_fiat, FIAT_PRECISION) . "</td>\n";
         echo "<td class='right'>" . internal_to_numstr($sum_btc, BTC_PRECISION) . "</td>\n";
+        echo "<td class='right'>" . internal_to_numstr($sum_fiat, FIAT_PRECISION) . "</td>\n";
         echo "</tr>\n";
     } else {
-        echo "<tr>";
-        echo "<td class='right'>$price</td>";
-        show_mini_orderbook_table_cell($curr, $price, $have, $want, $this_btc);
-        show_mini_orderbook_table_cell($curr, $price, $have, $want, $sum_btc);
+        echo "<tr>\n";
+        echo "<td class='right'>$price</td>\n";
+        show_mini_orderbook_table_cell($id.'t', $curr, $price, $have, $want, $this_fiat, $this_btc);
+        show_mini_orderbook_table_cell($id.'c', $curr, $price, $have, $want, $sum_fiat,  $sum_btc);
     }
     echo "</tr>\n";
 }
@@ -39,16 +58,17 @@ function show_mini_orderbook_table($bids)
     global $buy, $sell, $is_logged_in;
 
     echo "<table class='display_data'>";
-    echo "<tr><th colspan=3 style='text-align: center;'>" .
+    echo "<tr><th colspan=5 class='center'>" .
         ($bids
          ? sprintf(_("People Buying BTC for %s"),   CURRENCY)
          : sprintf(_("People Selling BTC for %s" ), CURRENCY)) .
         "</th></tr>" .
         "<tr><th valign='bottom' class='right'>" .
-        sprintf(_("Price<br/>(%s per BTC)"), CURRENCY) . "</th>" .
-        "<th valign='bottom' class='right'>" . _("Depth<br/>(in BTC)") . "</th>" .
-        "<th valign='bottom' class='right'>" . _("Cumulative<br/>Depth<br/>(in BTC)") . "</th>" .
+        sprintf(_("Price"), CURRENCY) . "</th>" .
+        "<th colspan=2 valign='bottom' class='center'>" . _("Depth") . "</th>" .
+        "<th colspan=2 valign='bottom' class='center'>" . _("Cumulative Depth") . "</th>" .
         "</tr>";
+    echo "<tr><th></th><th class='center'>BTC</th><th class='center'>" . CURRENCY . "</th><th class='center'>BTC</th><th class='center'>" . CURRENCY . "</th></tr>\n";
 
     $limit = '';
     if ($bids) {
@@ -81,11 +101,12 @@ function show_mini_orderbook_table($bids)
             $price $order, timest ASC
     ");
 
-    $last_price = $btc_amount_at_price = $total_btc_amount = "0";
+    $last_price = $fiat_amount_at_price = $btc_amount_at_price = $total_fiat_amount = $total_btc_amount = "0";
     $mine = $mine_count = 0;
     while ($row = mysql_fetch_array($result)) {
         $have_amount = $row['amount'];
         $want_amount = $row['want_amount'];
+        $orderid = $row['orderid'];
 
         if ($bids) {
             $btc_amount  = $want_amount;
@@ -97,29 +118,35 @@ function show_mini_orderbook_table($bids)
 
         $price = fiat_and_btc_to_price($fiat_amount, $btc_amount, $bids ? 'down' : 'up');
 
-        if ($price == $last_price)
-            $btc_amount_at_price = gmp_add($btc_amount_at_price, $btc_amount);
-        else {
+        if ($price == $last_price) {
+            $fiat_amount_at_price = gmp_add($fiat_amount_at_price, $fiat_amount);
+            $btc_amount_at_price  = gmp_add($btc_amount_at_price,  $btc_amount);
+        } else {
             if ($last_price) {
-                show_mini_orderbook_table_row($want_type, $last_price, $last_have, $last_want, $btc_amount_at_price, $total_btc_amount, $mine);
+                show_mini_orderbook_table_row($last_orderid, $want_type, $last_price, $last_have, $last_want, $fiat_amount_at_price, $btc_amount_at_price, $total_fiat_amount, $total_btc_amount, $mine);
                 $mine = 0;
             }
                                               
             $last_price = $price;
-            $btc_amount_at_price = $btc_amount;
+            $fiat_amount_at_price = $fiat_amount;
+            $btc_amount_at_price  = $btc_amount;
         }
 
         $last_have = $have_amount;
         $last_want = $want_amount;
-        $total_btc_amount = gmp_add($total_btc_amount, $btc_amount);
+        $last_orderid = $orderid;
+
+        $total_fiat_amount = gmp_add($total_fiat_amount, $fiat_amount);
+        $total_btc_amount  = gmp_add($total_btc_amount,  $btc_amount);
 
         if ($row['me']) {
-            $mine = $row['orderid'];
+            $mine = $orderid;
             $mine_count++;
         }
     }
+
     if ($last_price)
-        show_mini_orderbook_table_row($want_type, $last_price, $last_have, $last_want, $btc_amount_at_price, $total_btc_amount, $mine);
+        show_mini_orderbook_table_row($last_orderid, $want_type, $last_price, $last_have, $last_want, $fiat_amount_at_price, $btc_amount_at_price, $total_fiat_amount, $total_btc_amount, $mine);
 
     echo "</table>\n";
 
