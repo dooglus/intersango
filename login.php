@@ -49,14 +49,12 @@ try {
             echo "                    <div class='content_box'>\n";
             echo "                    <h3>" . _("Successful login!") . "</h3>\n";
             echo "                    <p>" . _("Welcome back commander. Welcome back.") . "</p>\n";
-        }
-        else {
+        } else {
             show_header('login', 0);
             echo "bad 2nd auth?<br/>\n";
             // throw new Problem(":(", "Unable to login.");
         }
-    }
-    else {
+    } else {
         $openid = new LightOpenID;
         if (!$openid->mode) {
             if (isset($_GET['openid_identifier'])) {
