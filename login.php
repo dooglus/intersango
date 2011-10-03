@@ -44,6 +44,7 @@ try {
             $_SESSION['oidlogin'] = $oidlogin;
             $_SESSION['uid'] = $uid;
 
+            addlog(sprintf("  duo login by UID %s (openid %s)", $uid, $oidlogin));
             show_header('login', $uid);
             echo "                    <div class='content_box'>\n";
             echo "                    <h3>" . _("Successful login!") . "</h3>\n";
@@ -60,8 +61,11 @@ try {
         if (!$openid->mode) {
             if (isset($_GET['openid_identifier'])) {
                 $openid->identity = htmlspecialchars($_GET['openid_identifier'], ENT_QUOTES);
+                addlog(sprintf("  attempt auth for openid %s", $openid->identity));
                 header('Location: '.$openid->authUrl());
-            }
+            } else
+                addlog("  showing login form");
+
             show_header('login', 0);
 ?>
 <div class='content_box'>
@@ -108,6 +112,7 @@ try {
             }
 
             if ($use_duo) {
+                addlog(sprintf("  duo login for UID %s (openid %s)", $uid, $oidlogin));
                 show_header('login', 0);
                 $sig_request = Duo::signRequest(IKEY, SKEY, AKEY, $oidlogin); ?>
     <script src="js/Duo-Web-v1.bundled.min.js"></script>
@@ -120,6 +125,7 @@ try {
 <?php
             } else {
                 if (has_results($result)) {
+                    addlog(sprintf("  regular login by UID %s (openid %s)", $uid, $oidlogin));
                     show_header('login', $uid);
                     echo "                    <div class='content_box'>\n";
                     echo "                        <h3>" . _("Successful login!") . "</h3>\n";
@@ -156,6 +162,7 @@ try {
                     ";
                     do_query($query);
 
+                    addlog(sprintf("  new user UID %s (openid %s)", $uid, $oidlogin));
                     show_header('login', $uid);
 
                     echo "                    <div class='content_box'>\n";
