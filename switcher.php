@@ -81,6 +81,9 @@ function switcher($page)
                     log_badpage($page);
                 break;
 
+            case 'logout':
+                logout();
+
             default:
                 sleep(3);
                 log_badpage($page);

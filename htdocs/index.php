@@ -46,9 +46,6 @@ if (isset($_GET['page']))
 else
     $page = 'trade';
 
-if($page == 'logout')
-    logout();
-
 list ($is_logged_in, $is_admin) = get_login_status();
 
 switcher($page, $is_logged_in, $is_admin);
