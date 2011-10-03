@@ -10,6 +10,7 @@ function show_header($page, $is_logged_in, $base = false)
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <title>World Bitcoin Exchange</title>
+    <script type='text/javascript' src='js/util.js'></script>
 <?php if ($page == 'trade') { ?>
     <script type='text/javascript' src='js/jquery-1.4.4.min.js'></script>
     <script type='text/javascript' src='js/exchanger.js'></script>
