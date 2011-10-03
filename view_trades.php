@@ -34,12 +34,12 @@ while ($row = mysql_fetch_assoc($result)) {
         $first = false;
         echo "<table class='display_data'>\n";
         echo "<tr>";
-        echo "<th>" . _("TID") . "</th>";
+        echo "<th class='right'>" . _("TID") . "</th>";
         if ($is_admin) echo "<th>User</th>";
-        echo "<th>" . CURRENCY . "</th>";
+        echo "<th class='right'>" . CURRENCY . "</th>";
         if ($is_admin) echo "<th>" . _("User") . "</th>";
-        echo "<th>" . _("BTC") . "</th>";
-        echo "<th>" . _("Price") . "</th>";
+        echo "<th class='right'>" . _("BTC") . "</th>";
+        echo "<th class='right'>" . _("Price") . "</th>";
         echo "<th>" . _("Date") . "</th>";
         echo "</tr>";
     }
@@ -52,7 +52,7 @@ while ($row = mysql_fetch_assoc($result)) {
     $timest = $row['timest'];
     $a_uid = $row['a_uid'];
     $b_uid = $row['b_uid'];
-    $price = clean_sql_numstr(bcdiv($a_amount, $b_amount, 4));
+    $price = fiat_and_btc_to_price($a_amount, $b_amount);
 
     $amount_fiat_total = gmp_add($amount_fiat_total, $a_amount);
     $amount_btc_total = gmp_add($amount_btc_total, $b_amount);
@@ -67,20 +67,28 @@ while ($row = mysql_fetch_assoc($result)) {
     else
         echo "<tr>";
 
-    echo "<td>$txid</td>";
-    if ($is_admin) active_table_cell_link_to_user_statement($a_uid);
+    echo "<td class='right'>$txid</td>";
+    if ($is_admin)
+        if ($a_is_me || $b_is_me)
+            echo "<td>$a_uid</td>";
+        else
+            active_table_cell_link_to_user_statement($a_uid);
     if ($a_is_me) {
         $mine++;
-        echo "<td style='font-weight:bold;'>", internal_to_numstr($a_amount,4), "</td>";
+        echo "<td class='right' style='font-weight:bold;'>", internal_to_numstr($a_amount, FIAT_PRECISION), "</td>";
     } else
-        echo "<td>", internal_to_numstr($a_amount,4), "</td>";
-    if ($is_admin) active_table_cell_link_to_user_statement($b_uid);
+        echo "<td class='right'>", internal_to_numstr($a_amount, FIAT_PRECISION), "</td>";
+    if ($is_admin)
+        if ($a_is_me || $b_is_me)
+            echo "<td>$b_uid</td>";
+        else
+            active_table_cell_link_to_user_statement($b_uid);
     if ($b_is_me) {
         $mine++;
-        echo "<td style='font-weight:bold;'>", internal_to_numstr($b_amount,4), "</td>";
+        echo "<td class='right' style='font-weight:bold;'>", internal_to_numstr($b_amount, BTC_PRECISION), "</td>";
     } else
-        echo "<td>", internal_to_numstr($b_amount,4), "</td>";
-    echo "<td>$price</td>";
+        echo "<td class='right'>", internal_to_numstr($b_amount, BTC_PRECISION), "</td>";
+    echo "<td class='right'>$price</td>";
     echo "<td>$timest</td>";
     echo "</tr>\n";
 }
@@ -91,16 +99,16 @@ else {
     $price = clean_sql_numstr(bcdiv(gmp_strval($amount_fiat_total), gmp_strval($amount_btc_total), 4));
     echo "    <tr>\n";
     if ($is_admin)
-        echo "        <td></td><td></td><td>--------</td><td></td><td>--------</td><td>--------</td>\n";
+        echo "        <td></td><td></td><td class='right'>--------</td><td></td><td class='right'>--------</td><td class='right'>--------</td>\n";
     else
-        echo "        <td></td><td>--------</td><td>--------</td><td>--------</td>\n";
+        echo "        <td></td><td class='right'>--------</td><td class='right'>--------</td><td class='right'>--------</td>\n";
     echo "    </tr>\n";
     echo "    <tr>\n";
     echo "        <td></td>";
     if ($is_admin) echo "        <td></td>";
-    echo "        <td>", internal_to_numstr($amount_fiat_total,4), "</td>";
+    echo "        <td>", internal_to_numstr($amount_fiat_total, FIAT_PRECISION), "</td>";
     if ($is_admin) echo "        <td></td>";
-    echo "        <td>", internal_to_numstr($amount_btc_total,4), "</td>";
+    echo "        <td>", internal_to_numstr($amount_btc_total, BTC_PRECISION), "</td>";
     echo "        <td>$price</td>";
     echo "    </tr>\n";
     echo "</table>\n";
