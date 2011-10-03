@@ -231,6 +231,9 @@ tr.them {
 td.right, th.right {
     text-align: right;
 }
+td.center, th.center {
+    text-align: center;
+}
 blockquote {
     margin-left: 20px;
 }
