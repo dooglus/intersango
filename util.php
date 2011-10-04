@@ -192,7 +192,7 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
                     $invertor,
                     MIN(initial_want_amount/initial_amount),
                     MAX(initial_amount/initial_want_amount)
-                ), 4) AS rate
+                ), " . PRICE_PRECISION . ") AS rate
         FROM
             orderbook
         WHERE
@@ -206,7 +206,6 @@ function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
         return NULL;
     $total_amount = internal_to_numstr($total_amount);
     $total_want_amount = internal_to_numstr($total_want_amount);
-    $rate = clean_sql_numstr($rate);
     return array($total_amount, $total_want_amount, $rate);
 }
 
@@ -556,7 +555,7 @@ function show_balances($uid, $indent=false)
     }
 }
 
-function get_last_price($precision = 8)
+function get_last_price()
 {
     $query = "
     SELECT
@@ -573,12 +572,12 @@ function get_last_price($precision = 8)
     $result = do_query($query);
     if (has_results($result)) {
         $row = get_row($result);
-        $last = bcdiv($row['a_amount'], $row['b_amount'], $precision);
+        $last = fiat_and_btc_to_price($row['a_amount'], $row['b_amount']);
     }
     else
         $last = 0;
 
-    return clean_sql_numstr($last);
+    return $last;
 }
 
 // {"ticker":
@@ -611,8 +610,8 @@ function get_ticker_data()
 {
     $query = "
     SELECT
-        MAX(a_amount/b_amount) AS high,
-        MIN(a_amount/b_amount) AS low,
+        ROUND(MAX(a_amount/b_amount), " . PRICE_PRECISION . ") AS high,
+        ROUND(MIN(a_amount/b_amount), " . PRICE_PRECISION . ") AS low,
         SUM(a_amount/b_amount) AS sum_of_prices,
         COUNT(*)               AS number_of_prices,
         SUM(a_amount)          AS sum_of_a_amounts,
@@ -632,10 +631,10 @@ function get_ticker_data()
         $sum_of_a_amounts = $row['sum_of_a_amounts'];
         $sum_of_b_amounts = $row['sum_of_b_amounts'];
 
-        $high = clean_sql_numstr($row['high']);
-        $low  = clean_sql_numstr($row['low']);
-        $avg  = clean_sql_numstr(bcdiv($sum_of_prices,    $number_of_prices, 4));
-        $vwap = clean_sql_numstr(bcdiv($sum_of_a_amounts, $sum_of_b_amounts, 4));
+        $high = $row['high'];
+        $low  = $row['low'];
+        $avg  = fiat_and_btc_to_price($sum_of_prices,    $number_of_prices);
+        $vwap = fiat_and_btc_to_price($sum_of_a_amounts, $sum_of_b_amounts);
         $vol  = internal_to_numstr($row['vol'], 4);
     } else
         $high = $low = $avg = $vwap = $vol = 0;
@@ -652,7 +651,7 @@ function get_ticker_data()
     else
         list($total_amount, $total_want_amount, $sell) = $exchange_fields; 
 
-    $last = get_last_price(4);
+    $last = get_last_price();
 
     // for testing layout when all stats have 4 decimal places
     // return array('21.1234', '20.1234', '21.6789', '21.4567', '1234567.3456', '21.5543', '21.2345', '22.1257');
