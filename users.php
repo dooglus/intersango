@@ -134,7 +134,7 @@ function show_users()
                              $count_low_balance_users) . "</p>\n";
 
     $bitcoin = connect_bitcoin();
-    $balance = $bitcoin->getbalance('');
+    $balance = $bitcoin->getbalance('', 0);
 
     echo "<p>" . sprintf(_("The Bitcoin wallet has %s BTC."), internal_to_numstr($balance, BTC_PRECISION)) . "<br/></p>\n";
 
