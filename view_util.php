@@ -93,7 +93,10 @@ function display_transactions($uid, $orderid)
         $b_total = gmp_add($b_total, $b_amount);
         $commission_total = gmp_add($commission_total, $b_commission);
 
-        $commission_percent = bcdiv(bcmul($b_commission, 100), $b_amount, 3);
+        if ($b_amount)
+            $commission_percent = bcdiv(bcmul($b_commission, 100), $b_amount, 3);
+        else
+            $commission_percent = 0;
 
         $b_amount = gmp_sub($b_amount, $b_commission);
 
@@ -102,10 +105,11 @@ function display_transactions($uid, $orderid)
         $b_commission = internal_to_numstr($b_commission);
         $type = $row['type'];
         $want_type = $row['want_type'];
-        if ($type == 'BTC')
-           $price = $b_amount / $a_amount;
-        else
-           $price = $a_amount / $b_amount;
+        $price = 0;
+        if ($type == 'BTC') {
+            if ($a_amount) $price = $b_amount / $a_amount;
+        } else
+            if ($b_amount) $price = $a_amount / $b_amount;
         $price = sprintf("%.4f", $price);
         $this_orderid = $row['orderid'];
         $timest = $row['timest'];
