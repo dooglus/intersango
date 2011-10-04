@@ -22,6 +22,9 @@ define('LOCALE', 'en_CA');
 // where to write logs
 define('LOGFILE', ABSPATH . '/log.txt');
 
+// whether to link to bitcoincharts;  '' means don't link, otherwise use a URL like 'http://bitcoincharts.com/markets/wbxAUD.html'
+define('CHARTS_PAGE', '');
+
 // .------------------------------------------------------------------------
 // |  currency
 // `------------------------------------------------------------------------

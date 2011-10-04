@@ -27,6 +27,8 @@ function show_links($is_logged_in, $is_admin)
     if ($is_logged_in)  show_link('withdraw',    _('Withdraw'),   _('Take out money')                                  );
     show_link                    ('orderbook',   _('Orderbook'),  _('Show orders')                                     );
     if ($show_duo)      show_link('turn_on_duo', _('Security'),   _('Use two-factor authentification')                 );
+    if (CHARTS_PAGE)    printf("<li><a target='_blank' href='%s'>%s</a>%s\n",
+                               CHARTS_PAGE,      _('Charts'),     _('From bitcoincharts.com')                          );
     show_link                    ('help',        _('Help'),       _('Seek support')                                    );
     if ($is_admin)      show_link('users',       _('Users'),      _('Show registered users'),                         1);
     if ($is_admin)      show_link('add_cash',    _('Add cash'),   _('Deposit using bank statement'),                  1);
