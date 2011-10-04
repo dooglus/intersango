@@ -30,6 +30,11 @@ function show_users()
     $btc_total = $c_btc_total = $t_btc_total = '0';
     $first = true;
     $count_users = $count_funded_users = $count_low_balance_users = 0;
+
+    // omit users who don't have more than just least-significant-digit amounts of anything
+    $tiny_fiat = pow(10, 8 - FIAT_PRECISION) * 10;
+    $tiny_btc  = pow(10, 8 - BTC_PRECISION) * 10;
+
     while ($row = mysql_fetch_assoc($result)) {
         $uid = $row['uid'];
         $oidlogin = $row['oidlogin'];
@@ -82,7 +87,10 @@ function show_users()
 
         if ($uid != 'fees') {
             $count_funded_users++;
-            if ($fiat < 1e5 && $c_fiat < 1e5 && $btc < 1e5 && $c_btc < 1e5) {
+            if ($fiat   < $tiny_fiat &&
+                $c_fiat < $tiny_fiat &&
+                $btc    < $tiny_btc  &&
+                $c_btc  < $tiny_btc) {
                 $count_low_balance_users++;
                 if ($omit_very_low_balances)
                     continue;
