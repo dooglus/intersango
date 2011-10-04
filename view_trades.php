@@ -23,7 +23,7 @@ $query = "
     ON b.orderid = b_orderid
     WHERE b_amount > 0
           AND t.timest > NOW() - INTERVAL 1 DAY
-    ORDER BY txid;
+    ORDER BY txid DESC;
 ";
 $result = do_query($query);
 $first = true;
