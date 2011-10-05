@@ -57,15 +57,15 @@ function report($message, $severity)
 
     switch ($severity) {
         case SEVERITY::PROBLEM:
-            $filename = "/var/tmp/problem-reports.log";
+            $filename = PROBLEM_LOGFILE;
             break;
 
         case SEVERITY::ERROR:
-            $filename = "/var/tmp/error-reports.log";
+            $filename = ERROR_LOGFILE;
             break;
 
         case SEVERITY::BAD_PAGE:
-            $filename = "/var/tmp/bad-page-reports.log";
+            $filename = BAD_PAGE_LOGFILE;
             break;
 
         default:
