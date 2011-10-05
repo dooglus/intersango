@@ -49,9 +49,11 @@ class SEVERITY
 
 function report($message, $severity)
 {
+    global $is_logged_in;
+
     $uid = '';
-    if (isset($_SESSION['uid']))
-        $uid = $_SESSION['uid'];
+    if ($is_logged_in)
+        $uid = $is_logged_in;
     $time = time();
     $message = "$uid $time: $message";
 
