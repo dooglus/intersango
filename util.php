@@ -237,36 +237,37 @@ function logout()
 
 $is_logged_in = 0;
 $is_admin = false;
+$oidlogin = '';
 
 function get_login_status()
 {
-    global $is_logged_in, $is_admin;
+    global $is_logged_in, $is_admin, $oidlogin;
 
     if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin'])) {
-        list ($is_logged_in, $is_admin) = array(0, false);
+        list ($is_logged_in, $is_admin, $oidlogin) = array(0, false, '');
         return;
     }
 
     // just having a 'uid' in the session isn't enough to be logged in
     // check that the oidlogin matches the uid in case database has been reset
     $uid = $_SESSION['uid'];
-    $oidlogin = $_SESSION['oidlogin'];
+    $oid = $_SESSION['oidlogin'];
 
     $result = do_query("
         SELECT is_admin
         FROM users
-        WHERE oidlogin = '$oidlogin'
+        WHERE oidlogin = '$oid'
         AND uid = '$uid'
     ");
 
     if (has_results($result)) {
         $row = mysql_fetch_array($result);
-        list ($is_logged_in, $is_admin) = array($uid, $row['is_admin'] == '1');
+        list ($is_logged_in, $is_admin, $oidlogin) = array($uid, $row['is_admin'] == '1', $oid);
         return;
     }
 
     if (isset($_GET['fancy'])) {
-        list ($is_logged_in, $is_admin) = array(0, false);
+        list ($is_logged_in, $is_admin, $oidlogin) = array(0, false, '');
         return;
     }
 
@@ -290,11 +291,13 @@ function get_openid_for_user($uid)
 
 function user_id()
 {
-    if (!isset($_SESSION['uid'])) {
-        # grave error. This should never happen and should be reported as an urgent breach.
+    global $is_logged_in;
+
+    if (!$is_logged_in)
+        // grave error. This should never happen and should be reported as an urgent breach.
         throw new Error('Login 404', "You're not logged in. Proceed to the <a href='?login.php'>login</a> form.");
-    }
-    return $_SESSION['uid'];
+
+    return $is_logged_in;
 }
 
 function get_wait_lock($uid)
