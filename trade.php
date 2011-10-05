@@ -273,7 +273,7 @@ function show_mini_orderbook()
                     <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
                     <input type='hidden' name='type' value='' />
                     <input type='hidden' name='want_type' value='' />
-                    <input type='submit' onclick='return buy_clicked();' value='Buy' />
+                    <input type='submit' onclick='return buy_clicked();' value='<?php echo _("Place Order"); ?>' />
     <?php } ?>
         </td></tr>
         </table>
