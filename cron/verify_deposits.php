@@ -1,6 +1,8 @@
 <?php
 require_once '../util.php';
 
+$is_logged_in = 'verify_deposits';
+
 try {
     check_frozen();
 

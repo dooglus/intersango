@@ -2,6 +2,8 @@
 require_once '../htdocs/config.php';
 require_once '../util.php';
 
+$is_logged_in = 'verify_withdrawals_bitcoin';
+
 function update_req($reqid, $status)
 {
     $query = "
