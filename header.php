@@ -13,7 +13,7 @@ function show_header($page, $is_logged_in, $base = false)
     <script type='text/javascript' src='js/util.js'></script>
 <?php
 if (!isset($_GET['fancy'])) { ?>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
         <script>
             !window.jQuery && document.write('<script src="js/jquery-1.4.4.min.js"><\/script>');
         </script>
