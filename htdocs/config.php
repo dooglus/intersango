@@ -34,6 +34,17 @@ define('CURRENCY_NATIONALITY', 'Australian');
 define('CURRENCY_FULL',        'Australian Dollar');
 define('CURRENCY_FULL_PLURAL', 'Australian Dollars');
 
+// .------------------------------------------------------------------------
+// |  contact details
+// `------------------------------------------------------------------------
+
+// address to email if the script discovers a problem
+define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>');
+
+// address to send email from
+define('EMAIL_FROM_ADDRESS',    'World Bitcoin Exchange <support@intersango.com.au>');
+
+// details to show on the help page
 define('CONTACT_EMAIL_ADDRESS', 'support@intersango.com.au');
 define('CONTACT_SKYPE_ADDRESS', 'worldbitcoinexchange');
 define('CONTACT_FACEBOOK_URL',  'http://www.facebook.com/pages/World-Bitcoin-Exchange/227118550652605');
