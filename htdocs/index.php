@@ -22,7 +22,7 @@ if (!isset($_SESSION['creation_time'])) {
     $_SESSION['creation_time'] = time();
 }
 
-// log the user out if they're idle too long
+// if the user has been logged in but is idle, log them out unless this is just an ajax request, in which case just act as if they're not logged in
 if (isset($_SESSION['uid']) &&
     isset($_SESSION['last_activity']) &&
     time() - $_SESSION['last_activity'] > MAX_IDLE_MINUTES_BEFORE_LOGOUT * 60 &&
