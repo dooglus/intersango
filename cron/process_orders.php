@@ -10,8 +10,8 @@ function b_query($query)
     return do_query($query);
 }
 
-# we have two orders which have matched.  one of them partially fills the other
-# refer to them as 'partial' and 'filled'
+// we have two orders which have matched.  one of them partially fills the other
+// refer to them as 'partial' and 'filled'
 function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_type,  $old_filled_commission,
                 $partial_orderid, $partial_uid, $amount_from_partial, $partial_type, $old_partial_commission)
 {
@@ -21,7 +21,7 @@ function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_ty
         internal_to_numstr($amount_from_partial), " $partial_type for ",
         internal_to_numstr($amount_from_filled), " $filled_type\n\n";
 
-    # close order that's being filled
+    // close order that's being filled
     $query = "
         UPDATE orderbook
         SET
@@ -33,7 +33,7 @@ function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_ty
         ";
     b_query($query);
 
-    # update the partially filled order
+    // update the partially filled order
     $query = "
         UPDATE orderbook
         SET
@@ -43,7 +43,7 @@ function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_ty
         ";
     b_query($query);
 
-    # update the want amount using the initially requested price
+    // update the want amount using the initially requested price
     $query = "
         UPDATE orderbook
         SET
@@ -53,7 +53,7 @@ function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_ty
         ";
     b_query($query);
 
-    # it's possible both orders fill each other; if so, close the other one too
+    // it's possible both orders fill each other; if so, close the other one too
     $query = "
         UPDATE orderbook
         SET
@@ -99,13 +99,13 @@ function fulfill_order($our_orderid)
     if ($our->processed)
         throw new Error('Unprocessed', "Shouldn't be here for $our_orderid");
 
-    # Dividing two bignum(20) values only gives us 4 decimal places in the result
-    # this can cause us to process the matching orders out of sequence unless we arrange
-    # for the quotient to be greater than 1 by putting the bigger value on top.
-    #
-    # With BTC at around 10 GBP each, I just saw the previous version of this query
-    # process 2 orders out of sequence because the values of initial_want_amount / initial_amount
-    # for the two orders were 0.09348 and 0.09346, which compare equal to 4 decimal places
+    // Dividing two bignum(20) values only gives us 4 decimal places in the result
+    // this can cause us to process the matching orders out of sequence unless we arrange
+    // for the quotient to be greater than 1 by putting the bigger value on top.
+    //
+    // With BTC at around 10 GBP each, I just saw the previous version of this query
+    // process 2 orders out of sequence because the values of initial_want_amount / initial_amount
+    // for the two orders were 0.09348 and 0.09346, which compare equal to 4 decimal places
 
     if ($our->initial_amount > $our->initial_want_amount)
         $order_by = "initial_want_amount / initial_amount ASC";
@@ -138,16 +138,16 @@ function fulfill_order($our_orderid)
 
         if ($them->type != $our->want_type || $our->type != $them->want_type)
             throw Error('Problem', 'Urgent problem. Contact the site owner IMMEDIATELY.');
-        # echo "  them: orderid {$them->orderid}, uid {$them->uid}, have {$them->amount} {$them->type}, want {$them->want_amount}\n";
-        # echo "  us: orderid {$our->orderid}, uid {$our->uid }, have: {$our->amount} {$our->type}, want {$our->want_amount}\n";
-        # echo "  them->initial_amount = {$them->initial_amount}, them->initial_want_amount = {$them->initial_want_amount}\n";
+        // echo "  them: orderid {$them->orderid}, uid {$them->uid}, have {$them->amount} {$them->type}, want {$them->want_amount}\n";
+        // echo "  us: orderid {$our->orderid}, uid {$our->uid }, have: {$our->amount} {$our->type}, want {$our->want_amount}\n";
+        // echo "  them->initial_amount = {$them->initial_amount}, them->initial_want_amount = {$them->initial_want_amount}\n";
 
         $left = gmp_mul($our->amount, $them->initial_amount);
         $right = gmp_mul($them->amount, $them->initial_want_amount);
 
         if (gmp_cmp($left, $right) >= 0) {
-            # We need to calculate how much of our stuff they can afford at their price
-            # we ignore the remainder - it's totally insignificant.
+            // We need to calculate how much of our stuff they can afford at their price
+            // we ignore the remainder - it's totally insignificant.
             $them->new_want = gmp_strval(gmp_div($right, $them->initial_amount));
             echo "    we swallow them; they can afford {$them->new_want} from us\n";
 
@@ -155,16 +155,16 @@ function fulfill_order($our_orderid)
                    $our->orderid,  $our->uid,  $them->new_want, $our->type,  $our->commission);
             release_lock($them->uid);
 
-            # re-update as still haven't finished...
-            # info needed for any further transactions
+            // re-update as still haven't finished...
+            // info needed for any further transactions
             $our = fetch_order_info($our->orderid);
-            # order was closed and our job is done.
+            // order was closed and our job is done.
             if ($our->status != 'OPEN')
                 break;
         }
         else {
-            # We need to calculate how much of their stuff we can afford at their price
-            # we ignore the remainder - it's totally insignificant.
+            // We need to calculate how much of their stuff we can afford at their price
+            // we ignore the remainder - it's totally insignificant.
             $our->new_want = gmp_strval(gmp_div($left, $them->initial_want_amount));
             echo "    they swallow us; we can afford {$our->new_want} from them\n";
 
