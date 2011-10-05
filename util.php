@@ -235,10 +235,17 @@ function logout()
     exit();
 }
 
+$is_logged_in = 0;
+$is_admin = false;
+
 function get_login_status()
 {
-    if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin']))
-        return array(0, false);
+    global $is_logged_in, $is_admin;
+
+    if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin'])) {
+        list ($is_logged_in, $is_admin) = array(0, false);
+        return;
+    }
 
     // just having a 'uid' in the session isn't enough to be logged in
     // check that the oidlogin matches the uid in case database has been reset
@@ -254,8 +261,13 @@ function get_login_status()
 
     if (has_results($result)) {
         $row = mysql_fetch_array($result);
-        $is_admin = $row['is_admin'];
-        return array($uid, $is_admin == '1');
+        list ($is_logged_in, $is_admin) = array($uid, $row['is_admin'] == '1');
+        return;
+    }
+
+    if (isset($_GET['fancy'])) {
+        list ($is_logged_in, $is_admin) = array(0, false);
+        return;
     }
 
     logout();
@@ -276,20 +288,6 @@ function get_openid_for_user($uid)
     return $row['oidlogin'];
 }
 
-// not used any more - call get_login_status() instead
-// function is_logged_in()
-// {
-//     $status = get_login_status();
-//     return $status[0];
-// }
-
-// not used any more - call get_login_status() instead
-// function is_admin()
-// {
-//     $status = get_login_status();
-//     return $status[1];
-// }
-    
 function user_id()
 {
     if (!isset($_SESSION['uid'])) {
