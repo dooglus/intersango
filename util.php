@@ -69,6 +69,17 @@ function show_contact_info()
            CONTACT_ADDRESS_ETC);
 }
 
+function send_email($to, $subject, $body)
+{
+    $headers = "From: " . EMAIL_FROM_ADDRESS;
+    mail($to, $subject, $body, $headers);
+}
+
+function email_tech($subject, $body)
+{
+    send_email(TECH_EMAIL_ADDRESS, $subject, $body)
+}
+
 function freeze_file()
 {
     return LOCK_DIR . "/FREEZE";
