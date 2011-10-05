@@ -40,6 +40,10 @@ function show_links($is_logged_in, $is_admin)
 
 function show_footer($is_logged_in, $is_admin)
 {
+    if (isset($_GET['fancy'])) {
+        echo "</div></body></html>\n";
+        return;
+    }
 ?>
                 </div>
             </div>

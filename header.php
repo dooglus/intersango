@@ -5,15 +5,31 @@ require_once "util.php";
 function show_header($page, $is_logged_in, $base = false)
 {
 ?>
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <title>World Bitcoin Exchange</title>
     <script type='text/javascript' src='js/util.js'></script>
-<?php if ($page == 'trade') { ?>
-    <script type='text/javascript' src='js/jquery-1.4.4.min.js'></script>
-    <script type='text/javascript' src='js/exchanger.js'></script>
+<?php
+if (!isset($_GET['fancy'])) { ?>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+        <script>
+            !window.jQuery && document.write('<script src="js/jquery-1.4.4.min.js"><\/script>');
+        </script>
+        <script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+        <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".fancy").fancybox({'margin'  :  20,
+                                      'padding' :   2,
+                                      'speedIn' : 500,
+                                      'speedOut': 100});
+            });
+        </script>
+<?php
+    if ($page == 'trade') { ?>
+        <script type='text/javascript' src='js/exchanger.js'></script>
 <?php 
         echo "    <script type='text/javascript'>\n";
         $fiat_currency = strtolower(CURRENCY);
@@ -33,7 +49,8 @@ function show_header($page, $is_logged_in, $base = false)
         }
         echo "    </script>\n";
     }
-    if ($base) echo "    <base href=\"$base\" />\n"; ?>
+}
+if ($base) echo "    <base href=\"$base\" />\n"; ?>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
 </head>
@@ -55,6 +72,11 @@ if ($page == 'trade') {
     else
         echo "<body onload='set_currency_in(\"$fiat_currency\"); set_currency_out(\"btc\");'>\n";
 } else
+    if (isset($_GET['fancy'])) {
+        echo "<body><div class='fancy_box'>\n";
+        return;
+    }
+
     echo "<body>\n"; ?>
     <img id='flower' src='images/flower.png' />
     <a href="."><img id='header' src='images/header.png' /></a>
@@ -124,7 +146,7 @@ function show_content_header_ticker()
         $sell_link = "none";
 
     echo "    <div class='content_header_box'>\n";
-    echo "    ", SPACE, _("24 hour volume"), ": <a href=\"?page=view_trades\">$vol BTC</a></div>\n";
+    echo "    ", SPACE, _("24 hour volume"), ": <a class=\"fancy\" href=\"?fancy&page=view_trades\">$vol BTC</a></div>\n";
     echo "    <div class='content_header_box'>\n";
     echo "        ", SPACE;
     echo _("buy") . ": $buy_link${spaces}" . _("sell") . ": $sell_link";
