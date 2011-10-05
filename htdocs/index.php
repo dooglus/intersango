@@ -23,12 +23,15 @@ if (!isset($_SESSION['creation_time'])) {
 }
 
 // log the user out if they're idle too long
-if (isset($_SESSION['uid']) && isset($_SESSION['last_activity'])) {
-    $inactivity = time() - $_SESSION['last_activity'];
-    if ($inactivity > MAX_IDLE_MINUTES_BEFORE_LOGOUT * 60)
-        logout();
+if (isset($_SESSION['uid']) &&
+    isset($_SESSION['last_activity']) &&
+    time() - $_SESSION['last_activity'] > MAX_IDLE_MINUTES_BEFORE_LOGOUT * 60 &&
+    !isset($_GET['fancy']))
+    logout();                   // this exit()s
+else {
+    $_SESSION['last_activity'] = time();
+    get_login_status();
 }
-$_SESSION['last_activity'] = time();
 
 if(!isset($_SESSION['csrf_token']))
 {
@@ -43,8 +46,6 @@ if (isset($_GET['page']))
     $page = htmlspecialchars($_GET['page']);
 else
     $page = 'trade';
-
-list ($is_logged_in, $is_admin) = get_login_status();
 
 switcher($page, $is_logged_in, $is_admin);
 
