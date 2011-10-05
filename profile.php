@@ -3,15 +3,16 @@ require_once 'openid.php';
 require_once 'util.php';
 require_once 'view_util.php';
 
-if (!isset($_SESSION['uid']))
+global $oidlogin;
+
+if (!$is_logged_in)
     throw new Error(_('Denied'), _('Go away.'));
 
 echo "   <div class='content_box'>\n";
 echo "<h3>" . _("Private user info") . "</h3>\n";
-# main info
+// main info
 echo "<p>" . _("You are logged in.") . "</p>\n";
-$uid = $_SESSION['uid'];
-$oidlogin = $_SESSION['oidlogin'];
+$uid = $is_logged_in;
 echo "<p>" . _("User ID") . ": $uid</p>\n";
 echo "<p>" . _("OpenID") . ": $oidlogin</p>\n";
 show_balances($uid);
