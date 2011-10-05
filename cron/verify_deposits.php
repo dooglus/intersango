@@ -57,6 +57,8 @@ try {
             reqid='$reqid'
         ";
         do_query($query);
+
+        addlog("Added " . internal_to_numstr($amount) . " $type for user $uid");
     }
 }
 catch (Error $e) {
