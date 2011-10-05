@@ -104,7 +104,7 @@ define('FIAT_PRECISION' , 2);
 define('BTC_PRECISION'  , 4);
 
 // number of decimal places to show when showing prices
-define('PRICE_PRECISION', 4);
+define('PRICE_PRECISION', 3);
 
 // .------------------------------------------------------------------------
 // |  vouchers
