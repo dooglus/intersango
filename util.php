@@ -77,7 +77,7 @@ function send_email($to, $subject, $body)
 
 function email_tech($subject, $body)
 {
-    send_email(TECH_EMAIL_ADDRESS, $subject, $body)
+    send_email(TECH_EMAIL_ADDRESS, $subject, $body);
 }
 
 function freeze_file()
