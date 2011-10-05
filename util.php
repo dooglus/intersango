@@ -2,6 +2,8 @@
 require_once 'db.php';
 require_once 'jsonRPCClient.php';
 
+date_default_timezone_set(TIMEZONE);
+
 class BASE_CURRENCY
 {
     const A = 0;
