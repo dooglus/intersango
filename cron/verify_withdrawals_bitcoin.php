@@ -91,17 +91,17 @@ try {
             update_req($reqid, "FINAL");
 
             $we_have = $bitcoin->getbalance("", CONFIRMATIONS_FOR_DEPOSIT);
-            if (gmp_cmp($we_have, numstr_to_internal(150)) < 0)
-                email_tech(_("Exchange Wallet is Low"),
+            if (gmp_cmp($we_have, numstr_to_internal(WARN_LOW_WALLET_THRESHOLD)) < 0)
+                email_tech(_("Exchange Wallet Balance is Low"),
                            sprintf(_("The exchange wallet only has %s BTC available."),
                                    internal_to_numstr($we_have, BTC_PRECISION)));
-            else
-                email_tech(_("Exchange Wallet is OK"),
-                           sprintf(_("The exchange wallet has %s BTC available."),
-                                   internal_to_numstr($we_have, BTC_PRECISION)));
+        } else {
+            $message = sprintf(_("We only have %s BTC so can't withdraw %s BTC"),
+                               internal_to_numstr($we_have, BTC_PRECISION),
+                               internal_to_numstr($amount, BTC_PRECISION));
+            addlog($message);
+            email_tech(_("Exchange Wallet Balance is Too Low"), $message);
         }
-        else
-            addlog("We only have " . internal_to_numstr($we_have) . " BTC so can't withdraw " . internal_to_numstr($amount) . " BTC");
     }
 }
 catch (Error $e) {
