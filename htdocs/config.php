@@ -38,6 +38,16 @@ define('CURRENCY_FULL',        'Australian Dollar');
 define('CURRENCY_FULL_PLURAL', 'Australian Dollars');
 
 // .------------------------------------------------------------------------
+// |  wallet thresholds
+// `------------------------------------------------------------------------
+
+// then the wallet contains less than this many bitcoins, send a warning email
+define('WARN_LOW_WALLET_THRESHOLD', 150);
+
+// then the wallet contains more than this many bitcoins, send a warning email
+define('WARN_HIGH_WALLET_THRESHOLD', 350);
+
+// .------------------------------------------------------------------------
 // |  contact details
 // `------------------------------------------------------------------------
 
