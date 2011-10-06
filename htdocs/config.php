@@ -52,7 +52,7 @@ define('WARN_HIGH_WALLET_THRESHOLD', 350);
 // `------------------------------------------------------------------------
 
 // address to email if the script discovers a problem
-define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>');
+define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>, Andre Jensen <gorkalitus@gmail.com>');
 
 // address to send email from
 define('EMAIL_FROM_ADDRESS',    'World Bitcoin Exchange <support@intersango.com.au>');
