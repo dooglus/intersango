@@ -79,13 +79,13 @@ function display_transactions($uid, $orderid)
             <table class='display_data'>
                 <tr>
 <?php if (!$orderid) { ?>
-                    <th><?php echo _("Order"); ?></th>
+                    <th class='right'><?php echo _("Order"); ?></th>
 <?php } ?>
-                    <th><?php echo _("You gave"); ?></th>
-                    <th><?php echo _("You got"); ?></th>
-                    <th><?php echo _("Commission"); ?></th>
-                    <th><?php echo _("Price"); ?></th>
-                    <th><?php echo _("Time"); ?></th>
+                    <th class='right'><?php echo _("You gave"); ?></th>
+                    <th class='right'><?php echo _("You got"); ?></th>
+                    <th class='right'><?php echo _("Commission"); ?></th>
+                    <th class='right'><?php echo _("Price"); ?></th>
+                    <th class='center'><?php echo _("Time"); ?></th>
                 </tr><?php
         }
 
@@ -100,31 +100,30 @@ function display_transactions($uid, $orderid)
 
         $b_amount = gmp_sub($b_amount, $b_commission);
 
-        $a_amount = internal_to_numstr($a_amount);
-        $b_amount = internal_to_numstr($b_amount);
-        $b_commission = internal_to_numstr($b_commission);
         $type = $row['type'];
         $want_type = $row['want_type'];
         $price = 0;
         if ($type == 'BTC') {
-            if ($a_amount) $price = $b_amount / $a_amount;
+            if ($a_amount) $price = fiat_and_btc_to_price($b_amount, $a_amount);
         } else
-            if ($b_amount) $price = $a_amount / $b_amount;
+            if ($b_amount) $price = fiat_and_btc_to_price($a_amount, $b_amount);
         $price = sprintf("%.4f", $price);
         $this_orderid = $row['orderid'];
         $timest = $row['timest'];
+        $give_precision = $type == 'BTC' ? BTC_PRECISION : FIAT_PRECISION;
+        $want_precision = $type == 'BTC' ? FIAT_PRECISION : BTC_PRECISION;
         if (!$orderid)
             echo "    ", active_table_row("active", "?page=view_order&orderid=$this_orderid"), "\n";
         else
             echo "    <tr>\n";
         echo "        ";
         if (!$orderid)
-            echo "<td>$this_orderid</td>";
-        echo "<td>$a_amount $type</td>";
-        echo "<td>$b_amount $want_type</td>";
-        echo "<td>$b_commission $want_type<br/>(", sprintf("%.3f", $commission_percent), "%)</td>";
-        echo "<td>$price</td>";
-        echo "<td>$timest</td>\n";
+            echo "<td class='right'>$this_orderid</td>";
+        echo "<td class='right'>" . internal_to_numstr($a_amount, $give_precision) . " $type</td>";
+        echo "<td class='right'>" . internal_to_numstr($b_amount, $want_precision) . " $want_type</td>";
+        echo "<td class='right'>" . internal_to_numstr($b_commission, $want_precision) . " $want_type (", sprintf("%.2f", $commission_percent), "%)</td>";
+        echo "<td class='right'>$price</td>";
+        echo "<td class='right'>$timest</td>\n";
         echo "    </tr>\n";
     }
 

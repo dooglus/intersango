@@ -41,40 +41,44 @@ if ($row) { ?>
     <h3><?php echo _("Your orders"); ?></h3>
     <table class='display_data'>
         <tr>
-            <th><?php echo _("Giving"); ?></th>
-            <th><?php echo _("Wanted"); ?></th>
-            <th><?php echo _("Price"); ?></th>
+            <th class='right'><?php echo _("Giving"); ?></th>
+            <th class='right'><?php echo _("Wanted"); ?></th>
+            <th class='right'><?php echo _("Price"); ?></th>
             <th><?php echo _("Time"); ?></th>
             <th><?php echo _("Status"); ?><br/>(<?php echo _("% matched"); ?>)</th>
             <th><?php echo _("Trades"); ?></th>
         </tr><?php
     do {
         $orderid = $row['orderid'];
-        $amount = internal_to_numstr($row['amount']);
-        $initial_amount = internal_to_numstr($row['initial_amount']);
+        $amount = $row['amount'];
+        $initial_amount = $row['initial_amount'];
         $type = $row['type'];
-        $initial_want_amount = internal_to_numstr($row['initial_want_amount']);
+        $initial_want_amount = $row['initial_want_amount'];
         $want_type = $row['want_type'];
         $timest = $row['timest'];
-        $timest = str_replace(" ", "<br/>", $timest);
+        // $timest = str_replace(" ", "<br/>", $timest);
         $status_code = $row['status'];
         $status = translate_order_code($status_code);
-        $price = sprintf("%.6f", ($type == 'BTC') ? $initial_want_amount / $initial_amount : $initial_amount / $initial_want_amount);
-        $percent_complete = sprintf("%.0f", ($initial_amount - $amount) * 100.0 / $initial_amount);
+        $price = $type == 'BTC'
+            ? fiat_and_btc_to_price($initial_want_amount, $initial_amount)
+            : fiat_and_btc_to_price($initial_amount, $initial_want_amount);
+        $percent_complete = sprintf("%.0f", bcdiv(gmp_strval(gmp_mul(gmp_sub($initial_amount, $amount), 100)), $initial_amount, 1));
         $trade_count = count_transactions($orderid);
+        $give_precision = $type == 'BTC' ? BTC_PRECISION : FIAT_PRECISION;
+        $want_precision = $type == 'BTC' ? FIAT_PRECISION : BTC_PRECISION;
         echo "    ", active_table_row("active", "?page=view_order&orderid=$orderid"), "\n";
-        echo "        <td>$initial_amount&nbsp;$type</td>\n";
-        echo "        <td>$initial_want_amount&nbsp;$want_type</td>\n";
-        echo "        <td>$price</td>\n";
+        echo "        <td class='right'>" . internal_to_numstr($initial_amount,      $give_precision) . "&nbsp;$type</td>\n";
+        echo "        <td class='right'>" . internal_to_numstr($initial_want_amount, $want_precision) . "&nbsp;$want_type</td>\n";
+        echo "        <td class='right'>$price</td>\n";
         echo "        <td>$timest</td>\n";
-        echo "        <td>$status<br/>($percent_complete%)</td>\n";
+        echo "        <td>$status ($percent_complete%)</td>\n";
         echo "        <td>$trade_count</td>\n";
         echo "    </tr>\n";
     } while ($row = mysql_fetch_assoc($result));
     echo "</table></div>";
 }
 
-# also used when you view an order
+// also used when you view an order
 display_transactions($uid, 0);
 
 $query = "

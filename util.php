@@ -22,6 +22,9 @@ function btc_to_numstr($num)
 
 function fiat_and_btc_to_price($fiat, $btc, $round = 'round')
 {
+    $fiat = gmp_strval($fiat);
+    $btc  = gmp_strval($btc);
+
     if ($round == 'round') {
         $price = bcdiv($fiat, $btc, PRICE_PRECISION+1);
         return sprintf("%." . PRICE_PRECISION . "f", $price);
