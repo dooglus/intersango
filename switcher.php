@@ -11,7 +11,7 @@ function switcher($page)
             $page = 'junk';
 
         // delay showing the header when logging in until we know whether the login worked or not
-        if ($page != 'login')
+        if ($page != 'login' && $page != 'graph')
             show_header($page, $is_logged_in);
 
         $lock = false;
@@ -31,6 +31,7 @@ function switcher($page)
             // for general consumption
             ////////////////////////////////////////////////////////////////////////
             case '404':
+            case 'graph':
             case 'help':
             case 'orderbook':
             case 'test':
