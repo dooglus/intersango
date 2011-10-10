@@ -45,7 +45,7 @@ input[type=text]:focus {
     margin-left: 10px;
 }
 #exchanger td {
-    padding: 5px 10px;
+    padding: 5px 5px;
 }
 .currbox p {
     margin: 0;
@@ -229,7 +229,7 @@ CONTENT
     margin-left: 10px;
 }
 .display_data th, .display_data td {
-    padding: 5px 10px;
+    padding: 5px 5px;
     text-align: left;
 }
 tr {
