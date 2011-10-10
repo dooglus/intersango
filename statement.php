@@ -37,7 +37,56 @@ function trade_price($btc, $fiat, $verbose = false) {
         return fiat_and_btc_to_price(gmp_strval($fiat), gmp_strval($btc));
 }
 
-function show_statement($userid)
+function show_statement_summary($title,
+                                $total_fiat_deposit, $total_fiat_withdrawal, $total_btc_deposit, $total_btc_withdrawal,
+                                $total_fiat_got, $total_fiat_given, $total_btc_got, $total_btc_given)
+{
+    echo "<div class='content_box'>\n";
+    echo "<h3>$title</h3>\n";
+
+    list ($total_net_fiat, $total_net_fiat_word) = deposited_or_withdrawn($total_fiat_deposit, $total_fiat_withdrawal);
+    list ($total_net_btc, $total_net_btc_word)   = deposited_or_withdrawn($total_btc_deposit,  $total_btc_withdrawal);
+
+    list ($total_trade_word, $total_trade_btc, $total_trade_fiat) = bought_or_sold($total_btc_got, $total_fiat_given,
+                                                                                   $total_btc_given, $total_fiat_got);
+
+    $total_bought_price = trade_price($total_btc_got,   $total_fiat_given, 'verbose');
+    $total_sold_price   = trade_price($total_btc_given, $total_fiat_got,   'verbose');
+    $total_net_price    = trade_price($total_trade_btc, $total_trade_fiat, 'verbose');
+
+    echo "<table class='display_data'>\n";
+    foreach (array(
+                 _("total") . " " . CURRENCY . " " . _("deposited")  => internal_to_numstr($total_fiat_deposit,    FIAT_PRECISION),
+                 _("total") . " " . CURRENCY . " " . _("withdrawn")  => internal_to_numstr($total_fiat_withdrawal, FIAT_PRECISION),
+                 _("net") . " " . CURRENCY . " $total_net_fiat_word" => internal_to_numstr($total_net_fiat,        FIAT_PRECISION),
+                 ""                      => "",
+                 _("total") . " BTC " . _("deposited") => internal_to_numstr($total_btc_deposit,    BTC_PRECISION ),
+                 _("total") . " BTC " . _("withdrawn") => internal_to_numstr($total_btc_withdrawal, BTC_PRECISION ),
+                 _("net") . " BTC $total_net_btc_word" => internal_to_numstr($total_net_btc,        BTC_PRECISION ),
+                 " "                     => "",
+                 ) as $a => $b)
+        echo "<tr><td>$a</td><td class='right'>$b</td></tr>\n";
+    foreach (array(
+                 _("total") . " BTC " . _("bought") => array(internal_to_numstr($total_btc_got,     BTC_PRECISION) . " BTC", _("for"),
+                                                             internal_to_numstr($total_fiat_given, FIAT_PRECISION) . " " . CURRENCY,
+                                                             $total_bought_price),
+                 _("total") . " BTC " . _("sold")   => array(internal_to_numstr($total_btc_given,   BTC_PRECISION) . " BTC", _("for"),
+                                                             internal_to_numstr($total_fiat_got,   FIAT_PRECISION) . " " . CURRENCY,
+                                                             $total_sold_price),
+                 _("net")   . " BTC " . $total_trade_word => array(internal_to_numstr($total_trade_btc,  BTC_PRECISION) . " BTC", _("for"),
+                                                             internal_to_numstr($total_trade_fiat,       FIAT_PRECISION) . " " . CURRENCY,
+                                                             $total_net_price),
+                 ) as $a => $b) {
+        echo "<tr><td>$a</td>";
+        foreach ($b as $c)
+            echo "<td class='right'>$c</td>";
+        echo "</tr>\n";
+    }
+    echo "</table>\n";
+    echo "</div>";
+}
+
+function show_statement($userid, $interval = '')
 {
     $show_increments = false;
     $show_prices = true;
@@ -48,12 +97,12 @@ function show_statement($userid)
 
     if ($all_users) {
         echo "<h3>" . _("Statement for All Users") . "</h3>\n";
-        $check_userid = "";
+        $check_stuff = "";
     } else {
         $openid = get_openid_for_user($userid);
         echo "<h3>" . sprintf(_("Statement for UID %s"), $userid) . "</h3>\n";
         echo "<p>" . _("OpenID") . ": <a href=\"$openid\">$openid</a></p>\n";
-        $check_userid = "uid='$userid' AND";
+        $check_stuff = "uid='$userid' AND ";
     }
 
     $query = "
@@ -65,7 +114,8 @@ function show_statement($userid)
             NULL as reqid,  NULL as req_type,
             NULL as amount, NULL as curr_type, NULL as addy, NULL as voucher, NULL as final, NULL as bank, NULL as acc_num,
             " . sql_format_date('transactions.timest') . " AS date,
-            transactions.timest as timest
+            transactions.timest as timest, " .
+            ($interval ? "transactions.timest > NOW() - INTERVAL $interval" : "1") . " AS new
         FROM
             transactions
         JOIN
@@ -73,7 +123,7 @@ function show_statement($userid)
         ON
             orderbook.orderid = transactions.a_orderid
         WHERE
-            $check_userid
+            $check_stuff
             b_amount != -1
 
     UNION
@@ -86,7 +136,8 @@ function show_statement($userid)
             NULL, NULL,
             NULL, NULL, NULL, NULL, NULL, NULL, NULL,
             " . sql_format_date('transactions.timest') . " AS date,
-            transactions.timest as timest
+            transactions.timest as timest, " .
+            ($interval ? "transactions.timest > NOW() - INTERVAL $interval" : "1") . " AS new
         FROM
             transactions
         JOIN
@@ -94,7 +145,7 @@ function show_statement($userid)
         ON
             orderbook.orderid=transactions.b_orderid
         WHERE
-            $check_userid
+            $check_stuff
             b_amount != -1
 
     UNION
@@ -107,7 +158,8 @@ function show_statement($userid)
             requests.reqid,  req_type,
             amount, curr_type, addy, CONCAT(prefix, '-...') as voucher, status = 'FINAL', bank, acc_num,
             " . sql_format_date('timest') . " AS date,
-            timest
+            timest, " .
+            ($interval ? "timest > NOW() - INTERVAL $interval" : "1") . " AS new
         FROM
             requests
         LEFT JOIN
@@ -124,7 +176,7 @@ function show_statement($userid)
         ON
             requests.reqid = uk_requests.reqid
         WHERE
-            $check_userid
+            $check_stuff
             status != 'CANCEL'
 
     ORDER BY
@@ -133,13 +185,13 @@ function show_statement($userid)
 
     $first = true;
     $result = do_query($query);
-    $fiat = 0;
-    $btc = 0;
+    $fiat = $btc = numstr_to_internal(0);
 
     $total_fiat_deposit = $total_fiat_withdrawal = $total_btc_deposit = $total_btc_withdrawal = numstr_to_internal(0);
     $total_fiat_got = $total_fiat_given = $total_btc_got = $total_btc_given = numstr_to_internal(0);
+    $period_fiat_deposit = $period_fiat_withdrawal = $period_btc_deposit = $period_btc_withdrawal = numstr_to_internal(0);
+    $period_fiat_got = $period_fiat_given = $period_btc_got = $period_btc_given = numstr_to_internal(0);
 
-    $first = false;
     echo "<table class='display_data'>\n";
     echo "<tr>";
     echo "<th>" . _("Date") . "</th>";
@@ -156,28 +208,36 @@ function show_statement($userid)
     echo "<th class='right'>" . CURRENCY . "</th>";
     echo "</tr>";
 
-    echo "<tr>";
-    echo "<td></td>";
-    if ($all_users)
-        echo "<td></td>";
-    echo "<td></td>";
-    if ($show_prices)
-        echo "<td></td>";
-    if ($show_increments)
-        echo "<td></td>";
-    printf("<td class='right'>%s</td>", internal_to_numstr('0',  BTC_PRECISION));
-    if ($show_increments)
-        echo "<td></td>";
-    printf("<td class='right'>%s</td>", internal_to_numstr('0',  FIAT_PRECISION));
-    echo "</tr>\n";
-
     $all_final = true;
     while ($row = mysql_fetch_array($result)) {
 
-        echo "<tr>";
-        echo "<td>{$row['date']}</td>";
-        if ($all_users)
-            echo active_table_cell_link_to_user_statement($row['uid']);
+        $new = $row['new'];
+
+        if ($first && $new) {
+            echo "<tr>";
+            echo "<td></td>";
+            if ($all_users)
+                echo "<td></td>";
+            echo "<td>" . _("Opening Balances") . "</td>";
+            if ($show_prices)
+                echo "<td></td>";
+            if ($show_increments)
+                echo "<td></td>";
+            printf("<td class='right'>%s</td>", internal_to_numstr($btc,  BTC_PRECISION));
+            if ($show_increments)
+                echo "<td></td>";
+            printf("<td class='right'>%s</td>", internal_to_numstr($fiat,  FIAT_PRECISION));
+            echo "</tr>\n";
+
+            $first = false;
+        }
+
+        if ($new) {
+            echo "<tr>";
+            echo "<td>{$row['date']}</td>";
+            if ($all_users)
+                echo active_table_cell_link_to_user_statement($row['uid']);
+        }
 
         if (isset($row['txid'])) { /* buying or selling */
             $txid = $row['txid'];
@@ -188,45 +248,54 @@ function show_statement($userid)
             $got_curr = $row['got_curr'];
 
             if ($got_curr == 'BTC') {
-                active_table_cell_for_order(sprintf(_("Buy %s %s for %s %s"),
-                                                    internal_to_numstr($got_amount, BTC_PRECISION), $got_curr,
-                                                    internal_to_numstr($gave_amount, FIAT_PRECISION), $gave_curr),
-                                            $orderid);
-
                 $fiat = gmp_sub($fiat, $gave_amount);
                 $btc = gmp_add($btc, $got_amount);
 
-                $total_btc_got   = gmp_add($total_btc_got  , $got_amount );
+                $total_btc_got    = gmp_add($total_btc_got   , $got_amount );
                 $total_fiat_given = gmp_add($total_fiat_given, $gave_amount);
 
-                if ($show_prices)
-                    printf("<td>%s</td>", trade_price($got_amount, $gave_amount));
-                if ($show_increments)
-                    printf("<td class='right'>+ %s</td>", internal_to_numstr($got_amount, BTC_PRECISION));
-                printf("<td class='right'> %s</td>",  internal_to_numstr($btc, BTC_PRECISION));
-                if ($show_increments)
-                    printf("<td class='right'>- %s</td>", internal_to_numstr($gave_amount, FIAT_PRECISION));
-                printf("<td class='right'> %s</td>",  internal_to_numstr($fiat, FIAT_PRECISION));
-            } else {
-                active_table_cell_for_order(sprintf(_("Sell %s %s for %s %s"),
-                                                    internal_to_numstr($gave_amount, BTC_PRECISION), $gave_curr,
-                                                    internal_to_numstr($got_amount, FIAT_PRECISION), $got_curr),
-                                            $orderid);
+                if ($new) {
+                    $period_btc_got    = gmp_add($period_btc_got   , $got_amount );
+                    $period_fiat_given = gmp_add($period_fiat_given, $gave_amount);
 
+                    active_table_cell_for_order(sprintf(_("Buy %s %s for %s %s"),
+                                                        internal_to_numstr($got_amount, BTC_PRECISION), $got_curr,
+                                                        internal_to_numstr($gave_amount, FIAT_PRECISION), $gave_curr),
+                                                $orderid);
+                    if ($show_prices)
+                        printf("<td>%s</td>", trade_price($got_amount, $gave_amount));
+                    if ($show_increments)
+                        printf("<td class='right'>+ %s</td>", internal_to_numstr($got_amount, BTC_PRECISION));
+                    printf("<td class='right'> %s</td>",  internal_to_numstr($btc, BTC_PRECISION));
+                    if ($show_increments)
+                        printf("<td class='right'>- %s</td>", internal_to_numstr($gave_amount, FIAT_PRECISION));
+                    printf("<td class='right'> %s</td>",  internal_to_numstr($fiat, FIAT_PRECISION));
+                }
+            } else {
                 $fiat = gmp_add($fiat, $got_amount);
                 $btc = gmp_sub($btc, $gave_amount);
 
-                $total_fiat_got   = gmp_add($total_fiat_got  , $got_amount );
+                $total_fiat_got  = gmp_add($total_fiat_got , $got_amount );
                 $total_btc_given = gmp_add($total_btc_given, $gave_amount);
 
-                if ($show_prices)
-                    printf("<td>%s</td>", trade_price($gave_amount, $got_amount));
-                if ($show_increments)
-                    printf("<td class='right'>-%s</td>", internal_to_numstr($gave_amount, BTC_PRECISION));
-                printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($btc, BTC_PRECISION));
-                if ($show_increments)
-                    printf("<td class='right'>+%s</td>", internal_to_numstr($got_amount, FIAT_PRECISION));
-                printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($fiat, FIAT_PRECISION));
+                if ($new) {
+                    $period_fiat_got  = gmp_add($period_fiat_got , $got_amount );
+                    $period_btc_given = gmp_add($period_btc_given, $gave_amount);
+
+                    active_table_cell_for_order(sprintf(_("Sell %s %s for %s %s"),
+                                                        internal_to_numstr($gave_amount, BTC_PRECISION), $gave_curr,
+                                                        internal_to_numstr($got_amount, FIAT_PRECISION), $got_curr),
+                                                $orderid);
+
+                    if ($show_prices)
+                        printf("<td>%s</td>", trade_price($gave_amount, $got_amount));
+                    if ($show_increments)
+                        printf("<td class='right'>-%s</td>", internal_to_numstr($gave_amount, BTC_PRECISION));
+                    printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($btc, BTC_PRECISION));
+                    if ($show_increments)
+                        printf("<td class='right'>+%s</td>", internal_to_numstr($got_amount, FIAT_PRECISION));
+                    printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($fiat, FIAT_PRECISION));
+                }
             }
         } else {                /* withdrawal or deposit */
             $reqid = $row['reqid'];
@@ -249,99 +318,115 @@ function show_statement($userid)
                     $btc = gmp_add($btc, $amount);
                     $total_btc_deposit = gmp_add($total_btc_deposit, $amount);
                     
-                    active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s BTC%s</strong>",
-                                                          $title,
-                                                          $final ? "" : "* ",
-                                                          $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
-                                                          internal_to_numstr($amount, BTC_PRECISION),
-                                                          $final ? "" : " *"),
-                                                  $reqid);
-                    if ($show_prices)
+                    if ($new) {
+                        $period_btc_deposit = gmp_add($period_btc_deposit, $amount);
+
+                        active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s BTC%s</strong>",
+                                                              $title,
+                                                              $final ? "" : "* ",
+                                                              $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
+                                                              internal_to_numstr($amount, BTC_PRECISION),
+                                                              $final ? "" : " *"),
+                                                      $reqid);
+                        if ($show_prices)
+                            printf("<td></td>");
+                        if ($show_increments)
+                            printf("<td class='right'>+%s</td>", internal_to_numstr($amount, BTC_PRECISION));
+                        printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
+                        if ($show_increments)
+                            printf("<td></td>");
                         printf("<td></td>");
-                    if ($show_increments)
-                        printf("<td class='right'>+%s</td>", internal_to_numstr($amount, BTC_PRECISION));
-                    printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
-                    if ($show_increments)
-                        printf("<td></td>");
-                    printf("<td></td>");
+                    }
                 } else {        /* deposit FIAT */
                     $fiat = gmp_add($fiat, $amount);
                     $total_fiat_deposit = gmp_add($total_fiat_deposit, $amount);
 
-                    active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s %s%s</strong>",
-                                                          $title,
-                                                          $final ? "" : "* ",
-                                                          $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
-                                                          internal_to_numstr($amount, FIAT_PRECISION),
-                                                          CURRENCY,
-                                                          $final ? "" : " *"),
-                                                  $reqid);
-                    if ($show_prices)
+                    if ($new) {
+                        $period_fiat_deposit = gmp_add($period_fiat_deposit, $amount);
+
+                        active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s %s%s</strong>",
+                                                              $title,
+                                                              $final ? "" : "* ",
+                                                              $voucher ? _("Redeem voucher") . ":" : _("Deposit"),
+                                                              internal_to_numstr($amount, FIAT_PRECISION),
+                                                              CURRENCY,
+                                                              $final ? "" : " *"),
+                                                      $reqid);
+                        if ($show_prices)
+                            printf("<td></td>");
+                        if ($show_increments)
+                            printf("<td></td>");
                         printf("<td></td>");
-                    if ($show_increments)
-                        printf("<td></td>");
-                    printf("<td></td>");
-                    if ($show_increments)
-                        printf("<td class='right'>+%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
-                    printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                        if ($show_increments)
+                            printf("<td class='right'>+%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
+                        printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                    }
                 }
             } else {            /* withdrawal */
                 if ($curr_type == 'BTC') { /* withdraw BTC */
                     $btc = gmp_sub($btc, $amount);
                     $total_btc_withdrawal = gmp_add($total_btc_withdrawal, $amount);
 
-                    $addy = $row['addy'];
-                    if ($addy)
-                        $title = sprintf(_("to Bitcoin address") . " &quot;%s&quot;", $addy);
-                    else if ($voucher) {
-                        $title = sprintf(_("to %svoucher") . " &quot;%s&quot;",
-                                         $final ? "" : (_("unredeemed") . " "),
-                                         $voucher);
-                    }
+                    if ($new) {
+                        $period_btc_withdrawal = gmp_add($period_btc_withdrawal, $amount);
+
+                        $addy = $row['addy'];
+                        if ($addy)
+                            $title = sprintf(_("to Bitcoin address") . " &quot;%s&quot;", $addy);
+                        else if ($voucher) {
+                            $title = sprintf(_("to %svoucher") . " &quot;%s&quot;",
+                                             $final ? "" : (_("unredeemed") . " "),
+                                             $voucher);
+                        }
                     
-                    active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s BTC%s</strong>",
-                                                          $title,
-                                                          $final ? "" : "* ",
-                                                          $voucher ? _("Create voucher") . ":" : _("Withdraw"),
-                                                          internal_to_numstr($amount, BTC_PRECISION),
-                                                          $final ? "" : " *"),
-                                                  $reqid);
-                    if ($show_prices)
+                        active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s BTC%s</strong>",
+                                                              $title,
+                                                              $final ? "" : "* ",
+                                                              $voucher ? _("Create voucher") . ":" : _("Withdraw"),
+                                                              internal_to_numstr($amount, BTC_PRECISION),
+                                                              $final ? "" : " *"),
+                                                      $reqid);
+                        if ($show_prices)
+                            printf("<td></td>");
+                        if ($show_increments)
+                            printf("<td class='right'>-%s</td>", internal_to_numstr($amount, BTC_PRECISION));
+                        printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
+                        if ($show_increments)
+                            printf("<td></td>");
                         printf("<td></td>");
-                    if ($show_increments)
-                        printf("<td class='right'>-%s</td>", internal_to_numstr($amount, BTC_PRECISION));
-                    printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
-                    if ($show_increments)
-                        printf("<td></td>");
-                    printf("<td></td>");
+                    }
                 } else {        /* withdraw FIAT */
                     $fiat = gmp_sub($fiat, $amount);
                     $total_fiat_withdrawal = gmp_add($total_fiat_withdrawal, $amount);
 
-                    $title = '';
-                    if ($voucher) {
-                        $title = sprintf(_("to %svoucher") . " &quot;%s&quot;",
-                                         $final ? "" : (_("unredeemed") . " "),
-                                         $voucher);
-                    } else
-                        $title = sprintf(_("to account %s at %s"), $row['acc_num'], $row['bank']);
+                    if ($new) {
+                        $period_fiat_withdrawal = gmp_add($period_fiat_withdrawal, $amount);
 
-                    active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s %s%s</strong>",
-                                                          $title,
-                                                          $final ? "" : "* ",
-                                                          $voucher ? _("Create voucher") . ":" : _("Withdraw"),
-                                                          internal_to_numstr($amount, FIAT_PRECISION),
-                                                          CURRENCY,
-                                                          $final ? "" : " *"),
-                                                  $reqid);
-                    if ($show_prices)
+                        $title = '';
+                        if ($voucher) {
+                            $title = sprintf(_("to %svoucher") . " &quot;%s&quot;",
+                                             $final ? "" : (_("unredeemed") . " "),
+                                             $voucher);
+                        } else
+                            $title = sprintf(_("to account %s at %s"), $row['acc_num'], $row['bank']);
+
+                        active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s %s%s</strong>",
+                                                              $title,
+                                                              $final ? "" : "* ",
+                                                              $voucher ? _("Create voucher") . ":" : _("Withdraw"),
+                                                              internal_to_numstr($amount, FIAT_PRECISION),
+                                                              CURRENCY,
+                                                              $final ? "" : " *"),
+                                                      $reqid);
+                        if ($show_prices)
+                            printf("<td></td>");
+                        if ($show_increments)
+                            printf("<td></td>");
                         printf("<td></td>");
-                    if ($show_increments)
-                        printf("<td></td>");
-                    printf("<td></td>");
-                    if ($show_increments)
-                        printf("<td class='right'>-%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
-                    printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                        if ($show_increments)
+                            printf("<td class='right'>-%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
+                        printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                    }
                 }
             }
         }
@@ -349,46 +434,6 @@ function show_statement($userid)
         echo "</tr>";
     }
 
-    list ($net_fiat, $net_fiat_word) = deposited_or_withdrawn($total_fiat_deposit, $total_fiat_withdrawal);
-    list ($net_btc, $net_btc_word) = deposited_or_withdrawn($total_btc_deposit, $total_btc_withdrawal);
-
-    list ($trade_word, $trade_btc, $trade_fiat) = bought_or_sold($total_btc_got, $total_fiat_given,
-                                                                $total_btc_given, $total_fiat_got);
-
-    $bought_price = trade_price($total_btc_got,   $total_fiat_given, 'verbose');
-    $sold_price   = trade_price($total_btc_given, $total_fiat_got,   'verbose');
-    $net_price    = trade_price($trade_btc,       $trade_fiat,       'verbose');
-
-    echo "</table>\n";
-
-    echo "<table class='display_data'>\n";
-    foreach (array(
-                 _("total") . " " . CURRENCY . " " . _("deposited")   => internal_to_numstr($total_fiat_deposit,    FIAT_PRECISION),
-                 _("total") . " " . CURRENCY . " " . _("withdrawn")   => internal_to_numstr($total_fiat_withdrawal, FIAT_PRECISION),
-                 _("net") . " " . CURRENCY . " $net_fiat_word" => internal_to_numstr($net_fiat,              FIAT_PRECISION),
-                 ""                      => "",
-                 _("total") . " BTC " . _("deposited")   => internal_to_numstr($total_btc_deposit,    BTC_PRECISION ),
-                 _("total") . " BTC " . _("withdrawn")   => internal_to_numstr($total_btc_withdrawal, BTC_PRECISION ),
-                 _("net") . " BTC $net_btc_word" => internal_to_numstr($net_btc,              BTC_PRECISION ),
-                 " "                     => "",
-                 ) as $a => $b)
-        echo "<tr><td>$a</td><td class='right'>$b</td></tr>\n";
-    foreach (array(
-                 _("total") . " BTC " . _("bought") => array(internal_to_numstr($total_btc_got,     BTC_PRECISION) . " BTC", _("for"),
-                                                             internal_to_numstr($total_fiat_given, FIAT_PRECISION) . " " . CURRENCY,
-                                                             $bought_price),
-                 _("total") . " BTC " . _("sold")   => array(internal_to_numstr($total_btc_given,   BTC_PRECISION) . " BTC", _("for"),
-                                                             internal_to_numstr($total_fiat_got,   FIAT_PRECISION) . " " . CURRENCY,
-                                                             $sold_price),
-                 _("net")   . " BTC " . $trade_word => array(internal_to_numstr($trade_btc,         BTC_PRECISION) . " BTC", _("for"),
-                                                             internal_to_numstr($trade_fiat,       FIAT_PRECISION) . " " . CURRENCY,
-                                                             $net_price),
-                 ) as $a => $b) {
-        echo "<tr><td>$a</td>";
-        foreach ($b as $c)
-            echo "<td class='right'>$c</td>";
-        echo "</tr>\n";
-    }
     echo "</table>\n";
 
     if (!$all_final) {
@@ -396,12 +441,31 @@ function show_statement($userid)
         echo "<p>" . _("Any such withdrawals and vouchers can be cancelled.") . "</p>\n";
         echo "<p>" . _("Any such deposits are pending, and should be finalised within a minute or two.") . "</p>\n";
     }
+
     echo "</div>";
+
+    if (gmp_cmp($total_fiat_deposit,    $period_fiat_deposit   ) != 0 ||
+        gmp_cmp($total_fiat_withdrawal, $period_fiat_withdrawal) != 0 ||
+        gmp_cmp($total_btc_deposit,     $period_btc_deposit    ) != 0 ||
+        gmp_cmp($total_btc_withdrawal,  $period_btc_withdrawal ) != 0 ||
+        gmp_cmp($total_fiat_got,        $period_fiat_got       ) != 0 ||
+        gmp_cmp($total_fiat_given,      $period_fiat_given     ) != 0 ||
+        gmp_cmp($total_btc_got,         $period_btc_got        ) != 0 ||
+        gmp_cmp($total_btc_given,       $period_btc_given      ) != 0)
+        show_statement_summary(_("Summary of displayed entries"),
+                               $period_fiat_deposit, $period_fiat_withdrawal, $period_btc_deposit, $period_btc_withdrawal,
+                               $period_fiat_got, $period_fiat_given, $period_btc_got, $period_btc_given);
+
+    show_statement_summary(_("Account Summary"),
+                           $total_fiat_deposit, $total_fiat_withdrawal, $total_btc_deposit, $total_btc_withdrawal,
+                           $total_fiat_got, $total_fiat_given, $total_btc_got, $total_btc_given);
 }
 
+$interval = isset($_GET['interval']) ? get('interval') : '';
+
 if ($is_admin && isset($_GET['user']))
-    show_statement(get('user'));
+    show_statement(get('user'), $interval);
 else
-    show_statement($is_logged_in);
+    show_statement($is_logged_in, $interval);
 
 ?>
