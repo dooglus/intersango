@@ -104,9 +104,9 @@ function show_balances_in_statement($description, $btc, $fiat, $all_users, $show
     echo "</tr>\n";
 }
 
-function show_statement($userid, $interval = '')
+function show_statement($userid, $interval = 'forever')
 {
-    global $is_logged_in;
+    global $is_logged_in, $is_admin;
 
     if ($userid)
         $specified_user = true;
@@ -128,13 +128,12 @@ function show_statement($userid, $interval = '')
     } else {
         $openid = get_openid_for_user($userid);
         echo "<h3>" . sprintf(_("Statement for UID %s"), $userid) . "</h3>\n";
-        echo "<p>" . _("OpenID") . ": <a href=\"$openid\">$openid</a></p>\n";
         $check_stuff = "uid='$userid' AND ";
     }
 
     echo ("<form method='get'>\n" .
           "<p>\n" .
-          _("Show entries from: ") . "\n" .
+          _("Show entries from ") . "\n" .
           "<input type='hidden' name='page' value='statement' />\n");
     if ($specified_user)
         echo "<input type='hidden' name='user' value='$userid' />\n";
@@ -150,15 +149,33 @@ function show_statement($userid, $interval = '')
                    '3 month' => _('the last 3 months'),
                    '6 month' => _('the last 6 months'),
                    '1 year'  => _('the last year'    ),
-                   ''        => _('forever'          )) as $key => $text) {
+                   'forever' => _('forever'          )) as $key => $text) {
         printf("<option %s value='%s'>%s</option>\n",
                ($interval == $key) ? "selected='selected'" : "",
                $key, $text);
     }
 
     echo "</select>\n";
+    if ($is_admin) {
+        echo " for <select onChange='this.form.submit()' name='user'>\n";
+        if ($all_users) {
+            printf("<option value='$is_logged_in'>%s</option>\n", _("my account"));
+            printf("<option value='all' selected='selected'>all users</option>\n");
+        } else {
+            if ($userid != $is_logged_in)
+                printf("<option value='$is_logged_in'>%s</option>\n", _("my account"));
+            printf("<option value='$userid' selected='selected'>%s</option>\n", $userid == $is_logged_in ? _("my account") : "UID $userid");
+            echo "<option value='all'>all users</option>\n";
+        }
+        echo "</select>\n";
+    }
     echo "</p>\n";
     echo "</form>\n";
+
+    $use_interval = ($interval != 'forever');
+
+    if (!$all_users)
+        echo "<p>" . _("OpenID") . ": <a href=\"$openid\">$openid</a></p>\n";
 
     $query = "
         SELECT
@@ -170,7 +187,7 @@ function show_statement($userid, $interval = '')
             NULL as amount, NULL as curr_type, NULL as addy, NULL as voucher, NULL as final, NULL as bank, NULL as acc_num,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest, " .
-            ($interval ? "transactions.timest > NOW() - INTERVAL $interval" : "1") . " AS new
+            ($use_interval ? "transactions.timest > NOW() - INTERVAL $interval" : "1") . " AS new
         FROM
             transactions
         JOIN
@@ -192,7 +209,7 @@ function show_statement($userid, $interval = '')
             NULL, NULL, NULL, NULL, NULL, NULL, NULL,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest, " .
-            ($interval ? "transactions.timest > NOW() - INTERVAL $interval" : "1") . " AS new
+            ($use_interval ? "transactions.timest > NOW() - INTERVAL $interval" : "1") . " AS new
         FROM
             transactions
         JOIN
@@ -214,7 +231,7 @@ function show_statement($userid, $interval = '')
             amount, curr_type, addy, CONCAT(prefix, '-...') as voucher, status = 'FINAL', bank, acc_num,
             " . sql_format_date('timest') . " AS date,
             timest, " .
-            ($interval ? "timest > NOW() - INTERVAL $interval" : "1") . " AS new
+            ($use_interval ? "timest > NOW() - INTERVAL $interval" : "1") . " AS new
         FROM
             requests
         LEFT JOIN
@@ -277,7 +294,7 @@ function show_statement($userid, $interval = '')
             echo "<tr>";
             echo "<td>{$row['date']}</td>";
             if ($all_users)
-                echo active_table_cell_link_to_user_statement($row['uid']);
+                echo active_table_cell_link_to_user_statement($row['uid'], $interval);
         }
 
         if (isset($row['txid'])) { /* buying or selling */
@@ -505,7 +522,7 @@ function show_statement($userid, $interval = '')
                            $total_fiat_got, $total_fiat_given, $total_btc_got, $total_btc_given);
 }
 
-$interval = isset($_GET['interval']) ? get('interval') : '1 week';
+$interval = isset($_GET['interval']) ? get('interval') : DEFAULT_STATEMENT_PERIOD;
 
 if ($is_admin && isset($_GET['user']))
     show_statement(get('user'), $interval);
