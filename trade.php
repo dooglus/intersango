@@ -155,11 +155,11 @@ function show_mini_orderbook_table($bids)
 
 function show_mini_orderbook()
 {
-    echo "<table><tr><td>\n";
+    echo "<center><table><tr><td>\n";
     $mine = show_mini_orderbook_table(true);
     echo "</td><td>";
     $mine += show_mini_orderbook_table(false);
-    echo "</td></tr></table>";
+    echo "</td></tr></table></center>";
     echo "<p>" . sprintf(_("Showing all orders within %s%% of the best price."), ORDERBOOK_PRICE_RANGE_PERCENTAGE) . "</p>\n";
 
     if ($mine)
