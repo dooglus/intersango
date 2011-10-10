@@ -726,9 +726,13 @@ function active_table_cell_for_request($content, $reqid)
     active_table_cell($content, "?page=view_request&reqid=$reqid");
 }
 
-function active_table_cell_link_to_user_statement($user)
+function active_table_cell_link_to_user_statement($user, $interval = '')
 {
-    $url = "?page=statement&user=$user";
+    if ($interval)
+        $url = "?page=statement&user=$user&interval=$interval";
+    else
+        $url = "?page=statement&user=$user";
+
     printf("<td class='active' %s %s %s>$user</td>",
            "onmouseover=\"style.backgroundColor='#8ae3bf';\"",
            "onmouseout=\"style.backgroundColor='#7ad3af';\"",
