@@ -54,7 +54,7 @@ function report($message, $severity)
     $uid = '';
     if ($is_logged_in)
         $uid = $is_logged_in;
-    $time = time();
+    $time = date('r');
     $message = "$uid $time: $message";
 
     switch ($severity) {
