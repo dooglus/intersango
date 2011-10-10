@@ -86,8 +86,35 @@ function show_statement_summary($title,
     echo "</div>";
 }
 
+function show_balances_in_statement($description, $btc, $fiat, $all_users, $show_prices, $show_increments)
+{
+    echo "<tr>";
+    echo "<td></td>";
+    if ($all_users)
+        echo "<td></td>";
+    echo "<td>" . $description . "</td>";
+    if ($show_prices)
+        echo "<td></td>";
+    if ($show_increments)
+        echo "<td></td>";
+    printf("<td class='right'>%s</td>", internal_to_numstr($btc,  BTC_PRECISION));
+    if ($show_increments)
+        echo "<td></td>";
+    printf("<td class='right'>%s</td>", internal_to_numstr($fiat,  FIAT_PRECISION));
+    echo "</tr>\n";
+}
+
 function show_statement($userid, $interval = '')
 {
+    global $is_logged_in;
+
+    if ($userid)
+        $specified_user = true;
+    else {
+        $specified_user = false;
+        $userid = $is_logged_in;
+    }
+
     $show_increments = false;
     $show_prices = true;
 
@@ -104,6 +131,32 @@ function show_statement($userid, $interval = '')
         echo "<p>" . _("OpenID") . ": <a href=\"$openid\">$openid</a></p>\n";
         $check_stuff = "uid='$userid' AND ";
     }
+
+    echo ("<form method='get'>\n" .
+          "<p>\n" .
+          _("Show entries from: ") . "\n" .
+          "<input type='hidden' name='page' value='statement' />\n");
+    if ($specified_user)
+        echo "<input type='hidden' name='user' value='$userid' />\n";
+    echo "<select onChange='this.form.submit()' name='interval'>\n";
+
+    foreach (array('4 hour'  => _('the last 4 hours') ,
+                   '1 day'   => _('the last 24 hours'),
+                   '3 day'   => _('the last 3 days')  ,
+                   '1 week'  => _('the last 7 days')  ,
+                   '1 month' => _('the last month')   ,
+                   '2 month' => _('the 2 months')     ,
+                   '3 month' => _('the 3 months')     ,
+                   ''        => _('forever')          )
+             as $key => $text) {
+        printf("<option %s value='%s'>%s</option>\n",
+               ($interval == $key) ? "selected='selected'" : "",
+               $key, $text);
+    }
+
+    echo "</select>\n";
+    echo "</p>\n";
+    echo "</form>\n";
 
     $query = "
         SELECT
@@ -214,21 +267,7 @@ function show_statement($userid, $interval = '')
         $new = $row['new'];
 
         if ($first && $new) {
-            echo "<tr>";
-            echo "<td></td>";
-            if ($all_users)
-                echo "<td></td>";
-            echo "<td>" . _("Opening Balances") . "</td>";
-            if ($show_prices)
-                echo "<td></td>";
-            if ($show_increments)
-                echo "<td></td>";
-            printf("<td class='right'>%s</td>", internal_to_numstr($btc,  BTC_PRECISION));
-            if ($show_increments)
-                echo "<td></td>";
-            printf("<td class='right'>%s</td>", internal_to_numstr($fiat,  FIAT_PRECISION));
-            echo "</tr>\n";
-
+            show_balances_in_statement(_("Opening Balances"), $btc, $fiat, $all_users, $show_prices, $show_increments);
             $first = false;
         }
 
@@ -434,6 +473,9 @@ function show_statement($userid, $interval = '')
         echo "</tr>";
     }
 
+    show_balances_in_statement($first ? _("There are no entries for this period") : _("Closing Balances"),
+                               $btc, $fiat, $all_users, $show_prices, $show_increments);
+
     echo "</table>\n";
 
     if (!$all_final) {
@@ -461,11 +503,11 @@ function show_statement($userid, $interval = '')
                            $total_fiat_got, $total_fiat_given, $total_btc_got, $total_btc_given);
 }
 
-$interval = isset($_GET['interval']) ? get('interval') : '';
+$interval = isset($_GET['interval']) ? get('interval') : '1 week';
 
 if ($is_admin && isset($_GET['user']))
     show_statement(get('user'), $interval);
 else
-    show_statement($is_logged_in, $interval);
+    show_statement('', $interval);
 
 ?>
