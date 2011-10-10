@@ -47,14 +47,42 @@ function get_transfers()
     return array($btc, $fiat);
 }
 
-function show_graph()
+function show_funds_graph($x = 0, $y = 0)
 {
+    global $is_logged_in, $is_admin;
+
+    if (!$is_admin) return;
+
+    if (!$x)
+        if (isset($_GET['x']))
+            $x = get('x');
+        else
+            $x = 720;
+
+    if (!$y)
+        if (isset($_GET['y']))
+            $y = get('y');
+        else
+            $y = 500;
+
+    if (!isset($_GET['svg'])) {
+        show_header('graph', $is_logged_in);
+
+        echo "<div class='content_box'>\n";
+        echo "<h3>Graphs</h3>\n";
+        echo "<p>\n";
+        echo "<iframe src='?page=graph&type=funds&x=$x&y=$y&svg' type='image/svg+xml' width='$x' height='$y' scrolling='no' frameborder='0' />\n";
+        echo "</p>\n";
+        echo "</div>\n";
+        return;
+    }
+
     $symbol = ezcGraph::NO_SYMBOL;
     // $symbol = ezcGraph::BULLET;
 
     $graph = new ezcGraphLineChart();
     $graph->options->fillLines = 128;
-    $graph->title = 'Funds on the Exchange';
+    // $graph->title = 'Funds on the Exchange';
     $graph->legend->position = ezcGraph::BOTTOM;
 
     $graph->xAxis = new ezcGraphChartElementDateAxis();
@@ -79,11 +107,35 @@ function show_graph()
 
     $graph->palette = new ezcGraphPaletteEzGreen();
 
-    $graph->renderToOutput(1200, 620);
+    $graph->renderToOutput($x, $y);
 }
 
-show_graph();
+function graph_main()
+{
+    global $is_logged_in, $is_admin;
 
-exit();                         // we don't want the footer
+    if (isset($_GET['type'])) {
+        switch(get('type')) {
+        case 'funds':
+            show_funds_graph();
+            break;
+        default:
+            show_header('graph', $is_logged_in);
+            return;
+        }
+        exit();                 // we don't want the footer
+    } else {
+        show_header('graph', $is_logged_in);
+
+        echo "<div class='content_box'>\n";
+        echo "<h3>Graphs</h3>\n";
+        echo "<p>which?</p>\n";
+        echo "<p><a href='?page=graph&type=funds&x=800&y=500'>funds</a>\n";
+        show_funds_graph(350,250);
+        echo "</p></div>\n";
+    }
+}
+
+graph_main();
 
 ?>
