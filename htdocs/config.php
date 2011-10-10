@@ -28,6 +28,9 @@ define('BAD_PAGE_LOGFILE', ABSPATH . '/log-bad-page.txt');
 // whether to link to bitcoincharts;  '' means don't link, otherwise use a URL like 'http://bitcoincharts.com/markets/wbxAUD.html'
 define('CHARTS_PAGE', '');
 
+// the default time period to show on the statement page
+define('DEFAULT_STATEMENT_PERIOD', '1 week');
+
 // .------------------------------------------------------------------------
 // |  currency
 // `------------------------------------------------------------------------
