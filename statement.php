@@ -140,15 +140,17 @@ function show_statement($userid, $interval = '')
         echo "<input type='hidden' name='user' value='$userid' />\n";
     echo "<select onChange='this.form.submit()' name='interval'>\n";
 
-    foreach (array('4 hour'  => _('the last 4 hours') ,
+    foreach (array('4 hour'  => _('the last 4 hours' ),
+                   '12 hour' => _('the last 12 hours'),
                    '1 day'   => _('the last 24 hours'),
-                   '3 day'   => _('the last 3 days')  ,
-                   '1 week'  => _('the last 7 days')  ,
-                   '1 month' => _('the last month')   ,
-                   '2 month' => _('the 2 months')     ,
-                   '3 month' => _('the 3 months')     ,
-                   ''        => _('forever')          )
-             as $key => $text) {
+                   '3 day'   => _('the last 3 days'  ),
+                   '1 week'  => _('the last 7 days'  ),
+                   '1 month' => _('the last month'   ),
+                   '2 month' => _('the last 2 months'),
+                   '3 month' => _('the last 3 months'),
+                   '6 month' => _('the last 6 months'),
+                   '1 year'  => _('the last year'    ),
+                   ''        => _('forever'          )) as $key => $text) {
         printf("<option %s value='%s'>%s</option>\n",
                ($interval == $key) ? "selected='selected'" : "",
                $key, $text);
