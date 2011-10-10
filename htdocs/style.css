@@ -20,6 +20,7 @@ body {
 }
 select, option {
     background-color: #7ad3af;
+    color: #000;
 }
 input[type=text] {
     margin: 8px;
