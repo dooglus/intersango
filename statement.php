@@ -278,23 +278,18 @@ function show_statement($userid, $interval = 'forever')
     if ($show_increments)
         echo "<th class='right'>+/-</th>";
     echo "<th class='right'>" . CURRENCY . "</th>";
-    echo "</tr>";
+    echo "</tr>\n";
 
     $all_final = true;
     while ($row = mysql_fetch_array($result)) {
 
         $new = $row['new'];
+        $uid = $row['uid'];
+        $date = $row['date'];
 
         if ($first && $new) {
             show_balances_in_statement(_("Opening Balances"), $btc, $fiat, $all_users, $show_prices, $show_increments);
             $first = false;
-        }
-
-        if ($new) {
-            echo "<tr>";
-            echo "<td>{$row['date']}</td>";
-            if ($all_users)
-                echo active_table_cell_link_to_user_statement($row['uid'], $interval);
         }
 
         if (isset($row['txid'])) { /* buying or selling */
@@ -312,22 +307,29 @@ function show_statement($userid, $interval = 'forever')
                 $total_btc_got    = gmp_add($total_btc_got   , $got_amount );
                 $total_fiat_given = gmp_add($total_fiat_given, $gave_amount);
 
-                if ($new) {
+                $got_str  = internal_to_numstr($got_amount,  BTC_PRECISION);
+                $gave_str = internal_to_numstr($gave_amount, FIAT_PRECISION);
+
+                if ($new && (non_zero_strval($got_str) || non_zero_strval($gave_str))) {
                     $period_btc_got    = gmp_add($period_btc_got   , $got_amount );
                     $period_fiat_given = gmp_add($period_fiat_given, $gave_amount);
 
+                    echo "<tr><td>$date</td>";
+                    if ($all_users) echo active_table_cell_link_to_user_statement($uid, $interval);
+
                     active_table_cell_for_order(sprintf(_("Buy %s %s for %s %s"),
-                                                        internal_to_numstr($got_amount, BTC_PRECISION), $got_curr,
-                                                        internal_to_numstr($gave_amount, FIAT_PRECISION), $gave_curr),
+                                                        $got_str,  $got_curr,
+                                                        $gave_str, $gave_curr),
                                                 $orderid);
                     if ($show_prices)
                         printf("<td>%s</td>", trade_price($got_amount, $gave_amount));
                     if ($show_increments)
-                        printf("<td class='right'>+ %s</td>", internal_to_numstr($got_amount, BTC_PRECISION));
+                        printf("<td class='right'>+ %s</td>", $got_str);
                     printf("<td class='right'> %s</td>",  internal_to_numstr($btc, BTC_PRECISION));
                     if ($show_increments)
-                        printf("<td class='right'>- %s</td>", internal_to_numstr($gave_amount, FIAT_PRECISION));
+                        printf("<td class='right'>- %s</td>", $gave_str);
                     printf("<td class='right'> %s</td>",  internal_to_numstr($fiat, FIAT_PRECISION));
+                    echo "</tr>\n";
                 }
             } else {
                 $fiat = gmp_add($fiat, $got_amount);
@@ -336,23 +338,29 @@ function show_statement($userid, $interval = 'forever')
                 $total_fiat_got  = gmp_add($total_fiat_got , $got_amount );
                 $total_btc_given = gmp_add($total_btc_given, $gave_amount);
 
-                if ($new) {
+                $gave_str = internal_to_numstr($gave_amount, BTC_PRECISION);
+                $got_str  = internal_to_numstr($got_amount,  FIAT_PRECISION);
+
+                if ($new && (non_zero_strval($got_str) || non_zero_strval($gave_str))) {
                     $period_fiat_got  = gmp_add($period_fiat_got , $got_amount );
                     $period_btc_given = gmp_add($period_btc_given, $gave_amount);
 
-                    active_table_cell_for_order(sprintf(_("Sell %s %s for %s %s"),
-                                                        internal_to_numstr($gave_amount, BTC_PRECISION), $gave_curr,
-                                                        internal_to_numstr($got_amount, FIAT_PRECISION), $got_curr),
-                                                $orderid);
+                    echo "<tr><td>$date</td>";
+                    if ($all_users) echo active_table_cell_link_to_user_statement($uid, $interval);
 
+                    active_table_cell_for_order(sprintf(_("Sell %s %s for %s %s"),
+                                                        $gave_str, $gave_curr,
+                                                        $got_str,  $got_curr),
+                                                $orderid);
                     if ($show_prices)
                         printf("<td>%s</td>", trade_price($gave_amount, $got_amount));
                     if ($show_increments)
-                        printf("<td class='right'>-%s</td>", internal_to_numstr($gave_amount, BTC_PRECISION));
+                        printf("<td class='right'>-%s</td>", $gave_str);
                     printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($btc, BTC_PRECISION));
                     if ($show_increments)
-                        printf("<td class='right'>+%s</td>", internal_to_numstr($got_amount, FIAT_PRECISION));
+                        printf("<td class='right'>+%s</td>", $got_str);
                     printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($fiat, FIAT_PRECISION));
+                    echo "</tr>\n";
                 }
             }
         } else {                /* withdrawal or deposit */
@@ -363,6 +371,11 @@ function show_statement($userid, $interval = 'forever')
             $voucher = $row['voucher'];
             $final = $row['final'];
             // echo "final is $final<br/>\n";
+
+            if ($new) {
+                echo "<tr><td>$date</td>";
+                if ($all_users) echo active_table_cell_link_to_user_statement($uid, $interval);
+            }
 
             if (!$final)
                 $all_final = false;
@@ -487,9 +500,11 @@ function show_statement($userid, $interval = 'forever')
                     }
                 }
             }
+
+            if ($new)
+                echo "</tr>\n";
         }
 
-        echo "</tr>";
     }
 
     show_balances_in_statement($first ? _("There are no entries for this period") : _("Closing Balances"),
