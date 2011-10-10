@@ -1114,4 +1114,9 @@ function addlog($text)
     release_lock('log');
 }
 
+function non_zero_strval($strval)
+{
+    return preg_match("/[1-9]/", $strval);
+}
+
 ?>
