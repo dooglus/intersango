@@ -18,6 +18,9 @@ body {
     margin: 0;
     background-color: #7ad3af;
 }
+select, option {
+    background-color: #7ad3af;
+}
 input[type=text] {
     margin: 8px;
     padding: 6px 0 0 10px;
