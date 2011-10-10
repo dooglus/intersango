@@ -778,7 +778,8 @@ function curr_supported_check($curr_type)
 {
     $supported_currencies = array(CURRENCY, 'BTC');
     if (!in_array($curr_type, $supported_currencies))
-        throw new Error('Ooops!', 'Bad currency supplied.');
+        throw new Error(_('Ooops!'),
+                        _('Bad currency supplied.  Do you have Javascript disabled in your web browser?  This site needs Javascript enabled.'));
 }
 function order_worthwhile_check($amount, $amount_disp, $min_str='0.5')
 {
