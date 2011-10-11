@@ -78,7 +78,7 @@ class customPalette extends ezcGraphPalette
 {
     protected $axisColor = '#000000';
     protected $majorGridColor = '#000000BB';
-    protected $minorGridColor = '#000000BB';
+    protected $minorGridColor = '#000000EE';
     protected $dataSetColor = array('#3465A410', '#2E7A0610');
     protected $dataSetSymbol = ezcGraph::NO_SYMBOL;
     protected $fontName = 'sans-serif';
