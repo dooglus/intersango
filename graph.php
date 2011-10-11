@@ -69,9 +69,9 @@ function show_funds_graph($x = 0, $y = 0)
         show_header('graph', $is_logged_in);
 
         echo "<div class='content_box'>\n";
-        echo "<h3>Graphs</h3>\n";
+        echo "<h3>Funds on the Exchange</h3>\n";
         echo "<p>\n";
-        echo "<iframe src='?page=graph&type=funds&x=$x&y=$y&svg' type='image/svg+xml' width='$x' height='$y' scrolling='no' frameborder='0' />\n";
+        echo "<iframe src='?page=graph&type=funds&x=$x&y=$y&svg' type='image/svg+xml' width='$x' height='$y' scrolling='no' frameborder='0'></iframe>\n";
         echo "</p>\n";
         echo "</div>\n";
         return;
@@ -108,30 +108,29 @@ function show_funds_graph($x = 0, $y = 0)
     $graph->palette = new ezcGraphPaletteEzGreen();
 
     $graph->renderToOutput($x, $y);
+    exit();                     // we don't want the footer
 }
 
 function graph_main()
 {
     global $is_logged_in, $is_admin;
 
-    if (isset($_GET['type'])) {
+    if (isset($_GET['type']))
         switch(get('type')) {
         case 'funds':
             show_funds_graph();
             break;
         default:
             show_header('graph', $is_logged_in);
-            return;
+            throw new Error("Bad Argument", "Unknown graph type");
         }
-        exit();                 // we don't want the footer
-    } else {
+    else {
         show_header('graph', $is_logged_in);
 
         echo "<div class='content_box'>\n";
         echo "<h3>Graphs</h3>\n";
         echo "<p>which?</p>\n";
-        echo "<p><a href='?page=graph&type=funds&x=800&y=500'>funds</a>\n";
-        show_funds_graph(350,250);
+        echo "<ul><li><a href='?page=graph&type=funds'>funds</a></li></ul>\n";
         echo "</p></div>\n";
     }
 }
