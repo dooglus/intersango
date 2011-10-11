@@ -7,7 +7,7 @@ function format_exponential_axis_label($x) {
     return sprintf("%.0f", pow($vals[0], $vals[1]));
 }
 
-function get_transfers()
+function get_funds_graph_data()
 {
     $btc = array();
     $fiat = array();
@@ -47,65 +47,137 @@ function get_transfers()
     return array($btc, $fiat);
 }
 
-function show_funds_graph($x = 0, $y = 0)
+function get_users_graph_data()
+{
+    $users = array();
+
+    $query = "
+        SELECT " .
+            sql_format_date('timest') . " AS timest2
+        FROM
+            users
+        WHERE
+            uid != 1
+        ORDER BY
+            timest;
+    ";
+
+    $result = do_query($query);
+    $count = 0;
+    while ($row = mysql_fetch_array($result)) {
+        $timest = $row['timest2'];
+        $count++;
+
+        $users[$timest] = $count;
+    }
+
+    return $users;
+}
+
+class customPalette extends ezcGraphPalette
+{
+    protected $axisColor = '#000000';
+    protected $majorGridColor = '#000000BB';
+    protected $minorGridColor = '#000000BB';
+    protected $dataSetColor = array('#3465A410', '#2E7A0610');
+    protected $dataSetSymbol = ezcGraph::NO_SYMBOL;
+    protected $fontName = 'sans-serif';
+    protected $fontColor = '#000';
+    protected $chartBackground = '#7ad3af';
+    // protected $chartBorderColor = '#6ac39f';
+    protected $chartBorderWidth = 10;
+}
+
+function show_funds_graph($log_axis = -1, $x = 0, $y = 0)
 {
     global $is_logged_in, $is_admin;
 
-    if (!$is_admin) return;
+    if (!$is_admin) {
+        show_header('graph', $is_logged_in);
+        throw new Error("Bad Argument", "You can't view that graph type");
+    }
 
-    if (!$x)
-        if (isset($_GET['x']))
-            $x = get('x');
-        else
-            $x = 720;
-
-    if (!$y)
-        if (isset($_GET['y']))
-            $y = get('y');
-        else
-            $y = 500;
+    if ($log_axis == -1) $log_axis = isset($_GET['log']) ? get('log') : 1;
+    if (!$x) $x = isset($_GET['x']) ? get('x') : 720;
+    if (!$y) $y = isset($_GET['y']) ? get('y') : 500;
 
     if (!isset($_GET['svg'])) {
         show_header('graph', $is_logged_in);
 
-        echo "<div class='content_box'>\n";
-        echo "<h3>Funds on the Exchange</h3>\n";
-        echo "<p>\n";
-        echo "<iframe src='?page=graph&type=funds&x=$x&y=$y&svg' type='image/svg+xml' width='$x' height='$y' scrolling='no' frameborder='0'></iframe>\n";
-        echo "</p>\n";
-        echo "</div>\n";
+        echo ("<div class='content_box'>\n" .
+              "<h3>Funds on the Exchange</h3>\n" .
+              "<p>\n" .
+              "<iframe src='?page=graph&type=funds&x=$x&y=$y&log=$log_axis&svg' type='image/svg+xml' width='$x' height='$y' scrolling='no' frameborder='0'>\n" .
+              "</iframe>\n" .
+              "</p>\n" .
+              "</div>\n");
         return;
     }
 
-    $symbol = ezcGraph::NO_SYMBOL;
-    // $symbol = ezcGraph::BULLET;
-
     $graph = new ezcGraphLineChart();
-    $graph->options->fillLines = 128;
-    // $graph->title = 'Funds on the Exchange';
+    $graph->palette = new customPalette();
+    $graph->options->fillLines = 180;
+    $graph->options->font->maxFontSize = 12;
     $graph->legend->position = ezcGraph::BOTTOM;
 
     $graph->xAxis = new ezcGraphChartElementDateAxis();
     $graph->xAxis->dateFormat = 'j M';
     $graph->xAxis->interval = 60*60*24*7;
 
-    $graph->yAxis = new ezcGraphChartElementLogarithmicalAxis();
-    $graph->yAxis->base = pow(10, 1/2);;
-    $graph->yAxis->logarithmicalFormatString = '%1$f^%2$f';
-    $graph->yAxis->labelCallback = "format_exponential_axis_label";
+    if ($log_axis) {
+        $graph->yAxis = new ezcGraphChartElementLogarithmicalAxis();
+        $graph->yAxis->base = pow(10, 1/2);;
+        $graph->yAxis->logarithmicalFormatString = '%1$f^%2$f';
+        $graph->yAxis->labelCallback = "format_exponential_axis_label";
+    }
 
-    $graph->title->font->maxFontSize = 20;
-    $graph->options->font->maxFontSize = 12;
-
-    list ($btc, $fiat) = get_transfers();
+    list ($btc, $fiat) = get_funds_graph_data();
 
     $graph->data[CURRENCY_FULL_PLURAL] = new ezcGraphArrayDataSet($fiat);
-    $graph->data[CURRENCY_FULL_PLURAL]->symbol = $symbol;
-
     $graph->data['Bitcoins'] = new ezcGraphArrayDataSet($btc);
-    $graph->data['Bitcoins']->symbol = $symbol;
 
-    $graph->palette = new ezcGraphPaletteEzGreen();
+    $graph->renderToOutput($x, $y);
+    exit();                     // we don't want the footer
+}
+
+function show_users_graph($x = 0, $y = 0)
+{
+    global $is_logged_in, $is_admin;
+
+    if (!$is_admin) {
+        show_header('graph', $is_logged_in);
+        throw new Error("Bad Argument", "You can't view that graph type");
+    }
+
+    if (!$x) $x = isset($_GET['x']) ? get('x') : 720;
+    if (!$y) $y = isset($_GET['y']) ? get('y') : 500;
+
+    if (!isset($_GET['svg'])) {
+        show_header('graph', $is_logged_in);
+
+        echo ("<div class='content_box'>\n" .
+              "<h3>Users on the Exchange</h3>\n" .
+              "<p>\n" .
+              "<iframe src='?page=graph&type=users&x=$x&y=$y&svg' type='image/svg+xml' width='$x' height='$y' scrolling='no' frameborder='0'>\n" .
+              "</iframe>\n" .
+              "</p>\n" .
+              "</div>\n");
+        return;
+    }
+
+    $graph = new ezcGraphLineChart();
+    $graph->palette = new customPalette();
+    $graph->options->fillLines = 180;
+    $graph->options->font->maxFontSize = 12;
+    $graph->legend->position = ezcGraph::BOTTOM;
+
+    $graph->xAxis = new ezcGraphChartElementDateAxis();
+    $graph->xAxis->dateFormat = 'j M';
+    $graph->xAxis->interval = 60*60*24*7;
+
+    $users = get_users_graph_data();
+
+    $graph->data['Users'] = new ezcGraphArrayDataSet($users);
 
     $graph->renderToOutput($x, $y);
     exit();                     // we don't want the footer
@@ -120,6 +192,9 @@ function graph_main()
         case 'funds':
             show_funds_graph();
             break;
+        case 'users':
+            show_users_graph();
+            break;
         default:
             show_header('graph', $is_logged_in);
             throw new Error("Bad Argument", "Unknown graph type");
@@ -129,9 +204,12 @@ function graph_main()
 
         echo "<div class='content_box'>\n";
         echo "<h3>Graphs</h3>\n";
-        echo "<p>which?</p>\n";
-        echo "<ul><li><a href='?page=graph&type=funds'>funds</a></li></ul>\n";
-        echo "</p></div>\n";
+        echo "<p>Pick a graph type:</p>\n";
+        echo "<ul>\n";
+        echo "<li><a href='?page=graph&type=funds&log=0'>funds (linear axis)</a></li>\n";
+        echo "<li><a href='?page=graph&type=funds'>funds (log axis)</a></li>\n";
+        echo "<li><a href='?page=graph&type=users'>users</a></li>\n";
+        echo "</li></p></div>\n";
     }
 }
 
