@@ -495,7 +495,7 @@ function sync_to_bitcoin($uid)
         ";
             do_query($query);
 
-            $we_have = @$bitcoin->getbalance('', 0);
+            $we_have = @$bitcoin->getbalance('*', 1);
             if (gmp_cmp($we_have, numstr_to_internal(WARN_HIGH_WALLET_THRESHOLD)) > 0)
                 email_tech(_("Exchange Wallet Balance is High"),
                            sprintf(_("The exchange wallet has %s BTC available."),
