@@ -214,6 +214,10 @@ define('MINIMUM_WITHDRAW', '0.5');
 //   8 means 1.23456789 is a valid amount to withdraw
 define('BTC_WITHDRAW_DECIMAL_PLACES', '8');
 
+// if both sides of an order become smaller than this many (10^-8)th's of a unit then the order is closed
+// because it's close enough to zero to not matter.
+define('DUST_THRESHOLD', 5);
+
 // .------------------------------------------------------------------------
 // |  upper limits
 // `------------------------------------------------------------------------
