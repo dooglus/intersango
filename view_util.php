@@ -62,7 +62,7 @@ function display_transactions($uid, $orderid)
             list($a_amount, $b_amount) = array($b_amount, $a_amount);
             $b_commission = $a_commission;
         }
-        # skip cancelled orders since we already show those
+        // skip cancelled orders since we already show those
         if ((int)$b_amount == -1)
             continue;
 

@@ -150,7 +150,7 @@ function save_details($uid, $amount, $curr_type, &$voucher)
     else {
         throw Error('Invalid currency', 'You cannot withdraw a currency that does not exist.');
     }
-    # should never happen!
+    // should never happen!
     return false;
 }
 
@@ -182,9 +182,9 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
 
     if (!save_details($uid, $amount, $curr_type, $voucher_code))
         throw Error('We had to admit it sometime...', 'Stop trading on thie site. Contact the admin FAST.');
-    # actually take the money now
+    // actually take the money now
     deduct_funds($amount, $curr_type);
-    # request is submitted to the queue for the cron job to actually execute
+    // request is submitted to the queue for the cron job to actually execute
 
     echo "<div class='content_box'>\n";
     echo "<h3>" . sprintf(_("Withdraw %s"), $curr_type) . "</h3>\n";

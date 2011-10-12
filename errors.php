@@ -15,7 +15,7 @@ function disable_errors_if_not_me()
 
 class Problem extends Exception
 {
-    # PHP sucks!
+    // PHP sucks!
     public function __construct($title, $message)
     {
         parent::__construct($message);
@@ -79,9 +79,9 @@ function report($message, $severity)
     beginlog();
     syslog(LOG_CRIT, $message);
     endlog();
-    # do this last because it's the most risky operation, and we at least want some logs first.
+    // do this last because it's the most risky operation, and we at least want some logs first.
     if ($severity == SEVERITY::ERROR) {
-        #echo exec("echo 'A fatal error has occured. Time is now $time.' | mutt -s INTERSANGO_ERROR genjix@gmail.com -a $filename");
+        // echo exec("echo 'A fatal error has occured. Time is now $time.' | mutt -s INTERSANGO_ERROR genjix@gmail.com -a $filename");
     }
 }
 function log_badpage($page)
@@ -102,7 +102,7 @@ function report_exception($e, $severity)
 function reporting_error_handler($errno, $errstr, $errfile, $errline)
 {
     if (!(error_reporting() & $errno)) {
-        # This error code is not included in error_reporting
+        // This error code is not included in error_reporting
         return;
     }
     switch ($errno) {
@@ -123,7 +123,7 @@ function reporting_error_handler($errno, $errstr, $errfile, $errline)
         report("UNKNOWN: [$errno] $errstr", SEVERITY::ERROR);
         break;
     }
-    # Don't execute PHP internal error handler
+    // Don't execute PHP internal error handler
     return false;
 }                                
 function reporting_shutdown() { 

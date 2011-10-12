@@ -27,7 +27,7 @@ try {
         //if it is NOT NULL then it will return a username you can then set any cookies/session data for that username and complete the login process
         $oidlogin = Duo::verifyResponse(IKEY, SKEY, AKEY, $_POST['sig_response']);
         if($oidlogin != NULL) {
-            # protect against session hijacking now we've escalated privilege level
+            // protect against session hijacking now we've escalated privilege level
             session_regenerate_id(true);
 
             $query = "
@@ -88,13 +88,13 @@ try {
             throw new Problem(":(", _("Login was cancelled."));
         }
         else if ($openid->validate()) {
-            # protect against session hijacking now we've escalated privilege level
+            // protect against session hijacking now we've escalated privilege level
             session_regenerate_id(true);
 
             $oidlogin = escapestr($openid->identity);
             $use_duo = 0;
 
-            # is this OpenID known to us?
+            // is this OpenID known to us?
             $query = "
                 SELECT uid, use_duo
                 FROM users
@@ -194,6 +194,6 @@ try {
 catch (ErrorException $e) {
     throw new Problem(":(", $e->getMessage());
 } 
-# close content box
+// close content box
 ?>
                     </div>

@@ -29,7 +29,7 @@ else if ($info->uid != $uid)
     throw new Problem('Not for your eyes', "This isn't your order.");
 
 if (isset($_POST['cancel_order'])) {
-    # cancel an order
+    // cancel an order
     $query = "
         UPDATE orderbook
         SET status='CANCEL'
@@ -56,7 +56,7 @@ if (isset($_POST['cancel_order'])) {
         throw new Error('Permission...', '... Denied! Now GTFO.');
 
     add_funds($info->uid, $info->amount, $info->type);
-    # these records indicate returned funds.
+    // these records indicate returned funds.
     create_record($orderid, $info->amount, 0,
 		  0,        -1,            0);
     addlog("  cancelled order $orderid");

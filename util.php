@@ -148,7 +148,7 @@ function create_record($our_orderid,  $our_amount,  $our_commission,
 
 function add_funds($uid, $amount, $type)
 {
-    # eventually plan to move these to prepared mysql statements once the queries become more mature.
+    // eventually plan to move these to prepared mysql statements once the queries become more mature.
     $query = "
         UPDATE purses
         SET
@@ -196,7 +196,7 @@ function find_total_trades_available_at_rate($rate, $have_curr)
 
 function calc_exchange_rate($curr_a, $curr_b, $base_curr=BASE_CURRENCY::A)
 {
-    # how is the rate calculated? is it a/b or b/a?
+    // how is the rate calculated? is it a/b or b/a?
     if ($base_curr == BASE_CURRENCY::A)
         $invertor = 'TRUE';
     else
@@ -803,7 +803,7 @@ function enough_money_check($amount, $curr_type)
 
 function translate_order_code($code)
 {
-    # OPEN CANCEL CLOSED
+    // OPEN CANCEL CLOSED
     switch ($code)
     {
         case 'OPEN':
@@ -831,11 +831,11 @@ function translate_request_type($type)
 }
 function translate_request_code($code)
 {
-    # VAL VERIF PRO OK FIN NO RET
-    # jei verifies payments
-    # I verify (process) payments
-    # we both confirm (OK) them
-    # they either complete (SENT, FIN) or deny (NO, RET)
+    // VAL VERIF PRO OK FIN NO RET
+    // jei verifies payments
+    // I verify (process) payments
+    // we both confirm (OK) them
+    // they either complete (SENT, FIN) or deny (NO, RET)
     switch ($code)
     {
         case 'VERIFY':

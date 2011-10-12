@@ -116,7 +116,7 @@ function show_withdrawals()
 }
 
 $from = "&fromDate=1 Jan 2011";
-# $to = "&toDate=31 Dec 2011";
+// $to = "&toDate=31 Dec 2011";
 
 show_statement($xero, ACCOUNT, $from);
 // list_accounts($xero);

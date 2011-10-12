@@ -26,7 +26,7 @@ $_SESSION['currency_in'] = $type;
 curr_supported_check($type);
 curr_supported_check($want_type);
 
-# convert for inclusion into database
+// convert for inclusion into database
 $amount_disp = post('amount');
 $amount = numstr_to_internal($amount_disp);
 $want_amount_disp = post('want_amount');
@@ -38,10 +38,10 @@ order_worthwhile_check($want_amount, $want_amount_disp, MINIMUM_WANT_AMOUNT);
 enough_money_check($amount, $type);
 
 do_query("START TRANSACTION");
-# deduct money from their account
+// deduct money from their account
 deduct_funds($amount, $type);
 
-# add the money to the order book
+// add the money to the order book
 $query = "
     INSERT INTO orderbook (
         uid,

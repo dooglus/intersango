@@ -90,7 +90,7 @@ $reqid = get('reqid');
 $uid = user_id();
 
 if (isset($_POST['cancel_request'])) {
-    # cancel an order
+    // cancel an order
     if ($is_admin) {
         $uid_check = "";
         $request_uid = get_request_uid($reqid);
@@ -196,7 +196,7 @@ if (isset($_POST['cancel_request'])) {
         ?>
         <p>
         <?php
-        # only one of these will return a result
+        // only one of these will return a result
         display_request_info_fiat($reqid);
         display_request_info_btc($reqid);
         display_request_info_voucher($reqid);

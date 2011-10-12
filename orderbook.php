@@ -88,8 +88,8 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
         $want_amount_i = $row['want_amount'];
         $want_amount = internal_to_numstr($want_amount_i, $precision_b);
         $cumulative_curr_b = gmp_add($cumulative_curr_b, $want_amount_i);
-        # MySQL kindly computes this for us.
-        # we trim the excessive 0
+        // MySQL kindly computes this for us.
+        // we trim the excessive 0
         $rate = clean_sql_numstr($row['rate']);
         $me = $row['me'];
         $uid = $row['uid'];
@@ -111,9 +111,9 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
 
     echo "    <tr>\n";
     echo "        <td>" . _("Total") . ":</td>\n";
-    # strstr's 3rd argument only works in PHP 5.3.0 and newer
-    #   http://php.net/manual/en/function.strstr.php
-    # use explode instead
+    // strstr's 3rd argument only works in PHP 5.3.0 and newer
+    //   http://php.net/manual/en/function.strstr.php
+    // use explode instead
     $total_amount = explode('.', $total_amount, 2);
     $total_amount = $total_amount[0];
     echo "        <td>$total_amount $curr_a</td>\n";

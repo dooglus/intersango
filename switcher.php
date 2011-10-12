@@ -1,5 +1,5 @@
 <?php
-# security protection
+// security protection
 defined('_we_are_one') || die('Direct access not allowed.');
 
 function switcher($page)
@@ -107,7 +107,7 @@ function switcher($page)
     }
     catch (Error $e) {
         report_exception($e, SEVERITY::ERROR);
-        # Same as below, but flag + log this for review,
+        // Same as below, but flag + log this for review,
         echo "<div class='content_box'><h3>{$e->getTitle()}</h3>";
         echo "<p>{$e->getMessage()}</p></div>";
     }
