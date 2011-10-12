@@ -13,7 +13,8 @@ function b_query($query)
 // we have two orders which have matched.  one of them partially fills the other
 // refer to them as 'partial' and 'filled'
 function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_type,  $old_filled_commission,
-                $partial_orderid, $partial_uid, $amount_from_partial, $partial_type, $old_partial_commission)
+                $partial_orderid, $partial_uid, $amount_from_partial, $partial_type, $old_partial_commission,
+                $amount, $initial_amount, $initial_want_amount)
 {
     echo "    pacman: order $partial_orderid (user $partial_uid, already paid $old_partial_commission) is filling\n";
     echo "            order $filled_orderid (user $filled_uid, already paid $old_filled_commission)\n";
@@ -33,21 +34,65 @@ function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_ty
         ";
     b_query($query);
 
+    echo "amount was " . internal_to_numstr($amount) . "\n";
+    $amount = gmp_sub($amount, $amount_from_partial);
+    echo "take off " . internal_to_numstr($amount_from_partial) . " and amount is now " . internal_to_numstr($amount) . "\n";
+    
+    $want_amount = gmp_div(gmp_mul($amount, $initial_want_amount), $initial_amount);
+    echo "new want_amount = " . internal_to_numstr($want_amount) . "\n";
+    printf("partial_type: %s; initial_amount: %s; initial_want_amount: %s\n",
+           $partial_type,
+           internal_to_numstr($initial_amount),
+           internal_to_numstr($initial_want_amount));
+    printf("comparing %s and %s\n",
+           internal_to_numstr(gmp_mul($want_amount, $initial_amount)),
+           internal_to_numstr(gmp_mul($initial_want_amount, $amount)));
+
+    if ($partial_type != 'BTC') {
+        echo "he is BUYING bitcoins\n";
+        printf("              real price was: %s/%s = %s\n",
+               gmp_strval($initial_amount),            gmp_strval($initial_want_amount),
+               bcdiv(gmp_strval($initial_amount),      gmp_strval($initial_want_amount), 15));
+        if (gmp_cmp($want_amount, 0) == 0)
+            echo "new want is zero - no price\n";
+        else
+            printf("  new price should be lower : %s/%s = %s\n",
+                   gmp_strval($amount),                gmp_strval($want_amount),
+                   bcdiv(gmp_strval($amount),          gmp_strval($want_amount),         15));
+    } else {
+        echo "he is SELLING bitcoins\n";
+        printf("              real price was: %s/%s = %s\n",
+               gmp_strval($initial_want_amount),       gmp_strval($initial_amount),
+               bcdiv(gmp_strval($initial_want_amount), gmp_strval($initial_amount),      15));
+        if (gmp_cmp($want_amount, 0) == 0)
+            echo "new have is zero - no price\n";
+        else
+            printf("  new price should be higher: %s/%s = %s\n",
+                   gmp_strval($want_amount),           gmp_strval($amount),
+                   bcdiv(gmp_strval($want_amount),     gmp_strval($amount),              15));
+    }
+
+    if (gmp_cmp(gmp_mul($want_amount, $initial_amount), gmp_mul($initial_want_amount, $amount)) < 0) {
+        $want_amount = gmp_add($want_amount, 1);
+        echo "did +1 and now want_amount = " . internal_to_numstr($want_amount) . "\n";
+
+        if ($partial_type != 'BTC')
+            printf("  new price should be lower : %s/%s = %s\n",
+                   gmp_strval($amount),                gmp_strval($want_amount),
+                   bcdiv(gmp_strval($amount),          gmp_strval($want_amount),         15));
+        else
+            printf("  new price should be higher: %s/%s = %s\n",
+                   gmp_strval($want_amount),           gmp_strval($amount),
+                   bcdiv(gmp_strval($want_amount),     gmp_strval($amount),              15));
+    } else
+        echo "not doing +1\n";
+
     // update the partially filled order
     $query = "
         UPDATE orderbook
         SET
-            amount = amount - '$amount_from_partial'
-        WHERE
-            orderid='$partial_orderid';
-        ";
-    b_query($query);
-
-    // update the want amount using the initially requested price
-    $query = "
-        UPDATE orderbook
-        SET
-            want_amount = 1.0 * amount * initial_want_amount / initial_amount
+            amount = '" . gmp_strval($amount) . "',
+            want_amount = '" . gmp_strval($want_amount) . "'
         WHERE
             orderid='$partial_orderid';
         ";
@@ -60,7 +105,10 @@ function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_ty
             status='CLOSED'
         WHERE
             orderid='$partial_orderid'
-            AND amount <= 0;
+            AND (amount <= 0 OR
+                 want_amount <= 0 OR
+                 (amount < " . DUST_THRESHOLD . " AND
+                  want_amount < " . DUST_THRESHOLD . "))
         ";
     b_query($query);
 
@@ -83,6 +131,7 @@ function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_ty
     take_commission($partial_commission, $filled_type,  $partial_orderid);
 
     // record the transaction
+    echo "doo " . $filled_type . "\n";
     if ($filled_type == 'BTC')
         create_record($partial_orderid, $amount_from_partial, $filled_commission,
                       $filled_orderid,  $amount_from_filled,  $partial_commission);
@@ -136,6 +185,8 @@ function fulfill_order($our_orderid)
             continue;
         }
 
+        printf("old order: has %s; wants %s\n", internal_to_numstr($them->amount), internal_to_numstr($them->want_amount));
+
         if ($them->type != $our->want_type || $our->type != $them->want_type)
             throw Error('Problem', 'Urgent problem. Contact the site owner IMMEDIATELY.');
         // echo "  them: orderid {$them->orderid}, uid {$them->uid}, have {$them->amount} {$them->type}, want {$them->want_amount}\n";
@@ -148,11 +199,14 @@ function fulfill_order($our_orderid)
         if (gmp_cmp($left, $right) >= 0) {
             // We need to calculate how much of our stuff they can afford at their price
             // we ignore the remainder - it's totally insignificant.
-            $them->new_want = gmp_strval(gmp_div($right, $them->initial_amount));
+            list ($them->new_want, $remainder) = gmp_div_qr($right, $them->initial_amount);
+            if (gmp_cmp($remainder, 0) != 0) $them->new_want = gmp_add($them->new_want, 1);
+            $them->new_want = gmp_strval($them->new_want);
             echo "    we swallow them; they can afford {$them->new_want} from us\n";
 
             pacman($them->orderid, $them->uid, $them->amount,   $them->type, $them->commission,
-                   $our->orderid,  $our->uid,  $them->new_want, $our->type,  $our->commission);
+                   $our->orderid,  $our->uid,  $them->new_want, $our->type,  $our->commission,
+                   $our->amount,   $our->initial_amount,        $our->initial_want_amount);
             release_lock($them->uid);
 
             // re-update as still haven't finished...
@@ -165,11 +219,14 @@ function fulfill_order($our_orderid)
         else {
             // We need to calculate how much of their stuff we can afford at their price
             // we ignore the remainder - it's totally insignificant.
-            $our->new_want = gmp_strval(gmp_div($left, $them->initial_want_amount));
+            list ($our->new_want, $remainder) = gmp_div_qr($left, $them->initial_want_amount);
+            if (gmp_cmp($remainder, 0) != 0) $our->new_want = gmp_add($our->new_want, 1);
+            $our->new_want = gmp_strval($our->new_want);
             echo "    they swallow us; we can afford {$our->new_want} from them\n";
 
             pacman($our->orderid,  $our->uid,  $our->amount,   $our->type,      $our->commission,
-                   $them->orderid, $them->uid, $our->new_want, $our->want_type, $them->commission);
+                   $them->orderid, $them->uid, $our->new_want, $our->want_type, $them->commission,
+                   $them->amount,  $them->initial_amount,      $them->initial_want_amount);
             release_lock($them->uid);
             break;
         }
