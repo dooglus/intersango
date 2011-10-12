@@ -107,7 +107,7 @@
     Security is always paramount on the web and even more important
     with Bitcoin. The “ease of sending large funds globally”
     unfortunately has the potential to become the “ease of stealing
-    large funds globally”. With this in mind World Bitcoin Exchange
+    large funds globally”. With this in mind <?php echo SITE_NAME; ?>
     set out to find well qualified security experts. Our search led us
     to Dug Song, Jon Oberheide and their team at Duo Security.
 </p>
@@ -188,7 +188,7 @@
     Australia</b>
 </p>
 <p>
-    If the bank account you will use to fund your World Bitcoin Exchange account
+    If the bank account you will use to fund your <?php echo SITE_NAME; ?> account
     is in one of the aforementioned States, please feel free to
     deposit to our bank. If your bank account is not in Australia or
     one of the aforementioned States, your transfer will be rejected.
@@ -235,7 +235,7 @@
     Consultancy's wiki page</a>.
 </p>
 <p>
-    World Bitcoin Exchange is my decision to provide those living in
+    <?php echo SITE_NAME; ?> is my decision to provide those living in
     Australia with an exchange in order to promote awareness in
     Australia and allow Australian residents to not miss out on the
     benefits of using Bitcoins and being part of this great social
@@ -246,7 +246,7 @@
 <div class='content_box'>
 <?php show_contact_info(); ?>
 <p>
-    World Bitcoin Exchange is currently operating unlicensed. We are
+    <?php echo SITE_NAME; ?> is currently operating unlicensed. We are
     seeking legitimisation. Until then, all transactions have a low
     commission structure.
 </p>
@@ -260,7 +260,7 @@ if (COMMISSION_PERCENTAGE_FOR_FIAT == 0 && COMMISSION_PERCENTAGE_FOR_BTC == 0)
     echo "All trades are free of commission\n";
 else { ?>
     In order to pay for server space, bandwidth, programmers,
-    designers, and other costs, World Bitcoin Exchange imposes fees on
+    designers, and other costs, <?php echo SITE_NAME; ?> imposes fees on
     every transaction performed by all users of the website, as
     follows:
 <?php show_commission_rates();
@@ -360,7 +360,7 @@ else { ?>
 
 <h4>A. Policy statement</h4>
 <p>
-    World Bitcoin Exchange respects customer privacy. Users can visit most pages
+    <?php echo SITE_NAME; ?> respects customer privacy. Users can visit most pages
     on our website and use all of the tools located without
     identifying themselves or providing personal or financial
     information. We collect the minimum information needed, which is

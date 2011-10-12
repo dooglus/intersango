@@ -6,10 +6,10 @@ function show_header($page, $is_logged_in, $base = false)
 {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html itemscope itemtype="http://schema.org/Organization" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <title>World Bitcoin Exchange</title>
+    <title><?php echo SITE_NAME; ?></title>
     <script type='text/javascript' src='js/util.js'></script>
 <?php
 if (!isset($_GET['fancy'])) { ?>
@@ -53,6 +53,38 @@ if (!isset($_GET['fancy'])) { ?>
 if ($base) echo "    <base href=\"$base\" />\n"; ?>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
+
+<!-- start of google +snippet code -->
+<meta itemprop="name" content="<?php echo SITE_NAME; ?>">
+<meta itemprop="description" content="<?php echo SITE_DESCRIPTION; ?>">
+<meta itemprop="image" content="<?php echo SITE_IMAGE; ?>">
+<!-- end of google +snippet code -->
+
+<!-- start of google +1 code -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<!-- end of google +1 code -->
+
+<!-- start of google analytics code -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '<?php echo ANALYTICS_ACCOUNT; ?>']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end of google analytics code -->
+
 </head>
 
 <?php

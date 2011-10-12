@@ -185,7 +185,8 @@ function show_mini_orderbook()
             <h3><?php echo _("Currency converter"); ?></h3>
 
 <?php if (!$is_logged_in) { ?>
-        <p><b><?php printf(_("World Bitcoin Exchange allows you to trade %s for Bitcoins (BTC) or BTC for %s with other users."),
+        <p><b><?php printf(_("%s allows you to trade %s for Bitcoins (BTC) or BTC for %s with other users."),
+                           SITE_NAME,
                            CURRENCY_FULL_PLURAL . " (" . CURRENCY . ")",
                            CURRENCY); ?></a></b></p>
 <?php } ?>

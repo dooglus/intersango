@@ -31,6 +31,10 @@ define('CHARTS_PAGE', '');
 // the default time period to show on the statement page
 define('DEFAULT_STATEMENT_PERIOD', '1 week');
 
+// google analytics account number for visitor tracking
+define('ANALYTICS_ACCOUNT', 'UA-26265923-1');
+
+
 // .------------------------------------------------------------------------
 // |  currency
 // `------------------------------------------------------------------------
@@ -57,8 +61,17 @@ define('WARN_HIGH_WALLET_THRESHOLD', 350);
 // address to email if the script discovers a problem
 define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>, Andre Jensen <gorkalitus@gmail.com>');
 
+// the name of the site
+define('SITE_NAME',             'World Bitcoin Exchange');
+
+// a description
+define('SITE_DESCRIPTION',      SITE_NAME . ' allows you to trade Australian Dollars (AUD) for Bitcoins (BTC) with other users.  We have very low fees and an active market.');
+
+// an icon for the site
+define('SITE_IMAGE',            'https://www.worldbitcoinexchange.com/images/logo200.jpg');
+
 // address to send email from
-define('EMAIL_FROM_ADDRESS',    'World Bitcoin Exchange <support@intersango.com.au>');
+define('EMAIL_FROM_ADDRESS',    SITE_NAME . ' <support@intersango.com.au>');
 
 // details to show on the help page
 define('CONTACT_EMAIL_ADDRESS', 'support@intersango.com.au');
