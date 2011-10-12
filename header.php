@@ -70,6 +70,7 @@ if ($base) echo "    <base href=\"$base\" />\n"; ?>
 </script>
 <!-- end of google +1 code -->
 
+<?php if ($page != 'login') { ?>
 <!-- start of google analytics code -->
 <script type="text/javascript">
 
@@ -84,7 +85,7 @@ if ($base) echo "    <base href=\"$base\" />\n"; ?>
   })();
 </script>
 <!-- end of google analytics code -->
-
+<?php } ?>
 </head>
 
 <?php
