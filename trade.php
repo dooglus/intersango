@@ -48,8 +48,8 @@ function show_mini_orderbook_table_row($id, $curr, $price, $have, $want, $this_f
 
         active_table_row("me", "?page=view_order&orderid=$mine");
         echo "<td class='right'>$price</td>\n";
-        echo "<td class='right'>$btc_str</td>\n";
-        echo "<td class='right'>$fiat_str</td>\n";
+        echo "<td class='right'>$this_btc_str</td>\n";
+        echo "<td class='right'>$this_fiat_str</td>\n";
         echo "<td class='right'>$sum_btc_str</td>\n";
         echo "<td class='right'>$sum_fiat_str</td>\n";
         echo "</tr>\n";
