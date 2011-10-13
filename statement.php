@@ -310,9 +310,12 @@ function show_statement($userid, $interval = 'forever')
                 $got_str  = internal_to_numstr($got_amount,  BTC_PRECISION);
                 $gave_str = internal_to_numstr($gave_amount, FIAT_PRECISION);
 
-                if ($new && (!string_is_zero($got_str) || !string_is_zero($gave_str))) {
+                if ($new) {
                     $period_btc_got    = gmp_add($period_btc_got   , $got_amount );
                     $period_fiat_given = gmp_add($period_fiat_given, $gave_amount);
+
+                    if (string_is_zero($got_str) && string_is_zero($gave_str))
+                        continue;
 
                     echo "<tr><td>$date</td>";
                     if ($all_users) echo active_table_cell_link_to_user_statement($uid, $interval);
@@ -341,9 +344,12 @@ function show_statement($userid, $interval = 'forever')
                 $gave_str = internal_to_numstr($gave_amount, BTC_PRECISION);
                 $got_str  = internal_to_numstr($got_amount,  FIAT_PRECISION);
 
-                if ($new && (!string_is_zero($got_str) || !string_is_zero($gave_str))) {
+                if ($new) {
                     $period_fiat_got  = gmp_add($period_fiat_got , $got_amount );
                     $period_btc_given = gmp_add($period_btc_given, $gave_amount);
+
+                    if (string_is_zero($got_str) && string_is_zero($gave_str))
+                        continue;
 
                     echo "<tr><td>$date</td>";
                     if ($all_users) echo active_table_cell_link_to_user_statement($uid, $interval);
@@ -504,7 +510,6 @@ function show_statement($userid, $interval = 'forever')
             if ($new)
                 echo "</tr>\n";
         }
-
     }
 
     show_balances_in_statement($first ? _("There are no entries for this period") : _("Closing Balances"),
