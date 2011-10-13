@@ -131,7 +131,6 @@ function pacman($filled_orderid,  $filled_uid,  $amount_from_filled,  $filled_ty
     take_commission($partial_commission, $filled_type,  $partial_orderid);
 
     // record the transaction
-    echo "doo " . $filled_type . "\n";
     if ($filled_type == 'BTC')
         create_record($partial_orderid, $amount_from_partial, $filled_commission,
                       $filled_orderid,  $amount_from_filled,  $partial_commission);
