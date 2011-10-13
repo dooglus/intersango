@@ -30,6 +30,25 @@ $first = true;
 $amount_fiat_total = $amount_btc_total = '0';
 $mine = 0;
 while ($row = mysql_fetch_assoc($result)) {
+    $txid = $row['txid'];
+    $a_amount = $row['a_amount'];
+    $a_orderid = $row['a_orderid'];
+    $b_amount = $row['b_amount'];
+    $b_orderid = $row['b_orderid'];
+    $timest = $row['timest'];
+    $a_uid = $row['a_uid'];
+    $b_uid = $row['b_uid'];
+    $price = fiat_and_btc_to_price($a_amount, $b_amount);
+
+    $amount_fiat_total = gmp_add($amount_fiat_total, $a_amount);
+    $amount_btc_total = gmp_add($amount_btc_total, $b_amount);
+
+    $a_amount_str = internal_to_numstr($a_amount, FIAT_PRECISION);
+    $b_amount_str = internal_to_numstr($b_amount, BTC_PRECISION);
+
+    if (string_is_zero($a_amount_str) || string_is_zero($b_amount_str))
+        continue;
+
     if ($first) {
         $first = false;
         echo "<table class='display_data'>\n";
@@ -44,19 +63,6 @@ while ($row = mysql_fetch_assoc($result)) {
         echo "</tr>";
     }
     
-    $txid = $row['txid'];
-    $a_amount = $row['a_amount'];
-    $a_orderid = $row['a_orderid'];
-    $b_amount = $row['b_amount'];
-    $b_orderid = $row['b_orderid'];
-    $timest = $row['timest'];
-    $a_uid = $row['a_uid'];
-    $b_uid = $row['b_uid'];
-    $price = fiat_and_btc_to_price($a_amount, $b_amount);
-
-    $amount_fiat_total = gmp_add($amount_fiat_total, $a_amount);
-    $amount_btc_total = gmp_add($amount_btc_total, $b_amount);
-
     $a_is_me = ($a_uid == $is_logged_in);
     $b_is_me = ($b_uid == $is_logged_in);
 
@@ -75,9 +81,9 @@ while ($row = mysql_fetch_assoc($result)) {
             active_table_cell_link_to_user_statement($a_uid);
     if ($a_is_me) {
         $mine++;
-        echo "<td class='right' style='font-weight:bold;'>", internal_to_numstr($a_amount, FIAT_PRECISION), "</td>";
+        echo "<td class='right' style='font-weight:bold;'>$a_amount_str</td>";
     } else
-        echo "<td class='right'>", internal_to_numstr($a_amount, FIAT_PRECISION), "</td>";
+        echo "<td class='right'>$a_amount_str</td>";
     if ($is_admin)
         if ($a_is_me || $b_is_me)
             echo "<td>$b_uid</td>";
@@ -85,9 +91,9 @@ while ($row = mysql_fetch_assoc($result)) {
             active_table_cell_link_to_user_statement($b_uid);
     if ($b_is_me) {
         $mine++;
-        echo "<td class='right' style='font-weight:bold;'>", internal_to_numstr($b_amount, BTC_PRECISION), "</td>";
+        echo "<td class='right' style='font-weight:bold;'>$b_amount_str</td>";
     } else
-        echo "<td class='right'>", internal_to_numstr($b_amount, BTC_PRECISION), "</td>";
+        echo "<td class='right'>$b_amount_str</td>";
     echo "<td class='right'>$price</td>";
     echo "<td>$timest</td>";
     echo "</tr>\n";
