@@ -39,7 +39,7 @@ function show_mini_orderbook_table_row($id, $curr, $price, $have, $want, $this_f
     $this_btc_str = internal_to_numstr($this_btc, BTC_PRECISION);
     $this_fiat_str = internal_to_numstr($this_fiat, FIAT_PRECISION);
 
-    if (!non_zero_strval($this_btc_str) || !non_zero_strval($this_fiat_str))
+    if (string_is_zero($this_btc_str) || string_is_zero($this_fiat_str))
         return;
 
     if ($mine) {

@@ -310,7 +310,7 @@ function show_statement($userid, $interval = 'forever')
                 $got_str  = internal_to_numstr($got_amount,  BTC_PRECISION);
                 $gave_str = internal_to_numstr($gave_amount, FIAT_PRECISION);
 
-                if ($new && (non_zero_strval($got_str) || non_zero_strval($gave_str))) {
+                if ($new && (!string_is_zero($got_str) || !string_is_zero($gave_str))) {
                     $period_btc_got    = gmp_add($period_btc_got   , $got_amount );
                     $period_fiat_given = gmp_add($period_fiat_given, $gave_amount);
 
@@ -341,7 +341,7 @@ function show_statement($userid, $interval = 'forever')
                 $gave_str = internal_to_numstr($gave_amount, BTC_PRECISION);
                 $got_str  = internal_to_numstr($got_amount,  FIAT_PRECISION);
 
-                if ($new && (non_zero_strval($got_str) || non_zero_strval($gave_str))) {
+                if ($new && (!string_is_zero($got_str) || !string_is_zero($gave_str))) {
                     $period_fiat_got  = gmp_add($period_fiat_got , $got_amount );
                     $period_btc_given = gmp_add($period_btc_given, $gave_amount);
 

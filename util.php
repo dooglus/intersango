@@ -1123,9 +1123,9 @@ function addlog($level, $text)
     release_lock('log');
 }
 
-function non_zero_strval($strval)
+function string_is_zero($strval)
 {
-    return preg_match("/[1-9]/", $strval);
+    return !preg_match("/[1-9]/", $strval);
 }
 
 ?>
