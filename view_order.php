@@ -59,7 +59,7 @@ if (isset($_POST['cancel_order'])) {
     // these records indicate returned funds.
     create_record($orderid, $info->amount, 0,
 		  0,        -1,            0);
-    addlog("  cancelled order $orderid");
+    addlog(LOG_RESULT, "  cancelled order $orderid");
     ?><div class='content_box'>
         <h3>Cancelled!</h3>
         <p>Order <?php echo $orderid; ?> is no more.</p>

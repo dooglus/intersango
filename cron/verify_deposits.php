@@ -58,7 +58,7 @@ try {
         ";
         do_query($query);
 
-        addlog("Added " . internal_to_numstr($amount) . " $type for user $uid");
+        addlog(LOG_RESULT, "Added " . internal_to_numstr($amount) . " $type for user $uid");
     }
 }
 catch (Error $e) {

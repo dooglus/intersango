@@ -342,11 +342,11 @@ function get_lock($uid, $block)
 
     $log = $uid != 'log';
 
-    if ($log) addlog("get_lock('$uid', $block);");
+    if ($log) addlog(LOG_LOCK, "get_lock('$uid', $block);");
 
     if (array_key_exists($uid, $lock_count)) {
         $lock_count[$uid]++;
-        if ($log) addlog("  lock already held - now count is " . $lock_count[$uid]);
+        if ($log) addlog(LOG_LOCK, "  lock already held - now count is " . $lock_count[$uid]);
         return;
     }
 
@@ -355,7 +355,7 @@ function get_lock($uid, $block)
     $umask = umask(0);
     if (!($fp = fopen($lock, "w"))) {
         umask($umask);
-        if ($log) addlog("  can't create lockfile");
+        if ($log) addlog(LOG_LOCK, "  can't create lockfile");
         throw new Error(_('Lock Error'), "Can't create lockfile for $uid");
     }
 
@@ -365,7 +365,7 @@ function get_lock($uid, $block)
     if ($block == 0) {
         if (!flock($fp, $no_block_flags)) {
             umask($umask);
-            if ($log) addlog("  locked and not waiting");
+            if ($log) addlog(LOG_LOCK, "  locked and not waiting");
             throw new Error(_('Lock Error'), sprintf(_("User %s is already doing stuff."), $uid) . "<br/>");
         }
     } else if ($block == 2) {
@@ -375,7 +375,7 @@ function get_lock($uid, $block)
             if ($wait_lock)
                 release_wait_lock($wait_lock);
             umask($umask);
-            if ($log) addlog("  waited but still didn't get lock");
+            if ($log) addlog(LOG_LOCK, "  waited but still didn't get lock");
             throw new Error(_('Lock Error'), sprintf(_("Can't get lock for user %s, even after waiting."), $uid) . "<br/>");
         }
         if ($wait_lock)
@@ -390,13 +390,13 @@ function get_lock($uid, $block)
                 if (!flock($fp, $block_flags)) {
                     release_wait_lock($wait_lock);
                     umask($umask);
-                    if ($log) addlog("  waited but still didn't get lock");
+                    if ($log) addlog(LOG_LOCK, "  waited but still didn't get lock");
                     throw new Error(_('Lock Error'), sprintf(_("Can't get lock for user %s, even after waiting."), $uid) . "<br/>");
                 }
                 release_wait_lock($wait_lock);
             } else {
                 umask($umask);
-                if ($log) addlog("  this lock is already being waited for");
+                if ($log) addlog(LOG_LOCK, "  this lock is already being waited for");
                 throw new Error(_('Lock Error'), sprintf(_("User %s is already doing stuff, and also already waiting for lock."), $uid) . "<br/>");
             }
         }
@@ -407,7 +407,7 @@ function get_lock($uid, $block)
     $lock_count[$uid] = 1;
     $lock_fp[$uid] = $fp;
 
-    if ($log) addlog("  got lock '$uid'");
+    if ($log) addlog(LOG_LOCK, "  got lock '$uid'");
 
     return;
 }
@@ -433,7 +433,7 @@ function release_lock($uid)
 
     $log = $uid != 'log';
 
-    if ($log) addlog("release_lock('$uid');");
+    if ($log) addlog(LOG_LOCK, "release_lock('$uid');");
 
     if (array_key_exists($uid, $lock_count)) {
         $lock_count[$uid]--;
@@ -443,10 +443,10 @@ function release_lock($uid)
             fclose($fp);
             unset($lock_count[$uid]);
             unset($lock_fp[$uid]);
-            if ($log) addlog("  released lock");
+            if ($log) addlog(LOG_LOCK, "  released lock");
         }
         else
-            if ($log) addlog("  lock held multiple times - now count is " . $lock_count[$uid]);
+            if ($log) addlog(LOG_LOCK, "  lock held multiple times - now count is " . $lock_count[$uid]);
 
         return;
     }
@@ -463,7 +463,7 @@ function post($key, $extra='')
     if (!isset($_POST[$key]))
         throw new Error('Ooops!', "Missing posted value $key!");
     $value = cleanup_string($_POST[$key], $extra);
-    addlog("  post '$key' = '$value'");
+    addlog(LOG_PARAMS, "  post '$key' = '$value'");
     return $value;
 }
 function get($key, $extra='')
@@ -471,7 +471,7 @@ function get($key, $extra='')
     if (!isset($_GET[$key]))
         throw new Error('Ooops!', "Missing get value $key!");
     $value = cleanup_string($_GET[$key], $extra);
-    addlog("  get '$key' = '$value'");
+    addlog(LOG_PARAMS, "  get '$key' = '$value'");
     return $value;
 }
 
@@ -1100,11 +1100,20 @@ function check_withdraw_limit($uid, $amount, $curr_type)
         check_fiat_transfer_limit($uid, $amount);
 }
 
-function addlog($text)
+define('LOG_ERROR',    0);
+define('LOG_CRONJOB',  1);
+define('LOG_WARN',     2);
+define('LOG_RESULT',   3);
+define('LOG_SWITCHER', 4);
+define('LOG_LOGIN',    5);
+define('LOG_PARAMS',   6);
+define('LOG_LOCK',     7);
+
+function addlog($level, $text)
 {
     global $is_logged_in;
 
-    $text = sprintf("%s %4s %s\n", date('r'), $is_logged_in, $text);
+    $text = sprintf("%2s %4s %s %s\n", $level, $is_logged_in, date('H:i j-M'), $text);
 
     wait_for_lock('log');
     if ($fp = @fopen(LOGFILE, 'a')) {

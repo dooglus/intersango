@@ -83,7 +83,7 @@ try {
         $addy = $row['addy'];
         $we_have = $bitcoin->getbalance("*", CONFIRMATIONS_FOR_DEPOSIT);
 
-        addlog("Attempting to withdraw " . internal_to_numstr($amount) . " BTC for user $uid (reqid $reqid)");
+        addlog(LOG_CRONJOB, "Attempting to withdraw " . internal_to_numstr($amount) . " BTC for user $uid (reqid $reqid)");
 
         if (gmp_cmp($we_have, $amount) >= 0) {
             update_req($reqid, "PROCES");
@@ -99,7 +99,7 @@ try {
             $message = sprintf(_("We only have %s BTC so can't withdraw %s BTC"),
                                internal_to_numstr($we_have, BTC_PRECISION),
                                internal_to_numstr($amount, BTC_PRECISION));
-            addlog($message);
+            addlog(LOG_CRONJOB, $message);
             email_tech(_("Exchange Wallet Balance is Too Low"), $message);
         }
     }

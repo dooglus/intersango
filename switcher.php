@@ -23,7 +23,7 @@ function switcher($page)
             $lock = $is_logged_in;
         }
 
-        addlog(sprintf("[%s] visit page '%s'", getenv("REMOTE_ADDR"), $page));
+        addlog(LOG_SWITCHER, sprintf("[%s] visit page '%s'", getenv("REMOTE_ADDR"), $page));
 
         switch($page) {
 
@@ -79,7 +79,7 @@ function switcher($page)
                     // we just tried to log in, so check whether or not it worked before showing the footer
                     get_login_status();
                 } else {
-                    addlog("  already logged in");
+                    addlog(LOG_LOGIN, "  already logged in");
                     log_badpage($page);
                 }
                 break;
