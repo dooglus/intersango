@@ -33,6 +33,7 @@ function switcher($page)
             case '404':
             case 'graph':
             case 'help':
+            case 'news':
             case 'orderbook':
             case 'test':
             case 'trade':
