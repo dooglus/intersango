@@ -36,13 +36,22 @@ function show_mini_orderbook_table_cell($id, $curr, $price, $have, $want, $fiat_
 
 function show_mini_orderbook_table_row($id, $curr, $price, $have, $want, $this_fiat, $this_btc, $sum_fiat, $sum_btc, $mine)
 {
+    $this_btc_str = internal_to_numstr($this_btc, BTC_PRECISION);
+    $this_fiat_str = internal_to_numstr($this_fiat, FIAT_PRECISION);
+
+    if (!non_zero_strval($this_btc_str) || !non_zero_strval($this_fiat_str))
+        return;
+
     if ($mine) {
+        $sum_btc_str = internal_to_numstr($sum_btc, BTC_PRECISION);
+        $sum_fiat_str = internal_to_numstr($sum_fiat, FIAT_PRECISION);
+
         active_table_row("me", "?page=view_order&orderid=$mine");
         echo "<td class='right'>$price</td>\n";
-        echo "<td class='right'>" . internal_to_numstr($this_btc, BTC_PRECISION) . "</td>\n";
-        echo "<td class='right'>" . internal_to_numstr($this_fiat, FIAT_PRECISION) . "</td>\n";
-        echo "<td class='right'>" . internal_to_numstr($sum_btc, BTC_PRECISION) . "</td>\n";
-        echo "<td class='right'>" . internal_to_numstr($sum_fiat, FIAT_PRECISION) . "</td>\n";
+        echo "<td class='right'>$btc_str</td>\n";
+        echo "<td class='right'>$fiat_str</td>\n";
+        echo "<td class='right'>$sum_btc_str</td>\n";
+        echo "<td class='right'>$sum_fiat_str</td>\n";
         echo "</tr>\n";
     } else {
         echo "<tr>\n";
