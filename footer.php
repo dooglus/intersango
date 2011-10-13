@@ -20,6 +20,7 @@ function show_links($is_logged_in, $is_admin)
     }
 
     if (!$is_logged_in) show_link('login',       _('Login'),      _('Begin here')                                      );
+    show_link                    ('news',        _('News'),       _("What's new?")                                     );
     show_link                    ('trade',       _('Trade'),      _('Buy and sell')                                    );
     if ($is_logged_in)  show_link('profile',     _('Profile'),    _('Dox on you')                                      );
     if ($is_logged_in)  show_link('statement',   _('Statement'),  _('Chronological ledger')                            );
