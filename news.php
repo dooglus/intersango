@@ -1,31 +1,31 @@
 <div class='content_box'>
+<h3>Biggest Aussie Exchange!</h3>
+<h4>10:29am 16-Oct-11 </h4>
+<p>
+We've only been open for business for two months, but have already overtaken all the the other Bitcoin exchanges dealing with Australia dollars in terms of volume.  Here are the latest volume stats (BTC traded) from bitcoincharts.com:
+</p>
+<table class='display_data'>
+<tr><th></th><th class='right'>wbx</th><th class='right'>tradehill</th><th class='right'>mtgox</th></tr>
+<tr><td class='right' style='font-weight: bold'>15 m</td><td class='right'>67.40   </td><td class='right'>0.00    </td><td class='right'>0.00    </td></tr>
+<tr><td class='right' style='font-weight: bold'> 1 h</td><td class='right'>67.40   </td><td class='right'>0.00    </td><td class='right'>0.00    </td></tr>
+<tr><td class='right' style='font-weight: bold'> 4 h</td><td class='right'>264.34  </td><td class='right'>0.00    </td><td class='right'>0.00    </td></tr>
+<tr><td class='right' style='font-weight: bold'>12 h</td><td class='right'>375.72  </td><td class='right'>55.44   </td><td class='right'>13.50   </td></tr>
+<tr><td class='right' style='font-weight: bold'> 1 d</td><td class='right'>411.59  </td><td class='right'>213.20  </td><td class='right'>13.50   </td></tr>
+<tr><td class='right' style='font-weight: bold'> 2 d</td><td class='right'>511.20  </td><td class='right'>277.34  </td><td class='right'>13.55   </td></tr>
+<tr><td class='right' style='font-weight: bold'> 7 d</td><td class='right'>1,995.54</td><td class='right'>1,912.88</td><td class='right'>385.30  </td></tr>
+<tr><td class='right' style='font-weight: bold'>30 d</td><td class='right'>5,890.14</td><td class='right'>5,156.10</td><td class='right'>2,468.22</td></tr>
+<tr><td class='right' style='font-weight: bold'> 6 m</td><td class='right'>6,336.84</td><td class='right'>8,996.63</td><td class='right'>4,514.50</td></tr>
+</table>
+<p>We would like to thank you for your support.</p>
+</div>
+
+<div class='content_box'>
 <h3>Better Matching Code</h3>
 <h4>11:17am 13-Oct-11 </h4>
 <p>
      I just made a tweak to the matching algorithm.  If you ever clicked on the best available offer on the trade page and submitted it only to find that your order just sat in the orderbook not matching the order you clicked, then this is for you.
 </p>
 </div>
-
-<!--
-<div class='content_box'>
-<h3>Biggest Aussie Exchange!</h3>
-<h4>9:12am 13-Oct-11 </h4>
-<p>
-</p>
-<table class='display_data'>
-<tr><th></th><th class='right'>wbx</th><th class='right'>tradehill</th><th class='right'>mtgox</th></tr>
-<tr><td class='right' style='font-weight: bold'>15 min</td>     <td class='right'>0.00     </td>     <td class='right'>0.00     </td>     <td class='right'>0.00</td></tr>
-<tr><td class='right' style='font-weight: bold'>   1 h</td>     <td class='right'>0.00     </td>     <td class='right'>0.00     </td>     <td class='right'>0.00</td></tr>
-<tr><td class='right' style='font-weight: bold'>   4 h</td>     <td class='right'>125.88   </td>     <td class='right'>0.92     </td>     <td class='right'>0.00</td></tr>
-<tr><td class='right' style='font-weight: bold'>  12 h</td>     <td class='right'>169.73   </td>     <td class='right'>0.92     </td>     <td class='right'>0.00</td></tr>
-<tr><td class='right' style='font-weight: bold'>   1 d</td>     <td class='right'>364.19   </td>     <td class='right'>24.17    </td>     <td class='right'>31.87</td></tr>
-<tr><td class='right' style='font-weight: bold'>   2 d</td>     <td class='right'>829.39   </td>     <td class='right'>405.23   </td>     <td class='right'>51.87</td></tr>
-<tr><td class='right' style='font-weight: bold'>   7 d</td>     <td class='right'>2,302.64 </td>     <td class='right'>2,687.41 </td>     <td class='right'>403.97</td></tr>
-<tr><td class='right' style='font-weight: bold'>  30 d</td>     <td class='right'>5,314.88 </td>     <td class='right'>5,136.13 </td>     <td class='right'>3,638.61</td></tr>
-<tr><td class='right' style='font-weight: bold'>   6 m</td>     <td class='right'>5,617.33 </td>     <td class='right'>8,718.63 </td>     <td class='right'>4,395.84</td></tr>
-</table>
-</div>
--->
 
 <div class='content_box'>
 <h3>Google +1 Button</h3>
