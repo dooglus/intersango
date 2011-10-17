@@ -144,14 +144,19 @@ function show_users()
     $bitcoin = connect_bitcoin();
     $balance0 = $bitcoin->getbalance('*', 0);
     $balance1 = $bitcoin->getbalance('*', 1);
+    $balance = $bitcoin->getbalance('', 1);
 
     $unconfirmed = gmp_sub($balance0, $balance1);
     echo "<p>" . sprintf(_("The Bitcoin wallet has %s BTC"), internal_to_numstr($balance0, BTC_PRECISION));
     if (gmp_cmp($unconfirmed, 0) != 0)
         printf(_(", %s BTC of which currently has 0 confirmations"), internal_to_numstr($unconfirmed, BTC_PRECISION));
     echo ".<br/></p>\n";
+    if ($balance0 != $balance)
+        echo "<p>" . sprintf(_("The main wallet account has %s BTC"), internal_to_numstr($balance, BTC_PRECISION)) . "</p>";
+    else
+        $balance = $balance0;
 
-    $diff = gmp_sub($t_btc_total, $balance0);
+    $diff = gmp_sub($t_btc_total, $balance);
 
     $cmp = gmp_cmp($diff, 0);
 
