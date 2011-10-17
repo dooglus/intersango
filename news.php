@@ -1,3 +1,21 @@
+<!--
+<div class='content_box'>
+<h3>...</h3>
+<h4>..:..am ..-Oct-11 </h4>
+<p>
+...
+</p>
+</div>
+
+-->
+<div class='content_box'>
+<h3>Better bitcoind Uptime</h3>
+<h4>4:09am 17-Oct-11 </h4>
+<p>
+An issue with the stability of bitcoind process has been fixed.  The random outages in the evenings should now stop.
+</p>
+</div>
+
 <div class='content_box'>
 <h3>Biggest Aussie Exchange!</h3>
 <h4>10:29am 16-Oct-11 </h4>
