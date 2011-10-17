@@ -151,10 +151,14 @@ function show_users()
     if (gmp_cmp($unconfirmed, 0) != 0)
         printf(_(", %s BTC of which currently has 0 confirmations"), internal_to_numstr($unconfirmed, BTC_PRECISION));
     echo ".<br/></p>\n";
-    if ($balance0 != $balance)
-        echo "<p>" . sprintf(_("The main wallet account has %s BTC"), internal_to_numstr($balance, BTC_PRECISION)) . "</p>";
-    else
+    if ($balance0 == $balance)
         $balance = $balance0;
+    else {
+        $pending = gmp_sub($balance0, $balance);
+        echo "<p>" . sprintf(_("The main wallet account has %s BTC; other accounts have %s BTC waiting for deposit."),
+                             internal_to_numstr($balance, BTC_PRECISION),
+                             internal_to_numstr($pending, BTC_PRECISION)) . "</p>";
+    }
 
     $diff = gmp_sub($t_btc_total, $balance);
 
@@ -164,7 +168,7 @@ function show_users()
         echo "<p>" . _("That's the exact right amount.") . "</p>\n";
     else if ($cmp > 0)
         echo "<p>" .
-            sprintf(_("That's %s BTC less than is on deposit"), internal_to_numstr($diff, BTC_PRECISION)) .
+            sprintf(_("That's %s BTC less than is on deposit."), internal_to_numstr($diff, BTC_PRECISION)) .
             "</p>\n";
     else
         echo "<p>" .
