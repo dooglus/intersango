@@ -107,7 +107,6 @@ function display_transactions($uid, $orderid)
             if ($a_amount) $price = fiat_and_btc_to_price($b_amount, $a_amount);
         } else
             if ($b_amount) $price = fiat_and_btc_to_price($a_amount, $b_amount);
-        $price = sprintf("%.4f", $price);
         $this_orderid = $row['orderid'];
         $timest = $row['timest'];
         $give_precision = $type == 'BTC' ? BTC_PRECISION : FIAT_PRECISION;
@@ -134,23 +133,24 @@ function display_transactions($uid, $orderid)
             $commission_percent = bcdiv(bcmul(gmp_strval($commission_total), 100), gmp_strval($b_total), 3);
 
             $b_total = gmp_sub($b_total, $commission_total);
-            $a_total = internal_to_numstr($a_total);
-            $b_total = internal_to_numstr($b_total);
-            $commission_total = internal_to_numstr($commission_total);
 
-            if ($type == 'BTC')
-                $price = $b_total / $a_total;
-            else
-                $price = $a_total / $b_total;
-            $price = sprintf("%.6f", $price);
-            
+            $price = 0;
+            if ($type == 'BTC') {
+                if ($a_total) $price = fiat_and_btc_to_price($b_total, $a_total);
+            } else
+                if ($b_total) $price = fiat_and_btc_to_price($a_total, $b_total);
+
+            $a_total = internal_to_numstr($a_total, $give_precision);
+            $b_total = internal_to_numstr($b_total, $want_precision);
+            $commission_total = internal_to_numstr($commission_total, $want_precision);
+
             echo "    <tr>\n";
-            echo "        <td>--------</td><td>--------</td><td>--------</td><td>--------</td>\n";
+            echo "        <td class='right'>--------</td><td class='right'>--------</td><td class='right'>--------</td><td class='right'>--------</td>\n";
             echo "        <td></td>\n";
             echo "    </tr>\n";
             echo "    <tr>\n";
-            echo "        <td>$a_total $type</td><td>$b_total $want_type</td><td>$commission_total $want_type<br/>(",
-                sprintf("%.3f", $commission_percent), "%)</td><td>$price</td>\n";
+            echo "        <td class='right'>$a_total $type</td><td class='right'>$b_total $want_type</td><td class='right'>$commission_total $want_type (",
+                sprintf("%.2f", $commission_percent), "%)</td><td class='right'>$price</td>\n";
             echo "        <td></td>\n";
             echo "    </tr>\n";
         }
