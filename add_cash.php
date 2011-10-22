@@ -119,6 +119,7 @@ if (isset($_POST['deposit_cash'])) {
     }
 } else
     $amount = $reference = $user = '';
+    echo "    <p>" . _("Specify either 'Reference' or 'User ID', but not both.") . "</p>\n";
 ?>
     <form action='' class='indent_form' method='post'>
         <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
