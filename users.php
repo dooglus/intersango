@@ -1,5 +1,26 @@
 <?php
 
+function show_users_header()
+{
+    echo "<tr>";
+    echo "<th></th>";
+//  echo "<th></th>";
+    echo "<th colspan='3' style='text-align: center;'>" . CURRENCY . "</th>";
+    echo "<th colspan='3' style='text-align: center;'>BTC</th>";
+    echo "</tr>\n";
+    echo "<tr>";
+    echo "<th>" . _("UID") . "</th>";
+//  echo "<th>" . _("OID") . "</th>";
+    echo "<th class='right'>" . _("On Hand") . "</th>";
+    echo "<th class='right'>" . _("In Book") . "</th>";
+    echo "<th class='right'>" . _("Total") . "</th>";
+    echo "<th class='right'>" . _("On Hand") . "</th>";
+    echo "<th class='right'>" . _("In Book") . "</th>";
+    echo "<th class='right'>" . _("Total") . "</th>";
+//  echo "<th>" . _("Registered") . "</th>";
+    echo "</tr>\n";
+}
+
 function show_users()
 {
     $omit_zero_balances = true;
@@ -29,7 +50,7 @@ function show_users()
     $fiat_total = $c_fiat_total = $t_fiat_total = '0';
     $btc_total = $c_btc_total = $t_btc_total = '0';
     $first = true;
-    $count_users = $count_funded_users = $count_low_balance_users = 0;
+    $count_users = $count_funded_users = $count_low_balance_users = $count_shown_users = 0;
 
     // omit users who don't have more than just least-significant-digit amounts of anything
     $tiny_fiat = pow(10, 8 - FIAT_PRECISION) * 10;
@@ -59,23 +80,7 @@ function show_users()
             $first = false;
 
             echo "<table class='display_data'>\n";
-            echo "<tr>";
-            echo "<th></th>";
-//          echo "<th></th>";
-            echo "<th colspan='3' style='text-align: center;'>" . CURRENCY . "</th>";
-            echo "<th colspan='3' style='text-align: center;'>BTC</th>";
-            echo "</tr>\n";
-            echo "<tr>";
-            echo "<th>" . _("UID") . "</th>";
-//          echo "<th>" . _("OID") . "</th>";
-            echo "<th class='right'>" . _("On Hand") . "</th>";
-            echo "<th class='right'>" . _("In Book") . "</th>";
-            echo "<th class='right'>" . _("Total") . "</th>";
-            echo "<th class='right'>" . _("On Hand") . "</th>";
-            echo "<th class='right'>" . _("In Book") . "</th>";
-            echo "<th class='right'>" . _("Total") . "</th>";
-//          echo "<th>" . _("Registered") . "</th>";
-            echo "</tr>\n";
+            show_users_header();
         }
 
         $fiat_total   = gmp_add($fiat_total,   $fiat);
@@ -95,6 +100,7 @@ function show_users()
                 if ($omit_very_low_balances)
                     continue;
             }
+            $count_shown_users++;
         }
 
         if ($uid == 'fees')
@@ -117,6 +123,9 @@ function show_users()
         echo "<td class='right'>", internal_to_numstr($t_btc,  BTC_PRECISION), "</td>";
 //      echo "<td>$timest</td>";
         echo "</tr>\n";
+
+        if (!($count_shown_users % RESHOW_COLUMN_HEADINGS_AFTER_ROWS))
+            show_users_header();
     }
 
     if (!$first) {
