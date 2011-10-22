@@ -144,7 +144,7 @@ function show_users()
     $bitcoin = connect_bitcoin();
     $balance0 = $bitcoin->getbalance('*', 0);
     $balance1 = $bitcoin->getbalance('*', 1);
-    $balance = $bitcoin->getbalance('', 1);
+    $balance = $bitcoin->getbalance('', 0);
 
     $unconfirmed = gmp_sub($balance0, $balance1);
     echo "<p>" . sprintf(_("The Bitcoin wallet has %s BTC"), internal_to_numstr($balance0, BTC_PRECISION));
