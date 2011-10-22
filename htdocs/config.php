@@ -34,6 +34,8 @@ define('DEFAULT_STATEMENT_PERIOD', '1 week');
 // google analytics account number for visitor tracking
 define('ANALYTICS_ACCOUNT', 'UA-26265923-1');
 
+// re-show table column headings every so many rows
+define('RESHOW_COLUMN_HEADINGS_AFTER_ROWS', 20);
 
 // .------------------------------------------------------------------------
 // |  currency
