@@ -63,34 +63,62 @@ if (!$is_admin) throw new Error("GTFO", "How did you get here?");
 if (isset($_POST['deposit_cash'])) {
 
     $reference = post('reference');
+    $user = post('user');
     $amount = post('amount');
     $amount_internal = numstr_to_internal($amount);
 
-    $query = "SELECT uid FROM users WHERE deposref='$reference'";
-    $result = do_query($query);
-    if (has_results($result)) {
-        $row = get_row($result);
-        $user = $row['uid'];
-        // echo "<p>$reference is the code for user $user</p>\n";
+    if ($reference && $user)
+        throw new Error("Error", "Only specify one of 'Reference' and 'User ID'");
 
-        $query = "
-            INSERT INTO requests (req_type, curr_type, uid,   amount )
-            VALUES               ('DEPOS',  '" . CURRENCY . "',     $user, $amount_internal)
-        ";
-        do_query($query);
-        printf("<p><span style='font-weight: bold;'>" . _("added request to deposit %s to user %s's purse (reference %s)") . "</span></p>\n",
-               ($amount . " " . CURRENCY), $user, $reference);
-        echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
-        echo "<p>" . _("make another deposit?") . "</p>\n";
-        $amount= $reference = '';
+    if ($reference) {
+        $query = "SELECT uid FROM users WHERE deposref='$reference'";
+        $result = do_query($query);
+        if (has_results($result)) {
+            $row = get_row($result);
+            $user = $row['uid'];
+            // echo "<p>$reference is the code for user $user</p>\n";
+
+            $query = "
+                INSERT INTO requests (req_type, curr_type, uid,   amount )
+                VALUES               ('DEPOS',  '" . CURRENCY . "',     $user, $amount_internal)
+            ";
+            do_query($query);
+            printf("<p><span style='font-weight: bold;'>" . _("added request to deposit %s to user %s's purse (reference %s)") . "</span></p>\n",
+                   ($amount . " " . CURRENCY), $user, $reference);
+            echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
+            echo "<p>" . _("make another deposit?") . "</p>\n";
+            $amount = $reference = $user = '';
+        } else {
+            printf("<p>" . _("'%s' isn't a valid reference code") . "</p>\n",
+                   $reference);
+            show_similar_codes($reference);
+            echo "<p>" . _("try again?") . "</p>\n";
+        }
     } else {
-        printf("<p>" . _("'%s' isn't a valid reference code") . "</p>\n",
-               $reference);
-        show_similar_codes($reference);
-        echo "<p>" . _("try again?") . "</p>\n";
+        $query = "SELECT deposref FROM users WHERE uid='$user'";
+        $result = do_query($query);
+        if (has_results($result)) {
+            $row = get_row($result);
+            $reference = $row['deposref'];
+
+            $query = "
+                INSERT INTO requests (req_type, curr_type, uid,   amount )
+                VALUES               ('DEPOS',  '" . CURRENCY . "',     $user, $amount_internal)
+            ";
+            do_query($query);
+            printf("<p><span style='font-weight: bold;'>" . _("added request to deposit %s to user %s's purse (reference %s)") . "</span></p>\n",
+                   ($amount . " " . CURRENCY), $user, $reference);
+            echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
+            echo "<p>" . _("make another deposit?") . "</p>\n";
+            $amount = $reference = $user = '';
+        } else {
+            printf("<p>" . _("'%s' isn't a valid userid") . "</p>\n",
+                   $user);
+            echo "<p>" . _("try again?") . "</p>\n";
+        }
     }
 } else
-    $amount = $reference = '';
+    $amount = $reference = $user = '';
 ?>
     <form action='' class='indent_form' method='post'>
         <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
@@ -98,6 +126,9 @@ if (isset($_POST['deposit_cash'])) {
 
         <label for='reference'><?php echo _("Reference"); ?></label>
         <input id='reference' type='text' name='reference' value='<?php echo $reference; ?>'/>
+
+        <label for='user'><?php echo _("User ID"); ?></label>
+        <input id='user' type='text' name='user' value='<?php echo $user; ?>'/>
 
         <label for='amount'><?php echo _("Amount"); ?></label>
         <input id='amount' type='text' name='amount' value='<?php echo $amount; ?>' />
