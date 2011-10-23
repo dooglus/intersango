@@ -125,14 +125,20 @@ define('FREE_BTC_ON_SIGNUP', "0");
 // |  displayed precision
 // `------------------------------------------------------------------------
 
-// number of decimal places to show when showing fiat amounts
-define('FIAT_PRECISION' , 2);
+if (isset($_GET['full'])) {
+    define('FIAT_PRECISION' , 8);
+    define('BTC_PRECISION'  , 8);
+    define('PRICE_PRECISION', 8);
+} else {
+    // number of decimal places to show when showing fiat amounts
+    define('FIAT_PRECISION' , 2);
 
-// number of decimal places to show when showing bitcoin amounts
-define('BTC_PRECISION'  , 4);
+    // number of decimal places to show when showing bitcoin amounts
+    define('BTC_PRECISION'  , 4);
 
-// number of decimal places to show when showing prices
-define('PRICE_PRECISION', 3);
+    // number of decimal places to show when showing prices
+    define('PRICE_PRECISION', 3);
+}
 
 // .------------------------------------------------------------------------
 // |  vouchers
