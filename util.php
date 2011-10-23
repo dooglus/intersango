@@ -660,7 +660,7 @@ function get_ticker_data()
         $low  = $row['low'];
         $avg  = fiat_and_btc_to_price($sum_of_prices,    $number_of_prices);
         $vwap = fiat_and_btc_to_price($sum_of_a_amounts, $sum_of_b_amounts);
-        $vol  = internal_to_numstr($row['vol'], 4);
+        $vol  = internal_to_numstr($row['vol'], BTC_PRECISION);
     } else
         $high = $low = $avg = $vwap = $vol = 0;
 
