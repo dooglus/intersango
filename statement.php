@@ -1,5 +1,19 @@
 <?php
 
+function statement_checked($value)
+{
+    return $value ? " checked='checked'" : "";
+}
+
+function statement_checkbox($name, $value, $label, $args = false)
+{
+    if ($args)
+        $label = sprintf('<a href="?page=statement&%s&form=1&%s=1">%s</a>', $args, $name, $label);
+
+    return sprintf("<input onChange='this.form.submit()' type='checkbox' name='%s' value='1'%s />%s&nbsp;\n",
+                   $name, statement_checked($value), $label);
+}
+
 function deposited_or_withdrawn($deposit, $withdraw)
 {
     $net = gmp_sub($deposit, $withdraw);
@@ -104,7 +118,9 @@ function show_balances_in_statement($description, $btc, $fiat, $all_users, $show
     echo "</tr>\n";
 }
 
-function show_statement($userid, $interval = 'forever')
+function show_statement($userid, $interval = 'forever',
+                        $from_zero,
+                        $deposit_btc, $withdraw_btc, $deposit_fiat, $withdraw_fiat, $buy, $sell)
 {
     global $is_logged_in, $is_admin;
 
@@ -135,8 +151,6 @@ function show_statement($userid, $interval = 'forever')
           "<p>\n" .
           _("Show entries from ") . "\n" .
           "<input type='hidden' name='page' value='statement' />\n");
-    if ($specified_user)
-        echo "<input type='hidden' name='user' value='$userid' />\n";
     echo "<select onChange='this.form.submit()' name='interval'>\n";
 
     foreach (array('4 hour'  => _('the last 4 hours' ),
@@ -169,6 +183,20 @@ function show_statement($userid, $interval = 'forever')
         }
         echo "</select>\n";
     }
+
+    $args = $specified_user ? "user=$userid&" : "";
+    $args .= "interval=$interval";
+    if ($from_zero) $args .= "&fromz=1";
+
+    echo "<input type='hidden' name='form' value='1' /><br />\n";
+    echo statement_checkbox('fromz', $from_zero,     _("Start at Zero"));
+    echo statement_checkbox('dbtc',  $deposit_btc,   _("Deposit")  . " " . "BTC",    $args);
+    echo statement_checkbox('wbtc',  $withdraw_btc,  _("Withdraw") . " " . "BTC",    $args);
+    echo statement_checkbox('dfiat', $deposit_fiat,  _("Deposit")  . " " . CURRENCY, $args);
+    echo statement_checkbox('wfiat', $withdraw_fiat, _("Withdraw") . " " . CURRENCY, $args);
+    echo statement_checkbox('bbtc',  $buy,           _("Buy")      . " " . "BTC",    $args);
+    echo statement_checkbox('sbtc',  $sell,          _("Sell")     . " " . "BTC",    $args);
+
     echo "</p>\n";
     echo "</form>\n";
 
@@ -288,6 +316,9 @@ function show_statement($userid, $interval = 'forever')
         $date = $row['date'];
 
         if ($first && $new) {
+            if ($from_zero)
+                $btc = $fiat = numstr_to_internal(0);
+
             show_balances_in_statement(_("Opening Balances"), $btc, $fiat, $all_users, $show_prices, $show_increments);
             $first = false;
         }
@@ -301,8 +332,10 @@ function show_statement($userid, $interval = 'forever')
             $got_curr = $row['got_curr'];
 
             if ($got_curr == 'BTC') {
-                $fiat = gmp_sub($fiat, $gave_amount);
-                $btc = gmp_add($btc, $got_amount);
+                if ($buy) {
+                    $fiat = gmp_sub($fiat, $gave_amount);
+                    $btc = gmp_add($btc, $got_amount);
+                }
 
                 $total_btc_got    = gmp_add($total_btc_got   , $got_amount );
                 $total_fiat_given = gmp_add($total_fiat_given, $gave_amount);
@@ -310,7 +343,7 @@ function show_statement($userid, $interval = 'forever')
                 $got_str  = internal_to_numstr($got_amount,  BTC_PRECISION);
                 $gave_str = internal_to_numstr($gave_amount, FIAT_PRECISION);
 
-                if ($new) {
+                if ($new && $buy) {
                     $period_btc_got    = gmp_add($period_btc_got   , $got_amount );
                     $period_fiat_given = gmp_add($period_fiat_given, $gave_amount);
 
@@ -335,8 +368,10 @@ function show_statement($userid, $interval = 'forever')
                     echo "</tr>\n";
                 }
             } else {
-                $fiat = gmp_add($fiat, $got_amount);
-                $btc = gmp_sub($btc, $gave_amount);
+                if ($sell) {
+                    $fiat = gmp_add($fiat, $got_amount);
+                    $btc = gmp_sub($btc, $gave_amount);
+                }
 
                 $total_fiat_got  = gmp_add($total_fiat_got , $got_amount );
                 $total_btc_given = gmp_add($total_btc_given, $gave_amount);
@@ -344,7 +379,7 @@ function show_statement($userid, $interval = 'forever')
                 $gave_str = internal_to_numstr($gave_amount, BTC_PRECISION);
                 $got_str  = internal_to_numstr($got_amount,  FIAT_PRECISION);
 
-                if ($new) {
+                if ($new && $sell) {
                     $period_fiat_got  = gmp_add($period_fiat_got , $got_amount );
                     $period_btc_given = gmp_add($period_btc_given, $gave_amount);
 
@@ -378,7 +413,12 @@ function show_statement($userid, $interval = 'forever')
             $final = $row['final'];
             // echo "final is $final<br/>\n";
 
-            if ($new) {
+            $show = (($req_type == 'DEPOS' && (($curr_type == 'BTC' && $deposit_btc) ||
+                                               ($curr_type != 'BTC' && $deposit_fiat))) ||
+                     ($req_type != 'DEPOS' && (($curr_type == 'BTC' && $withdraw_btc) ||
+                                               ($curr_type != 'BTC' && $withdraw_fiat))));
+
+            if ($new && $show) {
                 echo "<tr><td>$date</td>";
                 if ($all_users) echo active_table_cell_link_to_user_statement($uid, $interval);
             }
@@ -392,10 +432,12 @@ function show_statement($userid, $interval = 'forever')
                     $title = sprintf(_("from voucher") . " &quot;%s&quot;", $voucher);
 
                 if ($curr_type == 'BTC') { /* deposit BTC */
-                    $btc = gmp_add($btc, $amount);
+                    if ($show)
+                        $btc = gmp_add($btc, $amount);
+
                     $total_btc_deposit = gmp_add($total_btc_deposit, $amount);
                     
-                    if ($new) {
+                    if ($new && $show) {
                         $period_btc_deposit = gmp_add($period_btc_deposit, $amount);
 
                         active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s BTC%s</strong>",
@@ -415,10 +457,12 @@ function show_statement($userid, $interval = 'forever')
                         printf("<td></td>");
                     }
                 } else {        /* deposit FIAT */
-                    $fiat = gmp_add($fiat, $amount);
+                    if ($show)
+                        $fiat = gmp_add($fiat, $amount);
+
                     $total_fiat_deposit = gmp_add($total_fiat_deposit, $amount);
 
-                    if ($new) {
+                    if ($new && $show) {
                         $period_fiat_deposit = gmp_add($period_fiat_deposit, $amount);
 
                         active_table_cell_for_request(sprintf("<strong title='%s'>%s%s %s %s%s</strong>",
@@ -441,10 +485,12 @@ function show_statement($userid, $interval = 'forever')
                 }
             } else {            /* withdrawal */
                 if ($curr_type == 'BTC') { /* withdraw BTC */
-                    $btc = gmp_sub($btc, $amount);
+                    if ($show)
+                        $btc = gmp_sub($btc, $amount);
+
                     $total_btc_withdrawal = gmp_add($total_btc_withdrawal, $amount);
 
-                    if ($new) {
+                    if ($new && $show) {
                         $period_btc_withdrawal = gmp_add($period_btc_withdrawal, $amount);
 
                         $addy = $row['addy'];
@@ -473,10 +519,12 @@ function show_statement($userid, $interval = 'forever')
                         printf("<td></td>");
                     }
                 } else {        /* withdraw FIAT */
-                    $fiat = gmp_sub($fiat, $amount);
+                    if ($show)
+                        $fiat = gmp_sub($fiat, $amount);
+
                     $total_fiat_withdrawal = gmp_add($total_fiat_withdrawal, $amount);
 
-                    if ($new) {
+                    if ($new && $show) {
                         $period_fiat_withdrawal = gmp_add($period_fiat_withdrawal, $amount);
 
                         $title = '';
@@ -543,10 +591,22 @@ function show_statement($userid, $interval = 'forever')
 }
 
 $interval = isset($_GET['interval']) ? get('interval') : DEFAULT_STATEMENT_PERIOD;
+if (isset($_GET['form'])) {
+    $from_zero = isset($_GET['fromz']);
+    $deposit_btc = isset($_GET['dbtc']);
+    $withdraw_btc = isset($_GET['wbtc']);
+    $deposit_fiat = isset($_GET['dfiat']);
+    $withdraw_fiat = isset($_GET['wfiat']);
+    $buy = isset($_GET['bbtc']);
+    $sell = isset($_GET['sbtc']);
+} else {
+    $from_zero = false;
+    $deposit_btc = $withdraw_btc = $deposit_fiat = $withdraw_fiat = $buy = $sell = true;
+}
 
-if ($is_admin && isset($_GET['user']))
-    show_statement(get('user'), $interval);
-else
-    show_statement('', $interval);
+show_statement(($is_admin && isset($_GET['user'])) ? get('user') : '',
+               $interval,
+               $from_zero,
+               $deposit_btc, $withdraw_btc, $deposit_fiat, $withdraw_fiat, $buy, $sell);
 
 ?>
