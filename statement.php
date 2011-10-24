@@ -184,23 +184,26 @@ function show_statement($userid, $interval = 'forever',
         echo "</select>\n";
     }
 
+    $use_interval = ($interval != 'forever');
+
     $args = $specified_user ? "user=$userid&" : "";
     $args .= "interval=$interval";
     if ($from_zero) $args .= "&fromz=1";
 
     echo "<input type='hidden' name='form' value='1' /><br />\n";
-    echo statement_checkbox('fromz', $from_zero,     _("Start at Zero"));
     echo statement_checkbox('dbtc',  $deposit_btc,   _("Deposit")  . " " . "BTC",    $args);
     echo statement_checkbox('wbtc',  $withdraw_btc,  _("Withdraw") . " " . "BTC",    $args);
     echo statement_checkbox('dfiat', $deposit_fiat,  _("Deposit")  . " " . CURRENCY, $args);
     echo statement_checkbox('wfiat', $withdraw_fiat, _("Withdraw") . " " . CURRENCY, $args);
     echo statement_checkbox('bbtc',  $buy,           _("Buy")      . " " . "BTC",    $args);
     echo statement_checkbox('sbtc',  $sell,          _("Sell")     . " " . "BTC",    $args);
+    if ($use_interval)
+        echo statement_checkbox('fromz', $from_zero,     _("Start at Zero"));
+    else if ($from_zero)
+        echo "<input type='hidden' name='fromz' value='1' />\n";
 
     echo "</p>\n";
     echo "</form>\n";
-
-    $use_interval = ($interval != 'forever');
 
     if (!$all_users)
         echo "<p>" . _("OpenID") . ": <a href=\"$openid\">$openid</a></p>\n";
@@ -559,6 +562,9 @@ function show_statement($userid, $interval = 'forever',
                 echo "</tr>\n";
         }
     }
+
+    if ($first && $from_zero)
+        $fiat = $btc = numstr_to_internal(0);
 
     show_balances_in_statement($first ? _("There are no entries for this period") : _("Closing Balances"),
                                $btc, $fiat, $all_users, $show_prices, $show_increments);
