@@ -1,4 +1,5 @@
 <!--
+
 <div class='content_box'>
 <h3>...</h3>
 <h4>..:..am ..-Oct-11 </h4>
@@ -6,8 +7,16 @@
 ...
 </p>
 </div>
-
 -->
+
+<div class='content_box'>
+<h3>Filters on the Statement page</h3>
+<h4>11:38:am 23-Oct-11 </h4>
+<p>
+You can now filter your <a href="?page=statement">statement</a> to only show certain types of entries using the checkboxes at the top of the statement.  As an example, you can show <a href="?page=statement&interval=1+month&form=1&dbtc=1&wbtc=1&dfiat=1&wfiat=1&fromz=1">all deposits and withdrawals for the last month</a>.
+</p>
+</div>
+
 <div class='content_box'>
 <h3>Better bitcoind Uptime</h3>
 <h4>4:09am 17-Oct-11 </h4>
