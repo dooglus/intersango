@@ -100,7 +100,7 @@ try {
                                internal_to_numstr($we_have, BTC_PRECISION),
                                internal_to_numstr($amount, BTC_PRECISION));
             addlog(LOG_CRONJOB, $message);
-            email_tech(_("Exchange Wallet Balance is Too Low"), $message);
+            // email_tech(_("Exchange Wallet Balance is Too Low"), $message);
         }
     }
 }

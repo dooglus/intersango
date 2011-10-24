@@ -106,6 +106,15 @@ function bitcoin_withdraw($uid, $amount, $curr_type, &$voucher_code)
             throw new Problem(_('Bitcoin says no'), _('That address you supplied was invalid.'));
         syslog(LOG_NOTICE, "address=$addy");
 
+        $we_have = $bitcoin->getbalance("*", 0);
+        if (gmp_cmp($we_have, $amount) <= 0) {
+            $message = sprintf(_("User %s is asking to withdraw %s BTC.  We only have %s BTC."),
+                               $uid,
+                               internal_to_numstr($amount, BTC_PRECISION),
+                               internal_to_numstr($we_have, BTC_PRECISION));
+            email_tech(_("Exchange Wallet Balance is Too Low"), $message);
+        }
+
         $query = "
             INSERT INTO requests (req_type, uid, amount, curr_type)
             VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
