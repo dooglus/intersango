@@ -334,7 +334,7 @@ function show_statement($userid, $interval = 'forever',
             $got_amount = $row['got_amount'];
             $got_curr = $row['got_curr'];
 
-            if ($got_curr == 'BTC') {
+            if ($got_curr == 'BTC') { /* buying BTC */
                 if ($buy) {
                     $fiat = gmp_sub($fiat, $gave_amount);
                     $btc = gmp_add($btc, $got_amount);
@@ -370,7 +370,7 @@ function show_statement($userid, $interval = 'forever',
                     printf("<td class='right'> %s</td>",  internal_to_numstr($fiat, FIAT_PRECISION));
                     echo "</tr>\n";
                 }
-            } else {
+            } else {            /* selling BTC */
                 if ($sell) {
                     $fiat = gmp_add($fiat, $got_amount);
                     $btc = gmp_sub($btc, $gave_amount);
@@ -400,10 +400,12 @@ function show_statement($userid, $interval = 'forever',
                         printf("<td>%s</td>", trade_price($gave_amount, $got_amount));
                     if ($show_increments)
                         printf("<td class='right'>-%s</td>", $gave_str);
-                    printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($btc, BTC_PRECISION));
+
+                    // don't show balances between pairs of buy and sell rows if we're showing buy as well as sell
+                    printf("<td class='right'>%s</td>", ($all_users && $buy) ? "" : internal_to_numstr($btc, BTC_PRECISION));
                     if ($show_increments)
                         printf("<td class='right'>+%s</td>", $got_str);
-                    printf("<td class='right'>%s</td>", $all_users ? "" : internal_to_numstr($fiat, FIAT_PRECISION));
+                    printf("<td class='right'>%s</td>", ($all_users && $buy) ? "" : internal_to_numstr($fiat, FIAT_PRECISION));
                     echo "</tr>\n";
                 }
             }
