@@ -77,6 +77,7 @@ function show_contact_info()
 function send_email($to, $subject, $body)
 {
     $headers = "From: " . EMAIL_FROM_ADDRESS;
+    addlog(LOG_EMAIL, sprintf("mail('%s', '%s', '%s', '%s')", $to, $subject, $body, $headers));
     mail($to, $subject, $body, $headers);
 }
 
@@ -1108,6 +1109,7 @@ define('LOG_SWITCHER', 4);
 define('LOG_LOGIN',    5);
 define('LOG_PARAMS',   6);
 define('LOG_LOCK',     7);
+define('LOG_EMAIL',    8);
 
 function addlog($level, $text)
 {
