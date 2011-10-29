@@ -7,6 +7,8 @@ function switcher($page)
     global $is_logged_in, $is_admin;
 
     try {
+        $lock = false;
+
         if (!preg_match("/^[0-9_a-z]*$/", $page))
             $page = 'junk';
 
@@ -14,7 +16,6 @@ function switcher($page)
         if ($page != 'login' && $page != 'graph')
             show_header($page, $is_logged_in);
 
-        $lock = false;
         if ($is_logged_in) {
             if (BLOCKING_LOCKS)
                 wait_for_lock_if_no_others_are_waiting($is_logged_in);
