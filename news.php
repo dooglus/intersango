@@ -10,6 +10,23 @@
 -->
 
 <div class='content_box'>
+<h3>Server Error Causes Site Outage</h3>
+<h4>11:50am 29-Oct-11 </h4>
+<p>
+The site was down for the last 16 hours or so due to a fault on the server.
+</p>
+<p>
+We've restored from a backup made shortly before the problem occurred.
+</p>
+<p>
+The exchange is currently 'frozen'; you can place and cancel orders, and request withdrawals and make deposits, but no orders will be matched, and no withdrawals will be processed until the site is unfrozen.  This is scheduled to happen at 9pm this evening, server time.
+</p>
+<p>
+Sorry for any inconvenience caused by this outage.
+</p>
+</div>
+
+<div class='content_box'>
 <h3>Filters on the Statement page</h3>
 <h4>11:38:am 23-Oct-11 </h4>
 <p>
