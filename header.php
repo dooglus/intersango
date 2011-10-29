@@ -143,6 +143,13 @@ function show_content_header_balances($uid)
     echo "    </div>\n";
 }
 
+function show_content_news()
+{
+    echo "    <div class='content_header_box'>\n";
+    echo "        " . SPACE . "We're back up after a server error.  The exchange will be frozen until 9pm server time.\n";
+    echo "    </div>\n";
+}
+
 $buy = $sell = false;
 
 function show_content_header_ticker()
@@ -203,7 +210,7 @@ function show_content_header_frozen()
 {
     if (is_frozen()) {
         echo "    <div class='content_header_box'>\n";
-        echo "        <span style='color: #fff;'>" . _("trading on the exchange is currently frozen; no orders will be matched") . "</span>\n";
+        echo "        <span style='color: #fff;'>" . SPACE . _("Trading on the exchange is currently frozen; no orders will be matched") . "</span>\n";
         global $is_admin;
         if ($is_admin) echo "&nbsp;&nbsp;&nbsp;&nbsp;<a style='color: red;' href=\"?page=freeze\">" . _("unfreeze") . "</a>\n";
         echo "    </div>\n";
@@ -220,6 +227,8 @@ function show_content_header($is_logged_in)
 
         if ($is_logged_in)
             show_content_header_balances($is_logged_in);
+
+        show_content_news();
 
         show_content_header_frozen();
     } catch (Error $a) {
