@@ -83,7 +83,8 @@ try {
         $addy = $row['addy'];
         $we_have = $bitcoin->getbalance("*", CONFIRMATIONS_FOR_DEPOSIT);
 
-        addlog(LOG_CRONJOB, "Attempting to withdraw " . internal_to_numstr($amount) . " BTC for user $uid (reqid $reqid)");
+        addlog(LOG_CRONJOB, "Attempting to withdraw " . internal_to_numstr($amount) .
+               " of " . internal_to_numstr($we_have) . " BTC for user $uid (reqid $reqid)");
 
         if (gmp_cmp($we_have, $amount) >= 0) {
             update_req($reqid, "PROCES");
@@ -91,6 +92,7 @@ try {
             update_req($reqid, "FINAL");
 
             $we_have = $bitcoin->getbalance("*", 0);
+            addlog(LOG_CRONJOB, "We have " . internal_to_numstr($we_have) . " BTC in total");
             if (gmp_cmp($we_have, numstr_to_internal(WARN_LOW_WALLET_THRESHOLD)) < 0)
                 email_tech(_("Exchange Wallet Balance is Low"),
                            sprintf(_("The exchange wallet only has %s BTC available."),
