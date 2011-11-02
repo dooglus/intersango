@@ -10,6 +10,14 @@
 -->
 
 <div class='content_box'>
+<h3>New Bank Account for Deposits</h3>
+<h4>8:30am 30-Oct-11 </h4>
+<p>
+We have had to change to a new bank account.  The bank was charging us extortionate fees for every tranaction over some poorly advertised limit, so we switched to an "unlimited transaction" account.  For a fee, of course.  Don't you just love banks?  As a result the account number on the '<a href="?page=deposit">Deposit</a>' page has changed.  Please update your records.
+</p>
+</div>
+
+<div class='content_box'>
 <h3>Server Error Causes Site Outage</h3>
 <h4>11:50am 29-Oct-11 </h4>
 <p>
