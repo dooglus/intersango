@@ -145,9 +145,9 @@ function show_content_header_balances($uid)
 
 function show_content_news()
 {
-    echo "    <div class='content_header_box'>\n";
-    echo "        " . SPACE . "We're back up after a server error.  The exchange will be frozen until 9pm server time.\n";
-    echo "    </div>\n";
+    // echo "    <div class='content_header_box'>\n";
+    // echo "        " . SPACE . "We're back up after a server error.  The exchange will be frozen until 9pm server time.\n";
+    // echo "    </div>\n";
 }
 
 $buy = $sell = false;
