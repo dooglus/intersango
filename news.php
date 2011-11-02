@@ -18,6 +18,14 @@ We have had to change to a new bank account.  The bank was charging us extortion
 </div>
 
 <div class='content_box'>
+<h3>All Systems Go</h3>
+<h4>9:04pm 29-Oct-11 </h4>
+<p>
+We're fully back up and running now.  Thanks for your patience.
+</p>
+</div>
+
+<div class='content_box'>
 <h3>Server Error Causes Site Outage</h3>
 <h4>11:50am 29-Oct-11 </h4>
 <p>
