@@ -10,6 +10,27 @@
 -->
 
 <div class='content_box'>
+<h3>Still the Biggest</h3>
+<h4>3:39am 6-Nov-11</h4>
+<p>
+We just caught up with Trade Hill in terms of the total amount traded over the last year.  They launched their AUD service before us, so it has taken a while.  Thanks to all our customers for your continued support!
+</p>
+<table class='display_data'>
+<tr><th></th><th class='right'>wbx</th><th class='right'>tradehill</th><th class='right'>mtgox</th></tr>
+<tr><td class='right' style='font-weight: bold'>15 m</td><td class='right'>0.00	    </td><td class='right'>0.00	    </td><td class='right'>0.00	   </td></tr>
+<tr><td class='right' style='font-weight: bold'> 1 h</td><td class='right'>0.00	    </td><td class='right'>0.00	    </td><td class='right'>0.00	   </td></tr>
+<tr><td class='right' style='font-weight: bold'> 4 h</td><td class='right'>67.21    </td><td class='right'>30.30    </td><td class='right'>0.00	   </td></tr>
+<tr><td class='right' style='font-weight: bold'>12 h</td><td class='right'>67.21    </td><td class='right'>30.30    </td><td class='right'>0.00	   </td></tr>
+<tr><td class='right' style='font-weight: bold'> 1 d</td><td class='right'>274.58   </td><td class='right'>211.11   </td><td class='right'>0.87	   </td></tr>
+<tr><td class='right' style='font-weight: bold'> 2 d</td><td class='right'>768.34   </td><td class='right'>530.24   </td><td class='right'>590.08  </td></tr>
+<tr><td class='right' style='font-weight: bold'> 7 d</td><td class='right'>1,966.62 </td><td class='right'>1,413.92 </td><td class='right'>944.18  </td></tr>
+<tr><td class='right' style='font-weight: bold'>30 d</td><td class='right'>8,431.97 </td><td class='right'>5,598.60 </td><td class='right'>4,152.60</td></tr>
+<tr><td class='right' style='font-weight: bold'> 6 m</td><td class='right'>11,910.58</td><td class='right'>11,803.11</td><td class='right'>8,235.12</td></tr>
+<tr><td class='right' style='font-weight: bold'> 1 y</td><td class='right'>11,910.58</td><td class='right'>11,803.11</td><td class='right'>8,235.12</td></tr>
+</table>
+</div>
+
+<div class='content_box'>
 <h3>New Bank Account for Deposits</h3>
 <h4>8:30am 30-Oct-11 </h4>
 <p>
