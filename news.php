@@ -10,6 +10,14 @@
 -->
 
 <div class='content_box'>
+<h3>Your Reference</h3>
+<h4>5:12pm 6-Nov-11 </h4>
+<p>
+You can now specify an optional 'reference' field when withdrawing AUD.  This will appear on your bank statements.
+</p>
+</div>
+
+<div class='content_box'>
 <h3>Still the Biggest</h3>
 <h4>3:39am 6-Nov-11</h4>
 <p>
