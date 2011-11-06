@@ -33,7 +33,8 @@ function uk_withdraw($uid, $amount, $curr_type, &$voucher_code)
         $bank = post('name_bank');
         $acc_num = post('account_number');
         $sort_code = post('sort_code');
-        syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code");
+        $ref = post('ref');
+        syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code,ref=$ref");
         $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type)
         VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
@@ -48,8 +49,8 @@ function uk_withdraw($uid, $amount, $curr_type, &$voucher_code)
         $voucher_code = store_new_fiat_voucher_code($reqid);
     else {
         $query = "
-            INSERT INTO uk_requests (reqid, name, bank, acc_num, sort_code)
-            VALUES ('$reqid', '$name', '$bank', '$acc_num', '$sort_code');
+            INSERT INTO uk_requests (reqid, name, bank, acc_num, sort_code, ref)
+            VALUES ('$reqid', '$name', '$bank', '$acc_num', '$sort_code', '$ref');
         ";
         do_query($query);
     }
@@ -257,6 +258,10 @@ else {
                 <div id='acc_sort'>
                     <label for='input_sort_code'><?php echo _("BSB"); ?></label>
                     <input type='text' id='input_sort_code' name='sort_code' />
+                </div>
+                <div id='acc_ref'>
+                    <label for='input_ref'><?php echo _("Your reference (optional)"); ?></label>
+                    <input type='text' id='input_ref' name='ref' />
                 </div>
             </div>
 

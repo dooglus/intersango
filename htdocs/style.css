@@ -187,6 +187,10 @@ CONTENT
     display: inline;
     float: left;
 }
+#acc_ref {
+    display: inline;
+    float: left;
+}
 #input_sort_code {
     width: 100px;
     display: inline !important;

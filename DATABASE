@@ -163,6 +163,7 @@ CREATE TABLE `uk_requests` (
   `bank` varchar(40) NOT NULL,
   `acc_num` varchar(12) NOT NULL,
   `sort_code` varchar(9) NOT NULL,
+  `ref` varchar(10) NOT NULL,
   PRIMARY KEY (`reqid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

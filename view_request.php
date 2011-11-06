@@ -20,7 +20,7 @@ if(isset($_POST['cancel_request']))
 function display_request_info_fiat($reqid)
 {
     $query = "
-        SELECT name, bank, acc_num, sort_code
+        SELECT name, bank, acc_num, sort_code, ref
         FROM uk_requests
         WHERE reqid='$reqid'
     ";
@@ -32,6 +32,7 @@ function display_request_info_fiat($reqid)
     echo "<p>Bank: {$row['bank']}</p>\n";
     echo "<p>Account number: {$row['acc_num']}</p>\n";
     echo "<p>Sort code: {$row['sort_code']}</p>\n";
+    echo "<p>Reference: {$row['ref']}</p>\n";
 }
 
 function display_request_info_btc($reqid)
