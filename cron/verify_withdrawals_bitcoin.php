@@ -88,7 +88,10 @@ try {
 
         if (gmp_cmp($we_have, $amount) >= 0) {
             update_req($reqid, "PROCES");
-            $bitcoin->sendfrom("", $addy, $amount);
+
+            // use 'sendtoaddress' rather than 'sendfrom' because it can 'go overdrawn'
+            // so long as there are funds in other accounts (pending deposits) to cover it
+            $bitcoin->sendtoaddress($addy, $amount);
             update_req($reqid, "FINAL");
 
             $we_have = $bitcoin->getbalance("*", 0);
