@@ -54,7 +54,7 @@ define('CURRENCY_FULL_PLURAL', 'Australian Dollars');
 define('WARN_LOW_WALLET_THRESHOLD', 150);
 
 // then the wallet contains more than this many bitcoins, send a warning email
-define('WARN_HIGH_WALLET_THRESHOLD', 350);
+define('WARN_HIGH_WALLET_THRESHOLD', 450);
 
 // .------------------------------------------------------------------------
 // |  contact details
