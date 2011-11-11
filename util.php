@@ -1062,10 +1062,22 @@ function btc_withdrawn_today($uid)
     return $sum;
 }
 
+function get_fiat_balance_limit_for_user($uid)
+{
+    $result = do_query("SELECT max_fiat FROM users WHERE uid = '$uid'");
+
+    $row = mysql_fetch_array($result);
+    $limit = $row[0];
+
+    if (!$limit) $limit = numstr_to_internal(MAXIMUM_FIAT_BALANCE);
+
+    return $limit;
+}
+
 function check_fiat_balance_limit($uid, $amount)
 {
     $balance = total_fiat_balance($uid);
-    $limit = numstr_to_internal(MAXIMUM_FIAT_BALANCE);
+    $limit = get_fiat_balance_limit_for_user($uid);
     printf("<p>" . _("Maximum balance is %s and you have %s") . "</p>\n",
            internal_to_numstr($limit)   . " " . CURRENCY,
            internal_to_numstr($balance) . " " . CURRENCY);
