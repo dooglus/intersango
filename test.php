@@ -1,6 +1,7 @@
 <?php
 require_once "util.php";
 require_once "voucher.php";
+require_once "wbx_api.php";
 
 function test_fiat_commission($fiat, $already_paid = '0')
 {
@@ -175,6 +176,26 @@ function test_prices() {
     echo "</p></div>\n";
 }
 
-test_prices();
+function test_api() {
+    global $is_logged_in;
+
+    // the API tries to get a lock on our user.  this will block if we're already locked
+    if ($is_logged_in)
+        release_lock($is_logged_in);
+        
+    $wbx = new WBX_API(API_KEY, API_SECRET);
+
+    echo "<div class='content_box'>\n";
+    echo "<h3>API Results</h3>\n";
+
+    echo "<pre>\n";
+    // var_dump($wbx->withdraw_btc_voucher("7"));
+    var_dump($wbx->withdraw_fiat_voucher("0.70"));
+    echo "</pre>\n";
+
+    echo "</div>\n";
+}
+
+test_api();
 
 ?>
