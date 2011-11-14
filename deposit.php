@@ -22,7 +22,7 @@ function show_deposit_voucher_form($code = '')
     <p>
         <form action='' class='indent_form' method='post'>
             <label for='input_code'><?php echo _("Voucher"); ?></label>
-            <input type='text' onClick='select();' autocomplete='off' id='input_code' name='code' value='<?php echo $code; ?>' />
+            <input class='voucher' type='text' onClick='select();' size='100' autocomplete='off' id='input_code' name='code' value='<?php echo $code; ?>' />
             <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
             <input type='submit' value='Submit' />
         </form>
