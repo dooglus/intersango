@@ -45,6 +45,7 @@ function switcher($page)
             ////////////////////////////////////////////////////////////////////////
             // for logged in users only
             ////////////////////////////////////////////////////////////////////////
+            case 'api':
             case 'deposit':
             case 'place_order':
             case 'profile':
