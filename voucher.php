@@ -4,32 +4,9 @@ require_once "db.php";
 require_once "util.php";
 require_once "mtgox_api.php";
 
-function random_voucher_string($len)
+function random_voucher_string($length_per_block, $num_blocks = 1)
 {
-    $voucher_chars_str = VOUCHER_CHARS;
-    $voucher_chars_length = strlen(VOUCHER_CHARS);
-
-    if (@is_readable('/dev/urandom')) {
-        $fp = fopen('/dev/urandom', 'r');
-        $urandom = fread($fp, $len);
-        fclose($fp);
-    }
-
-    $return='';
-
-    for ($i = 0; $i < $len; $i++) {
-        if (!isset($urandom)) {
-            echo "no urandom?\n";
-            if ($i % 2 == 0)
-                mt_srand(time() % 2147 * 1000000 + (double)microtime() * 1000000);
-            $rand = mt_rand() % $voucher_chars_length;
-        } else
-            $rand = ord($urandom[$i]) % $voucher_chars_length;
-
-        $return .= $voucher_chars_str[$rand];
-    }
-
-    return $return;
+    return random_string($length_per_block, $num_blocks, VOUCHER_CHARS);
 }
 
 function voucher_code_prefix($code)
@@ -108,7 +85,7 @@ function check_voucher_code($code)
 
 function random_voucher_salt()
 {
-    return random_voucher_string(5);
+    return random_string(5);
 }
 
 function store_new_voucher_code($reqid, $type)
@@ -116,13 +93,10 @@ function store_new_voucher_code($reqid, $type)
     // $nonce = 0;
 
     do {
-        $code = sprintf("%s-%s-%s-%s-%s-%s",
+        $code = sprintf("%s-%s-%s",
                         VOUCHER_PREFIX,
                         $type,
-                        random_voucher_string(5),
-                        random_voucher_string(5),
-                        random_voucher_string(5),
-                        random_voucher_string(5));
+                        random_voucher_string(5, 4));
 
         // $code = sprintf("%s-%s-TEST1-00000-00000-%05d", VOUCHER_PREFIX, $type, $nonce++);
     } while (voucher_code_exists($code));
