@@ -36,7 +36,11 @@ if (isset($_POST['code'])) {
     $code = post('code', '-');
     try {
         get_lock("redeem_voucher", 2);
-        redeem_voucher($code, $is_logged_in);
+        list ($curr_type, $amount) = redeem_voucher($code, $is_logged_in);
+        echo ("<p><strong>" .
+              sprintf(_("%s has been credited to your account."),
+                      internal_to_numstr($amount) . " $curr_type") .
+              "</strong></p>\n");
         echo "<p>" . _("got any more?") . "</p>\n";
         show_deposit_voucher_form($code);
     } catch (Exception $e) {
