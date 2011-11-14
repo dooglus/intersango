@@ -180,7 +180,7 @@ function redeem_mtgox_fiat_voucher($code, $uid)
     add_funds(1,    $commission, $curr_type);
     add_funds($uid, $amount,     $curr_type);
 
-    echo "<p><strong>", internal_to_numstr($amount), " $curr_type has been credited to your account.</strong></p>\n";
+    return array($curr_type, $amount);
 }
 
 function redeem_voucher($code, $uid)
@@ -203,10 +203,7 @@ function redeem_voucher($code, $uid)
     redeemed_voucher_code($issuing_reqid, $reqid);
     add_funds($uid, $amount, $curr_type);
 
-    echo "<p><strong>" .
-        sprintf("%s has been credited to your account.",
-                internal_to_numstr($amount) . " $curr_type") .
-        "</strong></p>\n";
+    return array($curr_type, $amount);
 }
 
 function store_new_bitcoin_voucher_code($reqid)
