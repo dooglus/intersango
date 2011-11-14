@@ -169,6 +169,9 @@ CONTENT
     width: 300px;
     display: block;
 }
+input[type=text].voucher {
+    width: 400px;
+}
 #price {
     display: inline;
     width: 200px;
