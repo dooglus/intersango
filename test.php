@@ -176,24 +176,70 @@ function test_prices() {
     echo "</p></div>\n";
 }
 
+function test_api_show_output($title, $results) {
+    echo "<div class='content_box'>\n";
+    echo "<h3>API Results - $title</h3>\n";
+
+    echo "<pre>\n";
+    var_dump($results);
+    echo "</pre>\n";
+
+    echo "</div>\n";
+}
+
+function test_api_info($wbx) {
+    $ret = $wbx->info();
+    test_api_show_output("Info", $ret);
+}
+
+function test_api_withdraw_btc_voucher($wbx) {
+    $ret = $wbx->withdraw_btc_voucher("0.70");
+    test_api_show_output("Withdraw BTC Voucher", $ret);
+    if ($wbx->ok()) return $ret['voucher'];
+}
+
+function test_api_withdraw_fiat_voucher($wbx) {
+    $ret = $wbx->withdraw_fiat_voucher("0.70");
+    test_api_show_output("Withdraw Fiat Voucher", $ret);
+    if ($wbx->ok()) return $ret['voucher'];
+}
+
+function test_api_redeem_voucher($wbx, $voucher) {
+    $ret = $wbx->redeem_voucher($voucher);
+    test_api_show_output("Redeem Voucher $voucher", $ret);
+}
+
 function test_api() {
     global $is_logged_in;
 
     // the API tries to get a lock on our user.  this will block if we're already locked
-    if ($is_logged_in)
-        release_lock($is_logged_in);
+    if ($is_logged_in) try { release_lock($is_logged_in); } catch (Exception $e) { echo $e->getMessage(); }
         
     $wbx = new WBX_API(API_KEY, API_SECRET);
 
-    echo "<div class='content_box'>\n";
-    echo "<h3>API Results</h3>\n";
+    // make vouchers
+    test_api_info($wbx);
+    $btc_voucher = test_api_withdraw_btc_voucher($wbx);
+    $fiat_voucher = test_api_withdraw_fiat_voucher($wbx);
 
-    echo "<pre>\n";
-    // var_dump($wbx->withdraw_btc_voucher("7"));
-    var_dump($wbx->withdraw_fiat_voucher("0.70"));
-    echo "</pre>\n";
+    // redeem vouchers
+    test_api_info($wbx);
+    test_api_redeem_voucher($wbx, $btc_voucher);
+    test_api_redeem_voucher($wbx, $fiat_voucher);
 
-    echo "</div>\n";
+    // attempt to re-redeem vouchers
+    test_api_info($wbx);
+    test_api_redeem_voucher($wbx, $btc_voucher);
+    test_api_redeem_voucher($wbx, $fiat_voucher);
+
+    test_api_info($wbx);
+
+    // re-obtain the lock.  switcher will later try to unlock it
+    if ($is_logged_in)
+        if (BLOCKING_LOCKS)
+            wait_for_lock_if_no_others_are_waiting($is_logged_in);
+        else
+            get_lock_without_waiting($is_logged_in);
 }
 
 test_api();
