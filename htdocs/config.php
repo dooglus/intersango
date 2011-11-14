@@ -69,8 +69,11 @@ define('SITE_NAME',             'World Bitcoin Exchange');
 // a description
 define('SITE_DESCRIPTION',      SITE_NAME . ' allows you to trade Australian Dollars (AUD) for Bitcoins (BTC) with other users.  We have very low fees and an active market.');
 
+// the URL for the site
+define('SITE_URL',              'https://www.worldbitcoinexchange.com/');
+
 // an icon for the site
-define('SITE_IMAGE',            'https://www.worldbitcoinexchange.com/images/logo200.jpg');
+define('SITE_IMAGE',            SITE_URL . 'images/logo200.jpg');
 
 // address to send email from
 define('EMAIL_FROM_ADDRESS',    SITE_NAME . ' <support@intersango.com.au>');
@@ -175,6 +178,8 @@ define('MAX_SESSION_ID_LIFETIME', 10);
 
 // how many confirmations we need on incoming Bitcoin transfers before adding them to the user accounts
 define('CONFIRMATIONS_FOR_DEPOSIT', 4);
+
+define('RANDOM_CHARS', '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'); // 0-9, A-Z without I, O, or Q
 
 // .------------------------------------------------------------------------
 // |  commission
