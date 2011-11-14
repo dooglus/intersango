@@ -1142,4 +1142,132 @@ function string_is_zero($strval)
     return !preg_match("/[1-9]/", $strval);
 }
 
+function api_details_for_key($key)
+{
+    $result = do_query("
+        SELECT
+            uid,
+            name,
+            secret,
+            can_read,
+            can_trade,
+            can_withdraw,
+            can_deposit,
+            nonce
+        FROM
+            api_keys
+        WHERE
+            api_key = '$key'
+    ");
+
+    ;
+    if (!($row = mysql_fetch_array($result)))
+        throw new Exception("bad Rest-Key header");
+
+    return $row;
+}
+
+function api_update_nonce($key, $old_nonce, $new_nonce)
+{
+    if (gmp_cmp($old_nonce, $new_nonce) < 0)
+        do_query("UPDATE api_keys SET nonce = '$new_nonce' WHERE api_key = '$key'");
+    else
+        throw new Exception("nonce should be monotonically increasing");
+}
+
+function verify_api_request($permission_needed)
+{
+    global $is_logged_in;
+
+    $headers = apache_request_headers();
+
+    if (!isset($headers['Rest-Key']))
+        throw new Exception("missing Rest-Key header - see " . str_replace('/', '&#47', SITE_URL) . "?page=api for API info");
+
+    if (!isset($headers['Rest-Sign']))
+        throw new Exception("missing Rest-Sign header");
+
+    if (!isset($_POST['nonce']))
+        throw new Exception("missing nonce field in POST data");
+   
+    $key = $headers['Rest-Key'];
+    $sign = $headers['Rest-Sign'];
+
+    $row = api_details_for_key($key);
+
+    api_update_nonce($key, $row['nonce'], post('nonce'));
+
+    $is_logged_in = $row['uid'];
+
+    $check = base64_encode(hash_hmac('sha512',
+                                     file_get_contents("php://input"),
+                                     $row['secret'],
+                                     true));
+
+    if ($sign != $check)
+        throw new Exception("bad Rest-Sign header");
+
+    $permission_field = "can_" . $permission_needed;
+    if (!isset($row[$permission_field]) || !$row[$permission_field])
+        throw new Exception("that API key doesn't have '$permission_needed' permission");
+}
+
+function process_api_request($function_to_run, $permission_needed)
+{
+    global $is_logged_in;
+
+    $lock = false;
+    try {
+        verify_api_request($permission_needed);
+
+        if (BLOCKING_LOCKS)
+            wait_for_lock_if_no_others_are_waiting($is_logged_in);
+        else
+            get_lock_without_waiting($is_logged_in);
+        $lock = $is_logged_in;
+
+        $ret = $function_to_run();
+    }
+    catch (Exception $e) {
+        $ret = array("error"  => $e->getMessage());
+    }
+
+    if ($lock) release_lock($lock);
+
+    echo json_encode($ret);
+}
+
+function random_string($length_per_block, $num_blocks = 1, $chars_str = RANDOM_CHARS)
+{
+    $chars_length = strlen($chars_str);
+
+    if (@is_readable('/dev/urandom')) {
+        $fp = fopen('/dev/urandom', 'r');
+        $urandom = fread($fp, $length_per_block * $num_blocks);
+        fclose($fp);
+    }
+
+    $return='';
+    $r = 0;
+
+    for ($block = 0; $block < $num_blocks; $block++) {
+        if ($block)
+            $return .= '-';
+
+        for ($i = 0; $i < $length_per_block; $i++) {
+            if (!isset($urandom)) {
+                echo "no urandom?\n";
+                if ($r % 2 == 0)
+                    mt_srand(time() % 2147 * 1000000 + (double)microtime() * 1000000);
+                $rand = mt_rand() % $chars_length;
+            } else
+                $rand = ord($urandom[$r++]) % $chars_length;
+            
+            $return .= $chars_str[$rand];
+        }
+    }
+
+    return $return;
+}
+
 ?>
