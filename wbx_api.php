@@ -49,6 +49,49 @@ class WBX_API
         return $dec;
     }
 
+    function ok()
+    {
+        return (isset($this->last['status']) &&
+                $this->last['status'] == 'OK');
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    // * info.php
+    // 
+    // get user information
+    // 
+    // in: (nothing)
+    // 
+    // out:
+    //     status:  "OK" if successful
+    //     uid      user id
+    //     BTC:     bitcoin balance
+    //     AUD:     fiat balance
+    ////////////////////////////////////////////////////////////////////////
+    function info()
+    {
+        return self::query('info.php');
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    // * redeem_voucher.php
+    // 
+    // redeem BTC or fiat voucher
+    // 
+    // in:
+    //     voucher: voucher string
+    // 
+    // out:
+    //     status:  "OK" if successful
+    //     currency: BTC or AUD
+    //     amount:   decimal amount credited to account
+    ////////////////////////////////////////////////////////////////////////
+    function redeem_voucher($voucher)
+    {
+        return $this->last = self::query('redeem_voucher.php',
+                                         array('voucher' => $voucher));
+    }
+
     ////////////////////////////////////////////////////////////////////////
     // * withdraw_voucher.php
     // 
@@ -65,19 +108,19 @@ class WBX_API
     ////////////////////////////////////////////////////////////////////////
     function withdraw_voucher($amount, $currency)
     {
-        return self::query('withdraw_voucher.php',
-                           array('currency' => $currency,
-                                 'amount' => $amount));
+        return $this->last = self::query('withdraw_voucher.php',
+                                         array('currency' => $currency,
+                                               'amount' => $amount));
     }
 
     function withdraw_btc_voucher($amount)
     {
-        return self::withdraw_voucher($amount, 'BTC');
+        return $this->last = self::withdraw_voucher($amount, 'BTC');
     }
 
     function withdraw_fiat_voucher($amount)
     {
-        return self::withdraw_voucher($amount, CURRENCY);
+        return $this->last = self::withdraw_voucher($amount, CURRENCY);
     }
 }
 
