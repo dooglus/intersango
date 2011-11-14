@@ -179,6 +179,12 @@ CONTENT
 .indent_form input[type=text] {
     margin-left: 30px;
 }
+.indent_form input[type=checkbox] {
+    margin-left: 30px;
+}
+.indent_form p {
+    margin-left: 30px;
+}
 #acc_num {
     display: inline;
     float: left;
@@ -257,6 +263,10 @@ blockquote {
 }
 table {
     border-spacing: 0px;
+}
+.small_mono {
+    font-size: 14px;
+    font-family: "Courier New", Courier, monospace;
 }
 .voucher {
     font-weight: bold;
