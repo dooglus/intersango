@@ -88,4 +88,55 @@ function cancel_order($orderid, $uid)
     addlog(LOG_RESULT, "  cancelled order $orderid");
 }
 
+function get_orders()
+{
+    global $is_logged_in;
+
+    $result = do_query("
+        SELECT
+            orderid, initial_amount, amount, type, initial_want_amount, want_amount, want_type
+        FROM
+            orderbook
+        WHERE
+            status = 'OPEN'
+        AND
+            uid = $is_logged_in
+    ");
+
+    $orders = array();
+    while ($row = mysql_fetch_array($result)) {
+        $orderid       = $row['orderid'];
+        $have_amount   = $row['amount'];
+        $have_currency = $row['type'];
+        $want_amount   = $row['want_amount'];
+        $want_currency = $row['want_type'];
+
+        if ($have_currency == 'BTC')
+            $text = sprintf("%s %s %s %s %s %s",
+                            _("Sell"),
+                            internal_to_numstr($have_amount, BTC_PRECISION),
+                            $have_currency,
+                            _("for"),
+                            internal_to_numstr($want_amount, FIAT_PRECISION),
+                            $want_currency);
+        else
+            $text = sprintf("%s %s %s %s %s %s",
+                            _("Buy"),
+                            internal_to_numstr($want_amount, BTC_PRECISION),
+                            $want_currency,
+                            _("for"),
+                            internal_to_numstr($have_amount, FIAT_PRECISION),
+                            $have_currency);
+
+        array_push($orders, array('orderid'             => $orderid,
+                                  'text'                => $text,
+                                  'have_amount'         => internal_to_numstr($have_amount),
+                                  'have_currency'       => $row['type'],
+                                  'want_amount'         => internal_to_numstr($want_amount),
+                                  'want_currency'       => $want_currency));
+    }
+
+    return $orders;
+}
+
 ?>
