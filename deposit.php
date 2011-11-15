@@ -36,7 +36,7 @@ if (isset($_POST['code'])) {
     $code = post('code', '-');
     try {
         get_lock("redeem_voucher", 2);
-        list ($curr_type, $amount) = redeem_voucher($code, $is_logged_in);
+        list ($curr_type, $amount) = redeem_voucher($code);
         echo ("<p><strong>" .
               sprintf(_("%s has been credited to your account."),
                       internal_to_numstr($amount) . " $curr_type") .
@@ -52,10 +52,9 @@ if (isset($_POST['code'])) {
     release_lock("redeem_voucher");
     echo "</div>\n";
 } else {
-    $uid = $is_logged_in;
     $bitcoin = connect_bitcoin();
     try {
-        $addy = @$bitcoin->getaccountaddress((string)$uid);
+        $addy = @$bitcoin->getaccountaddress((string)$is_logged_in);
     } catch (Exception $e) {
         if ($e->getMessage() != 'Unable to connect.')
             throw $e;
@@ -65,7 +64,7 @@ if (isset($_POST['code'])) {
     $query = "
         SELECT deposref
         FROM users
-        WHERE uid='$uid';
+        WHERE uid='$is_logged_in';
     ";
     $result = do_query($query);
     $row = get_row($result);
