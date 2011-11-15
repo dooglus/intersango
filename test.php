@@ -229,6 +229,18 @@ function test_api_cancel_order($wbx, $orderid)
     test_api_show_output("Cancel Order $orderid", $ret);
 }
 
+function test_api_cancel_all_orders($wbx)
+{
+    $ret = $wbx->cancel_all_orders();
+    test_api_show_output("Cancel All Orders", $ret);
+}
+
+function test_api_get_orders($wbx)
+{
+    $ret = $wbx->get_orders();
+    test_api_show_output("Get Orders", $ret);
+}
+
 function test_api_vouchers($wbx)
 {
     // make vouchers
@@ -252,9 +264,15 @@ function test_api_orders($wbx)
     $orderid1 = test_api_add_order($wbx, 1, 'BTC', 2.5, 'AUD');
     $orderid2 = test_api_add_order($wbx, 2, 'aud', 1, 'btc');
 
+    test_api_get_orders($wbx);
+
     test_api_cancel_order($wbx, $orderid1);
     test_api_cancel_order($wbx, $orderid2);
     test_api_cancel_order($wbx, $orderid1);
+
+    test_api_cancel_all_orders($wbx);
+
+    test_api_get_orders($wbx);
 }
 
 function test_api()
