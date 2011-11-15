@@ -149,7 +149,8 @@ function test_gettext()
 
 // test_gettext();
 
-function test_price($fiat, $btc) {
+function test_price($fiat, $btc)
+{
     echo "full: " .
         bcdiv($fiat, $btc, 8) . 
         " rounded: " .
@@ -161,7 +162,8 @@ function test_price($fiat, $btc) {
         "<br>\n";
 }
 
-function test_prices() {
+function test_prices()
+{
     echo "<div class='content_box'>\n";
     echo "<h3>Prices</h3><p>\n";
     // test_price(200, 6);
@@ -176,7 +178,8 @@ function test_prices() {
     echo "</p></div>\n";
 }
 
-function test_api_show_output($title, $results) {
+function test_api_show_output($title, $results)
+{
     echo "<div class='content_box'>\n";
     echo "<h3>API Results - $title</h3>\n";
 
@@ -187,52 +190,90 @@ function test_api_show_output($title, $results) {
     echo "</div>\n";
 }
 
-function test_api_info($wbx) {
+function test_api_info($wbx)
+{
     $ret = $wbx->info();
     test_api_show_output("Info", $ret);
 }
 
-function test_api_withdraw_btc_voucher($wbx) {
+function test_api_withdraw_btc_voucher($wbx)
+{
     $ret = $wbx->withdraw_btc_voucher("0.70");
     test_api_show_output("Withdraw BTC Voucher", $ret);
     if ($wbx->ok()) return $ret['voucher'];
 }
 
-function test_api_withdraw_fiat_voucher($wbx) {
+function test_api_withdraw_fiat_voucher($wbx)
+{
     $ret = $wbx->withdraw_fiat_voucher("0.70");
     test_api_show_output("Withdraw Fiat Voucher", $ret);
     if ($wbx->ok()) return $ret['voucher'];
 }
 
-function test_api_redeem_voucher($wbx, $voucher) {
+function test_api_redeem_voucher($wbx, $voucher)
+{
     $ret = $wbx->redeem_voucher($voucher);
     test_api_show_output("Redeem Voucher $voucher", $ret);
 }
 
-function test_api() {
+function test_api_add_order($wbx, $have_amount, $have_currency, $want_amount, $want_currency)
+{
+    $ret = $wbx->add_order($have_amount, $have_currency, $want_amount, $want_currency);
+    test_api_show_output("Add Order ($have_amount $have_currency => $want_amount $want_currency)", $ret);
+    if ($wbx->ok()) return $ret['orderid'];
+}
+
+function test_api_cancel_order($wbx, $orderid)
+{
+    $ret = $wbx->cancel_order($orderid);
+    test_api_show_output("Cancel Order $orderid", $ret);
+}
+
+function test_api_vouchers($wbx)
+{
+    // make vouchers
+    $btc_voucher = test_api_withdraw_btc_voucher($wbx);
+    $fiat_voucher = test_api_withdraw_fiat_voucher($wbx);
+    test_api_info($wbx);
+
+    // redeem vouchers
+    test_api_redeem_voucher($wbx, $btc_voucher);
+    test_api_redeem_voucher($wbx, $fiat_voucher);
+    test_api_info($wbx);
+
+    // attempt to re-redeem vouchers
+    test_api_redeem_voucher($wbx, $btc_voucher);
+    test_api_redeem_voucher($wbx, $fiat_voucher);
+    test_api_info($wbx);
+}
+
+function test_api_orders($wbx)
+{
+    $orderid1 = test_api_add_order($wbx, 1, 'BTC', 2.5, 'AUD');
+    $orderid2 = test_api_add_order($wbx, 2, 'aud', 1, 'btc');
+
+    test_api_cancel_order($wbx, $orderid1);
+    test_api_cancel_order($wbx, $orderid2);
+    test_api_cancel_order($wbx, $orderid1);
+}
+
+function test_api()
+{
     global $is_logged_in;
 
     // the API tries to get a lock on our user.  this will block if we're already locked
     if ($is_logged_in) try { release_lock($is_logged_in); } catch (Exception $e) { echo $e->getMessage(); }
         
-    $wbx = new WBX_API(API_KEY, API_SECRET);
+    try {
+        $wbx = new WBX_API(API_KEY, API_SECRET);
 
-    // make vouchers
-    test_api_info($wbx);
-    $btc_voucher = test_api_withdraw_btc_voucher($wbx);
-    $fiat_voucher = test_api_withdraw_fiat_voucher($wbx);
-
-    // redeem vouchers
-    test_api_info($wbx);
-    test_api_redeem_voucher($wbx, $btc_voucher);
-    test_api_redeem_voucher($wbx, $fiat_voucher);
-
-    // attempt to re-redeem vouchers
-    test_api_info($wbx);
-    test_api_redeem_voucher($wbx, $btc_voucher);
-    test_api_redeem_voucher($wbx, $fiat_voucher);
-
-    test_api_info($wbx);
+        test_api_info($wbx);
+        // test_api_vouchers($wbx);
+        test_api_orders($wbx);
+    }
+    catch (Exception $e) {
+        echo "caught Exception: {$e->getMessage()}<br/>\n";
+    }
 
     // re-obtain the lock.  switcher will later try to unlock it
     if ($is_logged_in)
