@@ -21,14 +21,14 @@ class WBX_API
         // generate a nonce as microtime, with as-string handling to avoid problems with 32bits systems
         $mt = explode(' ', microtime());
         $req['nonce'] = $mt[1].substr($mt[0], 2, 6);
- 
+
         // generate the POST data string
         $post_data = http_build_query($req, '', '&');
- 
+
         // generate the extra headers
         $headers = array('Rest-Key: ' . $this->key,
                          'Rest-Sign: '. base64_encode(hash_hmac('sha512', $post_data, $this->secret, true)));
- 
+
         // our curl handle (initialize if required)
         static $ch = null;
         if (is_null($ch)) {
@@ -39,7 +39,7 @@ class WBX_API
         curl_setopt($ch, CURLOPT_URL, SITE_URL . 'api/' . $path);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
- 
+
         // run the query
         $res = curl_exec($ch);
         if ($res === false) throw new Exception('Could not get reply: ' . curl_error($ch));
@@ -58,15 +58,15 @@ class WBX_API
 
     ////////////////////////////////////////////////////////////////////////
     // * add_order.php
-    // 
+    //
     // add an order to the orderbook
-    // 
+    //
     // in:
     //     have_amount:   decimal amount to offer
     //     have_currency: BTC or AUD to offer
     //     want_amount:   decimal amount to request
     //     want_currency: BTC or AUD to request
-    // 
+    //
     // out:
     //     status:        "OK" if successful
     //     orderid:       order ID
@@ -83,12 +83,12 @@ class WBX_API
 
     ////////////////////////////////////////////////////////////////////////
     // * cancel_order.php
-    // 
+    //
     // add an order to the orderbook
-    // 
+    //
     // in:
     //     orderid:       order ID
-    // 
+    //
     // out:
     //     status:        "OK" if successful
     ////////////////////////////////////////////////////////////////////////
@@ -113,13 +113,29 @@ class WBX_API
     }
 
     ////////////////////////////////////////////////////////////////////////
+    // * get_deposit_address.php
+    //
+    // get a Bitcoin address that can be used to deposit to your account
+    //
+    // in: (nothing)
+    //
+    // out:
+    //     status:  "OK" if successful
+    //     address: an address you can use to send BTC to your exchange account
+    ////////////////////////////////////////////////////////////////////////
+    function get_deposit_address()
+    {
+        return self::query('getDepositAddress.php');
+    }
+
+    ////////////////////////////////////////////////////////////////////////
     // * get_orders.php
-    // 
+    //
     // get a list of open orders in the orderbook; for partially
     // matched orders, this reports only the remaining part of each
-    // 
+    //
     // in: (nothing)
-    // 
+    //
     // out:
     //     status:  "OK" if successful
     //     list of:
@@ -137,11 +153,11 @@ class WBX_API
 
     ////////////////////////////////////////////////////////////////////////
     // * info.php
-    // 
+    //
     // get user information
-    // 
+    //
     // in: (nothing)
-    // 
+    //
     // out:
     //     status:  "OK" if successful
     //     uid      user id
@@ -155,12 +171,12 @@ class WBX_API
 
     ////////////////////////////////////////////////////////////////////////
     // * redeem_voucher.php
-    // 
+    //
     // redeem BTC or fiat voucher
-    // 
+    //
     // in:
     //     voucher: voucher string
-    // 
+    //
     // out:
     //     status:  "OK" if successful
     //     currency: BTC or AUD
@@ -173,14 +189,42 @@ class WBX_API
     }
 
     ////////////////////////////////////////////////////////////////////////
+    // * withdraw_fiat.php
+    //
+    // withdraw fiat to a bank account
+    //
+    // in:
+    //     amount:         decimal amount to withdraw
+    //     name_holder:    name of account holder
+    //     name_bank:      name of the bank
+    //     account_number: account number
+    //     sort_code:      bank branch identifier (BSB, sort code, etc.)
+    //     ref:            your reference (optional)
+    //
+    // out:
+    //     status:  "OK" if successful
+    //     reqid:   withdrawal request ID
+    ////////////////////////////////////////////////////////////////////////
+    function withdraw_fiat($amount, $name_holder, $name_bank, $account_number, $sort_code, $ref = '')
+    {
+        return self::query('withdrawFiat.php',
+                           array('amount'         => $amount,
+                                 'name_holder'    => $name_holder,
+                                 'name_bank'      => $name_bank,
+                                 'account_number' => $account_number,
+                                 'sort_code'      => $sort_code,
+                                 'ref'            => $ref));
+    }
+
+    ////////////////////////////////////////////////////////////////////////
     // * withdraw_voucher.php
-    // 
+    //
     // withdraw BTC or fiat to a voucher
-    // 
+    //
     // in:
     //     currency: BTC or AUD
     //     amount: decimal amount to withdraw
-    // 
+    //
     // out:
     //     status:  "OK" if successful
     //     voucher: voucher string
