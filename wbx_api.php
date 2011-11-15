@@ -46,7 +46,8 @@ class WBX_API
 
         $dec = json_decode($res, true);
         if (!$dec) throw new Exception('Invalid data received, please make sure connection is working and requested API exists');
-        return $dec;
+
+        return $this->last = $dec;
     }
 
     function ok()
@@ -73,11 +74,11 @@ class WBX_API
     function add_order($have_amount, $have_currency,
                        $want_amount, $want_currency)
     {
-        return $this->last = self::query('add_order.php',
-                                         array('have_amount'   => $have_amount,
-                                               'have_currency' => $have_currency,
-                                               'want_amount'   => $want_amount,
-                                               'want_currency' => $want_currency));
+        return self::query('addOrder.php',
+                           array('have_amount'   => $have_amount,
+                                 'have_currency' => $have_currency,
+                                 'want_amount'   => $want_amount,
+                                 'want_currency' => $want_currency));
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -93,8 +94,45 @@ class WBX_API
     ////////////////////////////////////////////////////////////////////////
     function cancel_order($orderid)
     {
-        return $this->last = self::query('cancel_order.php',
-                                         array('orderid'       => $orderid));
+        return self::query('cancelOrder.php',
+                           array('orderid'       => $orderid));
+    }
+
+    function cancel_all_orders()
+    {
+        $orders = self::get_orders();
+
+        if (!self::ok())
+            return $orders;
+
+        $ret = array();
+        foreach ($orders['orders'] as $order)
+            array_push($ret, self::cancel_order($order['orderid']));
+
+        return $ret;
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    // * get_orders.php
+    // 
+    // get a list of open orders in the orderbook; for partially
+    // matched orders, this reports only the remaining part of each
+    // 
+    // in: (nothing)
+    // 
+    // out:
+    //     status:  "OK" if successful
+    //     list of:
+    //         orderid:       order ID
+    //         text:          a plain text description of the order
+    //         have_amount:   the offered amount, as a decimal
+    //         have_currency: the offered currency
+    //         want_amount:   the requested amount, as a decimal
+    //         want_currency: the requested currency
+    ////////////////////////////////////////////////////////////////////////
+    function get_orders()
+    {
+        return self::query('getOrders.php');
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -130,8 +168,8 @@ class WBX_API
     ////////////////////////////////////////////////////////////////////////
     function redeem_voucher($voucher)
     {
-        return $this->last = self::query('redeem_voucher.php',
-                                         array('voucher' => $voucher));
+        return self::query('redeemVoucher.php',
+                           array('voucher' => $voucher));
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -150,19 +188,19 @@ class WBX_API
     ////////////////////////////////////////////////////////////////////////
     function withdraw_voucher($amount, $currency)
     {
-        return $this->last = self::query('withdraw_voucher.php',
-                                         array('currency' => $currency,
-                                               'amount' => $amount));
+        return self::query('withdrawVoucher.php',
+                           array('currency' => $currency,
+                                 'amount' => $amount));
     }
 
     function withdraw_btc_voucher($amount)
     {
-        return $this->last = self::withdraw_voucher($amount, 'BTC');
+        return self::withdraw_voucher($amount, 'BTC');
     }
 
     function withdraw_fiat_voucher($amount)
     {
-        return $this->last = self::withdraw_voucher($amount, CURRENCY);
+        return self::withdraw_voucher($amount, CURRENCY);
     }
 }
 
