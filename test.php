@@ -275,6 +275,20 @@ function test_api_orders($wbx)
     test_api_get_orders($wbx);
 }
 
+function test_get_deposit_address($wbx)
+{
+    $ret = $wbx->get_deposit_address();
+    test_api_show_output("Get Deposit Address", $ret);
+}
+
+function test_api_withdraw_fiat($wbx) {
+    $ret = $wbx->withdraw_fiat("12.34", "Chris", "Funland Bank, Inc.", "1234567", "11-22-33", "MyRef");
+    test_api_show_output("Withdraw Fiat", $ret);
+
+    $ret = $wbx->withdraw_fiat("12.35", "Chris", "Funland Bank, Inc.", "1234567", "11-22-33"); /* no reference */
+    test_api_show_output("Withdraw Fiat", $ret);
+}
+
 function test_api()
 {
     global $is_logged_in;
@@ -285,9 +299,11 @@ function test_api()
     try {
         $wbx = new WBX_API(API_KEY, API_SECRET);
 
-        test_api_info($wbx);
+        // test_api_info($wbx);
         // test_api_vouchers($wbx);
-        test_api_orders($wbx);
+        // test_api_orders($wbx);
+        // test_get_deposit_address($wbx);
+        test_api_withdraw_fiat($wbx);
     }
     catch (Exception $e) {
         echo "caught Exception: {$e->getMessage()}<br/>\n";
