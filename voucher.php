@@ -137,8 +137,10 @@ function looks_like_mtgox_fiat_voucher($code)
     return substr($code, 0, strlen($prefix)) == $prefix;
 }
 
-function redeem_mtgox_fiat_voucher($code, $uid)
+function redeem_mtgox_fiat_voucher($code)
 {
+    global $is_logged_in;
+
     $mtgox = new MtGox_API(MTGOX_KEY, MTGOX_SECRET);
 
     $result = $mtgox->deposit_coupon($code);
@@ -173,35 +175,37 @@ function redeem_mtgox_fiat_voucher($code, $uid)
 
     $query = "
         INSERT INTO requests (req_type, uid, amount, commission, curr_type, status)
-        VALUES ('DEPOS', '$uid', '$amount', '$commission', '$curr_type', 'FINAL');
+        VALUES ('DEPOS', '$is_logged_in', '$amount', '$commission', '$curr_type', 'FINAL');
     ";
     do_query($query);
 
-    add_funds(1,    $commission, $curr_type);
-    add_funds($uid, $amount,     $curr_type);
+    add_funds(1,             $commission, $curr_type);
+    add_funds($is_logged_in, $amount,     $curr_type);
 
     return array($curr_type, $amount);
 }
 
-function redeem_voucher($code, $uid)
+function redeem_voucher($code)
 {
+    global $is_logged_in;
+
     $code = trim($code);
 
     if (looks_like_mtgox_fiat_voucher($code))
-        return redeem_mtgox_fiat_voucher($code, $uid);
+        return redeem_mtgox_fiat_voucher($code);
 
     list($issuing_reqid, $issuing_uid, $amount, $curr_type) = check_voucher_code($code);
     // echo "issued in request $issuing_reqid by user $issuing_uid for amount $amount of $curr_type<br/>\n";
 
     $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type, status)
-        VALUES ('DEPOS', '$uid', '$amount', '$curr_type', 'FINAL');
+        VALUES ('DEPOS', '$is_logged_in', '$amount', '$curr_type', 'FINAL');
     ";
     do_query($query);
     $reqid = mysql_insert_id();
 
     redeemed_voucher_code($issuing_reqid, $reqid);
-    add_funds($uid, $amount, $curr_type);
+    add_funds($is_logged_in, $amount, $curr_type);
 
     return array($curr_type, $amount);
 }
