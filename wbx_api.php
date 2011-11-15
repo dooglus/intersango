@@ -56,6 +56,48 @@ class WBX_API
     }
 
     ////////////////////////////////////////////////////////////////////////
+    // * add_order.php
+    // 
+    // add an order to the orderbook
+    // 
+    // in:
+    //     have_amount:   decimal amount to offer
+    //     have_currency: BTC or AUD to offer
+    //     want_amount:   decimal amount to request
+    //     want_currency: BTC or AUD to request
+    // 
+    // out:
+    //     status:        "OK" if successful
+    //     orderid:       order ID
+    ////////////////////////////////////////////////////////////////////////
+    function add_order($have_amount, $have_currency,
+                       $want_amount, $want_currency)
+    {
+        return $this->last = self::query('add_order.php',
+                                         array('have_amount'   => $have_amount,
+                                               'have_currency' => $have_currency,
+                                               'want_amount'   => $want_amount,
+                                               'want_currency' => $want_currency));
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    // * cancel_order.php
+    // 
+    // add an order to the orderbook
+    // 
+    // in:
+    //     orderid:       order ID
+    // 
+    // out:
+    //     status:        "OK" if successful
+    ////////////////////////////////////////////////////////////////////////
+    function cancel_order($orderid)
+    {
+        return $this->last = self::query('cancel_order.php',
+                                         array('orderid'       => $orderid));
+    }
+
+    ////////////////////////////////////////////////////////////////////////
     // * info.php
     // 
     // get user information
