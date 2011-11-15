@@ -1,5 +1,5 @@
 <?php
-require_once 'util.php';
+require_once 'order_utils.php';
 require_once 'view_util.php';
 require_once 'errors.php';
 
@@ -29,37 +29,8 @@ else if ($info->uid != $uid)
     throw new Problem('Not for your eyes', "This isn't your order.");
 
 if (isset($_POST['cancel_order'])) {
-    // cancel an order
-    $query = "
-        UPDATE orderbook
-        SET status='CANCEL'
-        WHERE
-            orderid='$orderid'
-            AND uid='$uid'
-            AND status='OPEN'
-    ";
-    do_query($query);
+    cancel_order($orderid, $uid);
 
-    if (mysql_affected_rows() != 1) {
-        if (mysql_affected_rows() > 1) 
-            throw new Error('Serious...', 'More rows updated than should be. Contact the sysadmin ASAP.');
-        else if (mysql_affected_rows() == 0) 
-            throw new Problem(_('Cannot...'), _('Your order got bought up before you were able to cancel.'));
-        else 
-            throw new Error('Serious...', 'Internal error. Contact sysadmin ASAP.');
-    }
-
-    // Refetch order in case something has happened.
-    $info = fetch_order_info($orderid);
-
-    if ($uid != $info->uid)
-        throw new Error('Permission...', '... Denied! Now GTFO.');
-
-    add_funds($info->uid, $info->amount, $info->type);
-    // these records indicate returned funds.
-    create_record($orderid, $info->amount, 0,
-		  0,        -1,            0);
-    addlog(LOG_RESULT, "  cancelled order $orderid");
     ?><div class='content_box'>
         <h3>Cancelled!</h3>
         <p>Order <?php echo $orderid; ?> is no more.</p>
