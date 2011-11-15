@@ -4,8 +4,6 @@ require_once ABSPATH . "/withdraw_utils.php";
 
 function main()
 {
-    global $is_logged_in;
-
     $_POST['is_international'] = 0;
     $_POST['voucher'] = 1;
 
