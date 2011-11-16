@@ -317,10 +317,7 @@ function test_api()
 
     // re-obtain the lock.  switcher will later try to unlock it
     if ($is_logged_in)
-        if (BLOCKING_LOCKS)
-            wait_for_lock_if_no_others_are_waiting($is_logged_in);
-        else
-            get_lock_without_waiting($is_logged_in);
+        get_user_lock($is_logged_in);
 }
 
 test_api();

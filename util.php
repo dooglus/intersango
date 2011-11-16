@@ -454,6 +454,14 @@ function release_lock($uid)
     throw new Error('Unlock error', "lock for user $uid isn't held - can't release it");
 }
 
+function get_user_lock($uid)
+{
+    if (BLOCKING_LOCKS)
+        wait_for_lock_if_no_others_are_waiting($uid);
+    else
+        get_lock_without_waiting($uid);
+}
+
 function cleanup_string($val, $extra='')
 {
     $val = preg_replace("/[^A-Za-z0-9 .$extra]/", '', $val);
@@ -499,6 +507,18 @@ function bitcoin_get_balance($account, $confirmations)
     return $bitcoin->getbalance($account, $confirmations);
 }
 
+function bitcoin_list_accounts($minconf = 1)
+{
+    $bitcoin = maybe_connect_bitcoin();
+    $accounts = $bitcoin->listaccounts($minconf);
+
+    if (!INTEGER_BITCOIND)
+        foreach ($accounts as $name => $value)
+            $accounts[$name] = bitcoin_to_internal($value);
+
+    return $accounts;
+}
+
 function bitcoin_move($from_account, $to_account, $amount)
 {
     if (!INTEGER_BITCOIND)
@@ -521,6 +541,17 @@ function bitcoin_validate_address($address)
 {
     $bitcoin = maybe_connect_bitcoin();
     return $bitcoin->validateaddress($address);
+}
+
+function bitcoin_to_internal($str)
+{
+    // remove the decimal point from strings representing numbers with 8 decimal places
+    if (is_string($str)) {
+        $new_str = preg_replace('/^(-?\d+)[.](\d{8})$/', '$1$2', $str);
+        if ($new_str !== $str)
+            $str = preg_replace('/^(-?)0+(.)/', '$1$2', $new_str); /* remove leading zeros, or it gets read as octal */
+    }
+    return $str;
 }
 
 function sync_to_bitcoin($uid)
@@ -1266,11 +1297,7 @@ function process_api_request($function_to_run, $permission_needed)
     try {
         verify_api_request($permission_needed);
 
-        if (BLOCKING_LOCKS)
-            wait_for_lock_if_no_others_are_waiting($is_logged_in);
-        else
-            get_lock_without_waiting($is_logged_in);
-        $lock = $is_logged_in;
+        get_user_lock($lock = $is_logged_in);
 
         $ret = $function_to_run();
     }

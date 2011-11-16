@@ -168,19 +168,10 @@ class jsonRPCClient {
 				throw new Exception('Request error: '.json_encode($response['error']));
 			}
 			
-			$result = $response['result'];
+			if (!INTEGER_BITCOIND)
+				return bitcoin_to_internal($response['result']);
 
-			if (!INTEGER_BITCOIND) {
-				// remove the decimal point from strings representing numbers with 8 decimal places
-				if (is_string($result)) {
-				    $new_result = preg_replace('/^(-?\d+)[.](\d{8})$/', '$1$2', $result);
-                        	    if ($new_result != $result)
-	                                $result = preg_replace('/^(-?)0+(.)/', '$1$2', $new_result); /* remove leading zeros, or it gets read as octal */
-				}
-                        }
-
-			return $result;
-			
+			return $response['result'];
 		} else {
 			return true;
 		}

@@ -16,13 +16,8 @@ function switcher($page)
         if ($page != 'login' && $page != 'graph')
             show_header($page, $is_logged_in);
 
-        if ($is_logged_in) {
-            if (BLOCKING_LOCKS)
-                wait_for_lock_if_no_others_are_waiting($is_logged_in);
-            else
-                get_lock_without_waiting($is_logged_in);
-            $lock = $is_logged_in;
-        }
+        if ($is_logged_in)
+            get_user_lock($lock = $is_logged_in);
 
         addlog(LOG_SWITCHER, sprintf("[%s] visit page '%s'", getenv("REMOTE_ADDR"), $page));
 
