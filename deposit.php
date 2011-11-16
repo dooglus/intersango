@@ -149,6 +149,7 @@ if (isset($_POST['code'])) {
 
     Please send a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) to <a href="mailto:AML@worldbitcoinexchange.com">AML@worldbitcoinexchange.com</a> and wait for an answer before initiating any transfer.</p>
 <?php } ?>
+    </div>
     <div class='content_box'>
     <h3><?php printf(_("Deposit %s Over The Counter"), CURRENCY); ?></h3>
     <strong><p>For fast 24Hr clearing visit any ANZ bank to deposit funds.</p></strong>
