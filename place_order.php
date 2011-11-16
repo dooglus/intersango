@@ -1,6 +1,5 @@
 <?php
 require_once 'order_utils.php';
-require_once "errors.php";
 
 if(isset($_POST['csrf_token']))
 {

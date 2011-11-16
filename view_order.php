@@ -1,7 +1,6 @@
 <?php
 require_once 'order_utils.php';
 require_once 'view_util.php';
-require_once 'errors.php';
 
 if(isset($_POST['cancel_order']))
 {

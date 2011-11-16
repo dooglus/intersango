@@ -1,6 +1,5 @@
 <?php
 require_once '../util.php';
-require_once '../errors.php';
 
 $is_logged_in = 'process_orders';
 
