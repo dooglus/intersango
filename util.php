@@ -295,6 +295,36 @@ function get_openid_for_user($uid)
     return $row['oidlogin'];
 }
 
+function get_account_creation_timest_for_user($uid)
+{
+    $result = do_query("
+        SELECT " . sql_format_date("timest") . " AS timest
+        FROM users
+        WHERE uid = '$uid'
+    ");
+
+    if (!has_results($result))
+        throw new Error("Unknown User", "User ID $uid isn't known");
+
+    $row = mysql_fetch_array($result);
+    return $row['timest'];
+}
+
+function get_verified_for_user($uid)
+{
+    $result = do_query("
+        SELECT verified
+        FROM users
+        WHERE uid = '$uid'
+    ");
+
+    if (!has_results($result))
+        throw new Error("Unknown User", "User ID $uid isn't known");
+
+    $row = mysql_fetch_array($result);
+    return $row['verified'];
+}
+
 function user_id()
 {
     global $is_logged_in;
