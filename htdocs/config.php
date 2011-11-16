@@ -14,7 +14,7 @@ enable_errors();
 define('INTEGER_BITCOIND', true);
 
 // we recently had a bunch of fraudulent signups, and so are only allowing automatic BTC withdraws for users below this userid
-define('LOWEST_UNTRUSTED_USERID', 1280);
+define('LOWEST_UNTRUSTED_USERID', 1000); // trust noone
 
 // path to a directory to use for per-user locks - must be writable by the user who runs PHP scripts
 define('LOCK_DIR', ABSPATH . "/locks");
