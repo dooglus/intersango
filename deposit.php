@@ -17,6 +17,34 @@ if (isset($_POST['amount']) && isset($_POST['curr_type']))
     }
 }
 
+function show_bank_account_details($deposref)
+{
+?>
+    <table class='display_data'>
+        <tr>
+            <td><?php echo _("Account title") . ":"; ?></td>
+            <td><?php echo DEPOSIT_BANK_ACCOUNT_TITLE; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo _("Bank") . ":"; ?></td>
+            <td><?php echo DEPOSIT_BANK_NAME; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo _("Account number") . ":"; ?></td>
+            <td><?php echo DEPOSIT_BANK_ACCOUNT_NUMBER; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo _("BSB") . ":"; ?></td>
+            <td><?php echo DEPOSIT_BANK_BRANCH_ID; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo _("Reference") . ":"; ?></td>
+            <td><?php echo $deposref; ?></td>
+        </tr>
+    </table>
+<?php
+}
+
 function show_deposit_voucher_form($code = '')
 { ?>
     <p>
@@ -68,6 +96,7 @@ if (isset($_POST['code'])) {
     $result = do_query($query);
     $row = get_row($result);
     $deposref = $row['deposref'];
+    $verified = get_verified_for_user($is_logged_in);
 ?>
 
 <div class='content_box'>
@@ -96,31 +125,10 @@ if (isset($_POST['code'])) {
     <h3><?php printf(_("Deposit %s by Bank Deposit (EFT)"), CURRENCY); ?></h3>
     <p><b><?php echo _("Depositing is free by bank deposit (EFT). You are responsible for paying any incurred fees. If your deposit is insufficient to cover bank fees then it will be denied."); ?></b></p>
 <?php
-    if (get_verified_for_user($is_logged_in)) {
+    if ($verified) {
 ?>
     <p><?php printf(_("You will need to quote <strong>%s</strong> in the transaction's reference field."), $deposref); ?></p>
-    <table class='display_data'>
-        <tr>
-            <td><?php echo _("Account title") . ":"; ?></td>
-            <td><?php echo DEPOSIT_BANK_ACCOUNT_TITLE; ?></td>
-        </tr>
-        <tr>
-            <td><?php echo _("Bank") . ":"; ?></td>
-            <td><?php echo DEPOSIT_BANK_NAME; ?></td>
-        </tr>
-        <tr>
-            <td><?php echo _("Account number") . ":"; ?></td>
-            <td><?php echo DEPOSIT_BANK_ACCOUNT_NUMBER; ?></td>
-        </tr>
-        <tr>
-            <td><?php echo _("BSB") . ":"; ?></td>
-            <td><?php echo DEPOSIT_BANK_BRANCH_ID; ?></td>
-        </tr>
-        <tr>
-            <td><?php echo _("Reference") . ":"; ?></td>
-            <td><?php echo $deposref; ?></td>
-        </tr>
-    </table>
+    <?php show_bank_account_details($deposref); ?>
     <p><?php echo _("Allow 3-5 working days for payments to pass through clearing."); ?></p>
     <p><b><?php echo _("Online Banking select your bank below to login."); ?></b></p>
     <p>
@@ -153,12 +161,17 @@ if (isset($_POST['code'])) {
     <div class='content_box'>
     <h3><?php printf(_("Deposit %s Over The Counter"), CURRENCY); ?></h3>
     <strong><p>For fast 24Hr clearing visit any ANZ bank to deposit funds.</p></strong>
+    <?php  ?>
     <p>
 <?php
-    if (ctype_digit($deposref))
+    if (ctype_digit($deposref)) {
         echo "Please use your unique reference number ($deposref) so we know which account to credit.";
-    else
+        $ref = $deposref;
+    } else {
         echo "Please use your User ID ($is_logged_in) as the reference so we know which account to credit.";
+        $ref = $is_logged_in;
+    }
+    show_bank_account_details($ref);
 ?>
 </p>
 </div>
