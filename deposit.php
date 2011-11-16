@@ -183,6 +183,8 @@ if (isset($_POST['code'])) {
         echo "    <p>" . sprintf(_("You can deposit to %s"), "<b>$addy</b>") . "</p>\n";
         echo "    <p>" . _("The above address is specific to your account.  Each time you deposit, a new address will be generated for you.") . "</p>\n";
         echo "    <p>" . sprintf(_("It takes %s confirmations before funds are added to your account."), CONFIRMATIONS_FOR_DEPOSIT) . "</p>\n";
+        if (!$verified)
+            echo "    <p>Note that you will be able to deposit BTC and trade them back and forth for AUD, but until you send a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) to <a href=\"mailto:AML@worldbitcoinexchange.com\">AML@worldbitcoinexchange.com</a>, you will be unable to make any withdrawls.</p>\n";
     } else
         echo "    <p>" . _("We are currently experiencing trouble connecting to the Bitcoin network.  Please try again in a few minutes.") . "</p>\n";
     echo "</div>\n";
