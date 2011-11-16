@@ -281,6 +281,11 @@ function test_get_deposit_address($wbx)
     test_api_show_output("Get Deposit Address", $ret);
 }
 
+function test_api_withdraw_bitcoin($wbx) {
+    $ret = $wbx->withdraw_bitcoin("12.34", "1JfpJ1AvJufpSWi6wNfA8LHW21ztsPDheV");
+    test_api_show_output("Withdraw Bitcoin", $ret);
+}
+
 function test_api_withdraw_fiat($wbx) {
     $ret = $wbx->withdraw_fiat("12.34", "Chris", "Funland Bank, Inc.", "1234567", "11-22-33", "MyRef");
     test_api_show_output("Withdraw Fiat", $ret);
@@ -303,7 +308,8 @@ function test_api()
         // test_api_vouchers($wbx);
         // test_api_orders($wbx);
         // test_get_deposit_address($wbx);
-        test_api_withdraw_fiat($wbx);
+        // test_api_withdraw_fiat($wbx);
+        test_api_withdraw_bitcoin($wbx);
     }
     catch (Exception $e) {
         echo "caught Exception: {$e->getMessage()}<br/>\n";
