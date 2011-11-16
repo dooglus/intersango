@@ -62,17 +62,20 @@ try {
     $query = "
     SELECT
         requests.reqid AS reqid,
-        uid,
+        users.uid AS uid,
         amount,
         addy
     FROM requests
     JOIN bitcoin_requests
     ON requests.reqid=bitcoin_requests.reqid
+    JOIN users
+    ON users.uid=requests.uid
     WHERE
         req_type='WITHDR'
         AND amount > 1000000
         AND status='VERIFY'
         AND curr_type='BTC'
+        AND (users.uid < " . LOWEST_UNTRUSTED_USERID . " OR verified)
     ";
     $result = do_query($query);
     while ($row = mysql_fetch_assoc($result)) {
