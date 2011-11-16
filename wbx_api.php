@@ -61,6 +61,8 @@ class WBX_API
     //
     // add an order to the orderbook
     //
+    // needs permission: trade
+    //
     // in:
     //     have_amount:   decimal amount to offer
     //     have_currency: BTC or AUD to offer
@@ -85,6 +87,8 @@ class WBX_API
     // * cancel_order.php
     //
     // add an order to the orderbook
+    //
+    // needs permission: trade
     //
     // in:
     //     orderid:       order ID
@@ -117,6 +121,8 @@ class WBX_API
     //
     // get a Bitcoin address that can be used to deposit to your account
     //
+    // needs permission: read
+    //
     // in: (nothing)
     //
     // out:
@@ -133,6 +139,8 @@ class WBX_API
     //
     // get a list of open orders in the orderbook; for partially
     // matched orders, this reports only the remaining part of each
+    //
+    // needs permission: read
     //
     // in: (nothing)
     //
@@ -156,12 +164,14 @@ class WBX_API
     //
     // get user information
     //
+    // needs permission: read
+    //
     // in: (nothing)
     //
     // out:
     //     status:  "OK" if successful
     //     uid      user id
-    //     BTC:     bitcoin balance
+    //     BTC:     Bitcoin balance
     //     AUD:     fiat balance
     ////////////////////////////////////////////////////////////////////////
     function info()
@@ -173,6 +183,8 @@ class WBX_API
     // * redeem_voucher.php
     //
     // redeem BTC or fiat voucher
+    //
+    // needs permission: deposit
     //
     // in:
     //     voucher: voucher string
@@ -189,9 +201,33 @@ class WBX_API
     }
 
     ////////////////////////////////////////////////////////////////////////
+    // * withdraw_bitcoin.php
+    //
+    // withdraw BTC to a Bitcoin address
+    //
+    // needs permission: withdraw
+    //
+    // in:
+    //     amount:         decimal amount to withdraw
+    //     address:        Bitcoin address to withdraw to
+    //
+    // out:
+    //     status:  "OK" if successful
+    //     reqid:   withdrawal request ID
+    ////////////////////////////////////////////////////////////////////////
+    function withdraw_bitcoin($amount, $address)
+    {
+        return self::query('withdrawBitcoin.php',
+                           array('amount'         => $amount,
+                                 'address'        => $address));
+    }
+
+    ////////////////////////////////////////////////////////////////////////
     // * withdraw_fiat.php
     //
     // withdraw fiat to a bank account
+    //
+    // needs permission: withdraw
     //
     // in:
     //     amount:         decimal amount to withdraw
@@ -220,6 +256,8 @@ class WBX_API
     // * withdraw_voucher.php
     //
     // withdraw BTC or fiat to a voucher
+    //
+    // needs permission: withdraw
     //
     // in:
     //     currency: BTC or AUD
