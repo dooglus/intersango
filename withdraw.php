@@ -1,6 +1,11 @@
 <?php
 require_once 'withdraw_utils.php';
 
+if (!get_verified_for_user($is_logged_in)) {
+    throw new Error("Not Verified",
+                    "Please send a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) to <a href=\"mailto:AML@worldbitcoinexchange.com\">AML@worldbitcoinexchange.com</a> and wait for an answer before initiating any withdrawal.");
+}
+
 if (isset($_POST['amount']) && isset($_POST['curr_type']))
 {
     if(isset($_POST['csrf_token']))
