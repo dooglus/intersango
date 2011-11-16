@@ -93,8 +93,11 @@ if (isset($_POST['code'])) {
 </div>
 
 <div class='content_box'>
-    <h3><?php echo _("Deposit") . " " . CURRENCY; ?></h3>
+    <h3><?php printf(_("Deposit %s by Bank Deposit (EFT)"), CURRENCY); ?></h3>
     <p><b><?php echo _("Depositing is free by bank deposit (EFT). You are responsible for paying any incurred fees. If your deposit is insufficient to cover bank fees then it will be denied."); ?></b></p>
+<?php
+    if (get_verified_for_user($is_logged_in)) {
+?>
     <p><?php printf(_("You will need to quote <strong>%s</strong> in the transaction's reference field."), $deposref); ?></p>
     <table class='display_data'>
         <tr>
@@ -141,9 +144,22 @@ if (isset($_POST['code'])) {
         href="http://www.google.com.au/"
       >Other</a>
     </p><br/>
-    <strong><p>For fast 24Hr clearing visit any ANZ bank to deposit funds.</p></strong>
-    <p>(you will be required to use your<strong><a href="?page=profile"> 'User ID'</a></strong> as reference)</p><br/>
+<?php } else { ?>
+    <p>If you plan to deposit via the Internet, we need to know about you.
 
+    Please send a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) to <a href="mailto:AML@worldbitcoinexchange.com">AML@worldbitcoinexchange.com</a> and wait for an answer before initiating any transfer.</p>
+<?php } ?>
+    <div class='content_box'>
+    <h3><?php printf(_("Deposit %s Over The Counter"), CURRENCY); ?></h3>
+    <strong><p>For fast 24Hr clearing visit any ANZ bank to deposit funds.</p></strong>
+    <p>
+<?php
+    if (ctype_digit($deposref))
+        echo "Please use your unique reference number ($deposref) so we know which account to credit.";
+    else
+        echo "Please use your User ID ($is_logged_in) as the reference so we know which account to credit.";
+?>
+</p>
 </div>
 
 <div class='content_box'>
