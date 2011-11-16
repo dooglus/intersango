@@ -560,7 +560,7 @@ function sync_to_bitcoin($uid)
         throw new Error('Coding error!', "sync_to_bitcoin() expects a string, not type '" . gettype($uid) . "'");
         
     try {
-        $balance = @bitcoin_get_balance($uid, CONFIRMATIONS_FOR_DEPOSIT);
+        $balance = bitcoin_get_balance($uid, CONFIRMATIONS_FOR_DEPOSIT);
 
         if (is_float($balance))
             throw new Error(_("bitcoind version error"), _("bitcoind getbalance should return an integer not a float"));
@@ -573,7 +573,7 @@ function sync_to_bitcoin($uid)
         ";
             do_query($query);
 
-            $we_have = @bitcoin_get_balance('*', 1);
+            $we_have = bitcoin_get_balance('*', 1);
             if (gmp_cmp($we_have, numstr_to_internal(WARN_HIGH_WALLET_THRESHOLD)) > 0)
                 email_tech(_("Exchange Wallet Balance is High"),
                            sprintf(_("The exchange wallet has %s BTC available."),

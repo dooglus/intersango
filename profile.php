@@ -129,7 +129,7 @@ if ($row) { ?>
 
 try {
     $needed_conf = CONFIRMATIONS_FOR_DEPOSIT;
-    $balance = @bitcoin_get_balance($uid, $needed_conf);
+    $balance = bitcoin_get_balance($uid, $needed_conf);
 
     if ($balance != bitcoin_get_balance($uid, 0)) { ?>
     <div class='content_box'>

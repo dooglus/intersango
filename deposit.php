@@ -53,7 +53,7 @@ if (isset($_POST['code'])) {
     echo "</div>\n";
 } else {
     try {
-        $addy = @bitcoin_get_account_address((string)$is_logged_in);
+        $addy = bitcoin_get_account_address((string)$is_logged_in);
     } catch (Exception $e) {
         if ($e->getMessage() != 'Unable to connect.')
             throw $e;
