@@ -138,6 +138,7 @@ function show_statement($userid, $interval = 'forever',
 
     $all_users = ($userid == 'all');
 
+    $create_timestamp = false;
     if ($all_users) {
         echo "<h3>" . _("Statement for All Users") . "</h3>\n";
         $check_stuff = "";
@@ -145,6 +146,8 @@ function show_statement($userid, $interval = 'forever',
         $openid = get_openid_for_user($userid);
         echo "<h3>" . sprintf(_("Statement for UID %s"), $userid) . "</h3>\n";
         $check_stuff = "uid='$userid' AND ";
+        if ($is_admin)
+            $create_timestamp = get_account_creation_timest_for_user($userid);
     }
 
     echo ("<form method='get'>\n" .
@@ -310,6 +313,11 @@ function show_statement($userid, $interval = 'forever',
         echo "<th class='right'>+/-</th>";
     echo "<th class='right'>" . CURRENCY . "</th>";
     echo "</tr>\n";
+
+    if ($create_timestamp)
+        printf("<tr><td>%s</td><td>%s</td></tr>\n",
+               $create_timestamp,
+               _("Create Account"));
 
     $all_final = true;
     while ($row = mysql_fetch_array($result)) {
