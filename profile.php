@@ -128,11 +128,10 @@ if ($row) { ?>
 }
 
 try {
-    $bitcoin = connect_bitcoin();
     $needed_conf = CONFIRMATIONS_FOR_DEPOSIT;
-    $balance = @$bitcoin->getbalance($uid, $needed_conf);
+    $balance = @bitcoin_get_balance($uid, $needed_conf);
 
-    if ($balance != $bitcoin->getbalance($uid, 0)) { ?>
+    if ($balance != bitcoin_get_balance($uid, 0)) { ?>
     <div class='content_box'>
     <h3><?php echo _("Pending bitcoin deposits"); ?></h3>
     <table class='display_data'>
@@ -143,7 +142,7 @@ try {
         </tr>
     <?php
         for ($conf = $needed_conf; $conf >= 0; $conf--) {
-            $new_balance = $bitcoin->getbalance($uid, $conf);
+            $new_balance = bitcoin_get_balance($uid, $conf);
             if ($balance != $new_balance) {
                 $diff = gmp_sub($new_balance, $balance);
                 echo "<tr><td>", internal_to_numstr($diff), "</td><td>$conf</td><td>", $needed_conf - $conf, "</td></tr>\n";

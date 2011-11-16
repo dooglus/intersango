@@ -52,9 +52,8 @@ if (isset($_POST['code'])) {
     release_lock("redeem_voucher");
     echo "</div>\n";
 } else {
-    $bitcoin = connect_bitcoin();
     try {
-        $addy = @$bitcoin->getaccountaddress((string)$is_logged_in);
+        $addy = @bitcoin_get_account_address((string)$is_logged_in);
     } catch (Exception $e) {
         if ($e->getMessage() != 'Unable to connect.')
             throw $e;

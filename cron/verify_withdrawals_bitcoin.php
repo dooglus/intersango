@@ -75,13 +75,12 @@ try {
         AND curr_type='BTC'
     ";
     $result = do_query($query);
-    $bitcoin = connect_bitcoin();
     while ($row = mysql_fetch_assoc($result)) {
         $reqid = $row['reqid'];
         $uid = $row['uid'];
         $amount = $row['amount'];
         $addy = $row['addy'];
-        $we_have = $bitcoin->getbalance("*", CONFIRMATIONS_FOR_DEPOSIT);
+        $we_have = bitcoin_get_balance("*", CONFIRMATIONS_FOR_DEPOSIT);
 
         addlog(LOG_CRONJOB, "Attempting to withdraw " . internal_to_numstr($amount) .
                " of " . internal_to_numstr($we_have) . " BTC for user $uid (reqid $reqid)");
@@ -91,10 +90,10 @@ try {
 
             // use 'sendtoaddress' rather than 'sendfrom' because it can 'go overdrawn'
             // so long as there are funds in other accounts (pending deposits) to cover it
-            $bitcoin->sendtoaddress($addy, $amount);
+            bitcoin_send_to_address($addy, $amount);
             update_req($reqid, "FINAL");
 
-            $we_have = $bitcoin->getbalance("*", 0);
+            $we_have = bitcoin_get_balance("*", 0);
             addlog(LOG_CRONJOB, "We have " . internal_to_numstr($we_have) . " BTC in total");
             if (gmp_cmp($we_have, numstr_to_internal(WARN_LOW_WALLET_THRESHOLD)) < 0)
                 email_tech(_("Exchange Wallet Balance is Low"),

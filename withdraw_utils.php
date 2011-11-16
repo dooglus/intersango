@@ -75,9 +75,8 @@ function bitcoin_withdraw($uid, $amount, $curr_type, &$voucher_code, &$reqid)
         ";
     } else {
         $addy = post('address');
-        $bitcoin = connect_bitcoin();
         try {
-            $validaddy = $bitcoin->validateaddress($addy);
+            $validaddy = bitcoin_validate_address($addy);
         } catch (Exception $e) {
             if ($e->getMessage() != 'Unable to connect.')
                 throw $e;
@@ -93,7 +92,7 @@ function bitcoin_withdraw($uid, $amount, $curr_type, &$voucher_code, &$reqid)
             throw new Problem(_('Bitcoin says no'), _('That address you supplied was invalid.'));
         syslog(LOG_NOTICE, "address=$addy");
 
-        $we_have = $bitcoin->getbalance("*", 0);
+        $we_have = bitcoin_get_balance("*", 0);
         if (gmp_cmp($we_have, $amount) <= 0) {
             $message = sprintf(_("User %s is asking to withdraw %s BTC.  We only have %s BTC."),
                                $uid,

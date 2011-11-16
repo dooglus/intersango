@@ -476,27 +476,73 @@ function get($key, $extra='')
     return $value;
 }
 
+$bitcoin = false;
+function maybe_connect_bitcoin()
+{
+    global $bitcoin;
+
+    if (!$bitcoin)
+        $bitcoin = connect_bitcoin();
+
+    return $bitcoin;
+}
+
+function bitcoin_get_account_address($account)
+{
+    $bitcoin = maybe_connect_bitcoin();
+    return $bitcoin->getaccountaddress((string)$account);
+}
+
+function bitcoin_get_balance($account, $confirmations)
+{
+    $bitcoin = maybe_connect_bitcoin();
+    return $bitcoin->getbalance($account, $confirmations);
+}
+
+function bitcoin_move($from_account, $to_account, $amount)
+{
+    if (!INTEGER_BITCOIND)
+        $amount = internal_to_numstr($amount, 8);
+
+    $bitcoin = maybe_connect_bitcoin();
+    return $bitcoin->move($from_account, $to_account, $amount);
+}
+
+function bitcoin_send_to_address($address, $amount)
+{
+    if (!INTEGER_BITCOIND)
+        $amount = internal_to_numstr($amount, 8);
+
+    $bitcoin = maybe_connect_bitcoin();
+    return $bitcoin->sendtoaddress($address, $amount);
+}
+
+function bitcoin_validate_address($address)
+{
+    $bitcoin = maybe_connect_bitcoin();
+    return $bitcoin->validateaddress($address);
+}
+
 function sync_to_bitcoin($uid)
 {
     if (!is_string($uid))
         throw new Error('Coding error!', "sync_to_bitcoin() expects a string, not type '" . gettype($uid) . "'");
         
-    $bitcoin = connect_bitcoin();
     try {
-        $balance = @$bitcoin->getbalance($uid, CONFIRMATIONS_FOR_DEPOSIT);
+        $balance = @bitcoin_get_balance($uid, CONFIRMATIONS_FOR_DEPOSIT);
 
         if (is_float($balance))
             throw new Error(_("bitcoind version error"), _("bitcoind getbalance should return an integer not a float"));
 
         if (gmp_cmp($balance, '0') > 0) {
-            $bitcoin->move($uid, '', $balance);
+            bitcoin_move($uid, '', $balance);
             $query = "
             INSERT INTO requests (req_type, uid, amount, curr_type)
             VALUES ('DEPOS', '$uid', '$balance', 'BTC');
         ";
             do_query($query);
 
-            $we_have = @$bitcoin->getbalance('*', 1);
+            $we_have = @bitcoin_get_balance('*', 1);
             if (gmp_cmp($we_have, numstr_to_internal(WARN_HIGH_WALLET_THRESHOLD)) > 0)
                 email_tech(_("Exchange Wallet Balance is High"),
                            sprintf(_("The exchange wallet has %s BTC available."),

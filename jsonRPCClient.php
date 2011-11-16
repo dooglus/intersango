@@ -120,6 +120,12 @@ class jsonRPCClient {
 						'id' => $currentId
 						);
 		$request = json_encode($request);
+
+		if (!INTEGER_BITCOIND) {
+			// remove double quotes around strings representing numbers with 8 decimal places, so bitcoind can read them
+			$request = preg_replace('/"(-?\d+[.]\d{8})"/', '$1', $request);
+		}
+
 		$this->debug && $this->debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
 		
 		// performs the HTTP POST
@@ -136,6 +142,12 @@ class jsonRPCClient {
 				$response.= trim($row)."\n";
 			}
 			$this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
+
+			if (!INTEGER_BITCOIND) {
+				// put double quotes around numbers with 8 decimal places, so they won't be converted to a float
+				$response = preg_replace('/:(-?\d+[.]\d{8})/', ':"$1"', $response);
+			}
+
 			$response = json_decode($response,true);
 		} else {
 			throw new Exception('Unable to connect.');
@@ -156,7 +168,18 @@ class jsonRPCClient {
 				throw new Exception('Request error: '.json_encode($response['error']));
 			}
 			
-			return $response['result'];
+			$result = $response['result'];
+
+			if (!INTEGER_BITCOIND) {
+				// remove the decimal point from strings representing numbers with 8 decimal places
+				if (is_string($result)) {
+				    $new_result = preg_replace('/^(-?\d+)[.](\d{8})$/', '$1$2', $result);
+                        	    if ($new_result != $result)
+	                                $result = preg_replace('/^(-?)0+(.)/', '$1$2', $new_result); /* remove leading zeros, or it gets read as octal */
+				}
+                        }
+
+			return $result;
 			
 		} else {
 			return true;
