@@ -13,6 +13,9 @@ enable_errors();
 // do we have a bitcoind which was modified to deal only in integers?  ie. does "bitcoind getbalance" show a whole number?
 define('INTEGER_BITCOIND', true);
 
+// we recently had a bunch of fraudulent signups, and so are only allowing automatic BTC withdraws for users below this userid
+define('LOWEST_UNTRUSTED_USERID', 1280);
+
 // path to a directory to use for per-user locks - must be writable by the user who runs PHP scripts
 define('LOCK_DIR', ABSPATH . "/locks");
 
