@@ -1,5 +1,42 @@
 <?php
 
+function show_verify_user_form()
+{
+    echo "<div class='content_box'>\n";
+    echo "  <h3>" . _("Verify User") . "</h3>\n";
+
+    handle_verify_user_request();
+
+    echo "  <form action='' class='indent_form' method='post'>\n";
+    echo "    <input type='hidden' name='verify_user' value='true' />\n";
+    echo "    <label for='uid'>" . _("User ID") . "</label>\n";
+    echo "    <input id='uid' type='text' name='uid' />\n";
+    echo "    <input type='submit' value='Verify User' />\n";
+    echo "  </form>\n";
+    echo "</div>\n";
+}
+
+function handle_verify_user_request()
+{
+    if (isset($_POST['verify_user'])) {
+        $uid = post('uid');
+        try {
+            $verified = get_verified_for_user($uid);
+            if ($verified)
+                echo "<p>User $uid was already verified.  Any more?</p>\n";
+            else {
+                do_query("UPDATE users SET verified = 1 WHERE uid = '$uid'");
+                if (mysql_affected_rows() == 1)
+                    echo "<p>Verified user $uid.  Any more?</p>\n";
+                else
+                    throw new Error("Unknown Error", "This shouldn't happen.  Please report it.");
+            }
+        } catch (Exception $e) {
+            echo "<p>{$e->getMessage()}.  Try again?</p>\n";
+        }
+    }
+}
+
 function show_users_header()
 {
     echo "<tr>";
@@ -185,6 +222,8 @@ function show_users()
 
     echo "</div>\n";
 }
+
+show_verify_user_form();
 
 show_users();
 ?>
