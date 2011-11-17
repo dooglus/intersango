@@ -1,7 +1,15 @@
 <?php
 
-// 'key' and 'secret' are defined here
-require_once "wbx_config.php";
+// get these from https://www.worldbitcoinexchange.com/?page=api
+define('API_KEY'   , 'xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx');
+define('API_SECRET', 'xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx');
+
+function test()
+{
+    $wbx = new WBX_API(API_KEY, API_SECRET);
+
+    var_dump($wbx->get_deposit_address());
+}
 
 // Authentication is performed by signing each request using
 // HMAC-SHA512. The request must contain an extra value "nonce" which
@@ -14,6 +22,7 @@ class WBX_API
     {
         $this->key = $key;
         $this->secret = $secret;
+        $this->url = 'https://www.worldbitcoinexchange.com/api';
     }
 
     function query($path, array $req = array())
@@ -36,7 +45,7 @@ class WBX_API
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; WBX PHP client; '.php_uname('s').'; PHP/'.phpversion().')');
         }
-        curl_setopt($ch, CURLOPT_URL, SITE_URL . 'api/' . $path);
+        curl_setopt($ch, CURLOPT_URL, "{$this->url}/$path");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -45,7 +54,7 @@ class WBX_API
         if ($res === false) throw new Exception('Could not get reply: ' . curl_error($ch));
 
         $dec = json_decode($res, true);
-        if (!$dec) throw new Exception('Invalid data received, please make sure connection is working and requested API exists');
+        if (!$dec) throw new Exception("Invalid data received, please make sure connection is working and requested API exists.\nresult: '$res'\n");
 
         return $this->last = $dec;
     }
@@ -282,8 +291,14 @@ class WBX_API
 
     function withdraw_fiat_voucher($amount)
     {
-        return self::withdraw_voucher($amount, CURRENCY);
+        return self::withdraw_voucher($amount, 'AUD');
     }
+}
+
+try {
+    test();
+} catch (Exception $e) {
+    echo "Error: {$e->getMessage()}";
 }
 
 ?>
