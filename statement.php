@@ -189,6 +189,8 @@ function show_statement($userid, $interval = 'forever',
             echo "<option value='all'>all users</option>\n";
         }
         echo "</select>\n";
+        echo " or UID or OpenID: ";
+        echo "<input class='nline' type='text' name='uid'>\n";
     }
 
     $use_interval = ($interval != 'forever');
@@ -627,7 +629,17 @@ if (isset($_GET['form'])) {
     $deposit_btc = $withdraw_btc = $deposit_fiat = $withdraw_fiat = $buy = $sell = true;
 }
 
-show_statement(($is_admin && isset($_GET['user'])) ? get('user') : '',
+$user = '';
+if ($is_admin) {
+    if (isset($_GET['uid']) && $_GET['uid'] != '') {
+        $user = get('uid', ':/?=_#~-');
+        if (strlen($user) > 6)
+            $user = get_uid_for_openid($user);
+    } else if (isset($_GET['user']))
+        $user = get('user');
+}
+
+show_statement($user,
                $interval,
                $from_zero,
                $deposit_btc, $withdraw_btc, $deposit_fiat, $withdraw_fiat, $buy, $sell);
