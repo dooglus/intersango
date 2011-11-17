@@ -17,11 +17,16 @@ function show_similar_codes($reference)
 {
     $reference = strtolower($reference);
 
-    $result = do_query("SELECT deposref FROM users WHERE uid > 1 ORDER BY deposref");
+    $result = do_query("
+            SELECT deposref FROM users WHERE uid > 1
+        UNION
+            SELECT deposref FROM old_deposrefs
+        ORDER BY deposref
+    ");
 
     while ($row = mysql_fetch_assoc($result)) {
         $deposref = strtolower($row['deposref']);
-        $scores[$deposref] = round((8 + similar_text($reference, $deposref) - levenshtein($reference, $deposref))*100/16);
+        $scores[$deposref] = round((9 + similar_text($reference, $deposref) - levenshtein($reference, $deposref))*100/18);
     }
 
     arsort($scores);
@@ -35,12 +40,17 @@ function show_similar_codes($reference)
                 echo "<p>" . _("Click an entry to copy it to the form below, then click 'Deposit' again.") . "</p>\n";
                 echo "<table class='display_data'>\n";
             }
+            if (strlen($deposref) == 8)
+                $formatted = sprintf("%s-%s", substr($deposref, 0, 4), substr($deposref, 4, 4));
+            else
+                $formatted = sprintf("%s-%s-%s", substr($deposref, 0, 3), substr($deposref, 3, 3), substr($deposref, 6, 3));
+
             echo "<tr",
                 " class=\"me\"",
                 " onmouseover=\"style.backgroundColor='#8ae3bf';\"",
                 " onmouseout=\"style.backgroundColor='#7ad3af';\"",
                 " onclick=\"ObjById('reference').value = '$deposref';\">";
-            echo "<td>$deposref</td><td>$score%</td></tr>\n";
+            echo "<td>$formatted</td><td>$score%</td></tr>\n";
         }
     }
 
@@ -71,7 +81,11 @@ if (isset($_POST['deposit_cash'])) {
         throw new Error("Error", "Only specify one of 'Reference' and 'User ID'");
 
     if ($reference) {
-        $query = "SELECT uid FROM users WHERE deposref='$reference'";
+        $query = "
+                SELECT uid FROM users WHERE deposref='$reference'
+            UNION
+                SELECT uid FROM old_deposrefs WHERE deposref='$reference'
+        ";
         $result = do_query($query);
         if (has_results($result)) {
             $row = get_row($result);

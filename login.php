@@ -136,7 +136,9 @@ try {
                             deposref
                         ) VALUES (
                             '$oidlogin',
-                            FLOOR(RAND() * 90000000 + 10000000)
+                            CONCAT(FLOOR(RAND() * 900 + 100),
+                                   LPAD(FLOOR(RAND() * 1000),3,'0'),
+                                   LPAD(FLOOR(RAND() * 1000),3,'0'))
                         );
                     ";
                     do_query($query);
