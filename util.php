@@ -295,6 +295,21 @@ function get_openid_for_user($uid)
     return $row['oidlogin'];
 }
 
+function get_uid_for_openid($openid)
+{
+    $result = do_query("
+        SELECT uid
+        FROM users
+        WHERE oidlogin = '$openid'
+    ");
+
+    if (!has_results($result))
+        throw new Error("Unknown User", "OpenID $openid isn't known");
+
+    $row = mysql_fetch_array($result);
+    return $row['uid'];
+}
+
 function get_account_creation_timest_for_user($uid)
 {
     $result = do_query("
@@ -502,6 +517,7 @@ function get_user_lock($uid)
 
 function cleanup_string($val, $extra='')
 {
+    $extra = str_replace('/', '\/', $extra);
     $val = preg_replace("/[^A-Za-z0-9 .$extra]/", '', $val);
     return mysql_real_escape_string($val);
 }
