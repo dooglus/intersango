@@ -1295,20 +1295,26 @@ function verify_api_request($permission_needed)
 {
     global $is_logged_in;
 
-    $headers = apache_request_headers();
+    $key = $sign = false;
 
-    if (!isset($headers['Rest-Key']))
+    if (function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+        if (isset($headers['Rest-Key'])) $key = $headers['Rest-Key'];
+        if (isset($headers['Rest-Sign'])) $sign = $headers['Rest-Sign'];
+    } else {
+        if (isset($_SERVER['HTTP_REST_KEY'])) $key = $_SERVER['HTTP_REST_KEY'];
+        if (isset($_SERVER['HTTP_REST_SIGN'])) $sign = $_SERVER['HTTP_REST_SIGN'];
+    }
+
+    if (!$key)
         throw new Exception("missing Rest-Key header - see " . str_replace('/', '&#47', SITE_URL) . "?page=api for API info");
 
-    if (!isset($headers['Rest-Sign']))
+    if (!$sign)
         throw new Exception("missing Rest-Sign header");
 
     if (!isset($_POST['nonce']))
         throw new Exception("missing nonce field in POST data");
    
-    $key = $headers['Rest-Key'];
-    $sign = $headers['Rest-Sign'];
-
     $row = api_details_for_key($key);
 
     api_update_nonce($key, $row['nonce'], post('nonce'));
