@@ -41,9 +41,9 @@ function show_similar_codes($reference)
                 echo "<table class='display_data'>\n";
             }
             if (strlen($deposref) == 8)
-                $formatted = sprintf("%s-%s", substr($deposref, 0, 4), substr($deposref, 4, 4));
+                $formatted = sprintf("%s %s", substr($deposref, 0, 4), substr($deposref, 4, 4));
             else
-                $formatted = sprintf("%s-%s-%s", substr($deposref, 0, 3), substr($deposref, 3, 3), substr($deposref, 6, 3));
+                $formatted = sprintf("%s %s %s", substr($deposref, 0, 3), substr($deposref, 3, 3), substr($deposref, 6, 3));
 
             echo "<tr",
                 " class=\"me\"",

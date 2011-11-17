@@ -19,6 +19,8 @@ if (isset($_POST['amount']) && isset($_POST['curr_type']))
 
 function show_bank_account_details($deposref)
 {
+    if (strlen($deposref) == 9)
+        $deposref = sprintf("%s %s %s (without spaces)", substr($deposref, 0, 3), substr($deposref, 3, 3), substr($deposref, 6, 3));
 ?>
     <table class='display_data'>
         <tr>
