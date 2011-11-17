@@ -2,7 +2,7 @@
 require_once "../config.php";
 require_once ABSPATH . "/util.php";
 
-function main()
+function info()
 {
     global $is_logged_in;
 
@@ -14,6 +14,6 @@ function main()
                  CURRENCY  => internal_to_numstr($balances[CURRENCY]));
 }
 
-process_api_request("main", "read");
+process_api_request("info", "read");
 
 ?>

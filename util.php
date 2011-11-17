@@ -310,6 +310,14 @@ function get_account_creation_timest_for_user($uid)
     return $row['timest'];
 }
 
+function check_verified()
+{
+    global $is_logged_in;
+
+    if (!get_verified_for_user($is_logged_in))
+        throw new Exception("Your account is not verified.  Please send a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) to AML@worldbitcoinexchange.com");
+}
+
 function get_verified_for_user($uid)
 {
     $result = do_query("
@@ -1229,6 +1237,7 @@ define('LOG_LOGIN',    5);
 define('LOG_PARAMS',   6);
 define('LOG_LOCK',     7);
 define('LOG_EMAIL',    8);
+define('LOG_API',      9);
 
 function addlog($level, $text)
 {
@@ -1326,6 +1335,8 @@ function process_api_request($function_to_run, $permission_needed)
     $lock = false;
     try {
         verify_api_request($permission_needed);
+
+        addlog(LOG_API, sprintf("%s: %s", $function_to_run, file_get_contents("php://input")));
 
         get_user_lock($lock = $is_logged_in);
 

@@ -2,7 +2,7 @@
 require_once "../config.php";
 require_once ABSPATH . "/voucher.php";
 
-function main()
+function redeemVoucher()
 {
     $voucher = post('voucher', '-');
     try {
@@ -19,6 +19,6 @@ function main()
                  "amount"   => internal_to_numstr($amount));
 }
 
-process_api_request("main", "deposit");
+process_api_request("redeemVoucher", "deposit");
 
 ?>

@@ -2,7 +2,7 @@
 require_once "../config.php";
 require_once ABSPATH . "/order_utils.php";
 
-function main()
+function cancelOrder()
 {
     global $is_logged_in;
 
@@ -11,6 +11,6 @@ function main()
     return array("status"  => "OK");
 }
 
-process_api_request("main", "trade");
+process_api_request("cancelOrder", "trade");
 
 ?>

@@ -2,7 +2,7 @@
 require_once "../config.php";
 require_once ABSPATH . "/util.php";
 
-function main()
+function getDepositAddress()
 {
     global $is_logged_in;
 
@@ -12,6 +12,6 @@ function main()
                  "address" => $address);
 }
 
-process_api_request("main", "read");
+process_api_request("getDepositAddress", "read");
 
 ?>

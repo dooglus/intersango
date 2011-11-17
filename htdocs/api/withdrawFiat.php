@@ -2,8 +2,10 @@
 require_once "../config.php";
 require_once ABSPATH . "/withdraw_utils.php";
 
-function main()
+function withdrawFiat()
 {
+    check_verified();
+
     $_POST['is_international'] = 0;
     unset($_POST['voucher']);
 
@@ -13,6 +15,6 @@ function main()
                  "reqid"   => $reqid);
 }
 
-process_api_request("main", "withdraw");
+process_api_request("withdrawFiat", "withdraw");
 
 ?>
