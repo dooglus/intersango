@@ -169,6 +169,15 @@ CONTENT
     width: 300px;
     display: block;
 }
+input[type=text].nline {
+    display:inline;
+    width:inherit;
+    margin: 0px;
+    padding: 1px;
+    border: 1px solid #000;
+    font-size: inherit;
+    font-weight: inherit;
+}
 input[type=text].voucher {
     width: 400px;
 }
