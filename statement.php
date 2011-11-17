@@ -138,7 +138,7 @@ function show_statement($userid, $interval = 'forever',
 
     $all_users = ($userid == 'all');
 
-    $create_timestamp = false;
+    $deposit_address = $create_timestamp = false;
     if ($all_users) {
         echo "<h3>" . _("Statement for All Users") . "</h3>\n";
         $check_stuff = "";
@@ -146,8 +146,12 @@ function show_statement($userid, $interval = 'forever',
         $openid = get_openid_for_user($userid);
         echo "<h3>" . sprintf(_("Statement for UID %s"), $userid) . "</h3>\n";
         $check_stuff = "uid='$userid' AND ";
-        if ($is_admin)
+        if ($is_admin) {
             $create_timestamp = get_account_creation_timest_for_user($userid);
+            try {
+                $deposit_address = bitcoin_get_account_address($userid);
+            } catch (Exception $e) { }
+        }
     }
 
     echo ("<form method='get'>\n" .
@@ -208,8 +212,11 @@ function show_statement($userid, $interval = 'forever',
     echo "</p>\n";
     echo "</form>\n";
 
-    if (!$all_users)
+    if (!$all_users) {
         echo "<p>" . _("OpenID") . ": <a href=\"$openid\">$openid</a></p>\n";
+        if ($deposit_address)
+            echo "<p>" . _("Deposit Address") . ": $deposit_address</p>\n";
+    }
 
     $query = "
         SELECT
