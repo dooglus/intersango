@@ -1,21 +1,9 @@
 <?php
 
-// get these from https://www.worldbitcoinexchange.com/?page=api
-define('API_KEY'   , 'xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx');
-define('API_SECRET', 'xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx');
-
-function test()
-{
-    $wbx = new WBX_API(API_KEY, API_SECRET);
-
-    var_dump($wbx->get_deposit_address());
-}
-
 // Authentication is performed by signing each request using
 // HMAC-SHA512. The request must contain an extra value "nonce" which
 // must be an always incrementing numeric value. A reference
 // implementation is provided here:
-
 class WBX_API
 {
     function __construct($key, $secret)
@@ -293,12 +281,6 @@ class WBX_API
     {
         return self::withdraw_voucher($amount, 'AUD');
     }
-}
-
-try {
-    test();
-} catch (Exception $e) {
-    echo "Error: {$e->getMessage()}";
 }
 
 ?>
