@@ -201,16 +201,30 @@ else {
         </form>
     </p>
     </div>
-
+<?php } ?>
     <div class='content_box'>
     <h3><?php echo _("Withdraw BTC to Voucher"); ?></h3>
-
     <p>
         <?php echo _("Alternatively, you can withdraw Bitcoins as a voucher.
         This will give you a text code which can be redeemed for
-        Bitcoins by any user of this exchange.  Specify the
-        number of Bitcoins to withdraw."); ?>
+        Bitcoins by any user of this exchange."); ?>
     </p>
+<?php
+    if (gmp_cmp($btc, $available) > 0) {
+        if ($withdrawn) {
+            echo "    <p>" . sprintf(_("You have withdrawn %s BTC today"), internal_to_numstr($withdrawn)) . "\n";
+            if (gmp_cmp($available, '0') > 0)
+                echo "    " . sprintf(_("and so can withdraw up to %s BTC more."), internal_to_numstr($available));
+            else
+                echo "    " . _("and so cannot withdraw any more until tomorrow.");
+            echo "</p>\n";
+        }
+    }
+    if (gmp_cmp($btc, '0') <= 0)
+        echo "    <p>" . _("You don't have any BTC to withdraw.") . "</p>\n";
+    else if (gmp_cmp($available, '0') > 0) {
+        echo "    <p>" . sprintf(_("Enter an amount below to withdraw.  You have %s BTC."), internal_to_numstr($btc)) . "</p>\n";
+?>
     <p>
         <form action='' class='indent_form' method='post'>
             <label for='input_amount'><?php echo _("Amount"); ?></label>
