@@ -10,6 +10,52 @@
 -->
 
 <div class='content_box'>
+<h3>New Security Measures</h3>
+<h4>11:25am 17-Oct-11 </h4>
+<p>
+Dear WBX Users,
+</p>
+<p>
+As you may be aware we have recently had to freeze trading on the
+World Bitcoin Exchange on several occasions.  We have recently been
+the victim of fraudulent activity on the exchange and so to protect
+ourselves and our customers from further fraud we have been forced to
+require our customers to identify themselves.
+</p>
+<p>
+You will still be able to deposit Bitcoins, and fiat funds over the
+counter at banks without providing identification documents, and also
+trade those funds on the exchange, but in order to use Internet
+banking transfers to deposit funds and also to withdraw funds, you
+will need to identify yourself to us.
+</p>
+<p>
+If you have not already done so, please send a copy of an
+international ID document (a current driving license is sufficient)
+plus a copy of a recent utility bill (private) or corporate
+information (company) to <a
+href=\"mailto:AML@worldbitcoinexchange.com\">AML@worldbitcoinexchange.com</a>
+also mentioning your User ID on the exchange, which you can <a
+href="?page=profile">find here</a> if you're logged in, and we will
+get back to you.  All documentation we receive is held on a secure
+data store, and will not be shared with any third party under any
+circumstance, except where WBX is legally obliged to do so.
+</p>
+<p>
+Please be aware that due to the sudden increase in identification
+requests, processing of submitted documentation has become slightly
+delayed. We thank our users for their continued patience and support
+as we adjust to the requirements which have been obligated upon WBX.
+</p>
+<p>
+Sincerely,
+</p>
+<p>
+WBX Support Team
+</p>
+</div>
+
+<div class='content_box'>
 <h3>Your Reference</h3>
 <h4>5:12pm 6-Nov-11 </h4>
 <p>
