@@ -1373,4 +1373,15 @@ function random_string($length_per_block, $num_blocks = 1, $chars_str = RANDOM_C
     return $return;
 }
 
+function format_deposref($deposref)
+{
+    if (strlen($deposref) == 8)
+        return sprintf("%s %s", substr($deposref, 0, 4), substr($deposref, 4, 4));
+
+    if (strlen($deposref) == 9)
+        return sprintf("%s %s %s", substr($deposref, 0, 3), substr($deposref, 3, 3), substr($deposref, 6, 3));
+
+    return $deposref;
+}
+
 ?>

@@ -19,8 +19,8 @@ if (isset($_POST['amount']) && isset($_POST['curr_type']))
 
 function show_bank_account_details($deposref)
 {
-    if (strlen($deposref) == 9)
-        $deposref = sprintf("%s %s %s (without spaces)", substr($deposref, 0, 3), substr($deposref, 3, 3), substr($deposref, 6, 3));
+    $deposref = format_deposref($deposref);
+    if (strpos($deposref, ' ') !== FALSE) $deposref .= _(" (without spaces)");
 ?>
     <table class='display_data'>
         <tr>
@@ -98,6 +98,7 @@ if (isset($_POST['code'])) {
     $result = do_query($query);
     $row = get_row($result);
     $deposref = $row['deposref'];
+    $formatted_deposref = format_deposref($deposref);
     $verified = get_verified_for_user($is_logged_in);
 ?>
 
@@ -129,7 +130,7 @@ if (isset($_POST['code'])) {
 <?php
     if ($verified) {
 ?>
-    <p><?php printf(_("You will need to quote <strong>%s</strong> in the transaction's reference field."), $deposref); ?></p>
+    <p><?php printf(_("You will need to quote <strong>%s</strong> in the transaction's reference field."), $formatted_deposref); ?></p>
     <?php show_bank_account_details($deposref); ?>
     <p><?php echo _("Allow 3-5 working days for payments to pass through clearing."); ?></p>
     <p><b><?php echo _("Online Banking select your bank below to login."); ?></b></p>
@@ -162,15 +163,15 @@ if (isset($_POST['code'])) {
     </div>
     <div class='content_box'>
     <h3><?php printf(_("Deposit %s Over The Counter"), CURRENCY); ?></h3>
-    <strong><p>For fast 24Hr clearing visit any ANZ bank to deposit funds.</p></strong>
+    <strong><p>For fast 24 hour clearing visit any ANZ bank to deposit funds.</p></strong>
     <?php  ?>
     <p>
 <?php
     if (ctype_digit($deposref)) {
-        echo "Please use your unique reference number ($deposref) so we know which account to credit.";
+        printf(_("Please use your unique reference number <strong>%s</strong> so we know which account to credit."), $formatted_deposref);
         $ref = $deposref;
     } else {
-        echo "Please use your User ID ($is_logged_in) as the reference so we know which account to credit.";
+        printf(_("Please use your User ID <strong>%s</strong> as the reference so we know which account to credit."), $is_logged_in);
         $ref = $is_logged_in;
     }
     show_bank_account_details($ref);

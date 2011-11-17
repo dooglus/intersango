@@ -40,10 +40,8 @@ function show_similar_codes($reference)
                 echo "<p>" . _("Click an entry to copy it to the form below, then click 'Deposit' again.") . "</p>\n";
                 echo "<table class='display_data'>\n";
             }
-            if (strlen($deposref) == 8)
-                $formatted = sprintf("%s %s", substr($deposref, 0, 4), substr($deposref, 4, 4));
-            else
-                $formatted = sprintf("%s %s %s", substr($deposref, 0, 3), substr($deposref, 3, 3), substr($deposref, 6, 3));
+
+            $formatted = format_deposref($deposref);
 
             echo "<tr",
                 " class=\"me\"",
@@ -81,10 +79,11 @@ if (isset($_POST['deposit_cash'])) {
         throw new Error("Error", "Only specify one of 'Reference' and 'User ID'");
 
     if ($reference) {
+        $ref_without_spaces = str_replace(' ', '', $reference);
         $query = "
-                SELECT uid FROM users WHERE deposref='$reference'
+                SELECT uid FROM users WHERE deposref='$ref_without_spaces'
             UNION
-                SELECT uid FROM old_deposrefs WHERE deposref='$reference'
+                SELECT uid FROM old_deposrefs WHERE deposref='$ref_without_spaces'
         ";
         $result = do_query($query);
         if (has_results($result)) {
