@@ -1417,4 +1417,9 @@ function format_deposref($deposref)
     return $deposref;
 }
 
+function encrypt_file($file, $recipients)
+{
+    exec("/usr/bin/gpg --trust-model always --recipient " . implode(' --recipient ', $recipients) . " --encrypt $file");
+}
+
 ?>
