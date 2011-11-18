@@ -36,6 +36,9 @@ input[type=text]:focus {
     border: 2px solid #8df5cb;
     margin: 8px;
 }
+input[type=file] {
+    font-size: 16px;
+}
 #exchanger {
     font-size: inherit;
     color: inherit;
@@ -192,6 +195,9 @@ input[type=text].voucher {
     margin-left: 30px;
 }
 .indent_form input[type=checkbox] {
+    margin-left: 30px;
+}
+.indent_form input[type=file] {
     margin-left: 30px;
 }
 .indent_form p {
