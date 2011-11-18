@@ -42,6 +42,7 @@ function switcher($page)
             ////////////////////////////////////////////////////////////////////////
             case 'api':
             case 'deposit':
+            case 'identity':
             case 'place_order':
             case 'profile':
             case 'statement':
