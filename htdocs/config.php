@@ -31,6 +31,9 @@ define('PROBLEM_LOGFILE',  ABSPATH . '/log-problem.txt');
 define('ERROR_LOGFILE',    ABSPATH . '/log-error.txt');
 define('BAD_PAGE_LOGFILE', ABSPATH . '/log-bad-page.txt');
 
+// where to save uploaded identity documents
+define('DOCDIR', ABSPATH . '/docs');
+
 // whether to link to bitcoincharts;  '' means don't link, otherwise use a URL like 'http://bitcoincharts.com/markets/wbxAUD.html'
 define('CHARTS_PAGE', '');
 
