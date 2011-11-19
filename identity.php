@@ -21,15 +21,22 @@ function upload_identity_doc($num)
 
     $dir = DOCDIR . "/$is_logged_in";
     @mkdir($dir, 0755);
-    $dest = $dir . "/$filename";
+    $base = "$filename";
     $index = $dir . "/00-README.txt";
 
+    $dest = $base;
+    $count = 1;
+    while (file_exists($dir . "/$dest") || file_exists($dir . "/$dest.gpg")) {
+        $count++;
+        $dest = sprintf("upload-%d-of-%s", $count, $base);
+    }
+
     $fp = fopen("$index", 'a');
-    fprintf($fp, "%-35s %-40s %s\n", date('r'), $filename, $description);
+    fprintf($fp, "%-35s %-40s %s\n", date('r'), "$dest.gpg", $description);
     fclose($fp);
 
-    @unlink($dest);
-    @unlink("$dest.gpg");
+    $dest = $dir . "/$dest";
+
     rename($source, $dest);
     encrypt_file($dest, array('dooglus@gmail.com', 'aml@worldbitcoinexchange.com'));
     @unlink($dest);
