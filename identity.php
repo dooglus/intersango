@@ -52,10 +52,21 @@ function handle_uploaded_identity_docs()
 
 function show_upload_documentation_form()
 {
+    global $is_logged_in;
+
+    if (get_verified_for_user($is_logged_in)) {
+?>
+    <div class='content_box'>
+    <h3>Already Verified</h3>
+    <p>
+    Your account is already verified.  There is no need for you to upload any more documentation.  Thank you for putting up with this inconvenience.
+    </p>
+    </div>
+<?php
+    } else {
 ?>
     <div class='content_box'>
     <h3>Upload Personal Documentation</h3>
-
     <p>
         Please upload a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) using the form below.  All uploaded documents will be encrypted and held in a secure location.
     </p>
@@ -76,6 +87,7 @@ function show_upload_documentation_form()
     </form>
     </div>
 <?php
+    }
 }
 
 if (isset($_POST['upload_doc'])) {
