@@ -1244,6 +1244,21 @@ function check_withdraw_limit($uid, $amount, $curr_type)
         check_fiat_transfer_limit($uid, $amount);
 }
 
+function btc_pending_withdrawal()
+{
+    $result = do_query("
+        SELECT SUM(amount) AS sum
+        FROM requests
+        WHERE req_type = 'WITHDR'
+        AND curr_type = 'BTC'
+        AND status = 'VERIFY'
+    ");
+    $row = get_row($result);
+    $sum = $row['sum'];
+    if (!$sum) $sum = '0';
+    return $sum;
+}
+
 define('LOG_ERROR',    0);
 define('LOG_CRONJOB',  1);
 define('LOG_WARN',     2);

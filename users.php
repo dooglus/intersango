@@ -205,6 +205,15 @@ function show_users()
                              internal_to_numstr($pending, BTC_PRECISION)) . "</p>";
     }
 
+    // take off the amount that's waiting to be withdrawn.  it's in the wallet, but not in user accounts
+    $pending_withdrawal = btc_pending_withdrawal();
+    $balance = gmp_sub($balance, $pending_withdrawal);
+
+    if ($pending_withdrawal)
+        echo "<p>" . sprintf(_("There are pending BTC withdrawals worth %s BTC, which will reduce the wallet balance to %s BTC."),
+                             internal_to_numstr($pending_withdrawal, BTC_PRECISION),
+                             internal_to_numstr($balance, BTC_PRECISION)) . "</p>";
+
     $diff = gmp_sub($t_btc_total, $balance);
 
     $cmp = gmp_cmp($diff, 0);
