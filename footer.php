@@ -28,6 +28,10 @@ function show_links($is_logged_in, $is_admin)
     if ($is_logged_in)  show_link('withdraw',    _('Withdraw'),   _('Take out money')                                  );
     show_link                    ('orderbook',   _('Orderbook'),  _('Show orders')                                     );
     if ($show_duo)      show_link('turn_on_duo', _('Security'),   _('Use two-factor authentification')                 );
+
+    if ($is_logged_in ? (!get_verified_for_user($is_logged_in)) : false)
+                        show_link('identity',    _('Identify'),   _('Upload ID to get your account verified')          );
+
     if (CHARTS_PAGE)    printf("<li><a target='_blank' href='%s'>%s</a>%s\n",
                                CHARTS_PAGE,      _('Charts'),     _('From bitcoincharts.com')                          );
     show_link                    ('help',        _('Help'),       _('Seek support')                                    );
