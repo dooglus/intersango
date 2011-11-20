@@ -333,6 +333,12 @@ function check_verified()
         throw new Exception("Your account is not verified.  Please identify yourself at " . SITE_URL . "?page=identity");
 }
 
+function verify_user($uid)
+{
+    do_query("UPDATE users SET verified = 1 WHERE uid = '$uid'");
+    return mysql_affected_rows();
+}
+
 function get_verified_for_user($uid)
 {
     $result = do_query("
