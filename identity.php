@@ -40,7 +40,7 @@ function upload_identity_doc($num)
     }
 
     $fp = fopen("$index", 'a');
-    fprintf($fp, "%-35s %-40s %s\n", date('r'), "$dest.gpg", $description);
+    fprintf($fp, "%-35s \"%s\" -- %s\n", date('r'), "$dest.gpg", $description);
     fclose($fp);
 
     $dest = $dir . "/$dest";
