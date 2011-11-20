@@ -99,7 +99,6 @@ if (isset($_POST['code'])) {
     $row = get_row($result);
     $deposref = $row['deposref'];
     $formatted_deposref = format_deposref($deposref);
-    $verified = get_verified_for_user($is_logged_in);
 ?>
 
 <div class='content_box'>
@@ -128,7 +127,7 @@ if (isset($_POST['code'])) {
     <h3><?php printf(_("Deposit %s by Bank Deposit (EFT)"), CURRENCY); ?></h3>
     <p><b><?php echo _("Depositing is free by bank deposit (EFT). You are responsible for paying any incurred fees. If your deposit is insufficient to cover bank fees then it will be denied."); ?></b></p>
 <?php
-    if ($verified) {
+    if ($is_verified) {
 ?>
     <p><?php printf(_("You will need to quote <strong>%s</strong> in the transaction's reference field."), $formatted_deposref); ?></p>
     <?php show_bank_account_details($deposref); ?>
@@ -186,7 +185,7 @@ if (isset($_POST['code'])) {
         echo "    <p>" . sprintf(_("You can deposit to %s"), "<b>$addy</b>") . "</p>\n";
         echo "    <p>" . _("The above address is specific to your account.  Each time you deposit, a new address will be generated for you.") . "</p>\n";
         echo "    <p>" . sprintf(_("It takes %s confirmations before funds are added to your account."), CONFIRMATIONS_FOR_DEPOSIT) . "</p>\n";
-        if (!$verified)
+        if (!$is_verified)
             echo "    <p>Note that you will be able to deposit BTC and trade them back and forth for AUD, but until you send a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) to <a href=\"mailto:AML@worldbitcoinexchange.com\">AML@worldbitcoinexchange.com</a>, you will be unable to make any withdrawls.</p>\n";
     } else
         echo "    <p>" . _("We are currently experiencing trouble connecting to the Bitcoin network.  Please try again in a few minutes.") . "</p>\n";

@@ -59,9 +59,9 @@ function handle_uploaded_identity_docs()
 
 function show_upload_documentation_form()
 {
-    global $is_logged_in;
+    global $is_logged_in, $is_verified;
 
-    if (get_verified_for_user($is_logged_in)) {
+    if ($is_verified) {
 ?>
     <div class='content_box'>
     <h3>Already Verified</h3>

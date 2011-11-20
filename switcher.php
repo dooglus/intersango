@@ -4,7 +4,7 @@ defined('_we_are_one') || die('Direct access not allowed.');
 
 function switcher($page)
 {
-    global $is_logged_in, $is_admin;
+    global $is_logged_in, $is_admin, $is_verified;
 
     try {
         $lock = false;
@@ -119,7 +119,7 @@ function switcher($page)
         echo "<p>{$e->getMessage()}</p></div>";
     }
 
-    show_footer($is_logged_in, $is_admin);
+    show_footer($is_logged_in, $is_admin, $is_verified);
 
     if ($lock) release_lock($lock);
 }

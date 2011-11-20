@@ -247,7 +247,7 @@ $oidlogin = '';
 
 function get_login_status()
 {
-    global $is_logged_in, $is_admin, $oidlogin;
+    global $is_logged_in, $is_admin, $is_verified, $oidlogin;
 
     if (!isset($_SESSION['uid']) || !isset($_SESSION['oidlogin'])) {
         list ($is_logged_in, $is_admin, $oidlogin) = array(0, false, '');
@@ -260,7 +260,7 @@ function get_login_status()
     $oid = $_SESSION['oidlogin'];
 
     $result = do_query("
-        SELECT is_admin
+        SELECT is_admin, verified
         FROM users
         WHERE oidlogin = '$oid'
         AND uid = '$uid'
@@ -268,12 +268,12 @@ function get_login_status()
 
     if (has_results($result)) {
         $row = mysql_fetch_array($result);
-        list ($is_logged_in, $is_admin, $oidlogin) = array($uid, $row['is_admin'] == '1', $oid);
+        list ($is_logged_in, $is_admin, $is_verified, $oidlogin) = array($uid, $row['is_admin'] == '1', $row['verified'] == '1', $oid);
         return;
     }
 
     if (isset($_GET['fancy'])) {
-        list ($is_logged_in, $is_admin, $oidlogin) = array(0, false, '');
+        list ($is_logged_in, $is_admin, $is_verified, $oidlogin) = array(0, false, false, '');
         return;
     }
 
@@ -327,9 +327,9 @@ function get_account_creation_timest_for_user($uid)
 
 function check_verified()
 {
-    global $is_logged_in;
+    global $is_verified;
 
-    if (!get_verified_for_user($is_logged_in))
+    if (!$is_verified)
         throw new Exception("Your account is not verified.  Please send a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) to AML@worldbitcoinexchange.com");
 }
 
@@ -1293,7 +1293,8 @@ function api_details_for_key($key)
 {
     $result = do_query("
         SELECT
-            uid,
+            api_keys.uid as uid,
+            verified,
             name,
             secret,
             can_read,
@@ -1303,6 +1304,10 @@ function api_details_for_key($key)
             nonce
         FROM
             api_keys
+        JOIN
+            users
+        ON
+            api_keys.uid = users.uid
         WHERE
             api_key = '$key'
     ");
@@ -1324,7 +1329,7 @@ function api_update_nonce($key, $old_nonce, $new_nonce)
 
 function verify_api_request($permission_needed)
 {
-    global $is_logged_in;
+    global $is_logged_in, $is_verified;
 
     $key = $sign = false;
 
@@ -1351,6 +1356,7 @@ function verify_api_request($permission_needed)
     api_update_nonce($key, $row['nonce'], post('nonce'));
 
     $is_logged_in = $row['uid'];
+    $is_verified = $row['verified'];
 
     $check = base64_encode(hash_hmac('sha512',
                                      file_get_contents("php://input"),

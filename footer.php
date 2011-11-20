@@ -9,7 +9,7 @@ function show_link($page, $title, $text, $admin=0)
     echo URLROOT, "?page=$page'>$title</a>$text</li>\n";
 }
 
-function show_links($is_logged_in, $is_admin)
+function show_links($is_logged_in, $is_admin, $is_verified)
 {
     $show_duo = 0;
     if ($is_logged_in) {
@@ -29,7 +29,7 @@ function show_links($is_logged_in, $is_admin)
     show_link                    ('orderbook',   _('Orderbook'),  _('Show orders')                                     );
     if ($show_duo)      show_link('turn_on_duo', _('Security'),   _('Use two-factor authentification')                 );
 
-    if ($is_logged_in ? (!get_verified_for_user($is_logged_in)) : false)
+    if ($is_logged_in && !$is_verified)
                         show_link('identity',    _('Identify'),   _('Upload ID to get your account verified')          );
 
     if (CHARTS_PAGE)    printf("<li><a target='_blank' href='%s'>%s</a>%s\n",
@@ -46,7 +46,7 @@ function show_links($is_logged_in, $is_admin)
     echo "<br/><g:plusone annotation=\"bubble\" href=\"https://www.worldbitcoinexchange.com/\"></g:plusone>\n";
 }
 
-function show_footer($is_logged_in, $is_admin)
+function show_footer($is_logged_in, $is_admin, $is_verified)
 {
     if (isset($_GET['fancy'])) {
         echo "</div></body></html>\n";
@@ -59,7 +59,7 @@ function show_footer($is_logged_in, $is_admin)
     </div>
     <div id='links'>
         <ul>
-<?php show_links($is_logged_in, $is_admin); ?>
+<?php show_links($is_logged_in, $is_admin, $is_verified); ?>
         </ul>
     </div>
     <!--<div id='languages'>

@@ -19,4 +19,4 @@ show_header('api', $is_logged_in, URLROOT);
         <li><a href="api/ticker.php">ticker.php</a><br/>
     </ul>
 </div>
-<?php show_footer($is_logged_in, $is_admin); ?>
+<?php show_footer($is_logged_in, $is_admin, $is_verified); ?>
