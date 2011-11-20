@@ -257,8 +257,8 @@ class WBX_API
     // needs permission: withdraw
     //
     // in:
-    //     currency: BTC or AUD
     //     amount: decimal amount to withdraw
+    //     currency: BTC or AUD
     //
     // out:
     //     status:  "OK" if successful
