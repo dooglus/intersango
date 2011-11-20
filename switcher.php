@@ -13,7 +13,7 @@ function switcher($page)
             $page = 'junk';
 
         // delay showing the header when logging in until we know whether the login worked or not
-        if ($page != 'login' && $page != 'graph')
+        if ($page != 'download' && $page != 'login' && $page != 'graph')
             show_header($page, $is_logged_in);
 
         if ($is_logged_in)
@@ -59,9 +59,11 @@ function switcher($page)
             ////////////////////////////////////////////////////////////////////////
             // for admin only
             ////////////////////////////////////////////////////////////////////////
+            case 'add_cash':
             case 'bank':
             case 'commission':
-            case 'add_cash':
+            case 'docs':
+            case 'download':
             case 'freeze':
             case 'users':
                 if ($is_admin)
