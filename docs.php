@@ -1,18 +1,12 @@
 <?php
 
-if(isset($_POST['uid']))
-{
-    if(isset($_POST['csrf_token']))
-    {
-        if($_SESSION['csrf_token'] != $_POST['csrf_token'])
-        {
+if (isset($_POST['uid'])) {
+    if (isset($_POST['csrf_token'])) {
+        if ($_SESSION['csrf_token'] != $_POST['csrf_token'])
             throw new Error("csrf","csrf token mismatch!");
-        }
     }
     else
-    {
         throw new Error("csrf","csrf token missing!");
-    }
 }
 
 function show_user_documents_for_user($uid)
@@ -49,7 +43,7 @@ function show_user_documents_for_user($uid)
     echo "<form action='' method='post'>\n";
     echo "<input type='hidden' name='csrf_token' value=\"" . $_SESSION['csrf_token'] . "\" />\n";
     echo "<input type='hidden' name='verify' value='$uid' />\n";
-    echo "<input type='submit' value='* verify user $uid *' />\n";
+    echo "<input type='submit' value='* VERIFY USER $uid *' />\n";
     echo "</form>\n";
 
     echo "</p>\n";
@@ -60,7 +54,6 @@ function show_user_documents()
 ?>
     <div class='content_box'>
     <h3>User Documents (newest first)</h3>
-    <p>
 
 <?php
     $users = array();
@@ -71,21 +64,26 @@ function show_user_documents()
     $dir = ABSPATH . "/docs";
     $dp = opendir($dir);
     $candidates = array();
+    $first = true;
     while ($uid = readdir($dp)) {
         if (!in_array($uid, $users)) continue;
         $path = "$dir/$uid";
         if (!is_dir($path)) continue;
+        $first = false;
         $candidates[$uid] = filemtime($path);
     }
 
-    // newest first
-    arsort($candidates);
+    if ($first)
+        echo "<p>There are no documents pending review.</p>\n";
+    else {
+        // newest first
+        arsort($candidates);
 
-    foreach ($candidates as $uid => $mtime)
-        show_user_documents_for_user($uid);
+        foreach ($candidates as $uid => $mtime)
+            show_user_documents_for_user($uid);
+    }
 ?>
 
-    </p>
     </div>
 <?php
 }
