@@ -330,7 +330,7 @@ function check_verified()
     global $is_verified;
 
     if (!$is_verified)
-        throw new Exception("Your account is not verified.  Please send a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) to AML@worldbitcoinexchange.com");
+        throw new Exception("Your account is not verified.  Please identify yourself at " . SITE_URL . "?page=identity");
 }
 
 function get_verified_for_user($uid)

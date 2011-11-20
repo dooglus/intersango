@@ -74,8 +74,23 @@ function show_upload_documentation_form()
 ?>
     <div class='content_box'>
     <h3>Upload Personal Documentation</h3>
+<?php
+    $readme = ABSPATH . "/docs/$is_logged_in/00-README.txt";
+    if (file_exists($readme)) {
+        echo "<p>You have already uploaded the following:</p><pre>\n";
+        $fp = fopen($readme, 'r');
+        while ($line = fgets($fp)) {
+            $line = rtrim($line);
+            $line = substr($line, 35);
+            echo "    $line\n";
+        }
+        echo "</pre>\n";
+        echo "<p>The upload form is available below if you need to upload more.</p>\n";
+    }
+?>
     <p>
-        Please upload a copy of an international ID document plus a copy of a recent utility bill (private) or corporate information (company) using the form below.  All uploaded documents will be encrypted and held in a secure location.
+        Please upload a copy of an international ID document (a current driving license is sufficient) plus a copy of a recent utility bill (private) or corporate information (company) using the form below.  All documentation we receive is immediately encrytped and held on a secure
+data store.  We will not share your documents with any third party under any circumstance, except where we WBX are legally obliged to do so.
     </p>
     <p>
         Alternatively you may email your documents to <a href="mailto:AML@worldbitcoinexchange.com">AML@worldbitcoinexchange.com</a>.  If you wish to use <a target="_blank" href="http://www.gnupg.org/">GPG encryption</a>, our key is <a target="_blank" href="http://pgp.mit.edu:11371/pks/lookup?op=vindex&search=0x7C5A1FADF88105BD">F88105BD</a> with fingerprint C0BF 6C02 E06D AA59 15D8  B982 7C5A 1FAD F881 05BD.

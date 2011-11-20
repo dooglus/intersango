@@ -27,19 +27,7 @@ You will still be able to deposit Bitcoins, and fiat funds over the
 counter at banks without providing identification documents, and also
 trade those funds on the exchange, but in order to use Internet
 banking transfers to deposit funds and also to withdraw funds, you
-will need to identify yourself to us.
-</p>
-<p>
-If you have not already done so, please send a copy of an
-international ID document (a current driving license is sufficient)
-plus a copy of a recent utility bill (private) or corporate
-information (company) to <a
-href=\"mailto:AML@worldbitcoinexchange.com\">AML@worldbitcoinexchange.com</a>
-also mentioning your User ID on the exchange, which you can <a
-href="?page=profile">find here</a> if you're logged in, and we will
-get back to you.  All documentation we receive is held on a secure
-data store, and will not be shared with any third party under any
-circumstance, except where WBX is legally obliged to do so.
+will need to <a href="?page=identity">identify yourself</a> to us.
 </p>
 <p>
 Please be aware that due to the sudden increase in identification
