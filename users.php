@@ -25,8 +25,7 @@ function handle_verify_user_request()
             if ($verified)
                 echo "<p>User $uid was already verified.  Any more?</p>\n";
             else {
-                do_query("UPDATE users SET verified = 1 WHERE uid = '$uid'");
-                if (mysql_affected_rows() == 1)
+                if (verify_user($uid) == 1)
                     echo "<p>Verified user $uid.  Any more?</p>\n";
                 else
                     throw new Error("Unknown Error", "This shouldn't happen.  Please report it.");
