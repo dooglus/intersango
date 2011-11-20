@@ -145,9 +145,9 @@ function show_content_header_balances($uid)
 
 function show_content_header_identify_link()
 {
-    global $is_verified;
+    global $is_logged_in, $is_verified;
 
-    if (!$is_verified) {
+    if ($is_logged_in && !$is_verified) {
         echo "    <div class='content_header_box'>\n";
         echo "        " . SPACE .
             sprintf(_("you are logged in, but need to %sconfirm your ID%s before you can withdraw funds"),
