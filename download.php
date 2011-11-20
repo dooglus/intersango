@@ -3,7 +3,7 @@
 function download_user_document()
 {
     $uid = post('uid');
-    $file = post('file');
+    $file = post('file', '-');
 
     $path = ABSPATH . "/docs/$uid/$file";
 
