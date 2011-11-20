@@ -1,5 +1,20 @@
 <?php
 
+if (isset($_POST['upload_doc'])) {
+{
+    if(isset($_POST['csrf_token']))
+    {
+        if($_SESSION['csrf_token'] != $_POST['csrf_token'])
+        {
+            throw new Error("csrf","csrf token mismatch!");
+        }
+    }
+    else
+    {
+        throw new Error("csrf","csrf token missing!");
+    }
+}
+
 function upload_identity_doc($num)
 {
     global $is_logged_in;
