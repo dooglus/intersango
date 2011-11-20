@@ -35,6 +35,7 @@ function show_links($is_logged_in, $is_admin, $is_verified)
     if (CHARTS_PAGE)    printf("<li><a target='_blank' href='%s'>%s</a>%s\n",
                                CHARTS_PAGE,      _('Charts'),     _('From bitcoincharts.com')                          );
     show_link                    ('help',        _('Help'),       _('Seek support')                                    );
+    if ($is_admin)      show_link('docs',        _('Docs'),       _('Show docs from unverified users'),               1);
     if ($is_admin)      show_link('users',       _('Users'),      _('Show registered users'),                         1);
     if ($is_admin)      show_link('add_cash',    _('Add cash'),   _('Deposit using bank statement'),                  1);
     if ($is_admin)      show_link('commission',  _('Commission'), _('Show commission statement'),                     1);
