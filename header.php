@@ -143,7 +143,20 @@ function show_content_header_balances($uid)
     echo "    </div>\n";
 }
 
-function show_content_news()
+function show_content_header_identify_link()
+{
+    global $is_verified;
+
+    if (!$is_verified) {
+        echo "    <div class='content_header_box'>\n";
+        echo "        " . SPACE .
+            sprintf(_("you are logged in, but need to %sconfirm your ID%s before you can withdraw funds"),
+                    '<a href="?page=identity">', '</a>') . "\n";
+        echo "    </div>\n";
+    }
+}
+
+function show_content_header_news()
 {
     // echo "    <div class='content_header_box'>\n";
     // echo "        " . SPACE . "We're back up after a server error.  The exchange will be frozen until 9pm server time.\n";
@@ -228,7 +241,8 @@ function show_content_header($is_logged_in)
         if ($is_logged_in)
             show_content_header_balances($is_logged_in);
 
-        show_content_news();
+        show_content_header_news();
+        show_content_header_identify_link();
 
         show_content_header_frozen();
     } catch (Error $a) {
