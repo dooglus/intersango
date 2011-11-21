@@ -6,7 +6,6 @@ include_once "bank/bank_config.php";
 // instantiate the Xero class with your key, secret and paths to your RSA cert and key
 // the last argument is optional and may be either "xml" or "json" (default)
 // "xml" will give you the result as a SimpleXMLElement object, while 'json' will give you a plain array object
-$xero = new Xero(XERO_KEY, XERO_SECRET, ABSPATH . "/bank/publickey.cer", ABSPATH . "/bank/privatekey.pem", 'json');
 
 function list_accounts($xero)
 {
@@ -118,6 +117,7 @@ function show_withdrawals()
 $from = "&fromDate=1 Jan 2011";
 // $to = "&toDate=31 Dec 2011";
 
+// $xero = new Xero(XERO_KEY, XERO_SECRET, ABSPATH . "/bank/publickey.cer", ABSPATH . "/bank/privatekey.pem", 'json');
 // show_statement($xero, ACCOUNT, $from);
 // list_accounts($xero);
 show_withdrawals();
