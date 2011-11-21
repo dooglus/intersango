@@ -56,6 +56,7 @@ function upload_identity_doc($num)
 
 function handle_uploaded_identity_docs()
 {
+    global $is_logged_in;
 ?>
     <div class='content_box'>
     <h3>Upload Results</h3>
@@ -64,10 +65,11 @@ function handle_uploaded_identity_docs()
     for ($i = 0; $i < ID_FILE_UPLOAD_SLOTS; $i++)
         $uploaded += upload_identity_doc($i);
 
-    echo "<p>" . _("Documents uploaded") . ": $uploaded</p>\n"
-?>
-    </div>
-<?php
+    echo "<p>" . _("Documents uploaded") . ": $uploaded</p>\n";
+    echo "</div>\n";
+    email_tech(_("User Uploaded New Identity Documents"),
+               sprintf(_("User %s uploaded %s new file(s)."),
+                       $is_logged_in, $uploaded));
 }
 
 function show_upload_documentation_form()
