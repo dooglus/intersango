@@ -9,7 +9,7 @@ if (isset($_POST['uid'])) {
         throw new Error("csrf","csrf token missing!");
 }
 
-function show_user_documents_for_user($uid)
+function show_user_documents_for_user($uid, $verified)
 {
     $dir = ABSPATH . "/docs/$uid";
     echo "<h3>$uid</h3>\n";
@@ -42,8 +42,8 @@ function show_user_documents_for_user($uid)
 
     echo "<form action='' method='post'>\n";
     echo "<input type='hidden' name='csrf_token' value=\"" . $_SESSION['csrf_token'] . "\" />\n";
-    echo "<input type='hidden' name='verify' value='$uid' />\n";
-    echo "<input type='submit' value='* VERIFY USER $uid *' />\n";
+    printf("<input type='hidden' name='%s' value='%s' />\n", ($verified ? 'unverify' : 'verify'), $uid);
+    printf("<input type='submit' value='* %s USER %s *' />\n", ($verified ? 'UNVERIFY' : 'VERIFY'), $uid);
     echo "</form>\n";
 
     echo "</p>\n";
@@ -51,13 +51,17 @@ function show_user_documents_for_user($uid)
 
 function show_user_documents()
 {
-?>
-    <div class='content_box'>
-    <h3>User Documents (newest first)</h3>
+    echo "<div class='content_box'>\n";
+    echo "<h3>User Documents (newest first)</h3>\n";
 
-<?php
+    $verified = isset($_GET['verified']) ? 1 : 0;
+    if ($verified)
+        echo "<p><a href=\"?page=docs\">View docs for unverified users</a></p>\n";
+    else
+        echo "<p><a href=\"?page=docs&verified\">View docs for verified users</a></p>\n";
+
     $users = array();
-    $result = do_query("SELECT uid FROM users WHERE verified = 0");
+    $result = do_query("SELECT uid FROM users WHERE verified = $verified");
     while ($row = mysql_fetch_array($result))
         array_push($users, $row['uid']);
 
@@ -73,14 +77,17 @@ function show_user_documents()
         $candidates[$uid] = filemtime($path);
     }
 
-    if ($first)
-        echo "<p>There are no documents pending review.</p>\n";
-    else {
+    if ($first) {
+        if ($verified)
+            echo "<p>" . _("There are no documents for verified users.") . "</p>\n";
+        else
+            echo "<p>" . _("There are no documents pending review.") . "</p>\n";
+    } else {
         // newest first
         arsort($candidates);
 
         foreach ($candidates as $uid => $mtime)
-            show_user_documents_for_user($uid);
+            show_user_documents_for_user($uid, $verified);
     }
 ?>
 
@@ -90,6 +97,8 @@ function show_user_documents()
 
 if (isset($_POST['verify']))
     verify_user(post('verify'));
+else if (isset($_POST['unverify']))
+    unverify_user(post('unverify'));
     
 show_user_documents();
 
