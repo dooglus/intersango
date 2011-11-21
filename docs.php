@@ -21,10 +21,10 @@ function show_user_documents_for_user($uid)
         while ($line = fgets($fp)) {
             $line = rtrim($line);
             // echo "    $line\n";
-            $line = substr($line, 0, 25) . substr($line, 35);
+            // $line = substr($line, 0, 25) . substr($line, 35);
             echo "  $line\n";
         }
-        echo "</pre><br/>\n";
+        echo "</pre>\n";
     }
 
     echo "<p>\n";

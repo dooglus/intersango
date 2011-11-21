@@ -40,7 +40,7 @@ function upload_identity_doc($num)
     }
 
     $fp = fopen("$index", 'a');
-    fprintf($fp, "%-35s \"%s\" -- %s\n", date('r'), "$dest.gpg", $description);
+    fprintf($fp, "%s\n  %s\n    %s\n\n", date('r'), "$dest.gpg", $description);
     fclose($fp);
 
     $dest = $dir . "/$dest";
@@ -94,10 +94,10 @@ function show_upload_documentation_form()
         $fp = fopen($readme, 'r');
         while ($line = fgets($fp)) {
             $line = rtrim($line);
-            $line = substr($line, 35);
+            // $line = substr($line, 35);
             echo "    $line\n";
         }
-        echo "</pre><br/>\n";
+        echo "</pre>\n";
         echo "<p>The upload form is available below if you need to upload more.</p>\n";
     }
 ?>
