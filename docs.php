@@ -51,14 +51,16 @@ function show_user_documents_for_user($uid, $verified)
 
 function show_user_documents()
 {
-    echo "<div class='content_box'>\n";
-    echo "<h3>User Documents (newest first)</h3>\n";
-
     $verified = isset($_GET['verified']) ? 1 : 0;
-    if ($verified)
+    if ($verified) {
+        echo "<div class='content_box'>\n";
+        echo "<h3>User Documents for Verified Users</h3>\n";
         echo "<p><a href=\"?page=docs\">View docs for unverified users</a></p>\n";
-    else
+    } else {
+        echo "<div class='content_box'>\n";
+        echo "<h3>User Documents for New Users</h3>\n";
         echo "<p><a href=\"?page=docs&verified\">View docs for verified users</a></p>\n";
+    }
 
     $users = array();
     $result = do_query("SELECT uid FROM users WHERE verified = $verified");
@@ -83,8 +85,11 @@ function show_user_documents()
         else
             echo "<p>" . _("There are no documents pending review.") . "</p>\n";
     } else {
-        // newest first
-        arsort($candidates);
+        // newest first for pending docs, else in order of UID
+        if ($verified)
+            ksort($candidates);
+        else
+            arsort($candidates);
 
         foreach ($candidates as $uid => $mtime)
             show_user_documents_for_user($uid, $verified);
