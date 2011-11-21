@@ -16,11 +16,11 @@ function upload_identity_doc($num)
     $description = post("description$num");
 
     if (!isset($_FILES[$file]))
-        return false;
+        return 0;
 
     $info = $_FILES[$file];
     if ($info['error'])
-        return false;
+        return 0;
 
     $filename = cleanup_string(basename($info['name']));
     $type = $info['type'];
@@ -50,6 +50,8 @@ function upload_identity_doc($num)
     @unlink($dest);
 
     echo "<p>File '$filename' was uploaded and encrypted successfully.</p>\n";
+
+    return 1;
 }
 
 function handle_uploaded_identity_docs()
@@ -58,11 +60,11 @@ function handle_uploaded_identity_docs()
     <div class='content_box'>
     <h3>Upload Results</h3>
 <?php
-    upload_identity_doc(1);
-    upload_identity_doc(2);
-    upload_identity_doc(3);
-    upload_identity_doc(4);
-    upload_identity_doc(5);
+    $uploaded = 0;
+    for ($i = 0; $i < ID_FILE_UPLOAD_SLOTS; $i++)
+        $uploaded += upload_identity_doc($i);
+
+    echo "<p>" . _("Documents uploaded") . ": $uploaded</p>\n"
 ?>
     </div>
 <?php
@@ -125,21 +127,13 @@ function show_upload_documentation_form()
     <form action='' class='indent_form' method='post' enctype='multipart/form-data' id='foo'>
     <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
     <input type='hidden' name='upload_doc' value='true' />
-    <label for='file1'>File 1:</label><input type='file' id='file1' name='file1'>
-    <label for='description1'>Description: </label><input style='width: 680px;' type='text' id='description1' name='description1'>
-    <br/>
-    <label for='file2'>File 2:</label><input type='file' id='file2' name='file2'>
-    <label for='description2'>Description: </label><input style='width: 680px;' type='text' id='description2' name='description2'>
-    <br/>
-    <label for='file3'>File 3:</label><input type='file' id='file3' name='file3'>
-    <label for='description3'>Description: </label><input style='width: 680px;' type='text' id='description3' name='description3'>
-    <br/>
-    <label for='file4'>File 4:</label><input type='file' id='file4' name='file4'>
-    <label for='description4'>Description: </label><input style='width: 680px;' type='text' id='description4' name='description4'>
-    <br/>
-    <label for='file5'>File 5:</label><input type='file' id='file5' name='file5'>
-    <label for='description5'>Description: </label><input style='width: 680px;' type='text' id='description5' name='description5'>
-    <br/>
+<?php
+    for ($i = 0; $i < ID_FILE_UPLOAD_SLOTS; $i++) {
+        echo "    <label for='file$i'>File " . ($i+1) . ":</label><input type='file' id='file$i' name='file$i'>\n";
+        echo "    <label for='description$i'>Description: </label><input style='width: 680px;' type='text' id='description$i' name='description$i'>\n";
+        echo "    <br/>\n";
+    }
+?>
     <input type='submit' />
     </form>
     </div>
