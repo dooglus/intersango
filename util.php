@@ -339,6 +339,12 @@ function verify_user($uid)
     return mysql_affected_rows();
 }
 
+function unverify_user($uid)
+{
+    do_query("UPDATE users SET verified = 0 WHERE uid = '$uid'");
+    return mysql_affected_rows();
+}
+
 function get_verified_for_user($uid)
 {
     $result = do_query("

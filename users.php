@@ -1,24 +1,65 @@
 <?php
 
+if (isset($_POST['verify_user']) || isset($_POST['unverify_user']))
+    if (isset($_POST['csrf_token'])) {
+        if ($_SESSION['csrf_token'] != $_POST['csrf_token'])
+            throw new Error("csrf","csrf token mismatch!");
+    }
+    else
+        throw new Error("csrf","csrf token missing!");
+
 function show_verify_user_form()
 {
+    handle_verify_user_request();
+
     echo "<div class='content_box'>\n";
     echo "  <h3>" . _("Verify User") . "</h3>\n";
 
-    handle_verify_user_request();
-
     echo "  <form action='' class='indent_form' method='post'>\n";
     echo "    <input type='hidden' name='verify_user' value='true' />\n";
+    echo "    <input type='hidden' name='csrf_token' value=\"" . $_SESSION['csrf_token'] . "\" />\n";
     echo "    <label for='uid'>" . _("User ID") . "</label>\n";
     echo "    <input id='uid' type='text' name='uid' />\n";
     echo "    <input type='submit' value='Verify User' />\n";
+    echo "  </form>\n";
+
+    echo "<div class='content_box'>\n";
+    echo "  <h3>" . _("Unverify User") . "</h3>\n";
+
+    echo "  <form action='' class='indent_form' method='post'>\n";
+    echo "    <input type='hidden' name='unverify_user' value='true' />\n";
+    echo "    <input type='hidden' name='csrf_token' value=\"" . $_SESSION['csrf_token'] . "\" />\n";
+    echo "    <label for='uid'>" . _("User ID") . "</label>\n";
+    echo "    <input id='uid' type='text' name='uid' />\n";
+    echo "    <input type='submit' value='Unverify User' />\n";
     echo "  </form>\n";
     echo "</div>\n";
 }
 
 function handle_verify_user_request()
 {
-    if (isset($_POST['verify_user'])) {
+    if (isset($_POST['unverify_user'])) {
+        echo "<div class='content_box'>\n";
+        echo "  <h3>" . _("Results") . "</h3>\n";
+
+        $uid = post('uid');
+        try {
+            $verified = get_verified_for_user($uid);
+            if (!$verified)
+                echo "<p>User $uid was not already verified.  Any more?</p>\n";
+            else {
+                if (unverify_user($uid) == 1)
+                    echo "<p>Unverified user $uid.  Any more?</p>\n";
+                else
+                    throw new Error("Unknown Error", "This shouldn't happen.  Please report it.");
+            }
+        } catch (Exception $e) {
+            echo "<p>{$e->getMessage()}.  Try again?</p>\n";
+        }
+    } else if (isset($_POST['verify_user'])) {
+        echo "<div class='content_box'>\n";
+        echo "  <h3>" . _("Results") . "</h3>\n";
+
         $uid = post('uid');
         try {
             $verified = get_verified_for_user($uid);
