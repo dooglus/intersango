@@ -2,7 +2,7 @@
 
 <div class='content_box'>
 <h3>...</h3>
-<h4>..:..am ..-Oct-11 </h4>
+<h4>..:..am ..-Oct-11</h4>
 <p>
 ...
 </p>
@@ -10,8 +10,24 @@
 -->
 
 <div class='content_box'>
+<h3>Site Updates</h3>
+<h4>6:54pm 22-Nov-11</h4>
+<p>
+     Made a few updates to the site:
+</p>
+<ul>
+    <li>Added a page to allow you to upload your identification documents in a secure manner, rather than expecting you to email them.
+    <li>Add options on the login page:
+    <ul>
+        <li>"remember OpenID identifier on this computer"
+        <li>"automatically log in"
+    </ul>
+</ul>
+</div>
+     
+<div class='content_box'>
 <h3>New Security Measures</h3>
-<h4>11:25am 17-Oct-11 </h4>
+<h4>11:25am 17-Oct-11</h4>
 <p>
 Dear WBX Users,
 </p>
@@ -45,7 +61,7 @@ WBX Support Team
 
 <div class='content_box'>
 <h3>Your Reference</h3>
-<h4>5:12pm 6-Nov-11 </h4>
+<h4>5:12pm 6-Nov-11</h4>
 <p>
 You can now specify an optional 'reference' field when withdrawing AUD.  This will appear on your bank statements.
 </p>
@@ -74,7 +90,7 @@ We just caught up with Trade Hill in terms of the total amount traded over the l
 
 <div class='content_box'>
 <h3>New Bank Account for Deposits</h3>
-<h4>8:30am 30-Oct-11 </h4>
+<h4>8:30am 30-Oct-11</h4>
 <p>
 We have had to change to a new bank account.  The bank was charging us extortionate fees for every tranaction over some poorly advertised limit, so we switched to an "unlimited transaction" account.  For a fee, of course.  Don't you just love banks?  As a result the account number on the '<a href="?page=deposit">Deposit</a>' page has changed.  Please update your records.
 </p>
@@ -82,7 +98,7 @@ We have had to change to a new bank account.  The bank was charging us extortion
 
 <div class='content_box'>
 <h3>All Systems Go</h3>
-<h4>9:04pm 29-Oct-11 </h4>
+<h4>9:04pm 29-Oct-11</h4>
 <p>
 We're fully back up and running now.  Thanks for your patience.
 </p>
@@ -90,7 +106,7 @@ We're fully back up and running now.  Thanks for your patience.
 
 <div class='content_box'>
 <h3>Server Error Causes Site Outage</h3>
-<h4>11:50am 29-Oct-11 </h4>
+<h4>11:50am 29-Oct-11</h4>
 <p>
 The site was down for the last 16 hours or so due to a fault on the server.
 </p>
@@ -107,7 +123,7 @@ Sorry for any inconvenience caused by this outage.
 
 <div class='content_box'>
 <h3>Filters on the Statement page</h3>
-<h4>11:38:am 23-Oct-11 </h4>
+<h4>11:38:am 23-Oct-11</h4>
 <p>
 You can now filter your <a href="?page=statement">statement</a> to only show certain types of entries using the checkboxes at the top of the statement.  As an example, you can show <a href="?page=statement&interval=1+month&form=1&dbtc=1&wbtc=1&dfiat=1&wfiat=1&fromz=1">all deposits and withdrawals for the last month</a>.
 </p>
@@ -115,7 +131,7 @@ You can now filter your <a href="?page=statement">statement</a> to only show cer
 
 <div class='content_box'>
 <h3>Better bitcoind Uptime</h3>
-<h4>4:09am 17-Oct-11 </h4>
+<h4>4:09am 17-Oct-11</h4>
 <p>
 An issue with the stability of bitcoind process has been fixed.  The random outages in the evenings should now stop.
 </p>
@@ -123,7 +139,7 @@ An issue with the stability of bitcoind process has been fixed.  The random outa
 
 <div class='content_box'>
 <h3>Biggest Aussie Exchange!</h3>
-<h4>10:29am 16-Oct-11 </h4>
+<h4>10:29am 16-Oct-11</h4>
 <p>
 We've only been open for business for two months, but have already overtaken all the the other Bitcoin exchanges dealing with Australia dollars in terms of volume.  Here are the latest volume stats (BTC traded) from bitcoincharts.com:
 </p>
@@ -144,7 +160,7 @@ We've only been open for business for two months, but have already overtaken all
 
 <div class='content_box'>
 <h3>Better Matching Code</h3>
-<h4>11:17am 13-Oct-11 </h4>
+<h4>11:17am 13-Oct-11</h4>
 <p>
      I just made a tweak to the matching algorithm.  If you ever clicked on the best available offer on the trade page and submitted it only to find that your order just sat in the orderbook not matching the order you clicked, then this is for you.
 </p>
@@ -152,7 +168,7 @@ We've only been open for business for two months, but have already overtaken all
 
 <div class='content_box'>
 <h3>Google +1 Button</h3>
-<h4>9:42pm 12-Oct-11 </h4>
+<h4>9:42pm 12-Oct-11</h4>
 <p>
      There's a new "+1" button under the links in the right-hand panel for Google+ users.  It allows you to recommend the exchange to your Google contacts.
 </p>
