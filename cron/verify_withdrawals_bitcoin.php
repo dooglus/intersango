@@ -85,6 +85,10 @@ try {
         $addy = $row['addy'];
         $we_have = bitcoin_get_balance("*", CONFIRMATIONS_FOR_DEPOSIT);
 
+        // add on anything we've recently sent from offline storage but which isn't fully confirmed yet
+        $main_unconfirmed = gmp_sub(bitcoin_get_balance("", 1), bitcoin_get_balance("", CONFIRMATIONS_FOR_DEPOSIT));
+        $we_have = gmp_add($we_have, $main_unconfirmed);
+
         addlog(LOG_CRONJOB, "Attempting to withdraw " . internal_to_numstr($amount) .
                " of " . internal_to_numstr($we_have) . " BTC for user $uid (reqid $reqid)");
 
