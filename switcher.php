@@ -107,16 +107,27 @@ function switcher($page)
         }
     }
     catch (Error $e) {
+        global $shown_header;
+
         report_exception($e, SEVERITY::ERROR);
         // Same as below, but flag + log this for review,
+
+        if (!$shown_header) show_header($page, $is_logged_in);
+            
         echo "<div class='content_box'><h3>{$e->getTitle()}</h3>";
         echo "<p>{$e->getMessage()}</p></div>";
     }
     catch (Problem $e) {
+        global $shown_header;
+        if (!$shown_header) show_header($page, $is_logged_in);
+            
         echo "<div class='content_box'><h3>{$e->getTitle()}</h3>";
         echo "<p>{$e->getMessage()}</p></div>";
     }
     catch (Exception $e) {
+        global $shown_header;
+        if (!$shown_header) show_header($page, $is_logged_in);
+            
         echo "<div class='content_box'><h3>Technical difficulties</h3>";
         echo "<p>{$e->getMessage()}</p></div>";
     }

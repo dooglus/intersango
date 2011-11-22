@@ -4,6 +4,8 @@ require_once "util.php";
 
 function show_header($page, $is_logged_in, $base = false)
 {
+    global $shown_header;
+    $shown_header = true;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html itemscope itemtype="http://schema.org/Organization" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">

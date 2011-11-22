@@ -52,7 +52,7 @@ try {
         } else {
             show_header('login', 0);
             echo "bad 2nd auth?<br/>\n";
-            // throw new Problem(":(", "Unable to login.");
+            // throw new Problem(_("Login Error"), "Unable to login.");
         }
     } else {
         $openid = new LightOpenID;
@@ -92,10 +92,9 @@ try {
                                  $_SESSION['csrf_token'] . "\">Google</a>",
                                  "<a href=\"?page=login&openid_identifier=me.yahoo.com&csrf_token=" .
                                  $_SESSION['csrf_token'] . "\">Yahoo</a>") . "</p>\n";
-        } else if ($openid->mode == 'cancel') {
-            show_header('login', 0);
-            throw new Problem(":(", _("Login was cancelled."));
-        } else if ($openid->validate()) {
+        } else if ($openid->mode == 'cancel')
+            throw new Problem(_("Login Error"), _("Login was cancelled."));
+        else if ($openid->validate()) {
             // protect against session hijacking now we've escalated privilege level
             session_regenerate_id(true);
 
@@ -193,16 +192,14 @@ try {
                 $_SESSION['oidlogin'] = $oidlogin;
                 $_SESSION['uid'] = $uid;
             }
-        } else {
-            show_header('login', 0);
-            throw new Problem(":(", sprintf(_("Unable to login.  Please %stry again%s."),
-                                            '<a href="?page=login">',
-                                            '</a>'));
-        }
+        } else
+            throw new Problem(_("Login Error"), sprintf(_("Unable to login.  Please %stry again%s."),
+                                                        '<a href="?page=login">',
+                                                        '</a>'));
     }
 }
 catch (ErrorException $e) {
-    throw new Problem(":(", $e->getMessage());
+    throw new Problem(_("Login Error"), $e->getMessage());
 } 
 // close content box
 ?>
