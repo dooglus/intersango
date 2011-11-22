@@ -52,10 +52,10 @@ else {
     $limit = numstr_to_internal(MAXIMUM_DAILY_FIAT_TRANSFER);
     $available = gmp_sub($limit, $transferred);
     if (gmp_cmp($fiat, $available) > 0) {
-        echo "    <p>" . sprintf(_("You can transfer up to %s each day"),
+        echo "    <p>" . sprintf(_("You can withdraw up to %s each day"),
                                  internal_to_numstr($limit) . " " . CURRENCY) . " (", day_time_range_string(), ")</p>\n";
         if ($transferred) {
-            echo "    <p>" . sprintf(_("You have transferred %s today"),
+            echo "    <p>" . sprintf(_("You have withdrawn %s today"),
                                      internal_to_numstr($transferred) . " " . CURRENCY) . "\n";
             if (gmp_cmp($available, '0') > 0)
                 echo "    " . sprintf(_("and so can withdraw up to %s more."),
@@ -145,9 +145,29 @@ else {
     <p>
         <?php printf(_("Alternatively, you can withdraw %s as a voucher.
         This will give you a text code which can be redeemed for
-        %s credit by any user of this exchange.  Specify the
-        amount of %s to withdraw."), CURRENCY, CURRENCY, CURRENCY); ?>
+        %s credit by any user of this exchange."), CURRENCY, CURRENCY); ?>
     </p>
+<?php
+    if (gmp_cmp($fiat, $available) > 0) {
+        echo "    <p>" . sprintf(_("You can withdraw up to %s each day"),
+                                 internal_to_numstr($limit) . " " . CURRENCY) . " (", day_time_range_string(), ")</p>\n";
+        if ($transferred) {
+            echo "    <p>" . sprintf(_("You have withdrawn %s today"),
+                                     internal_to_numstr($transferred) . " " . CURRENCY) . "\n";
+            if (gmp_cmp($available, '0') > 0)
+                echo "    " . sprintf(_("and so can withdraw up to %s more."),
+                                      internal_to_numstr($available) . " " . CURRENCY);
+            else
+                echo "    " . _("and so cannot withdraw any more until tomorrow.");
+            echo "</p>\n";
+        }
+    }
+    if (gmp_cmp($fiat, '0') <= 0)
+        echo "    <p>" . sprintf(_("You don't have any %s to withdraw."), CURRENCY) . "</p>\n";
+    else if (gmp_cmp($available, '0') > 0) {
+        echo "    <p>" . sprintf(_("Enter an amount below to withdraw.  You have %s."),
+                                 internal_to_numstr($fiat) . " " . CURRENCY) . "</p>\n";
+?>
     <p>
         <form action='' class='indent_form' method='post'>
             <label for='input_amount'><?php echo _("Amount"); ?></label>
@@ -160,6 +180,7 @@ else {
             <input type='submit' value='<?php echo _("Submit"); ?>' />
         </form>
     </p>
+<?php } ?>
     </div>
 
     <div class='content_box'>
@@ -211,6 +232,8 @@ else {
     </p>
 <?php
     if (gmp_cmp($btc, $available) > 0) {
+        echo "    <p>" . sprintf(_("You can withdraw up to %s BTC each day"), internal_to_numstr($limit)) .
+            " (", day_time_range_string(), ").</p>\n";
         if ($withdrawn) {
             echo "    <p>" . sprintf(_("You have withdrawn %s BTC today"), internal_to_numstr($withdrawn)) . "\n";
             if (gmp_cmp($available, '0') > 0)
