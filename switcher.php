@@ -85,6 +85,7 @@ function switcher($page)
                 break;
 
             case 'logout':
+                setcookie('autologin', FALSE, time() - 60*60*24*365);
                 logout();
 
             default:

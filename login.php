@@ -60,10 +60,21 @@ try {
             if (isset($_GET['openid_identifier'])) {
                 $openid->identity = htmlspecialchars($_GET['openid_identifier'], ENT_QUOTES);
                 addlog(LOG_LOGIN, sprintf("  attempt auth for openid %s", $openid->identity));
+
                 if (isset($_GET['remember']))
                     setcookie('openid', $openid->identity, time() + 60*60*24*365);
                 else
                     setcookie('openid', FALSE, time() - 60*60*24*365);
+
+                if (isset($_GET['autologin']))
+                    setcookie('autologin', $openid->identity, time() + 60*60*24*365);
+                else
+                    setcookie('autologin', FALSE, time() - 60*60*24*365);
+
+                header('Location: '.$openid->authUrl());
+            } else if (isset($_COOKIE['openid']) && isset($_COOKIE['autologin'])) {
+                $openid->identity = $_COOKIE['openid'];
+                addlog(LOG_LOGIN, sprintf("  autologin: attempt auth for openid %s", $openid->identity));
                 header('Location: '.$openid->authUrl());
             } else
                 addlog(LOG_LOGIN, "  showing login form");
@@ -71,6 +82,7 @@ try {
             show_header('login', 0);
 
             $cookie = isset($_COOKIE['openid']) ? $_COOKIE['openid'] : FALSE;
+            $autologin = isset($_COOKIE['autologin']);
 
             echo "<div class='content_box'>\n";
             echo "<h3>" . _("Login") . "</h3>\n";
@@ -81,6 +93,8 @@ try {
             echo "        <input type='text' name='openid_identifier'" . ($cookie ? " value='$cookie'" : "") . " />\n";
             echo "        <input type='checkbox' id='remember' name='remember' value='1'" . ($cookie ? " checked='checked'" : "") . " />\n";
             echo "        <label style='margin: 0px; display: inline;' for='remember'>remember OpenID identifier on this computer</label><br/>\n";
+            echo "        <input type='checkbox' id='autologin' name='autologin' value='1'" . ($autologin ? " checked='checked'" : "") . " />\n";
+            echo "        <label style='margin: 0px; display: inline;' for='autologin'>automatically log in</label><br/>\n";
             echo "        <input type='hidden' name='page' value='login' /><br/>\n";
             echo "        <input type='submit' value='" . _("Submit") . "' />\n";
             echo "    </form>\n";
