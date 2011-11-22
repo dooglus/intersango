@@ -61,9 +61,9 @@ try {
                 $openid->identity = htmlspecialchars($_GET['openid_identifier'], ENT_QUOTES);
                 addlog(LOG_LOGIN, sprintf("  attempt auth for openid %s", $openid->identity));
                 if (isset($_GET['remember']))
-                    setcookie('openid', $openid->identity);
+                    setcookie('openid', $openid->identity, time() + 60*60*24*365);
                 else
-                    setcookie('openid', FALSE);
+                    setcookie('openid', FALSE, time() - 60*60*24*365);
                 header('Location: '.$openid->authUrl());
             } else
                 addlog(LOG_LOGIN, "  showing login form");
