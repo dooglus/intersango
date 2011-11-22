@@ -9,23 +9,31 @@ if (isset($_POST['uid'])) {
         throw new Error("csrf","csrf token missing!");
 }
 
-function show_user_documents_for_user($uid, $verified)
+function show_user_documents_for_user($uid, $verified = 'unknown')
 {
+    if ($verified == 'unknown')
+        $verified = get_verified_for_user($uid);
+
     $dir = ABSPATH . "/docs/$uid";
+    echo "<div class='content_box'>\n";
     echo "<h3>$uid</h3>\n";
 
     $readme = ABSPATH . "/docs/$uid/00-README.txt";
-    if (file_exists($readme)) {
-        echo "<pre>\n";
-        $fp = fopen($readme, 'r');
-        while ($line = fgets($fp)) {
-            $line = rtrim($line);
-            // echo "    $line\n";
-            // $line = substr($line, 0, 25) . substr($line, 35);
-            echo "  $line\n";
-        }
-        echo "</pre>\n";
+    if (!file_exists($readme)) {
+        echo "<p>" . sprintf(_("User %s hasn't uploaded anything."), $uid) . "</p>\n";
+        echo "</div>\n";
+        return;
     }
+
+    echo "<pre>\n";
+    $fp = fopen($readme, 'r');
+    while ($line = fgets($fp)) {
+        $line = rtrim($line);
+        // echo "    $line\n";
+        // $line = substr($line, 0, 25) . substr($line, 35);
+        echo "  $line\n";
+    }
+    echo "</pre>\n";
 
     echo "<p>\n";
     $dp = opendir($dir);
@@ -47,20 +55,21 @@ function show_user_documents_for_user($uid, $verified)
     echo "</form>\n";
 
     echo "</p>\n";
+    echo "</div>\n";
 }
 
 function show_user_documents()
 {
+    echo "<div class='content_box'>\n";
     $verified = isset($_GET['verified']) ? 1 : 0;
     if ($verified) {
-        echo "<div class='content_box'>\n";
         echo "<h3>User Documents for Verified Users</h3>\n";
         echo "<p><a href=\"?page=docs\">View docs for unverified users</a></p>\n";
     } else {
-        echo "<div class='content_box'>\n";
         echo "<h3>User Documents for New Users</h3>\n";
         echo "<p><a href=\"?page=docs&verified\">View docs for verified users</a></p>\n";
     }
+    echo "</div>\n";
 
     $users = array();
     $result = do_query("SELECT uid FROM users WHERE verified = $verified");
@@ -80,10 +89,12 @@ function show_user_documents()
     }
 
     if ($first) {
+        echo "<div class='content_box'>\n";
         if ($verified)
             echo "<p>" . _("There are no documents for verified users.") . "</p>\n";
         else
             echo "<p>" . _("There are no documents pending review.") . "</p>\n";
+        echo "</div>\n";
     } else {
         // newest first for pending docs, else in order of UID
         if ($verified)
@@ -94,17 +105,21 @@ function show_user_documents()
         foreach ($candidates as $uid => $mtime)
             show_user_documents_for_user($uid, $verified);
     }
-?>
-
-    </div>
-<?php
 }
 
-if (isset($_POST['verify']))
-    verify_user(post('verify'));
-else if (isset($_POST['unverify']))
-    unverify_user(post('unverify'));
-    
-show_user_documents();
+function docs()
+{
+    if (isset($_POST['verify']))
+        verify_user(post('verify'));
+    else if (isset($_POST['unverify']))
+        unverify_user(post('unverify'));
+
+    if (isset($_GET['uid']))
+        show_user_documents_for_user(get('uid'));
+    else
+        show_user_documents();
+}
+
+docs();
 
 ?>
