@@ -67,11 +67,13 @@ function handle_uploaded_identity_docs()
 
     echo "<p>" . _("Documents uploaded") . ": $uploaded</p>\n";
     echo "</div>\n";
-    email_tech(_("User Uploaded New Identity Documents"),
-               sprintf("%s\n\n%s",
-                       sprintf(_("User %s uploaded %s new file(s)."),
-                               $is_logged_in, $uploaded),
-                       sprintf("%s?page=docs&uid=%s", SITE_URL, $is_logged_in)));
+
+    if ($uploaded)
+        email_tech(_("User Uploaded New Identity Documents"),
+                   sprintf("%s\n\n%s",
+                           sprintf(_("User %s uploaded %s new file(s)."),
+                                   $is_logged_in, $uploaded),
+                           sprintf("%s?page=docs&uid=%s", SITE_URL, $is_logged_in)));
 }
 
 function show_upload_documentation_form()
