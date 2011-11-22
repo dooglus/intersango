@@ -100,21 +100,23 @@ function show_statement_summary($title,
     echo "</div>";
 }
 
-function show_balances_in_statement($description, $btc, $fiat, $all_users, $show_prices, $show_increments)
+function show_balances_in_statement($description, $btc, $fiat, $all_users, $show_prices, $show_increments, $pending)
 {
     echo "<tr>";
     echo "<td></td>";
     if ($all_users)
         echo "<td></td>";
     echo "<td>" . $description . "</td>";
-    if ($show_prices)
-        echo "<td></td>";
-    if ($show_increments)
-        echo "<td></td>";
-    printf("<td class='right'>%s</td>", internal_to_numstr($btc,  BTC_PRECISION));
-    if ($show_increments)
-        echo "<td></td>";
-    printf("<td class='right'>%s</td>", internal_to_numstr($fiat,  FIAT_PRECISION));
+    if (!$pending) {
+        if ($show_prices)
+            echo "<td></td>";
+        if ($show_increments)
+            echo "<td></td>";
+        printf("<td class='right'>%s</td>", internal_to_numstr($btc,  BTC_PRECISION));
+        if ($show_increments)
+            echo "<td></td>";
+        printf("<td class='right'>%s</td>", internal_to_numstr($fiat,  FIAT_PRECISION));
+    }
     echo "</tr>\n";
 }
 
@@ -170,7 +172,8 @@ function show_statement($userid, $interval = 'forever',
                    '3 month' => _('the last 3 months'),
                    '6 month' => _('the last 6 months'),
                    '1 year'  => _('the last year'    ),
-                   'forever' => _('forever'          )) as $key => $text) {
+                   'forever' => _('forever'          ),
+                   'pending' => _('still pending'    )) as $key => $text) {
         printf("<option %s value='%s'>%s</option>\n",
                ($interval == $key) ? "selected='selected'" : "",
                $key, $text);
@@ -193,7 +196,8 @@ function show_statement($userid, $interval = 'forever',
         echo "<input class='nline' type='text' name='uid'>\n";
     }
 
-    $use_interval = ($interval != 'forever');
+    $pending = ($interval == 'pending');
+    $use_interval = ($interval != 'forever' && !$pending);
 
     $args = $specified_user ? "user=$userid&" : "";
     $args .= "interval=$interval";
@@ -206,7 +210,7 @@ function show_statement($userid, $interval = 'forever',
     echo statement_checkbox('wfiat', $withdraw_fiat, _("Withdraw") . " " . CURRENCY, $args);
     echo statement_checkbox('bbtc',  $buy,           _("Buy")      . " " . "BTC",    $args);
     echo statement_checkbox('sbtc',  $sell,          _("Sell")     . " " . "BTC",    $args);
-    if ($use_interval)
+    if ($interval != 'forever')
         echo statement_checkbox('fromz', $from_zero,     _("Start at Zero"));
     else if ($from_zero)
         echo "<input type='hidden' name='fromz' value='1' />\n";
@@ -230,7 +234,7 @@ function show_statement($userid, $interval = 'forever',
             NULL as amount, NULL as curr_type, NULL as addy, NULL as voucher, NULL as final, NULL as bank, NULL as acc_num,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest, " .
-            ($use_interval ? "transactions.timest > NOW() - INTERVAL $interval" : "1") . " AS new
+            ($use_interval ? "transactions.timest > NOW() - INTERVAL $interval" : ($pending ? "0" : "1")) . " AS new
         FROM
             transactions
         JOIN
@@ -252,7 +256,7 @@ function show_statement($userid, $interval = 'forever',
             NULL, NULL, NULL, NULL, NULL, NULL, NULL,
             " . sql_format_date('transactions.timest') . " AS date,
             transactions.timest as timest, " .
-            ($use_interval ? "transactions.timest > NOW() - INTERVAL $interval" : "1") . " AS new
+            ($use_interval ? "transactions.timest > NOW() - INTERVAL $interval" : ($pending ? "0" : "1")) . " AS new
         FROM
             transactions
         JOIN
@@ -274,7 +278,7 @@ function show_statement($userid, $interval = 'forever',
             amount, curr_type, addy, CONCAT(prefix, '-...') as voucher, status = 'FINAL', bank, acc_num,
             " . sql_format_date('timest') . " AS date,
             timest, " .
-            ($use_interval ? "timest > NOW() - INTERVAL $interval" : "1") . " AS new
+            ($use_interval ? "timest > NOW() - INTERVAL $interval" : ($pending ? "status != 'FINAL'" : "1")) . " AS new
         FROM
             requests
         LEFT JOIN
@@ -313,17 +317,19 @@ function show_statement($userid, $interval = 'forever',
     if ($all_users)
         echo "<th>" . _("User") . "</th>";
     echo "<th>" . _("Description") . "</th>";
-    if ($show_prices)
-        echo "<th class='right'>" . _("Price") . "</th>";
-    if ($show_increments)
-        echo "<th class='right'>+/-</th>";
-    echo "<th class='right'>BTC</th>";
-    if ($show_increments)
-        echo "<th class='right'>+/-</th>";
-    echo "<th class='right'>" . CURRENCY . "</th>";
+    if (!$pending) {
+        if ($show_prices)
+            echo "<th class='right'>" . _("Price") . "</th>";
+        if ($show_increments)
+            echo "<th class='right'>+/-</th>";
+        echo "<th class='right'>BTC</th>";
+        if ($show_increments)
+            echo "<th class='right'>+/-</th>";
+        echo "<th class='right'>" . CURRENCY . "</th>";
+    }
     echo "</tr>\n";
 
-    if ($create_timestamp)
+    if ($create_timestamp && !$pending)
         printf("<tr><td>%s</td><td>%s</td></tr>\n",
                $create_timestamp,
                _("Create Account"));
@@ -339,7 +345,7 @@ function show_statement($userid, $interval = 'forever',
             if ($from_zero)
                 $btc = $fiat = numstr_to_internal(0);
 
-            show_balances_in_statement(_("Opening Balances"), $btc, $fiat, $all_users, $show_prices, $show_increments);
+            show_balances_in_statement(_("Opening Balances"), $btc, $fiat, $all_users, $show_prices, $show_increments, $pending);
             $first = false;
         }
 
@@ -469,14 +475,16 @@ function show_statement($userid, $interval = 'forever',
                                                               internal_to_numstr($amount, BTC_PRECISION),
                                                               $final ? "" : " *"),
                                                       $reqid);
-                        if ($show_prices)
+                        if (!$pending) {
+                            if ($show_prices)
+                                printf("<td></td>");
+                            if ($show_increments)
+                                printf("<td class='right'>+%s</td>", internal_to_numstr($amount, BTC_PRECISION));
+                            printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
+                            if ($show_increments)
+                                printf("<td></td>");
                             printf("<td></td>");
-                        if ($show_increments)
-                            printf("<td class='right'>+%s</td>", internal_to_numstr($amount, BTC_PRECISION));
-                        printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
-                        if ($show_increments)
-                            printf("<td></td>");
-                        printf("<td></td>");
+                        }
                     }
                 } else {        /* deposit FIAT */
                     if ($show)
@@ -495,14 +503,16 @@ function show_statement($userid, $interval = 'forever',
                                                               CURRENCY,
                                                               $final ? "" : " *"),
                                                       $reqid);
-                        if ($show_prices)
+                        if (!$pending) {
+                            if ($show_prices)
+                                printf("<td></td>");
+                            if ($show_increments)
+                                printf("<td></td>");
                             printf("<td></td>");
-                        if ($show_increments)
-                            printf("<td></td>");
-                        printf("<td></td>");
-                        if ($show_increments)
-                            printf("<td class='right'>+%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
-                        printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                            if ($show_increments)
+                                printf("<td class='right'>+%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
+                            printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                        }
                     }
                 }
             } else {            /* withdrawal */
@@ -531,14 +541,16 @@ function show_statement($userid, $interval = 'forever',
                                                               internal_to_numstr($amount, BTC_PRECISION),
                                                               $final ? "" : " *"),
                                                       $reqid);
-                        if ($show_prices)
+                        if (!$pending) {
+                            if ($show_prices)
+                                printf("<td></td>");
+                            if ($show_increments)
+                                printf("<td class='right'>-%s</td>", internal_to_numstr($amount, BTC_PRECISION));
+                            printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
+                            if ($show_increments)
+                                printf("<td></td>");
                             printf("<td></td>");
-                        if ($show_increments)
-                            printf("<td class='right'>-%s</td>", internal_to_numstr($amount, BTC_PRECISION));
-                        printf("<td class='right'>%s</td>", internal_to_numstr($btc, BTC_PRECISION));
-                        if ($show_increments)
-                            printf("<td></td>");
-                        printf("<td></td>");
+                        }
                     }
                 } else {        /* withdraw FIAT */
                     if ($show)
@@ -565,14 +577,16 @@ function show_statement($userid, $interval = 'forever',
                                                               CURRENCY,
                                                               $final ? "" : " *"),
                                                       $reqid);
-                        if ($show_prices)
+                        if (!$pending) {
+                            if ($show_prices)
+                                printf("<td></td>");
+                            if ($show_increments)
+                                printf("<td></td>");
                             printf("<td></td>");
-                        if ($show_increments)
-                            printf("<td></td>");
-                        printf("<td></td>");
-                        if ($show_increments)
-                            printf("<td class='right'>-%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
-                        printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                            if ($show_increments)
+                                printf("<td class='right'>-%s</td>", internal_to_numstr($amount, FIAT_PRECISION));
+                            printf("<td class='right'>%s</td>", internal_to_numstr($fiat, FIAT_PRECISION));
+                        }
                     }
                 }
             }
@@ -586,7 +600,7 @@ function show_statement($userid, $interval = 'forever',
         $fiat = $btc = numstr_to_internal(0);
 
     show_balances_in_statement($first ? _("There are no entries for this period") : _("Closing Balances"),
-                               $btc, $fiat, $all_users, $show_prices, $show_increments);
+                               $btc, $fiat, $all_users, $show_prices, $show_increments, $pending);
 
     echo "</table>\n";
 
