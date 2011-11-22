@@ -108,10 +108,10 @@ function show_upload_documentation_form()
     }
 ?>
     <p>
-        Please upload a copy of an international ID document (a
-        current driving license is sufficient) plus a copy of a recent
-        utility bill (private) or corporate information (company)
-        using the form below.
+        <b>Please upload both of the following:
+        <ul><li>a copy of an international ID document (a current driving license is sufficient) AND</li>
+            <li>a copy of a recent utility bill (private) or corporate information (company)</li>
+        </ul></b>
     </p>
     <p>
         All documentation we receive is immediately encrytped and held
