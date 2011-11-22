@@ -60,34 +60,42 @@ try {
             if (isset($_GET['openid_identifier'])) {
                 $openid->identity = htmlspecialchars($_GET['openid_identifier'], ENT_QUOTES);
                 addlog(LOG_LOGIN, sprintf("  attempt auth for openid %s", $openid->identity));
+                if (isset($_GET['remember']))
+                    setcookie('openid', $openid->identity);
+                else
+                    setcookie('openid', FALSE);
                 header('Location: '.$openid->authUrl());
             } else
                 addlog(LOG_LOGIN, "  showing login form");
 
             show_header('login', 0);
-?>
-<div class='content_box'>
-<h3><?php echo _("Login"); ?></h3>
-<p><?php echo _("Enter your OpenID login below:"); ?></p>
-<p>
-    <form action='' class='indent_form' method='get'>
-        <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
-        <input type='text' name='openid_identifier' />
-        <input type='hidden' name='page' value='login' />
-        <input type='submit' value='<?php echo _("Submit"); ?>' />
-    </form>
-</p>
-<p><?php printf(_("If you do not have an OpenID login then we recommend %s."), "<a href=\"https://www.myopenid.com/\">MyOpenID</a>"); ?></p>
-<p><?php printf(_("Alternatively you may sign in using %s or %s."),
-                "<a href=\"?page=login&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=" . $_SESSION['csrf_token'] . "\">Google</a>",
-                "<a href=\"?page=login&openid_identifier=me.yahoo.com&csrf_token=" . $_SESSION['csrf_token'] . "\">Yahoo</a>"); ?></p>
-<?php
-        }
-        else if ($openid->mode == 'cancel') {
+
+            $cookie = isset($_COOKIE['openid']) ? $_COOKIE['openid'] : FALSE;
+
+            echo "<div class='content_box'>\n";
+            echo "<h3>" . _("Login") . "</h3>\n";
+            echo "<p>" . _("Enter your OpenID login below:") . "</p>\n";
+            echo "<p>\n";
+            echo "    <form action='' class='indent_form' method='get'>\n";
+            echo "        <input type='hidden' name='csrf_token' value='{$_SESSION['csrf_token']}' />\n";
+            echo "        <input type='text' name='openid_identifier'" . ($cookie ? " value='$cookie'" : "") . " />\n";
+            echo "        <input type='checkbox' id='remember' name='remember' value='1'" . ($cookie ? " checked='checked'" : "") . " />\n";
+            echo "        <label style='margin: 0px; display: inline;' for='remember'>remember OpenID identifier on this computer</label><br/>\n";
+            echo "        <input type='hidden' name='page' value='login' /><br/>\n";
+            echo "        <input type='submit' value='" . _("Submit") . "' />\n";
+            echo "    </form>\n";
+            echo "</p>\n";
+            echo "<p>" . sprintf(_("If you do not have an OpenID login then we recommend %s."),
+                                 "<a href=\"https://www.myopenid.com/\">MyOpenID</a>") . "</p>\n";
+            echo "<p>" . sprintf(_("Alternatively you may sign in using %s or %s."),
+                                 "<a href=\"?page=login&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=" .
+                                 $_SESSION['csrf_token'] . "\">Google</a>",
+                                 "<a href=\"?page=login&openid_identifier=me.yahoo.com&csrf_token=" .
+                                 $_SESSION['csrf_token'] . "\">Yahoo</a>") . "</p>\n";
+        } else if ($openid->mode == 'cancel') {
             show_header('login', 0);
             throw new Problem(":(", _("Login was cancelled."));
-        }
-        else if ($openid->validate()) {
+        } else if ($openid->validate()) {
             // protect against session hijacking now we've escalated privilege level
             session_regenerate_id(true);
 
