@@ -114,20 +114,12 @@ function show_upload_documentation_form()
         </ul></b>
     </p>
     <p>
-        All documentation we receive is immediately encrytped and held
-        on a secure data store.  We will not share your documents with
-        any third party under any circumstance, except where we WBX
-        are legally obliged to do so.
+        All received documentation is immediately encrytped and held
+        on a secure data store.
     </p>
     <p>
-        Alternatively you may email your documents to <a
-        href="mailto:AML@worldbitcoinexchange.com">AML@worldbitcoinexchange.com</a>.
-        If you wish to use <a target="_blank"
-        href="http://www.gnupg.org/">GPG encryption</a>, our key is <a
-        target="_blank"
-        href="http://pgp.mit.edu:11371/pks/lookup?op=vindex&search=0x7C5A1FADF88105BD">F88105BD</a>
-        with fingerprint C0BF 6C02 E06D AA59 15D8 B982 7C5A 1FAD F881
-        05BD.
+        We will not share your documents with any third party under any circumstance,
+        except where legally obliged to do so.
     </p>
 
     <form action='' class='indent_form' method='post' enctype='multipart/form-data' id='foo'>
