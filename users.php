@@ -240,7 +240,7 @@ function show_users()
         $balance = $balance0;
     else {
         $pending = gmp_sub($balance0, $balance);
-        echo "<p>" . sprintf(_("The main wallet account has %s BTC; other accounts have %s BTC waiting for deposit."),
+        echo "<p>" . sprintf(_("The main wallet account has %s BTC; other accounts have %s BTC awaiting confirmations."),
                              internal_to_numstr($balance, BTC_PRECISION),
                              internal_to_numstr($pending, BTC_PRECISION)) . "</p>";
     }
