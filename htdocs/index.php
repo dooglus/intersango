@@ -22,12 +22,29 @@ if (!isset($_SESSION['creation_time'])) {
     $_SESSION['creation_time'] = time();
 }
 
+if (isset($_GET['page']))
+    $page = htmlspecialchars($_GET['page']);
+else
+    $page = 'trade';
+
 // if the user has been logged in but is idle, log them out unless this is just an ajax request, in which case just act as if they're not logged in
 if (isset($_SESSION['uid']) &&
     isset($_SESSION['last_activity']) &&
     time() - $_SESSION['last_activity'] > MAX_IDLE_MINUTES_BEFORE_LOGOUT * 60 &&
     !isset($_GET['fancy']))
-    logout();                   // this exit()s
+    if (isset($_COOKIE['openid']) && isset($_COOKIE['autologin']) &&
+        count($_POST) == 0) {
+        if ($page != 'login') {
+            if ($_SERVER['QUERY_STRING'])
+                $next_page = "?" . $_SERVER['QUERY_STRING'];
+            else
+                $next_page = "?page=$page";
+            require_once ABSPATH . "/login.php";
+            show_footer(0, false, false);
+            exit;
+        }
+    } else
+        logout();                   // this exit()s
 else {
     $_SESSION['last_activity'] = time();
     get_login_status();
@@ -41,11 +58,6 @@ if(!isset($_SESSION['csrf_token']))
         $_SESSION['csrf_token'] .= bin2hex(chr(mt_rand(0,255)));
     }   
 }
-
-if (isset($_GET['page']))
-    $page = htmlspecialchars($_GET['page']);
-else
-    $page = 'trade';
 
 switcher($page, $is_logged_in, $is_admin);
 

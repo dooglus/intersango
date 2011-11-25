@@ -56,6 +56,8 @@ try {
         }
     } else {
         $openid = new LightOpenID;
+        if (isset($next_page))
+            $openid->returnUrl = SITE_URL . "?page=login&next_page=" . preg_replace('/&/', '%26', $next_page);
         if (!$openid->mode) {
             if (isset($_GET['openid_identifier'])) {
                 $openid->identity = htmlspecialchars($_GET['openid_identifier'], ENT_QUOTES);
@@ -96,6 +98,10 @@ try {
             echo "        <input type='checkbox' id='autologin' name='autologin' value='1'" . ($autologin ? " checked='checked'" : "") . " />\n";
             echo "        <label style='margin: 0px; display: inline;' for='autologin'>automatically log in</label><br/>\n";
             echo "        <input type='hidden' name='page' value='login' /><br/>\n";
+            if (isset($next_page)) {
+                echo "        <input type='hidden' name='next_page' value='$next_page' /><br/>\n";
+                echo "        <input type='hidden' name='oid' value='{$_SESSION['oidlogin']}' /><br/>\n";
+            }
             echo "        <input type='submit' value='" . _("Submit") . "' />\n";
             echo "    </form>\n";
             echo "</p>\n";
@@ -145,6 +151,16 @@ try {
             } else {
                 if (has_results($result)) {
                     addlog(LOG_LOGIN, sprintf("  regular login by UID %s (openid %s)", $uid, $oidlogin));
+                    if (isset($_GET['next_page'])) {
+                        if (!isset($_GET['oid']) ||
+                            !isset($_GET['openid_identifier']) ||
+                            $_GET['oid'] == $_GET['openid_identifier']) {
+                            $_SESSION['last_activity'] = time();
+                            $_SESSION['oidlogin'] = $oidlogin;
+                            $_SESSION['uid'] = $uid;
+                            header('Location: ' . $_GET['next_page']);
+                        }
+                    }
                     show_header('login', $uid);
                     echo "                    <div class='content_box'>\n";
                     echo "                        <h3>" . _("Successful login!") . "</h3>\n";
