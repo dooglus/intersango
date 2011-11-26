@@ -14,6 +14,21 @@ require_once ABSPATH . "/header.php";
 require_once ABSPATH . "/switcher.php";
 require_once ABSPATH . "/footer.php";
 
+function relogin()
+{
+    global $page, $next_page;
+
+    if ($page != 'login') {
+        if ($_SERVER['QUERY_STRING'])
+            $next_page = "?" . $_SERVER['QUERY_STRING'];
+        else
+            $next_page = "?page=$page";
+        require_once ABSPATH . "/login.php";
+        show_footer(0, false, false);
+        exit;
+    }
+}
+
 // change the session ID regularly
 if (!isset($_SESSION['creation_time'])) {
     $_SESSION['creation_time'] = time();
@@ -32,19 +47,12 @@ if (isset($_SESSION['uid']) &&
     isset($_SESSION['last_activity']) &&
     time() - $_SESSION['last_activity'] > MAX_IDLE_MINUTES_BEFORE_LOGOUT * 60 &&
     !isset($_GET['fancy']))
-    if (isset($_COOKIE['openid']) && isset($_COOKIE['autologin']) &&
-        count($_POST) == 0) {
-        if ($page != 'login') {
-            if ($_SERVER['QUERY_STRING'])
-                $next_page = "?" . $_SERVER['QUERY_STRING'];
-            else
-                $next_page = "?page=$page";
-            require_once ABSPATH . "/login.php";
-            show_footer(0, false, false);
-            exit;
-        }
-    } else
+    if (isset($_COOKIE['openid']) && isset($_COOKIE['autologin']) && count($_POST) == 0)
+        relogin();
+    else
         logout();                   // this exit()s
+else if (!isset($_SESSION['uid']) && isset($_COOKIE['openid']) && isset($_COOKIE['autologin']) && count($_POST) == 0)
+    relogin();
 else {
     $_SESSION['last_activity'] = time();
     get_login_status();

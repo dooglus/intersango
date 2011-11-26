@@ -10,6 +10,14 @@
 -->
 
 <div class='content_box'>
+<h3>Auto-Login Improvement</h3>
+<h4>4:55:am 27-Nov-11</h4>
+<p>
+The 'automatically log in' checkbox on the login page will now attempt to log you back in whenever you are logged out.  Clicking 'logout' will cancel the setting.  So if you turn 'automatically log in' on, you will stay logged in indefinitely.
+</p>
+</div>
+
+<div class='content_box'>
 <h3>Site Updates</h3>
 <h4>6:54pm 22-Nov-11</h4>
 <p>
