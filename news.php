@@ -9,6 +9,14 @@
 </div>
 -->
 
+
+<div class='content_box'>
+<h3>The Trouble With Banks</h3>
+<h4>7:25am 29-Nov-11</h4>
+<p>
+The bank has frozen our bank account so we are now using a different account.  See the deposit page for the new details.
+</p>
+</div>
 <div class='content_box'>
 <h3>Auto-Login Improvement</h3>
 <h4>4:55:am 27-Nov-11</h4>
