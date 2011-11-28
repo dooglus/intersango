@@ -13,10 +13,11 @@ function upload_identity_doc($num)
     global $is_logged_in;
 
     $file = "file$num";
-    $description = post("description$num");
 
     if (!isset($_FILES[$file]))
         return 0;
+
+    $description = post("description$num");
 
     $info = $_FILES[$file];
     if ($info['error'])
