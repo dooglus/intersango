@@ -108,7 +108,7 @@ define('CONTACT_ADDRESS_ETC',   "<b>High Net Worth Property Pty Ltd</b><br/>
 // |  bank account details for deposits
 // `------------------------------------------------------------------------
 
-define('DEPOSIT_BANK_ACCOUNT_TITLE',  'High Net Worth Property PTY LTD');
+define('DEPOSIT_BANK_ACCOUNT_TITLE',  'A R JENSEN');
 define('DEPOSIT_BANK_NAME',           'CBA');
 define('DEPOSIT_BANK_ACCOUNT_NUMBER', '1249-6599');
 define('DEPOSIT_BANK_BRANCH_ID',      '062-000');
