@@ -160,9 +160,9 @@ function show_content_header_identify_link()
 
 function show_content_header_news()
 {
-    // echo "    <div class='content_header_box'>\n";
-    // echo "        " . SPACE . "We're back up after a server error.  The exchange will be frozen until 9pm server time.\n";
-    // echo "    </div>\n";
+    echo "    <div class='content_header_box'>\n";
+    echo "        " . SPACE . "please note the new bank account information on the deposit page\n";
+    echo "    </div>\n";
 }
 
 $buy = $sell = false;
