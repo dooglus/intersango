@@ -109,9 +109,9 @@ define('CONTACT_ADDRESS_ETC',   "<b>High Net Worth Property Pty Ltd</b><br/>
 // `------------------------------------------------------------------------
 
 define('DEPOSIT_BANK_ACCOUNT_TITLE',  'High Net Worth Property PTY LTD');
-define('DEPOSIT_BANK_NAME',           'ANZ');
-define('DEPOSIT_BANK_ACCOUNT_NUMBER', '2625-86283');
-define('DEPOSIT_BANK_BRANCH_ID',      '014-506');
+define('DEPOSIT_BANK_NAME',           'CBA');
+define('DEPOSIT_BANK_ACCOUNT_NUMBER', '1249-6599');
+define('DEPOSIT_BANK_BRANCH_ID',      '062-000');
 
 // .------------------------------------------------------------------------
 // |  user identification
