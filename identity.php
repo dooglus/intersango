@@ -27,8 +27,20 @@ function upload_identity_doc($num)
         return 0;
 
     $info = $_FILES[$file];
-    if ($info['error'])
+    $error = $info['error'];
+    if ($error) {
+        if ($error == UPLOAD_ERR_INI_SIZE)
+            echo "<p>" . sprintf(_("File '%s' is bigger than the per-file limit of %s."),
+                                 $info['name'],
+                                 ini_get('upload_max_filesize')) . "</p>\n";
+        else if ($error == UPLOAD_ERR_PARTIAL)
+            echo "<p>" . sprintf(_("File '%s' is was only partially uploaded."),
+                                 $info['name']) . "</p>\n";
+        else if ($error != UPLOAD_ERR_NO_FILE)
+            echo "<p>" . sprintf(_("An error (code %s) occurred uploading file '%s'."),
+                                 $error, $info['name']) . "</p>\n";
         return 0;
+    }
 
     $description = post("description$num");
     $filename = cleanup_string(basename($info['name']));
