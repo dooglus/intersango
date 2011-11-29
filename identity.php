@@ -4,9 +4,12 @@ if (empty($_FILES) &&
     empty($_POST) &&
     isset($_SERVER['REQUEST_METHOD']) &&
     strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-    throw new Error(_("Upload Error"),
-                    sprintf(_("The upload failed because it was too big.  The maximum combined size is %s.  Please upload large files separately, or try to reduce the file sizes."),
-                            post_max_size()));
+    echo "    <div class='content_box'>\n";
+    echo "    <h3>Upload Results</h3>\n";
+    echo "<p>" . sprintf(_("The upload failed because it was too big.  The maximum combined size is %s.  Please upload large files separately, or try to reduce the file sizes."),
+                         post_max_size()) . "</p>\n";
+    echo "<p>" . _("Documents uploaded") . ": 0</p>\n";
+    echo "</div>\n";
 }
 
 if (isset($_POST['upload_doc']))
