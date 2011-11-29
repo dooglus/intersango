@@ -1,5 +1,14 @@
 <?php
 
+if (empty($_FILES) &&
+    empty($_POST) &&
+    isset($_SERVER['REQUEST_METHOD']) &&
+    strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+    throw new Error(_("Upload Error"),
+                    sprintf(_("The upload failed because it was too big.  The maximum combined size is %s.  Please upload large files separately, or try to reduce the file sizes."),
+                            post_max_size()));
+}
+
 if (isset($_POST['upload_doc']))
     if (isset($_POST['csrf_token'])) {
         if ($_SESSION['csrf_token'] != $_POST['csrf_token'])
@@ -120,6 +129,9 @@ function show_upload_documentation_form()
     <p>
         We will not share your documents with any third party under any circumstance,
         except where legally obliged to do so.
+    </p>
+    <p>
+        If you need to upload more than <?php echo post_max_size(); ?> of documents, please upload the documents separately.  There is a maximum of <?php echo post_max_size(); ?> upload per page.
     </p>
 
     <form action='' class='indent_form' method='post' enctype='multipart/form-data' id='foo'>
