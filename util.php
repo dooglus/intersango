@@ -1455,4 +1455,9 @@ function encrypt_file($file, $recipients)
     exec("/usr/bin/gpg --trust-model always --recipient " . implode(' --recipient ', $recipients) . " --encrypt \"$file\"");
 }
 
+function post_max_size()
+{
+    return preg_replace('/M$/', ' Mb', ini_get('post_max_size'));
+}
+
 ?>
