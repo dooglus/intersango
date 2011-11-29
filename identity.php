@@ -17,12 +17,11 @@ function upload_identity_doc($num)
     if (!isset($_FILES[$file]))
         return 0;
 
-    $description = post("description$num");
-
     $info = $_FILES[$file];
     if ($info['error'])
         return 0;
 
+    $description = post("description$num");
     $filename = cleanup_string(basename($info['name']));
     $type = $info['type'];
     $source = $info['tmp_name'];
