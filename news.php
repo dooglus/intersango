@@ -9,6 +9,13 @@
 </div>
 -->
 
+<div class='content_box'>
+<h3>Identification Document Upload Issue</h3>
+<h4>12:10pm 29-Nov-11</h4>
+<p>
+One of our users recently complained in an email that we weren't verifying his account quickly enough.  It turned out that we had never received his documents and didn't realise he was waiting.  There was a problem with the document upload form.  If you tried to upload more than 10 Mb of documents at once, it would silently fail, leaving the user thinking the documents had been sent.  That's no longer the case.  But if you sent a large batch of documents a while back and are still waiting to be verified, check the <a href="?page=identity">identification</a> page and make sure it lists all the documents you think we should have from you.
+</p>
+</div>
 
 <div class='content_box'>
 <h3>The Trouble With Banks</h3>
