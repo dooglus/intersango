@@ -18,15 +18,16 @@ function show_similar_codes($reference)
     $reference = strtolower($reference);
 
     $result = do_query("
-            SELECT deposref FROM users WHERE uid > 1
+            SELECT deposref, uid FROM users WHERE uid > 1
         UNION
-            SELECT deposref FROM old_deposrefs
+            SELECT deposref, uid FROM old_deposrefs
         ORDER BY deposref
     ");
 
     while ($row = mysql_fetch_assoc($result)) {
         $deposref = strtolower($row['deposref']);
         $scores[$deposref] = round((9 + similar_text($reference, $deposref) - levenshtein($reference, $deposref))*100/18);
+        $uid[$deposref] = $row['uid'];
     }
 
     arsort($scores);
@@ -39,6 +40,7 @@ function show_similar_codes($reference)
                 echo "<p>" . _("Did you mean one of these?  Higher percentage = closer match.") . "</p>\n";
                 echo "<p>" . _("Click an entry to copy it to the form below, then click 'Deposit' again.") . "</p>\n";
                 echo "<table class='display_data'>\n";
+                echo "<tr><th>Reference</th><th>Match</th><th>UID</th></tr>\n";
             }
 
             $formatted = format_deposref($deposref);
@@ -48,7 +50,7 @@ function show_similar_codes($reference)
                 " onmouseover=\"style.backgroundColor='#8ae3bf';\"",
                 " onmouseout=\"style.backgroundColor='#7ad3af';\"",
                 " onclick=\"ObjById('reference').value = '$deposref';\">";
-            echo "<td>$formatted</td><td>$score%</td></tr>\n";
+            echo "<td>$formatted</td><td>$score%</td><td>{$uid[$deposref]}</td></tr>\n";
         }
     }
 
@@ -89,17 +91,19 @@ if (isset($_POST['deposit_cash'])) {
         if (has_results($result)) {
             $row = get_row($result);
             $user = $row['uid'];
-            // echo "<p>$reference is the code for user $user</p>\n";
 
-            $query = "
-                INSERT INTO requests (req_type, curr_type, uid,   amount )
-                VALUES               ('DEPOS',  '" . CURRENCY . "',     $user, $amount_internal)
-            ";
-            do_query($query);
-            printf("<p><span style='font-weight: bold;'>" . _("added request to deposit %s to user %s's purse (reference %s)") . "</span></p>\n",
-                   ($amount . " " . CURRENCY), $user, $reference);
-            echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
-            echo "<p>" . _("make another deposit?") . "</p>\n";
+            if (is_numeric($amount) && $amount != 0) {
+                $query = "
+                    INSERT INTO requests (req_type, curr_type, uid,   amount )
+                    VALUES               ('DEPOS',  '" . CURRENCY . "',     $user, $amount_internal)
+                ";
+                do_query($query);
+                printf("<p><span style='font-weight: bold;'>" . _("added request to deposit %s to user %s's purse (reference %s)") . "</span></p>\n",
+                       ($amount . " " . CURRENCY), $user, $reference);
+                echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
+                echo "<p>" . _("make another deposit?") . "</p>\n";
+            } else
+                echo "<p>$reference is the code for user $user</p>\n";
             $amount = $reference = $user = '';
         } else {
             printf("<p>" . _("'%s' isn't a valid reference code") . "</p>\n",
@@ -114,15 +118,18 @@ if (isset($_POST['deposit_cash'])) {
             $row = get_row($result);
             $reference = $row['deposref'];
 
-            $query = "
-                INSERT INTO requests (req_type, curr_type, uid,   amount )
-                VALUES               ('DEPOS',  '" . CURRENCY . "',     $user, $amount_internal)
-            ";
-            do_query($query);
-            printf("<p><span style='font-weight: bold;'>" . _("added request to deposit %s to user %s's purse (reference %s)") . "</span></p>\n",
-                   ($amount . " " . CURRENCY), $user, $reference);
-            echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
-            echo "<p>" . _("make another deposit?") . "</p>\n";
+            if (is_numeric($amount) && $amount != 0) {
+                $query = "
+                    INSERT INTO requests (req_type, curr_type, uid,   amount )
+                    VALUES               ('DEPOS',  '" . CURRENCY . "',     $user, $amount_internal)
+                ";
+                do_query($query);
+                printf("<p><span style='font-weight: bold;'>" . _("added request to deposit %s to user %s's purse (reference %s)") . "</span></p>\n",
+                       ($amount . " " . CURRENCY), $user, $reference);
+                echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
+                echo "<p>" . _("make another deposit?") . "</p>\n";
+            } else
+                echo "<p>$reference is the code for user $user</p>\n";
             $amount = $reference = $user = '';
         } else {
             printf("<p>" . _("'%s' isn't a valid userid") . "</p>\n",
