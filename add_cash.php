@@ -102,8 +102,13 @@ if (isset($_POST['deposit_cash'])) {
                        ($amount . " " . CURRENCY), $user, $reference);
                 echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
                 echo "<p>" . _("make another deposit?") . "</p>\n";
-            } else
+            } else {
                 echo "<p>$reference is the code for user $user</p>\n";
+                if (get_verified_for_user($user))
+                    echo "<p>user $user is verified</p>\n";
+                else
+                    echo "<p>user $user is not verified</p>\n";
+            }
             $amount = $reference = $user = '';
         } else {
             printf("<p>" . _("'%s' isn't a valid reference code") . "</p>\n",
@@ -128,8 +133,13 @@ if (isset($_POST['deposit_cash'])) {
                        ($amount . " " . CURRENCY), $user, $reference);
                 echo "<p>" . _("deposit should show up in their account") . " <string>" . _("in a minute or two") . "</strong></p>\n";
                 echo "<p>" . _("make another deposit?") . "</p>\n";
-            } else
+            } else {
                 echo "<p>$reference is the code for user $user</p>\n";
+                if (get_verified_for_user($user))
+                    echo "<p>user $user is verified</p>\n";
+                else
+                    echo "<p>user $user is not verified</p>\n";
+            }
             $amount = $reference = $user = '';
         } else {
             printf("<p>" . _("'%s' isn't a valid userid") . "</p>\n",
