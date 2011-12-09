@@ -162,8 +162,10 @@ function show_upload_documentation_form()
     <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
     <input type='hidden' name='upload_doc' value='true' />
 <?php
-    if ($is_admin)
+    if ($is_admin) {
+        echo "    <label for='uid'>UserID:</label>\n";
         echo "    <input type='text' name='uid' />\n";
+    }
 
     for ($i = 0; $i < ID_FILE_UPLOAD_SLOTS; $i++) {
         echo "    <label for='file$i'>File " . ($i+1) . ":</label><input type='file' id='file$i' name='file$i'>\n";
