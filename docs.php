@@ -118,6 +118,11 @@ function docs()
         show_user_documents_for_user(get('uid'));
     else
         show_user_documents();
+
+    echo "<div class='content_box'>\n";
+    echo "<h3>Upload Docs for Users</h3>\n";
+    echo "<p><a href=\"?page=identity\">Upload more docs</a></p>\n";
+    echo "</div>\n";
 }
 
 docs();
