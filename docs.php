@@ -60,19 +60,15 @@ function show_user_documents_for_user($uid, $verified = 'unknown')
 
 function show_user_documents()
 {
-    echo "<div class='content_box'>\n";
     $verified = isset($_GET['verified']) ? 1 : 0;
-    if ($verified) {
-        echo "<h3>User Documents for Verified Users</h3>\n";
-        echo "<p><a href=\"?page=docs\">View docs for unverified users</a></p>\n";
-    } else {
-        echo "<h3>User Documents for New Users</h3>\n";
-        echo "<p><a href=\"?page=docs&verified\">View docs for verified users</a></p>\n";
-    }
-    echo "</div>\n";
+    $all = isset($_GET['all']) ? 1 : 0;
 
     $users = array();
-    $result = do_query("SELECT uid FROM users WHERE verified = $verified");
+    if ($all)
+        $result = do_query("SELECT uid FROM users");
+    else
+        $result = do_query("SELECT uid FROM users WHERE verified = $verified");
+
     while ($row = mysql_fetch_array($result))
         array_push($users, $row['uid']);
 
@@ -90,21 +86,44 @@ function show_user_documents()
 
     if ($first) {
         echo "<div class='content_box'>\n";
-        if ($verified)
+        if ($all)
+            echo "<p>" . _("There are no documents for any users.") . "</p>\n";
+        else if ($verified)
             echo "<p>" . _("There are no documents for verified users.") . "</p>\n";
         else
             echo "<p>" . _("There are no documents pending review.") . "</p>\n";
         echo "</div>\n";
     } else {
         // newest first for pending docs, else in order of UID
-        if ($verified)
+        if ($verified || $all)
             ksort($candidates);
         else
             arsort($candidates);
 
         foreach ($candidates as $uid => $mtime)
-            show_user_documents_for_user($uid, $verified);
+            if ($all)
+                show_user_documents_for_user($uid);
+            else
+                show_user_documents_for_user($uid, $verified);
     }
+}
+
+function show_docs_form()
+{
+    echo "<div class='content_box'>\n";
+
+    echo "<h3>Options</h3>\n";
+    echo "<p>" . _("View docs for") . " <a href=\"?page=docs\">unverified users</a> (newest uploads first)</p>\n";
+    echo "<p>" . _("View docs for") . " <a href=\"?page=docs&verified\">verified users</a></p>\n";
+    echo "<p>" . _("View docs for") . " <a href=\"?page=docs&all\">all users</a></p>\n";
+    echo "    <form method='get'>\n";
+    echo "    <input type='hidden' name='page' value='docs' />\n";
+//    echo "    <label for='uid'>UserID:</label>\n";
+    echo "<p>View docs for UserID: ";
+    echo "    <input class='nline' type='text' name='uid' /></p>\n";
+    echo "    </form>\n";
+
+    echo "</div>\n";
 }
 
 function docs()
@@ -113,6 +132,8 @@ function docs()
         verify_user(post('verify'));
     else if (isset($_POST['unverify']))
         unverify_user(post('unverify'));
+
+    show_docs_form();
 
     if (isset($_GET['uid']))
         show_user_documents_for_user(get('uid'));
