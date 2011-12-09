@@ -113,15 +113,45 @@ function show_docs_form()
     echo "<div class='content_box'>\n";
 
     echo "<h3>Options</h3>\n";
-    echo "<p>" . _("View docs for") . " <a href=\"?page=docs\">unverified users</a> (newest uploads first)</p>\n";
-    echo "<p>" . _("View docs for") . " <a href=\"?page=docs&verified\">verified users</a></p>\n";
-    echo "<p>" . _("View docs for") . " <a href=\"?page=docs&all\">all users</a></p>\n";
+    echo "<p>" . _("View docs for") . " <a href=\"?page=docs\">" . _("unverified users") . "</a> (newest uploads first)</p>\n";
+    echo "<p>" . _("View docs for") . " <a href=\"?page=docs&verified\">" . _("verified users") . "</a></p>\n";
+    echo "<p>" . _("View docs for") . " <a href=\"?page=docs&all\">" . _("all users") . "</a></p>\n";
+    echo "<p>" . _("View users who are verified with") . " <a href=\"?page=docs&verified_with_no_docs\">" . _("NO documents") . "</a></p>\n";
     echo "    <form method='get'>\n";
     echo "    <input type='hidden' name='page' value='docs' />\n";
 //    echo "    <label for='uid'>UserID:</label>\n";
     echo "<p>View docs for UserID: ";
     echo "    <input class='nline' type='text' name='uid' /></p>\n";
     echo "    </form>\n";
+
+    echo "</div>\n";
+}
+
+function show_user_verified_with_no_documents()
+{
+    echo "<div class='content_box'>\n";
+    echo "<h3>" . _("Users Verified Without Documents") . "</h3>\n";
+
+    $result = do_query("SELECT uid FROM users WHERE verified = 1 ORDER BY uid");
+
+    $first=true;
+    while ($row = mysql_fetch_array($result)) {
+        $uid = $row['uid'];
+
+        $readme = ABSPATH . "/docs/$uid/00-README.txt";
+        if (!file_exists($readme)) {
+            if ($first) {
+                $first=false;
+                echo "<p>\n";
+            }
+            echo "$uid\n";
+        }
+    }
+
+    if ($first)
+        echo "<p>" . _("No users are verified without documents.") . "</p>\n";
+    else
+        echo "</p>\n";
 
     echo "</div>\n";
 }
@@ -137,6 +167,8 @@ function docs()
 
     if (isset($_GET['uid']))
         show_user_documents_for_user(get('uid'));
+    else if (isset($_GET['verified_with_no_docs']))
+        show_user_verified_with_no_documents();
     else
         show_user_documents();
 
