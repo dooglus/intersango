@@ -20,10 +20,8 @@ if (isset($_POST['upload_doc']))
     else
         throw new Error("csrf","csrf token missing!");
 
-function upload_identity_doc($num)
+function upload_identity_doc($num, $uid)
 {
-    global $is_logged_in;
-
     $file = "file$num";
 
     if (!isset($_FILES[$file]))
@@ -51,7 +49,7 @@ function upload_identity_doc($num)
     $source = $info['tmp_name'];
     $size = $info['size'];
 
-    $dir = DOCDIR . "/$is_logged_in";
+    $dir = DOCDIR . "/$uid";
     @mkdir($dir, 0755);
     $base = "$filename";
     $index = $dir . "/00-README.txt";
@@ -63,7 +61,9 @@ function upload_identity_doc($num)
         $dest = sprintf("upload-%d-of-%s", $count, $base);
     }
 
-    $fp = fopen("$index", 'a');
+    if (!($fp = fopen("$index", 'a')))
+        throw new Error("file permission error", "can't upload user identification documents");
+
     fprintf($fp, "%s\n  %s\n    %s\n\n", date('r'), "$dest.gpg", $description);
     fclose($fp);
 
@@ -80,19 +80,28 @@ function upload_identity_doc($num)
 
 function handle_uploaded_identity_docs()
 {
-    global $is_logged_in;
+    global $is_logged_in, $is_admin;
 ?>
     <div class='content_box'>
     <h3>Upload Results</h3>
 <?php
+    if ($is_admin && isset($_POST['uid'])) {
+        $uid = post('uid');
+        if ($uid == '')
+            $uid = $is_logged_in;
+        else
+            get_openid_for_user($uid); // will throw exception if user doesn't exist
+    } else
+        $uid = $is_logged_in;
+
     $uploaded = 0;
     for ($i = 0; $i < ID_FILE_UPLOAD_SLOTS; $i++)
-        $uploaded += upload_identity_doc($i);
+        $uploaded += upload_identity_doc($i, $uid);
 
     echo "<p>" . _("Documents uploaded") . ": $uploaded</p>\n";
     echo "</div>\n";
 
-    if ($uploaded)
+    if ($uploaded && !$is_admin)
         email_tech(_("User Uploaded New Identity Documents"),
                    sprintf("%s\n\n%s",
                            sprintf(_("User %s uploaded %s new file(s)."),
@@ -102,9 +111,9 @@ function handle_uploaded_identity_docs()
 
 function show_upload_documentation_form()
 {
-    global $is_logged_in, $is_verified;
+    global $is_admin, $is_logged_in, $is_verified;
 
-    if ($is_verified) {
+    if ($is_verified && !$is_admin) {
 ?>
     <div class='content_box'>
     <h3>Already Verified</h3>
@@ -119,7 +128,7 @@ function show_upload_documentation_form()
     <h3>Upload Personal Documentation</h3>
 <?php
     $readme = ABSPATH . "/docs/$is_logged_in/00-README.txt";
-    if (file_exists($readme)) {
+    if (!$is_admin && file_exists($readme)) {
         echo "<p>You have already uploaded the following:</p><br/><pre>\n";
         $fp = fopen($readme, 'r');
         while ($line = fgets($fp)) {
@@ -153,6 +162,9 @@ function show_upload_documentation_form()
     <input type='hidden' name='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
     <input type='hidden' name='upload_doc' value='true' />
 <?php
+    if ($is_admin)
+        echo "    <input type='text' name='uid' />\n";
+
     for ($i = 0; $i < ID_FILE_UPLOAD_SLOTS; $i++) {
         echo "    <label for='file$i'>File " . ($i+1) . ":</label><input type='file' id='file$i' name='file$i'>\n";
         echo "    <label for='description$i'>Description: </label><input style='width: 680px;' type='text' id='description$i' name='description$i'>\n";
