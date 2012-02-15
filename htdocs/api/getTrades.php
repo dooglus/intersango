@@ -2,6 +2,8 @@
 require_once "../config.php";
 require_once ABSPATH . "/util.php";
 
+log_api('getTrades');
+
 echo '[';
 $query = "
     SELECT

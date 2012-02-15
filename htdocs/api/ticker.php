@@ -2,6 +2,8 @@
 require_once "../config.php";
 require_once ABSPATH . "/util.php";
 
+log_api('ticker');
+
 list ($high, $low, $avg, $vwap, $vol, $last, $buy, $sell) = get_ticker_data();
 
 echo '{"ticker": {';

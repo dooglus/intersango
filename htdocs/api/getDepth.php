@@ -2,6 +2,8 @@
 require_once "../config.php";
 require_once ABSPATH . "/util.php";
 
+log_api('getDepth');
+
 function fetch_depth($rate_query, $field, $have, $want)
 {
     $ret = array();
