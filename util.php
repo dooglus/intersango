@@ -1286,7 +1286,7 @@ function addlog($level, $text)
 {
     global $is_logged_in;
 
-    $text = sprintf("%2s %4s %s %s\n", $level, $is_logged_in, date('H:i j-M'), $text);
+    $text = sprintf("%2s %4s %s %s\n", $level, $is_logged_in, date('H:i:s j-M'), $text);
 
     wait_for_lock('log');
     if ($fp = @fopen(LOGFILE, 'a')) {
