@@ -1391,14 +1391,16 @@ function process_api_request($function_to_run, $permission_needed)
     try {
         verify_api_request($permission_needed);
 
-        addlog(LOG_API, sprintf("%s: %s", $function_to_run, file_get_contents("php://input")));
+        addlog(LOG_API, sprintf("API: %s: %s", $function_to_run, file_get_contents("php://input")));
 
         get_user_lock($lock = $is_logged_in);
 
         $ret = $function_to_run();
     }
     catch (Exception $e) {
-        $ret = array("error"  => $e->getMessage());
+        $error = $e->getMessage();
+        addlog(LOG_API, sprintf("API error: \"%s\": %s: %s", $error, $function_to_run, file_get_contents("php://input")));
+        $ret = array("error"  => $error);
     }
 
     if ($lock) release_lock($lock);
