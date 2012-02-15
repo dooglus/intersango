@@ -1383,6 +1383,15 @@ function verify_api_request($permission_needed)
         throw new Exception("that API key doesn't have '$permission_needed' permission");
 }
 
+function log_api($function_to_run)
+{
+    $contents = file_get_contents("php://input");
+    if ($contents)
+        addlog(LOG_API, sprintf("[%s] API: %s: %s", getenv("REMOTE_ADDR"), $function_to_run, $contents));
+    else
+        addlog(LOG_API, sprintf("[%s] API: %s", getenv("REMOTE_ADDR"), $function_to_run));
+}
+
 function process_api_request($function_to_run, $permission_needed)
 {
     global $is_logged_in;
@@ -1391,7 +1400,7 @@ function process_api_request($function_to_run, $permission_needed)
     try {
         verify_api_request($permission_needed);
 
-        addlog(LOG_API, sprintf("[%s] API: %s: %s", getenv("REMOTE_ADDR"), $function_to_run, file_get_contents("php://input")));
+        log_api($function_to_run);
 
         get_user_lock($lock = $is_logged_in);
 
