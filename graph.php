@@ -121,8 +121,8 @@ function show_funds_graph($log_axis = -1, $x = 0, $y = 0)
     $graph->legend->position = ezcGraph::BOTTOM;
 
     $graph->xAxis = new ezcGraphChartElementDateAxis();
-    $graph->xAxis->dateFormat = 'j M';
-    $graph->xAxis->interval = 60*60*24*7;
+    $graph->xAxis->dateFormat = 'j M y';
+    $graph->xAxis->interval = 60*60*24*7*4;
 
     if ($log_axis) {
         $graph->yAxis = new ezcGraphChartElementLogarithmicalAxis();
@@ -172,8 +172,8 @@ function show_users_graph($x = 0, $y = 0)
     $graph->legend->position = ezcGraph::BOTTOM;
 
     $graph->xAxis = new ezcGraphChartElementDateAxis();
-    $graph->xAxis->dateFormat = 'j M';
-    $graph->xAxis->interval = 60*60*24*7;
+    $graph->xAxis->dateFormat = 'j M y';
+    $graph->xAxis->interval = 60*60*24*7*4;
 
     $users = get_users_graph_data();
 
