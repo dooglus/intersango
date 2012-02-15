@@ -147,7 +147,7 @@ if (isset($_POST['add_key'])) {
     do_query($query);
 } else if (isset($_POST['delete_key'])) {
     $name  = post('name');
-    $query = "DELETE FROM api_keys wheRE uid = '$is_logged_in' AND name = '$name'";
+    $query = "DELETE FROM api_keys WHERE uid = '$is_logged_in' AND name = '$name'";
     do_query($query);
 }
 
