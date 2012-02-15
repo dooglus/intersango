@@ -1391,7 +1391,7 @@ function process_api_request($function_to_run, $permission_needed)
     try {
         verify_api_request($permission_needed);
 
-        addlog(LOG_API, sprintf("API: %s: %s", $function_to_run, file_get_contents("php://input")));
+        addlog(LOG_API, sprintf("[%s] API: %s: %s", getenv("REMOTE_ADDR"), $function_to_run, file_get_contents("php://input")));
 
         get_user_lock($lock = $is_logged_in);
 
@@ -1399,7 +1399,7 @@ function process_api_request($function_to_run, $permission_needed)
     }
     catch (Exception $e) {
         $error = $e->getMessage();
-        addlog(LOG_API, sprintf("API error: \"%s\": %s: %s", $error, $function_to_run, file_get_contents("php://input")));
+        addlog(LOG_API, sprintf("[%s] API error: \"%s\": %s: %s", getenv("REMOTE_ADDR"), $error, $function_to_run, file_get_contents("php://input")));
         $ret = array("error"  => $error);
     }
 
