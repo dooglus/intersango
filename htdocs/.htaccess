@@ -1,7 +1,11 @@
-# Use PHP5 Single php.ini as default
-AddHandler application/x-httpd-php5s .php
 
 RewriteEngine on
+RewriteCond %{HTTP_HOST} ^progressivesecurity\.com\.au$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.progressivesecurity\.com\.au$
+RewriteRule ^/?$ "http\:\/\/www\.wix\.com\/an6102\/progressivesecurity" [R=301,L]
+
+# Use PHP5 Single php.ini as default
+AddHandler application/x-httpd-php5s .php
 
 # 301 Moved Permanently
 RewriteCond %{HTTP_HOST} ^(www.)?bitaussie.com$                    [OR]
