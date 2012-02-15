@@ -160,7 +160,7 @@ if (isset($_POST['code'])) {
     </div>
     <div class='content_box'>
     <h3><?php printf(_("Deposit %s Over The Counter"), CURRENCY); ?></h3>
-    <strong><p>For fast 24 hour clearing visit any ANZ bank to deposit funds.</p></strong>
+    <strong><p>24 hour clearing visit any Commonwealth Bank Australia to deposit funds over the counter.<p>WARNING! please do not deposit funds via the internet using this method without "VERIFICATION", your (AUD) funds will be rejected or seized for fraud investigation.</p></strong>
     <?php  ?>
     <p>
 <?php
