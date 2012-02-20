@@ -230,10 +230,10 @@ define('COMMISSION_CAP_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER', '5.0');
 // `------------------------------------------------------------------------
 
 // the smallest BTC amount allowed when placing an order
-define('MINIMUM_BTC_AMOUNT', '0.5');
+define('MINIMUM_BTC_AMOUNT', '0.0005');
 
 // the smallest FIAT amount allowed when placing an order
-define('MINIMUM_FIAT_AMOUNT', '0.05');
+define('MINIMUM_FIAT_AMOUNT', '0.0005');
 
 // the smallest you can withdraw (it's the same for FIAT and BTC)
 define('MINIMUM_WITHDRAW', '0.5');
