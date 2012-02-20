@@ -8,6 +8,14 @@ function fetch_depth($rate_query, $field, $have, $want)
 {
     $ret = array();
 
+    $minimum_btc_amount  = numstr_to_internal(MINIMUM_BTC_AMOUNT);
+    $minimum_fiat_amount = numstr_to_internal(MINIMUM_FIAT_AMOUNT);
+
+    if ($have == "BTC")
+        $big_enough = "amount >= $minimum_btc_amount  AND want_amount >= $minimum_fiat_amount";
+    else
+        $big_enough = "amount >= $minimum_fiat_amount AND want_amount >= $minimum_btc_amount ";
+
     $query = "
     SELECT
         $rate_query AS rate,
@@ -18,6 +26,7 @@ function fetch_depth($rate_query, $field, $have, $want)
         type='$have'
         AND want_type='$want'
         AND status='OPEN'
+        AND $big_enough
     ORDER BY
         rate DESC
     ";

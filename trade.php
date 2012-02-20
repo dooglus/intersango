@@ -1,5 +1,10 @@
 <?php
 
+global $minimum_btc_amount, $minimum_fiat_amount;
+
+$minimum_btc_amount = numstr_to_internal(MINIMUM_BTC_AMOUNT);
+$minimum_fiat_amount = numstr_to_internal(MINIMUM_FIAT_AMOUNT);
+
 function active_table_cell_trade($id, $index, $content, $url, $right=false)
 {
     printf("<td id='$id$index' class='active%s' %s %s %s>%s</td>\n",
@@ -36,10 +41,15 @@ function show_mini_orderbook_table_cell($id, $curr, $price, $have, $want, $fiat_
 
 function show_mini_orderbook_table_row($id, $curr, $price, $have, $want, $this_fiat, $this_btc, $sum_fiat, $sum_btc, $mine)
 {
+    global $minimum_btc_amount, $minimum_fiat_amount;
+
     $this_btc_str = internal_to_numstr($this_btc, BTC_PRECISION);
     $this_fiat_str = internal_to_numstr($this_fiat, FIAT_PRECISION);
 
-    if (string_is_zero($this_btc_str) || string_is_zero($this_fiat_str))
+    if (string_is_zero($this_btc_str) ||
+        string_is_zero($this_fiat_str) ||
+        gmp_cmp($this_btc, $minimum_btc_amount) < 0 ||
+        gmp_cmp($this_fiat, $minimum_fiat_amount) < 0)
         return;
 
     if ($mine) {
