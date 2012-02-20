@@ -169,7 +169,7 @@ function do_withdraw($amount_disp, $curr_type, &$voucher_code, &$reqid)
         $amount = truncate_num($amount, 2);
 
     curr_supported_check($curr_type);
-    order_worthwhile_check($amount, $amount_disp, MINIMUM_WITHDRAW);
+    order_worthwhile_check($amount, $amount_disp, $curr_type, MINIMUM_WITHDRAW);
     enough_money_check($amount, $curr_type);
     check_withdraw_limit($is_logged_in, $amount, $curr_type);
 

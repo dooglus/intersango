@@ -17,8 +17,13 @@ function place_order($have_amount_disp, $have_currency,
     $have_amount = numstr_to_internal($have_amount_disp);
     $want_amount = numstr_to_internal($want_amount_disp);
 
-    order_worthwhile_check($have_amount, $have_amount_disp, MINIMUM_HAVE_AMOUNT);
-    order_worthwhile_check($want_amount, $want_amount_disp, MINIMUM_WANT_AMOUNT);
+    if ($have_currency == 'BTC') {
+        order_worthwhile_check($have_amount, $have_amount_disp, $have_currency, MINIMUM_BTC_AMOUNT);
+        order_worthwhile_check($want_amount, $want_amount_disp, $want_currency, MINIMUM_FIAT_AMOUNT);
+    } else {
+        order_worthwhile_check($have_amount, $have_amount_disp, $have_currency, MINIMUM_FIAT_AMOUNT);
+        order_worthwhile_check($want_amount, $want_amount_disp, $want_currency, MINIMUM_BTC_AMOUNT);
+    }
 
     enough_money_check($have_amount, $have_currency);
 

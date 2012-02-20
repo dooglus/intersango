@@ -931,13 +931,13 @@ function curr_supported_check($curr_type)
         throw new Error(_('Ooops!'),
                         _('Bad currency supplied.  Do you have Javascript disabled in your web browser?  This site needs Javascript enabled.'));
 }
-function order_worthwhile_check($amount, $amount_disp, $min_str='0.5')
+function order_worthwhile_check($amount, $amount_disp, $currency, $min_str='0.5')
 {
     if (!is_numeric($amount_disp))
         throw new Problem(_('Numbers. Numbers.'), _('The value you entered was not a number.'));
     $min = numstr_to_internal($min_str);
     if ($amount < $min)
-        throw new Problem(_("Try again..."), sprintf(_("Your order size is too small. The minimum is %s."), $min_str));
+        throw new Problem(_("Try again..."), sprintf(_("Your order size is too small. The minimum is %s %s."), $min_str, $currency));
 }
 function enough_money_check($amount, $curr_type)
 {
