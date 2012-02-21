@@ -161,7 +161,7 @@ function show_content_header_identify_link()
 function show_content_header_news()
 {
     echo "    <div class='content_header_box'>\n";
-    // echo "        " . SPACE . "please note the new bank account information on the deposit page\n";
+    echo "        " . SPACE . "please note the new bank account information on the deposit page\n";
     echo "    </div>\n";
 }
 
@@ -243,7 +243,7 @@ function show_content_header($is_logged_in)
         if ($is_logged_in)
             show_content_header_balances($is_logged_in);
 
-        show_content_header_news();
+        // show_content_header_news();
         show_content_header_identify_link();
 
         show_content_header_frozen();
