@@ -10,6 +10,14 @@
 -->
 
 <div class='content_box'>
+<h3>...</h3>
+<h4>9:10am 22-Feb-12</h4>
+<p>
+I (<a href="mailto:dooglus@gmail.com">Chris Moore</a>) have frozen the exchange temporarily while I attempt to get in touch with the management.  It appears that AUD withdrawals have been piling up in the 'pending' state for over a week now, which is unusual.  I hope there's a simple explanation for this and that I'm overreacting, but until I'm able to talk to Andre about this it doesn't seem fair to allow people to continue trading here.
+</p>
+</div>
+
+<div class='content_box'>
 <h3>Identification Document Upload Issue</h3>
 <h4>12:10pm 29-Nov-11</h4>
 <p>
