@@ -60,6 +60,10 @@ try {
             $openid->returnUrl = SITE_URL . "?page=login&next_page=" . preg_replace('/&/', '%26', $next_page);
         if (!$openid->mode) {
             if (isset($_GET['openid_identifier'])) {
+                if (isset($_GET['log'])) {
+                    $openid->required = array('contact/email');
+                    $openid->optional = array('namePerson', 'namePerson/friendly');
+                }
                 $openid->identity = htmlspecialchars($_GET['openid_identifier'], ENT_QUOTES);
                 addlog(LOG_LOGIN, sprintf("  attempt auth for openid %s", $openid->identity));
 
@@ -92,6 +96,11 @@ try {
             echo "<p>\n";
             echo "    <form action='' class='indent_form' method='get'>\n";
             echo "        <input type='hidden' name='csrf_token' value='{$_SESSION['csrf_token']}' />\n";
+            if (isset($_GET['log'])) {
+                $log = "&log";
+                echo "        <input type='hidden' name='log' value='1' />\n";
+            } else
+                $log = "";
             echo "        <input type='text' name='openid_identifier'" . ($cookie ? " value='$cookie'" : "") . " />\n";
             echo "        <input type='checkbox' id='remember' name='remember' value='1'" . ($cookie ? " checked='checked'" : "") . " />\n";
             echo "        <label style='margin: 0px; display: inline;' for='remember'>remember OpenID identifier on this computer</label><br/>\n";
@@ -108,9 +117,9 @@ try {
             echo "<p>" . sprintf(_("If you do not have an OpenID login then we recommend %s."),
                                  "<a href=\"https://www.myopenid.com/\">MyOpenID</a>") . "</p>\n";
             echo "<p>" . sprintf(_("Alternatively you may sign in using %s or %s."),
-                                 "<a href=\"?page=login&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=" .
+                                 "<a href=\"?page=login{$log}&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=" .
                                  $_SESSION['csrf_token'] . "\">Google</a>",
-                                 "<a href=\"?page=login&openid_identifier=me.yahoo.com&csrf_token=" .
+                                 "<a href=\"?page=login{$log}&openid_identifier=me.yahoo.com&csrf_token=" .
                                  $_SESSION['csrf_token'] . "\">Yahoo</a>") . "</p>\n";
         } else if ($openid->mode == 'cancel') {
             setcookie('autologin', FALSE, time() - 60*60*24*365);
@@ -121,6 +130,15 @@ try {
 
             $oidlogin = escapestr($openid->identity);
             $use_duo = 0;
+
+            if (isset($_GET['log'])) {
+                $attributes = $openid->getAttributes();
+                $email = $friendly = $name = '';
+                if (isset($attributes['contact/email']))            $email    = $attributes['contact/email'];
+                if (isset($attributes['namePerson/friendly']))      $friendly = $attributes['namePerson/friendly'];
+                if (isset($attributes['namePerson']))               $name     = $attributes['namePerson'];
+                addlog(LOG_LOGIN, "oid: '$oidlogin'; email: '$email'; friendly: '$friendly'; name: '$name'");
+            }
 
             // is this OpenID known to us?
             $query = "
