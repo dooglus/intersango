@@ -116,7 +116,7 @@ CREATE TABLE `purses` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO `purses` VALUES (1,0,'AUD');
+INSERT INTO `purses` VALUES (1,0,'FIAT');
 INSERT INTO `purses` VALUES (1,0,'BTC');
 
 --
