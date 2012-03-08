@@ -279,7 +279,7 @@ class WBX_API
 
     function withdraw_fiat_voucher($amount)
     {
-        return self::withdraw_voucher($amount, 'AUD');
+        return self::withdraw_voucher($amount, CURRENCY);
     }
 }
 
