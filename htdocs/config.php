@@ -41,7 +41,7 @@ define('CHARTS_PAGE', '');
 define('DEFAULT_STATEMENT_PERIOD', '1 week');
 
 // google analytics account number for visitor tracking
-define('ANALYTICS_ACCOUNT', 'UA-26265923-1');
+define('ANALYTICS_ACCOUNT', 'UA-00000000-0');
 
 // re-show table column headings every so many rows
 define('RESHOW_COLUMN_HEADINGS_AFTER_ROWS', 20);
@@ -76,7 +76,7 @@ define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>, Andre Jensen <
 define('SITE_NAME',             'World Bitcoin Exchange');
 
 // a description
-define('SITE_DESCRIPTION',      SITE_NAME . ' allows you to trade Australian Dollars (AUD) for Bitcoins (BTC) with other users.  We have very low fees and an active market.');
+define('SITE_DESCRIPTION',      SITE_NAME . ' allows you to trade ' . CURRENCY_FULL_PLURAL . ' (' . CURRENCY . ') for Bitcoins (BTC) with other users.  We have very low fees and an active market.');
 
 // the URL for the site
 define('SITE_URL',              'https://www.worldbitcoinexchange.com/');
@@ -96,13 +96,7 @@ define('CONTACT_TWITTER_NAME',  'worldbitcoinx');
 define('CONTACT_PHONE_NUMBER',  '+617 3102-9666');
 define('CONTACT_OFFICE_HOURS',  'Mon-Fri 9am to 5pm');
 define('CONTACT_TIME_ZONE',     'UTC/GMT +10 hours');
-define('CONTACT_ADDRESS_ETC',   "<b>High Net Worth Property Pty Ltd</b><br/>
-                                 Trading As: World Bitcoin Exchange<br/>
-                                 ACN: 61 131 700 779<br/>
-                                 Gold Coast<br/>
-                                 Queensland<br/>
-                                 Australia<br/>
-                                 4208");
+define('CONTACT_ADDRESS_ETC',   "<b>High Net Worth Property Pty Ltd</b><br/>Trading As: World Bitcoin Exchange<br/>ACN: 61 131 700 779<br/>Gold Coast<br/>Queensland<br/>Australia<br/>4208");
 
 // .------------------------------------------------------------------------
 // |  bank account details for deposits
