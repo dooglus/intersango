@@ -1,5 +1,5 @@
 <?php
-define('ABSPATH', '/home/worldbit/programs/intersango');
+define('ABSPATH', '/home/intersango/intersango');
 define('URLROOT', '/');
 
 if (!file_exists(ABSPATH . "/trade.php")) {
@@ -11,7 +11,7 @@ require_once ABSPATH . "/errors.php";
 enable_errors();
 
 // do we have a bitcoind which was modified to deal only in integers?  ie. does "bitcoind getbalance" show a whole number?
-define('INTEGER_BITCOIND', true);
+define('INTEGER_BITCOIND', false);
 
 // we recently had a bunch of fraudulent signups, and so are only allowing automatic BTC withdraws for users below this userid
 define('LOWEST_UNTRUSTED_USERID', 1000); // trust noone
