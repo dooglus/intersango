@@ -140,6 +140,9 @@ else {
     </div>
 -->
 
+<?php
+    if (ENABLE_LOCAL_VOUCHERS) {
+?>
     <div class='content_box'>
     <h3><?php printf(_("Withdraw %s to Voucher"), CURRENCY); ?></h3>
     <p>
@@ -148,25 +151,25 @@ else {
         %s credit by any user of this exchange."), CURRENCY, CURRENCY); ?>
     </p>
 <?php
-    if (gmp_cmp($fiat, $available) > 0) {
-        echo "    <p>" . sprintf(_("You can withdraw up to %s each day"),
-                                 internal_to_numstr($limit) . " " . CURRENCY) . " (", day_time_range_string(), ")</p>\n";
-        if ($transferred) {
-            echo "    <p>" . sprintf(_("You have withdrawn %s today"),
-                                     internal_to_numstr($transferred) . " " . CURRENCY) . "\n";
-            if (gmp_cmp($available, '0') > 0)
-                echo "    " . sprintf(_("and so can withdraw up to %s more."),
-                                      internal_to_numstr($available) . " " . CURRENCY);
-            else
-                echo "    " . _("and so cannot withdraw any more until tomorrow.");
-            echo "</p>\n";
+        if (gmp_cmp($fiat, $available) > 0) {
+            echo "    <p>" . sprintf(_("You can withdraw up to %s each day"),
+                                     internal_to_numstr($limit) . " " . CURRENCY) . " (", day_time_range_string(), ")</p>\n";
+            if ($transferred) {
+                echo "    <p>" . sprintf(_("You have withdrawn %s today"),
+                                         internal_to_numstr($transferred) . " " . CURRENCY) . "\n";
+                if (gmp_cmp($available, '0') > 0)
+                    echo "    " . sprintf(_("and so can withdraw up to %s more."),
+                                          internal_to_numstr($available) . " " . CURRENCY);
+                else
+                    echo "    " . _("and so cannot withdraw any more until tomorrow.");
+                echo "</p>\n";
+            }
         }
-    }
-    if (gmp_cmp($fiat, '0') <= 0)
-        echo "    <p>" . sprintf(_("You don't have any %s to withdraw."), CURRENCY) . "</p>\n";
-    else if (gmp_cmp($available, '0') > 0) {
-        echo "    <p>" . sprintf(_("Enter an amount below to withdraw.  You have %s."),
-                                 internal_to_numstr($fiat) . " " . CURRENCY) . "</p>\n";
+        if (gmp_cmp($fiat, '0') <= 0)
+            echo "    <p>" . sprintf(_("You don't have any %s to withdraw."), CURRENCY) . "</p>\n";
+        else if (gmp_cmp($available, '0') > 0) {
+            echo "    <p>" . sprintf(_("Enter an amount below to withdraw.  You have %s."),
+                                     internal_to_numstr($fiat) . " " . CURRENCY) . "</p>\n";
 ?>
     <p>
         <form action='' class='indent_form' method='post'>
@@ -180,8 +183,13 @@ else {
             <input type='submit' value='<?php echo _("Submit"); ?>' />
         </form>
     </p>
-<?php } ?>
+<?php
+        }
+?>
     </div>
+<?php
+    }
+?>
 
     <div class='content_box'>
     <h3><?php echo _("Withdraw BTC to Bitcoin Address"); ?></h3>
@@ -222,7 +230,10 @@ else {
         </form>
     </p>
     </div>
-<?php } ?>
+<?php
+    }
+
+    if (ENABLE_LOCAL_VOUCHERS) { ?>
     <div class='content_box'>
     <h3><?php echo _("Withdraw BTC to Voucher"); ?></h3>
     <p>
@@ -231,22 +242,22 @@ else {
         Bitcoins by any user of this exchange."); ?>
     </p>
 <?php
-    if (gmp_cmp($btc, $available) > 0) {
-        echo "    <p>" . sprintf(_("You can withdraw up to %s BTC each day"), internal_to_numstr($limit)) .
-            " (", day_time_range_string(), ").</p>\n";
-        if ($withdrawn) {
-            echo "    <p>" . sprintf(_("You have withdrawn %s BTC today"), internal_to_numstr($withdrawn)) . "\n";
-            if (gmp_cmp($available, '0') > 0)
-                echo "    " . sprintf(_("and so can withdraw up to %s BTC more."), internal_to_numstr($available));
-            else
-                echo "    " . _("and so cannot withdraw any more until tomorrow.");
-            echo "</p>\n";
+        if (gmp_cmp($btc, $available) > 0) {
+            echo "    <p>" . sprintf(_("You can withdraw up to %s BTC each day"), internal_to_numstr($limit)) .
+                " (", day_time_range_string(), ").</p>\n";
+            if ($withdrawn) {
+                echo "    <p>" . sprintf(_("You have withdrawn %s BTC today"), internal_to_numstr($withdrawn)) . "\n";
+                if (gmp_cmp($available, '0') > 0)
+                    echo "    " . sprintf(_("and so can withdraw up to %s BTC more."), internal_to_numstr($available));
+                else
+                    echo "    " . _("and so cannot withdraw any more until tomorrow.");
+                echo "</p>\n";
+            }
         }
-    }
-    if (gmp_cmp($btc, '0') <= 0)
-        echo "    <p>" . _("You don't have any BTC to withdraw.") . "</p>\n";
-    else if (gmp_cmp($available, '0') > 0) {
-        echo "    <p>" . sprintf(_("Enter an amount below to withdraw.  You have %s BTC."), internal_to_numstr($btc)) . "</p>\n";
+        if (gmp_cmp($btc, '0') <= 0)
+            echo "    <p>" . _("You don't have any BTC to withdraw.") . "</p>\n";
+        else if (gmp_cmp($available, '0') > 0) {
+            echo "    <p>" . sprintf(_("Enter an amount below to withdraw.  You have %s BTC."), internal_to_numstr($btc)) . "</p>\n";
 ?>
     <p>
         <form action='' class='indent_form' method='post'>
@@ -260,7 +271,8 @@ else {
         </form>
     </p>
 <?php
+        }
+        echo "    </div>\n";
     }
-    echo "    </div>\n";
 }
 ?>

@@ -60,7 +60,7 @@ function show_deposit_voucher_form($code = '')
 <?php
 }
 
-if (isset($_POST['code'])) {
+if (ENABLE_LOCAL_VOUCHERS && isset($_POST['code'])) {
     echo "<div class='content_box'>\n";
     echo "<h3>" . _("Deposit Voucher") . "</h3>\n";
     $code = post('code', '-');
@@ -99,8 +99,8 @@ if (isset($_POST['code'])) {
     $row = get_row($result);
     $deposref = $row['deposref'];
     $formatted_deposref = format_deposref($deposref);
-?>
 
+    if (ENABLE_LOCAL_VOUCHERS) { ?>
 <div class='content_box'>
      <h3><?php echo _("Deposit Voucher"); ?></h3>
     <p><?php printf(
@@ -122,6 +122,7 @@ if (isset($_POST['code'])) {
     </p>
 <?php show_deposit_voucher_form(); ?>
 </div>
+<?php } ?>
 
 <div class='content_box'>
     <h3><?php printf(_("Deposit %s by Bank Deposit (EFT)"), CURRENCY); ?></h3>

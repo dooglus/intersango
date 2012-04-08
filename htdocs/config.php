@@ -160,6 +160,10 @@ if (isset($_GET['full'])) {
 // |  vouchers
 // `------------------------------------------------------------------------
 
+// whether to offer and accept local and mtgox vouchers
+define('ENABLE_LOCAL_VOUCHERS', true);
+define('ENABLE_MTGOX_VOUCHERS', true);
+
 // vouchers look like "XXX-BTC-5HZKF-PEL08-J39BK-JBEL8" - the first word is fixed to this value:
 define('VOUCHER_PREFIX', 'PPBTC');
 
