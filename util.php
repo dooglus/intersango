@@ -269,6 +269,8 @@ function get_login_status()
     if (has_results($result)) {
         $row = mysql_fetch_array($result);
         list ($is_logged_in, $is_admin, $is_verified, $oidlogin) = array($uid, $row['is_admin'] == '1', $row['verified'] == '1', $oid);
+        if (!REQUIRE_IDENTIFICATION)
+            $is_verified = true;
         return;
     }
 
@@ -335,12 +337,14 @@ function check_verified()
 
 function verify_user($uid)
 {
+    addlog(LOG_RESULT, "  verified user $uid");
     do_query("UPDATE users SET verified = 1 WHERE uid = '$uid'");
     return mysql_affected_rows();
 }
 
 function unverify_user($uid)
 {
+    addlog(LOG_RESULT, "  unverified user $uid");
     do_query("UPDATE users SET verified = 0 WHERE uid = '$uid'");
     return mysql_affected_rows();
 }
