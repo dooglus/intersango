@@ -50,10 +50,10 @@ define('RESHOW_COLUMN_HEADINGS_AFTER_ROWS', 20);
 // |  currency
 // `------------------------------------------------------------------------
 
-define('CURRENCY',             'GBP');
-define('CURRENCY_NATIONALITY', 'British');
-define('CURRENCY_FULL',        'Pound');
-define('CURRENCY_FULL_PLURAL', 'Pounds');
+define('CURRENCY',             'PP');
+define('CURRENCY_NATIONALITY', 'World');
+define('CURRENCY_FULL',        'Profit Point');
+define('CURRENCY_FULL_PLURAL', 'Profit Points');
 
 // .------------------------------------------------------------------------
 // |  wallet thresholds
@@ -70,10 +70,10 @@ define('WARN_HIGH_WALLET_THRESHOLD', 450);
 // `------------------------------------------------------------------------
 
 // address to email if the script discovers a problem
-define('TECH_EMAIL_ADDRESS',    'Your Name <youremail@gmail.com>');
+define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>');
 
 // the name of the site
-define('SITE_NAME',             'ACME Bitcoin Exchange');
+define('SITE_NAME',             'Profit Point Bitcoin Exchange');
 
 // a description
 define('SITE_DESCRIPTION',      SITE_NAME . ' allows you to trade ' . CURRENCY_FULL_PLURAL . ' (' . CURRENCY . ') for Bitcoins (BTC) with other users.  We have very low fees and an active market.');
@@ -85,10 +85,10 @@ define('SITE_URL',              'https://www.yoururlhere.com/');
 define('SITE_IMAGE',            SITE_URL . 'images/logo200.jpg');
 
 // address to send email from
-define('EMAIL_FROM_ADDRESS',    SITE_NAME . ' <youremail@gmail.com>');
+define('EMAIL_FROM_ADDRESS',    SITE_NAME . ' <mrdavidandersen@gmail.com>');
 
 // details to show on the help page
-define('CONTACT_EMAIL_ADDRESS', 'youremail@gmail.com');
+define('CONTACT_EMAIL_ADDRESS', 'mrdavidandersen@gmail.com');
 define('CONTACT_SKYPE_ADDRESS', '...');
 define('CONTACT_FACEBOOK_URL',  '...');
 define('CONTACT_FACEBOOK_NAME', '...');
@@ -158,7 +158,7 @@ if (isset($_GET['full'])) {
 // `------------------------------------------------------------------------
 
 // vouchers look like "XXX-BTC-5HZKF-PEL08-J39BK-JBEL8" - the first word is fixed to this value:
-define('VOUCHER_PREFIX', 'XXX');
+define('VOUCHER_PREFIX', 'PPBTC');
 
 // which characters to use in the last 4 blocks of 5 characters
 // using 33 characters, in 4 blocks of 5 gives us 100 bits of entropy
