@@ -269,6 +269,8 @@ function get_login_status()
     if (has_results($result)) {
         $row = mysql_fetch_array($result);
         list ($is_logged_in, $is_admin, $is_verified, $oidlogin) = array($uid, $row['is_admin'] == '1', $row['verified'] == '1', $oid);
+        if (!REQUIRE_IDENTIFICATION)
+            $is_verified = true;
         return;
     }
 
