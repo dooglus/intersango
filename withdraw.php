@@ -44,7 +44,7 @@ if (isset($_POST['amount']) && isset($_POST['curr_type'])) {
 else {
 ?>
     <div class='content_box'>
-    <h3><?php printf(_("Withdraw %s (%s residents)"), CURRENCY, CURRENCY_NATIONALITY); ?></h3>
+    <h3><?php printf(_("Withdraw %s"), CURRENCY); ?></h3>
 <?php
     $balances = fetch_balances($is_logged_in);
     $fiat = $balances[CURRENCY];
@@ -71,31 +71,11 @@ else {
         echo "    <p>" . sprintf(_("Enter an amount below to withdraw.  You have %s."),
                                  internal_to_numstr($fiat) . " " . CURRENCY) . "</p>\n";
 ?>
-    <p><?php echo _("We charge no fee.
-    You are responsible for paying any incurred fees. If your deposit 
-    is insufficient to cover bank fees then it will be denied."); ?></p>
+    <p><?php echo _("We charge no fee for withdrawals."); ?></p>
     <p>
         <form action='' class='indent_form' method='post'>
-            <label for='input_name_holder'><?php echo _("Name of account holder"); ?></label>
+            <label for='input_name_holder'><?php echo _("PP Account Name"); ?></label>
             <input type='text' id='input_name_holder' name='name_holder' maxlength='18' />
-
-            <label for='input_name_bank'><?php echo _("Name of the bank"); ?></label>
-            <input type='text' id='input_name_bank' name='name_bank' />
-
-            <div id='acc_details'>
-                <div id='acc_num'>
-                    <label for='input_account_number'><?php echo _("Account number"); ?></label>
-                    <input type='text' class='input_no_block' id='input_account_number' name='account_number' />
-                </div>
-                <div id='acc_sort'>
-                    <label for='input_sort_code'><?php echo _("BSB"); ?></label>
-                    <input type='text' id='input_sort_code' name='sort_code' />
-                </div>
-                <div id='acc_ref'>
-                    <label for='input_ref'><?php echo _("Your reference (optional)"); ?></label>
-                    <input type='text' id='input_ref' name='ref' />
-                </div>
-            </div>
 
             <label for='input_amount'><?php echo _("Amount"); ?></label>
             <input type='text' id='input_amount' name='amount' value='0.00' />
@@ -109,36 +89,6 @@ else {
     <p><?php echo _("Allow 3-5 working days for payments to pass through clearing."); ?></p>
 <?php } ?>
     </div>
-
-<!-- DISABLED
-    <div class='content_box'>
-    <h3><?php printf(_("Withdraw %s (international)"), CURRENCY); ?></h3>
-    <p><?php printf(_("Enter an amount below to submit a withdrawal request. A fee of 20 %s for amounts below 5000 %s and 35 %s otherwise, applies. Your bank may charge an additional processing fee on their end."),
-                    CURRENCY, CURRENCY, CURRENCY); ?></p>
-    <p><?php printf(_("Please also contact %s"), CONTACT_EMAIL_ADDRESS); ?></p>
-    <p>
-        <form action='' class='indent_form' method='post'>
-            <div id='acc_details'>
-                <div id='acc_num'>
-                    <label for='input_account_number'><?php echo _("IBAN"); ?></label>
-                    <input type='text' class='input_no_block' id='input_account_number' name='iban' />
-                </div>
-                <div id='acc_sort'>
-                    <label for='input_sort_code'><?php echo _("BIC/SWIFT"); ?></label>
-                    <input type='text' id='input_sort_code' name='swift' />
-                </div>
-            </div>
-
-            <label for='input_amount'><?php echo _("Amount"); ?></label>
-            <input type='text' id='input_amount' name='amount' value='0.00' />
-
-            <input type='hidden' name='curr_type' value='<?php echo CURRENCY; ?>' />
-            <input type='hidden' name='is_international' value='true' />
-            <input type='submit' value='<?php echo _("Submit"); ?>' />
-        </form>
-    </p>
-    </div>
--->
 
 <?php
     if (ENABLE_LOCAL_VOUCHERS) {
