@@ -141,6 +141,9 @@ function redeem_mtgox_fiat_voucher($code)
 {
     global $is_logged_in;
 
+    if (!ENABLE_MTGOX_VOUCHERS)
+        throw Error('MtGox vouchers are not enabled on this site', 'Redeeming MtGox voucher codes is disabled.');
+
     $mtgox = new MtGox_API(MTGOX_KEY, MTGOX_SECRET);
 
     $result = $mtgox->deposit_coupon($code);
@@ -193,6 +196,9 @@ function redeem_voucher($code)
 
     if (looks_like_mtgox_fiat_voucher($code))
         return redeem_mtgox_fiat_voucher($code);
+
+    if (!ENABLE_LOCAL_VOUCHERS)
+        throw Error('Vouchers are not enabled on this site', 'Redeeming voucher codes is disabled.');
 
     list($issuing_reqid, $issuing_uid, $amount, $curr_type) = check_voucher_code($code);
     // echo "issued in request $issuing_reqid by user $issuing_uid for amount $amount of $curr_type<br/>\n";
