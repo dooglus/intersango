@@ -160,6 +160,9 @@ function do_withdraw($amount_disp, $curr_type, &$voucher_code, &$reqid)
 {
     global $is_logged_in;
 
+    if (!ENABLE_LOCAL_VOUCHERS && isset($_POST['voucher']))
+        throw Error('Vouchers are not enabled on this site', 'Withdrawing to a voucher code is disabled.');
+
     $amount = numstr_to_internal($amount_disp);
 
     // dollar amounts should be truncated to cents, but Bitcoins are more divisible
