@@ -111,6 +111,9 @@ define('DEPOSIT_BANK_BRANCH_ID',      '...');
 // |  user identification
 // `------------------------------------------------------------------------
 
+// whether to require users to upload proof of ID
+define('REQUIRE_IDENTIFICATION',      true);
+
 // how many upload forms to present on the 'identity' page
 define('ID_FILE_UPLOAD_SLOTS',        5);
 
