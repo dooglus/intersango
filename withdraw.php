@@ -229,9 +229,9 @@ else {
             <input type='submit' value='<?php echo _("Submit"); ?>' />
         </form>
     </p>
-    </div>
 <?php
     }
+    echo "    </div>\n";
 
     if (ENABLE_LOCAL_VOUCHERS) { ?>
     <div class='content_box'>
