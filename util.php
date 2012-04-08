@@ -337,12 +337,14 @@ function check_verified()
 
 function verify_user($uid)
 {
+    addlog(LOG_RESULT, "  verified user $uid");
     do_query("UPDATE users SET verified = 1 WHERE uid = '$uid'");
     return mysql_affected_rows();
 }
 
 function unverify_user($uid)
 {
+    addlog(LOG_RESULT, "  unverified user $uid");
     do_query("UPDATE users SET verified = 0 WHERE uid = '$uid'");
     return mysql_affected_rows();
 }
