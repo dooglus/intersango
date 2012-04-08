@@ -50,10 +50,10 @@ define('RESHOW_COLUMN_HEADINGS_AFTER_ROWS', 20);
 // |  currency
 // `------------------------------------------------------------------------
 
-define('CURRENCY',             'AUD');
-define('CURRENCY_NATIONALITY', 'Australian');
-define('CURRENCY_FULL',        'Australian Dollar');
-define('CURRENCY_FULL_PLURAL', 'Australian Dollars');
+define('CURRENCY',             'GBP');
+define('CURRENCY_NATIONALITY', 'British');
+define('CURRENCY_FULL',        'Pound');
+define('CURRENCY_FULL_PLURAL', 'Pounds');
 
 // .------------------------------------------------------------------------
 // |  wallet thresholds
@@ -70,42 +70,42 @@ define('WARN_HIGH_WALLET_THRESHOLD', 450);
 // `------------------------------------------------------------------------
 
 // address to email if the script discovers a problem
-define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>, Andre Jensen <gorkalitus@gmail.com>');
+define('TECH_EMAIL_ADDRESS',    'Your Name <youremail@gmail.com>');
 
 // the name of the site
-define('SITE_NAME',             'World Bitcoin Exchange');
+define('SITE_NAME',             'ACME Bitcoin Exchange');
 
 // a description
 define('SITE_DESCRIPTION',      SITE_NAME . ' allows you to trade ' . CURRENCY_FULL_PLURAL . ' (' . CURRENCY . ') for Bitcoins (BTC) with other users.  We have very low fees and an active market.');
 
 // the URL for the site
-define('SITE_URL',              'https://www.worldbitcoinexchange.com/');
+define('SITE_URL',              'https://www.yoururlhere.com/');
 
 // an icon for the site
 define('SITE_IMAGE',            SITE_URL . 'images/logo200.jpg');
 
 // address to send email from
-define('EMAIL_FROM_ADDRESS',    SITE_NAME . ' <support@intersango.com.au>');
+define('EMAIL_FROM_ADDRESS',    SITE_NAME . ' <youremail@gmail.com>');
 
 // details to show on the help page
-define('CONTACT_EMAIL_ADDRESS', 'support@intersango.com.au');
-define('CONTACT_SKYPE_ADDRESS', 'worldbitcoinexchange');
-define('CONTACT_FACEBOOK_URL',  'http://www.facebook.com/pages/World-Bitcoin-Exchange/227118550652605');
-define('CONTACT_FACEBOOK_NAME', 'worldbitcoinexchange');
-define('CONTACT_TWITTER_NAME',  'worldbitcoinx');
-define('CONTACT_PHONE_NUMBER',  '+617 3102-9666');
-define('CONTACT_OFFICE_HOURS',  'Mon-Fri 9am to 5pm');
-define('CONTACT_TIME_ZONE',     'UTC/GMT +10 hours');
-define('CONTACT_ADDRESS_ETC',   "<b>High Net Worth Property Pty Ltd</b><br/>Trading As: World Bitcoin Exchange<br/>ACN: 61 131 700 779<br/>Gold Coast<br/>Queensland<br/>Australia<br/>4208");
+define('CONTACT_EMAIL_ADDRESS', 'youremail@gmail.com');
+define('CONTACT_SKYPE_ADDRESS', '...');
+define('CONTACT_FACEBOOK_URL',  '...');
+define('CONTACT_FACEBOOK_NAME', '...');
+define('CONTACT_TWITTER_NAME',  '...');
+define('CONTACT_PHONE_NUMBER',  '...');
+define('CONTACT_OFFICE_HOURS',  '...');
+define('CONTACT_TIME_ZONE',     '...');
+define('CONTACT_ADDRESS_ETC',   '...');
 
 // .------------------------------------------------------------------------
 // |  bank account details for deposits
 // `------------------------------------------------------------------------
 
-define('DEPOSIT_BANK_ACCOUNT_TITLE',  'A R JENSEN');
-define('DEPOSIT_BANK_NAME',           'CBA');
-define('DEPOSIT_BANK_ACCOUNT_NUMBER', '1249-6599');
-define('DEPOSIT_BANK_BRANCH_ID',      '062-000');
+define('DEPOSIT_BANK_ACCOUNT_TITLE',  '...');
+define('DEPOSIT_BANK_NAME',           '...');
+define('DEPOSIT_BANK_ACCOUNT_NUMBER', '...');
+define('DEPOSIT_BANK_BRANCH_ID',      '...');
 
 // .------------------------------------------------------------------------
 // |  user identification
@@ -119,7 +119,7 @@ define('ID_FILE_UPLOAD_SLOTS',        5);
 // `------------------------------------------------------------------------
 
 // which timezone should we use - something that exists in /usr/share/zoneinfo/ ?
-define('TIMEZONE', "Australia/Queensland");
+define('TIMEZONE', "UTC");
 
 // how many minutes after midnight does the day start, for the purposes of limiting daily transfers
 define('DAY_STARTS_MINUTES_AFTER_MIDNIGHT', 9*60 + 0); // day starts at 9:00am
@@ -157,8 +157,8 @@ if (isset($_GET['full'])) {
 // |  vouchers
 // `------------------------------------------------------------------------
 
-// vouchers look like "WBX-BTC-5HZKF-PEL08-J39BK-JBEL8" - the first word is fixed to this value:
-define('VOUCHER_PREFIX', 'WBX');
+// vouchers look like "XXX-BTC-5HZKF-PEL08-J39BK-JBEL8" - the first word is fixed to this value:
+define('VOUCHER_PREFIX', 'XXX');
 
 // which characters to use in the last 4 blocks of 5 characters
 // using 33 characters, in 4 blocks of 5 gives us 100 bits of entropy
