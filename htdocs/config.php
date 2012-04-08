@@ -203,10 +203,10 @@ define('RANDOM_CHARS', '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
 // `------------------------------------------------------------------------
 
 // percentage commission to charge on each FIAT received; 0 for no commission
-define('COMMISSION_PERCENTAGE_FOR_FIAT', '0.6');
+define('COMMISSION_PERCENTAGE_FOR_FIAT', '0');
 
 // percentage commission to charge on each BTC received; 0 for no commission
-define('COMMISSION_PERCENTAGE_FOR_BTC', '0.1');
+define('COMMISSION_PERCENTAGE_FOR_BTC', '0');
 
 // commission cap, in FIAT, when buying FIAT; '0' for no cap
 define('COMMISSION_CAP_IN_FIAT', '0.25');
