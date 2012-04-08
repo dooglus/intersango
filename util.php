@@ -1044,18 +1044,20 @@ function show_commission_rates()
         echo " " . _("when selling BTC") . "</p>\n";
     }
 
-    $cap = COMMISSION_CAP_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER;
-    $rate = COMMISSION_PERCENTAGE_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER;
-    $item = sprintf("MtGox %s vouchers", CURRENCY);
-    if ($rate == 0)
-        printf("<p>" . _("depositing %s is free of commission") . "</p>\n", $item);
-    else {
-        echo "<p>$rate%";
-        if ($cap)
-            echo " (" . _("capped at") . " " . fiat_to_numstr($cap) . ")";
-        else
-            echo " (" . _("uncapped") . ")";
-        echo " " . sprintf(_("when depositing %s"), $item) . "</p>\n";
+    if (ENABLE_MTGOX_VOUCHERS) {
+        $cap = COMMISSION_CAP_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER;
+        $rate = COMMISSION_PERCENTAGE_FOR_DEPOSIT_MTGOX_FIAT_VOUCHER;
+        $item = sprintf("MtGox %s vouchers", CURRENCY);
+        if ($rate == 0)
+            printf("<p>" . _("depositing %s is free of commission") . "</p>\n", $item);
+        else {
+            echo "<p>$rate%";
+            if ($cap)
+                echo " (" . _("capped at") . " " . fiat_to_numstr($cap) . ")";
+            else
+                echo " (" . _("uncapped") . ")";
+            echo " " . sprintf(_("when depositing %s"), $item) . "</p>\n";
+        }
     }
 
     echo "</blockquote>\n";
