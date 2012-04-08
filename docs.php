@@ -50,7 +50,8 @@ function show_user_documents_for_user($uid, $verified = 'unknown')
 
     echo "<form action='' method='post'>\n";
     echo "<input type='hidden' name='csrf_token' value=\"" . $_SESSION['csrf_token'] . "\" />\n";
-    printf("<input type='hidden' name='%s' value='%s' />\n", ($verified ? 'unverify' : 'verify'), $uid);
+    echo "<input type='hidden' name='uid' value='$uid' />\n";
+    printf("<input type='hidden' name='action' value='%s' />\n", ($verified ? 'unverify' : 'verify'));
     printf("<input type='submit' value='* %s USER %s *' />\n", ($verified ? 'UNVERIFY' : 'VERIFY'), $uid);
     echo "</form>\n";
 
@@ -158,10 +159,16 @@ function show_user_verified_with_no_documents()
 
 function docs()
 {
-    if (isset($_POST['verify']))
-        verify_user(post('verify'));
-    else if (isset($_POST['unverify']))
-        unverify_user(post('unverify'));
+    if (isset($_POST['action'])) {
+        $action = post('action');
+
+        if ($action == 'verify')
+            verify_user(post('uid'));
+        else if ($action == 'unverify')
+            unverify_user(post('uid'));
+        else
+            throw new Error("unknown action","unknown action: $action");
+    }
 
     show_docs_form();
 
