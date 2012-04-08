@@ -124,55 +124,16 @@ if (ENABLE_LOCAL_VOUCHERS && isset($_POST['code'])) {
 </div>
 <?php } ?>
 
-<div class='content_box'>
-    <h3><?php printf(_("Deposit %s by Bank Deposit (EFT)"), CURRENCY); ?></h3>
-    <p><b><?php echo _("Depositing is free by bank deposit (EFT). You are responsible for paying any incurred fees. If your deposit is insufficient to cover bank fees then it will be denied."); ?></b></p>
-<?php
-    if ($is_verified) {
-?>
-    <p><?php printf(_("You will need to quote <strong>%s</strong> in the transaction's reference field."), $formatted_deposref); ?></p>
-    <?php show_bank_account_details($deposref); ?>
-    <p><?php echo _("Allow 3-5 working days for payments to pass through clearing."); ?></p>
-    <p><b><?php echo _("Online Banking select your bank below to login."); ?></b></p>
-    <p>
-      <a target="_blank"
-        href="https://www.my.commbank.com.au/netbank/Logon/Logon.aspx"
-      >CBA</a>
-      -
-      <a target="_blank"
-        href="https://www.anz.com/INETBANK/bankmain.asp"
-      >ANZ</a>
-      -
-      <a target="_blank"
-        href="https://online.westpac.com.au/esis/Login/SrvPage/?h3&app=wol&referrer=http%3A%2F%2Fwww.westpac.com.au%2FHomepageAlternative%2F"
-      >WESTPAC</a>
-      -
-      <a target="_blank"
-        href="https://ib.nab.com.au/nabib/index.jsp"
-      >NAB</a>
-      -
-      <a target="_blank"
-        href="http://www.google.com.au/"
-      >Other</a>
-    </p><br/>
-<?php } else { ?>
-    <p>If you plan to deposit via the Internet, we need to know about you.  Please <a href="?page=identity">identify yourself</a> here.</p>
-<?php } ?>
-    </div>
     <div class='content_box'>
-    <h3><?php printf(_("Deposit %s Over The Counter"), CURRENCY); ?></h3>
-    <strong><p>24 hour clearing visit any Commonwealth Bank Australia to deposit funds over the counter.<p>WARNING! please do not deposit funds via the internet using this method without "VERIFICATION", your (AUD) funds will be rejected or seized for fraud investigation.</p></strong>
-    <?php  ?>
+    <h3><?php printf(_("Deposit %s"), CURRENCY); ?></h3>
+    <strong><p>How should the user deposit PP?</p></strong>
+    <p>Is there an API?  Or should we just have the user fill in a form with:<ul><li>forum username</li><li>forum password</li><li>amount to transfer</li></p>
     <p>
 <?php
     if (ctype_digit($deposref)) {
         printf(_("Please use your unique reference number <strong>%s</strong> so we know which account to credit."), $formatted_deposref);
         $ref = $deposref;
-    } else {
-        printf(_("Please use your User ID <strong>%s</strong> as the reference so we know which account to credit."), $is_logged_in);
-        $ref = $is_logged_in;
     }
-    show_bank_account_details($ref);
 ?>
 </p>
 </div>
