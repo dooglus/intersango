@@ -83,6 +83,7 @@ alias i='cd ~/intersango'
 alias l='ls -l'
 alias la='ls -al'
 alias lt='ls -altr | tail -20'
+alias pull='pushd ~/intersango; git stash && git pull && git stash apply; popd'
 alias sa='. ~/.bashrc'
 alias sql='mysql -u $MYSQL_INTERSANGO_USER --password="$MYSQL_INTERSANGO_PW" $MYSQL_INTERSANGO_DBNAME'
 EOF2
