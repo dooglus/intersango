@@ -1,0 +1,19 @@
+#!/bin/sh
+
+backup_wallet() {
+    cd ~/.bitcoin
+    ~/bin/bitcoind backupwallet ~/.bitcoin/wallet.dat.backupwallet
+    rm -f wallet.dat.gpg
+    gpg -c --no-tty --no-use-agent --passphrase-file pp wallet.dat.backupwallet
+    rm -f wallet.dat.backupwallet
+    mv wallet.dat.backupwallet.gpg wallet.dat.gpg
+}
+
+check_bitcoind() {
+    date="$(date)"
+    echo -n "$date : " >> ~/logs/bitcoind-ps.txt
+    ps -fuworldbit | grep coin | grep daemon | grep -v grep >> ~/logs/bitcoind-ps.txt
+}
+
+check_bitcoind
+backup_wallet
