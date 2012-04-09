@@ -42,18 +42,6 @@ check_bitcoind() {
     fi
 }
 
-check_dcoinbit() {
-    printf "$(date) : $$   checking dcoinbit\n"
-    if ! pgrep -U $USER dcoinbit > /dev/null
-    then
-	printf "$(date) : starting dcoinbit\n" >> $LOGDIR/dcoinbit.txt
-	# md5sum ~/.bitcoin/dcoinbit/.bitcoin/blk* > /dev/null # get block data into disk cache for quicker start
-	# use -rescan after adding new private key
-	HOME=~/.bitcoin/dcoinbit $BIN/dcoinbit.ignhup -daemon -rpcport=8331 -port=8334 -keypool=1
-	# $BIN/dcoinbit -daemon -testnet
-    fi
-}
-
 sync_to_bitcoin() {
     printf "$(date) : $$   syncing with bitcoin\n"
     (
@@ -135,7 +123,6 @@ run_jobs() {
     get_lock
 
  	check_bitcoind			# check whether bitcoind is running, and if not, run it
- #	check_dcoinbit			# check whether dcoinbit is running, and if not, run it
 					backup_database "before cron"
  	sync_to_bitcoin;		backup_database "synced bitcoin"		# check for and process new btc deposits
  	verify_deposits;		backup_database "verified deposits"		# check for and process new deposits
