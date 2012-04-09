@@ -15,7 +15,7 @@
 # set +o posix
 
 ROOT=~
-USER=intersango
+USER='intersango'
 
 BIN=$ROOT/bin
 INTERSANGO=$ROOT/intersango
