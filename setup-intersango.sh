@@ -37,6 +37,8 @@ SITE_HOST_NAME='ec2-54-247-132-226.eu-west-1.compute.amazonaws.com'
 # else leave it empty (BLOCKCHAIN_URL='')
 BLOCKCHAIN_URL='https://s3.amazonaws.com/ppbtcblockchain'
 # BLOCKCHAIN_URL=''
+# is this a 32 or 64 bit instance?
+OS_BITS=64
 ########################################################################
 
 # install Apache
@@ -180,7 +182,7 @@ echo Downloading bitcoind executable
 su - $SYSTEM_INTERSANGO_USER <<EOF
 wget -O- http://voxel.dl.sourceforge.net/project/bitcoin/Bitcoin/bitcoin-0.6.0/bitcoin-0.6.0-linux.tar.gz | tar xfz -
 mkdir bin
-ln -s ../bitcoin-0.6.0-linux/bin/32/bitcoind bin/bitcoind
+ln -s ../bitcoin-0.6.0-linux/bin/$OS_BITS/bitcoind bin/bitcoind
 EOF
 ##2012-03-08 21:11:48 (6.43 MB/s) - written to stdout [9903046/9903046]
 
