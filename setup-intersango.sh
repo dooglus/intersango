@@ -109,6 +109,10 @@ echo Cloning Intersango code ...
 git clone git://github.com/dooglus/intersango.git
 cd intersango
 git checkout pp
+cd backups
+touch db.txt
+git init
+git add -f db.txt
 EOF
 ##Resolving deltas: 100% (2953/2953), done.
 
