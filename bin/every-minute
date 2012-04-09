@@ -15,16 +15,16 @@
 # set +o posix
 
 ROOT=~
-USER=worldbit
+USER=intersango
 
 BIN=$ROOT/bin
-INTERSANGO=$ROOT/programs/intersango
+INTERSANGO=$ROOT/intersango
 CRON=$INTERSANGO/cron
-LOGDIR=$ROOT/logs
+LOGDIR=$INTERSANGO/logs
 LOGFILE=$LOGDIR/every-minute.txt
-BACKUPDIR=$ROOT/backups
+BACKUPDIR=$INTERSANGO/backups
 BACKUP=$BACKUPDIR/db.txt
-LOCKDIR=$ROOT/locks
+LOCKDIR=$INTERSANGO/locks
 LOCKFILE=$LOCKDIR/every-minute.txt
 MAX_LOCK_AGE=10			# maximum amount of time a lock is allowed to survive, in minutes
 
@@ -36,7 +36,7 @@ check_bitcoind() {
     then
 	printf "$(date) : starting bitcoind\n" >> $LOGDIR/bitcoind.txt
 	# md5sum ~/.bitcoin/blk* > /dev/null # get block data into disk cache for quicker start
-	$BIN/bitcoind.ignhup -daemon -keypool=1234
+	$BIN/bitcoind -daemon -keypool=1234
         mount > ~/cron/mount-after-starting-bitcoind.txt
 	# $BIN/bitcoind -daemon -testnet
     fi
@@ -139,5 +139,3 @@ main() {
 }
 
 main
-
-# mount > ~/cron/mount.txt
