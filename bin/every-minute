@@ -1,4 +1,4 @@
-#!/bin/bash.orig
+#!/bin/bash
 
 # bluehost has this going on to make sure user logins use fakefs mounts:
 #
