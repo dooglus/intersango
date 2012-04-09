@@ -33,6 +33,10 @@ MYSQL_INTERSANGO_DBNAME='intersango'
 SYSTEM_INTERSANGO_USER='intersango'
 # server URL without http://
 SITE_HOST_NAME='ec2-54-247-132-226.eu-west-1.compute.amazonaws.com'
+# if we want to download a recent copy of the blockchain, put the URL here (with neither filename nor trailing slash)
+# else leave it empty (BLOCKCHAIN_URL='')
+BLOCKCHAIN_URL='https://s3.amazonaws.com/ppbtcblockchain'
+# BLOCKCHAIN_URL=''
 ########################################################################
 
 # install Apache
@@ -181,7 +185,7 @@ EOF
 ##2012-03-08 21:11:48 (6.43 MB/s) - written to stdout [9903046/9903046]
 
 
-# configure bitcoind
+# configure bitcoind, download blockchain if configured to do so
 echo Configuring bitcoind
 su - $SYSTEM_INTERSANGO_USER <<EOF
 mkdir -p .bitcoin
@@ -190,6 +194,13 @@ cat > ~/.bitcoin/bitcoin.conf <<EOF2
 rpcuser=$BITCOIN_USER
 rpcpassword=$BITCOIN_PW
 EOF2
+if [ -n "$BLOCKCHAIN_URL" ]
+then
+    for i in blk0001.dat blkindex.dat
+    do
+        wget -O .bitcoin/\$i "$BLOCKCHAIN_URL/\$i"
+    done
+fi
 EOF
 
 
