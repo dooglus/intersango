@@ -1,6 +1,8 @@
 # command history to setup Intersango on Amazon Linux AMI
 # some command responses are prefixed with “##”
 
+### get the current version of this script by running:
+# GET https://raw.github.com/dooglus/intersango/pp/setup-intersango.sh > intersango.sh
 
 ########################################################################
 # passwords
@@ -184,14 +186,6 @@ rpcuser=$BITCOIN_USER
 rpcpassword=$BITCOIN_PW
 EOF2
 EOF
-
-
-# start bitcoind
-echo Starting bitcoind
-su - $SYSTEM_INTERSANGO_USER <<EOF
-./bitcoind -daemon
-EOF
-
 
 
 # configure Intersango
