@@ -1,0 +1,2 @@
+* * * * * intersango/bin/every-minute
+0 * * * * intersango/bin/every-hour
