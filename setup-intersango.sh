@@ -195,10 +195,16 @@ EOF
 
 
 # configure Intersango
-echo Configuring bitcoind
+echo Configuring Intersango
 su - $SYSTEM_INTERSANGO_USER <<EOF
 touch intersango/log{,-{problem,error,bad-page}}.txt
 chmod o+w intersango/{docs,log{,-{problem,error,bad-page}}.txt,locks}
+cat > db.intersango.sh <<EOF2
+MYSQL_INTERSANGO_USER='$MYSQL_INTERSANGO_USER'
+MYSQL_INTERSANGO_PW='$MYSQL_INTERSANGO_PW'
+MYSQL_INTERSANGO_DBNAME='$MYSQL_INTERSANGO_DBNAME'
+USER='$SYSTEM_INTERSANGO_USER'
+EOF2
 cat > db.intersango.inc <<EOF2
 <?php
 mysql_connect('localhost', '$MYSQL_INTERSANGO_USER', '$MYSQL_INTERSANGO_PW') or die(mysql_error());
@@ -240,7 +246,7 @@ configure_php_field AKEY                  duo_config.php	        "'$DUO_SECRET_S
 configure_php_field IKEY                  duo_config.php	        "'$DUO_INTEGRATION_KEY'"
 configure_php_field SKEY                  duo_config.php	        "'$DUO_SECRET_KEY'"
 configure_php_field HOST                  duo_config.php	        "'$DUO_API_HOSTNAME'"
-configure_sh_field  USER                  bin/every-minute	        "'$SYSTEM_INTERSANGO_USER'"
+# configure_sh_field USER                 bin/every-minute	        "'$SYSTEM_INTERSANGO_USER'"
 
 
 
