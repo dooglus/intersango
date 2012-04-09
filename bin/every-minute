@@ -14,8 +14,8 @@
 # #!/bin/sh
 # set +o posix
 
+. ~/db.intersango.sh
 ROOT=~
-USER='intersango'
 
 BIN=$ROOT/bin
 INTERSANGO=$ROOT/intersango
@@ -32,7 +32,7 @@ mkdir -p $LOCKDIR
 
 check_bitcoind() {
     printf "$(date) : $$   checking bitcoind\n"
-    if ! pgrep -U $USER bitcoind > /dev/null
+    if ! pgrep -U "$USER" bitcoind > /dev/null
     then
 	printf "$(date) : starting bitcoind\n" >> $LOGDIR/bitcoind.txt
 	# md5sum ~/.bitcoin/blk* > /dev/null # get block data into disk cache for quicker start
@@ -80,13 +80,13 @@ process_orders() {
 
 log_process_sizes() {
     echo; date; echo
-    ps -o '%p %z %c' -uworldbit | LC_COLLATE=C sort -k 3 | awk '{tot += $2; printf("%5s %6s %8s %s\n", $1, $2, tot ? tot/1024 : "SUM", $3); }'
+    ps -o '%p %z %c' -u"$USER" | LC_COLLATE=C sort -k 3 | awk '{tot += $2; printf("%5s %6s %8s %s\n", $1, $2, tot ? tot/1024 : "SUM", $3); }'
 }
 
 backup_database() {
     # return
     printf "$(date) : $$   backing up database '$1'\n"
-    $BIN/sqlbackup | sed -e 's/AUTO_INCREMENT=[0-9]* //' -e 's/\(INSERT INTO `api_keys`.*,\)[0-9]*\();\)/\10\2/' | grep -v '^-- Dump completed on' > $BACKUP.tmp
+    mysqldump --extended-insert=false -u"$MYSQL_INTERSANGO_USER" "$MYSQL_INTERSANGO_DBNAME" -p"$MYSQL_INTERSANGO_PW" | sed -e 's/AUTO_INCREMENT=[0-9]* //' -e 's/\(INSERT INTO `api_keys`.*,\)[0-9]*\();\)/\10\2/' | grep -v '^-- Dump completed on' > $BACKUP.tmp
     mv $ROOT/backups/RCS/,db.txt, $ROOT/backups/RCS/,db.txt,.$(date +%y.%m.%d-%H.%M.%S) 2> /dev/null
     mv $BACKUP.tmp $BACKUP
     ci -l -m"$1" $BACKUP
