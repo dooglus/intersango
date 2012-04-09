@@ -3,6 +3,8 @@
 
 ### get the current version of this script by running:
 # GET https://raw.github.com/dooglus/intersango/pp/setup-intersango.sh > intersango.sh
+# or, if we want to fix the SITE_HOST_NAME at the same time:
+# GET https://raw.github.com/dooglus/intersango/pp/setup-intersango.sh | sed "s|^SITE_HOST_NAME=.*|SITE_HOST_NAME='ec2-50-17-107-240.compute-1.amazonaws.com'|" > intersango.sh
 
 ########################################################################
 # passwords
