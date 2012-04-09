@@ -84,12 +84,9 @@ log_process_sizes() {
 }
 
 backup_database() {
-    # return
     printf "$(date) : $$   backing up database '$1'\n"
     mysqldump --extended-insert=false -u"$MYSQL_INTERSANGO_USER" "$MYSQL_INTERSANGO_DBNAME" -p"$MYSQL_INTERSANGO_PW" | sed -e 's/AUTO_INCREMENT=[0-9]* //' -e 's/\(INSERT INTO `api_keys`.*,\)[0-9]*\();\)/\10\2/' | grep -v '^-- Dump completed on' > $BACKUP.tmp
-    mv $ROOT/backups/RCS/,db.txt, $ROOT/backups/RCS/,db.txt,.$(date +%y.%m.%d-%H.%M.%S) 2> /dev/null
     mv $BACKUP.tmp $BACKUP
-    ci -l -m"$1" $BACKUP
     cd $BACKUPDIR
     git commit --message="$1" $BACKUP | grep -v -e 'On branch' -e 'nothing to commit'
 }
