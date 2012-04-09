@@ -223,17 +223,32 @@ ln -s /home/$SYSTEM_INTERSANGO_USER/intersango/htdocs /var/www/html
 
 # configure Intersango
 echo Configuring Intersango ...
-configure_field() {
+configure_php_field() {
     field=$1
     file=$2
     value=$3
     sed -i -e "s|^define('$field'.*|define('$field', $value);|" /home/$SYSTEM_INTERSANGO_USER/intersango/$file
 }
-configure_field SITE_URL              htdocs/config.php	        "'https://$SITE_HOST_NAME/'"
-configure_field AKEY                  duo_config.php	        "'$DUO_SECRET_STRING'"
-configure_field IKEY                  duo_config.php	        "'$DUO_INTEGRATION_KEY'"
-configure_field SKEY                  duo_config.php	        "'$DUO_SECRET_KEY'"
-configure_field HOST                  duo_config.php	        "'$DUO_API_HOSTNAME'"
+configure_sh_field() {
+    field=$1
+    file=$2
+    value=$3
+    sed -i -e "s|^$field=.*|$field=$value|" /home/$SYSTEM_INTERSANGO_USER/intersango/$file
+}
+configure_php_field SITE_URL              htdocs/config.php	        "'https://$SITE_HOST_NAME/'"
+configure_php_field AKEY                  duo_config.php	        "'$DUO_SECRET_STRING'"
+configure_php_field IKEY                  duo_config.php	        "'$DUO_INTEGRATION_KEY'"
+configure_php_field SKEY                  duo_config.php	        "'$DUO_SECRET_KEY'"
+configure_php_field HOST                  duo_config.php	        "'$DUO_API_HOSTNAME'"
+configure_sh_field  USER                  bin/every-minute	        "'$SYSTEM_INTERSANGO_USER'"
+
+
+
+# set up crontab
+echo Installing crontab
+su - $SYSTEM_INTERSANGO_USER <<EOF
+crontab intersango/crontab.txt
+EOF
 
 
 
