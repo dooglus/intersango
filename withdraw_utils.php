@@ -16,11 +16,7 @@ function uk_withdraw($uid, $amount, $curr_type, &$voucher_code, &$reqid)
         ";
     } else {
         $name = post('name_holder');
-        $bank = post('name_bank');
-        $acc_num = post('account_number');
-        $sort_code = post('sort_code');
-        $ref = post('ref');
-        syslog(LOG_NOTICE, "name=$name,bank=$bank,acc=$acc_num,sort=$sort_code,ref=$ref");
+        syslog(LOG_NOTICE, "name=$name");
         $query = "
         INSERT INTO requests (req_type, uid, amount, curr_type)
         VALUES ('WITHDR', '$uid', '$amount', '$curr_type');
@@ -35,8 +31,8 @@ function uk_withdraw($uid, $amount, $curr_type, &$voucher_code, &$reqid)
         $voucher_code = store_new_fiat_voucher_code($reqid);
     else {
         $query = "
-            INSERT INTO uk_requests (reqid, name, bank, acc_num, sort_code, ref)
-            VALUES ('$reqid', '$name', '$bank', '$acc_num', '$sort_code', '$ref');
+            INSERT INTO uk_requests (reqid, name)
+            VALUES ('$reqid', '$name');
         ";
         do_query($query);
     }
