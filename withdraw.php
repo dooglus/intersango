@@ -52,16 +52,16 @@ else {
     $limit = numstr_to_internal(MAXIMUM_DAILY_FIAT_TRANSFER);
     $available = gmp_sub($limit, $transferred);
     if (gmp_cmp($fiat, $available) > 0) {
-        echo "    <p>" . sprintf(_("You can withdraw up to %s each day"),
+        echo "    <p>" . sprintf(_("You can transfer up to %s each day"),
                                  internal_to_numstr($limit) . " " . CURRENCY) . " (", day_time_range_string(), ")</p>\n";
         if ($transferred) {
-            echo "    <p>" . sprintf(_("You have withdrawn %s today"),
+            echo "    <p>" . sprintf(_("You have transferred %s today"),
                                      internal_to_numstr($transferred) . " " . CURRENCY) . "\n";
             if (gmp_cmp($available, '0') > 0)
-                echo "    " . sprintf(_("and so can withdraw up to %s more."),
+                echo "    " . sprintf(_("and so can transfer up to %s more."),
                                       internal_to_numstr($available) . " " . CURRENCY);
             else
-                echo "    " . _("and so cannot withdraw any more until tomorrow.");
+                echo "    " . _("and so cannot transfer any more until tomorrow.");
             echo "</p>\n";
         }
     }
