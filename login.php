@@ -185,12 +185,20 @@ try {
                     echo "                        <h3>" . _("Successful login!") . "</h3>\n";
                     echo "                        <p>" . _("Welcome back commander. Welcome back.") . "</p>\n";
                 } else {
+                    // make the first user to sign up an administrator
+                    $query = "SELECT COUNT(*) AS count FROM users";
+                    $result = do_query($query);
+                    $row = mysql_fetch_assoc($result);
+                    $admin = ($row['count'] == 1) ? 1 : 0;
+
                     // generate random str for deposit reference
                     $query = "
                         INSERT INTO users (
+                            is_admin,
                             oidlogin,
                             deposref
                         ) VALUES (
+                            $admin,
                             '$oidlogin',
                             CONCAT(FLOOR(RAND() * 900 + 100),
                                    LPAD(FLOOR(RAND() * 1000),3,'0'),
