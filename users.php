@@ -272,7 +272,8 @@ function show_users()
     echo "</div>\n";
 }
 
-show_verify_user_form();
+if (REQUIRE_IDENTIFICATION)
+    show_verify_user_form();
 
 show_users();
 ?>
