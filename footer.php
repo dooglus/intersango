@@ -44,7 +44,7 @@ function show_links($is_logged_in, $is_admin, $is_verified)
     if ($is_admin)      show_link('graph',       _('Charts'),     _('Various admin graphs'),                          1);
     if ($is_logged_in)  show_link('logout',      _('Logout'),     _('End this session')                                );
 
-    printf('<br/><g:plusone annotation="bubble" href="%s"></g:plusone>\n', SITE_URL);
+    printf("<br/><g:plusone annotation=\"bubble\" href=\"%s\"></g:plusone>\n", SITE_URL);
 }
 
 function show_footer($is_logged_in, $is_admin, $is_verified)
