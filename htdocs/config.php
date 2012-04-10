@@ -258,8 +258,8 @@ define('MAXIMUM_DAILY_BTC_WITHDRAW', '100');
 // the total amount of FIAT each user can transfer (in + out) per day
 define('MAXIMUM_DAILY_FIAT_TRANSFER', '500');
 
-// the maximum amount of FIAT each user can hold at once
-define('MAXIMUM_FIAT_BALANCE', '5000');
+// the maximum amount of FIAT each user can hold at once (0 means no limit)
+define('MAXIMUM_FIAT_BALANCE', '0');
 
 // .------------------------------------------------------------------------
 // |  orderbook
