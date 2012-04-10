@@ -6,7 +6,7 @@ require_once 'db.php';
 
 if(isset($_GET['openid_identifier']))
 {
-    if(isset($_GET['csrf_token']))
+    if(isset($_SESSION['csrf_token']) && isset($_GET['csrf_token']))
     {
         if($_SESSION['csrf_token'] != $_GET['csrf_token'])
         {
