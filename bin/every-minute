@@ -88,7 +88,10 @@ backup_database() {
     mysqldump --extended-insert=false -u"$MYSQL_INTERSANGO_USER" "$MYSQL_INTERSANGO_DBNAME" -p"$MYSQL_INTERSANGO_PW" | sed -e 's/AUTO_INCREMENT=[0-9]* //' -e 's/\(INSERT INTO `api_keys`.*,\)[0-9]*\();\)/\10\2/' | grep -v '^-- Dump completed on' > $BACKUP.tmp
     mv $BACKUP.tmp $BACKUP
     cd $BACKUPDIR
-    git commit --message="$1" $BACKUP | grep -v -e 'On branch' -e 'nothing to commit'
+    if [[ $(git diff $BACKUP | wc -l) != 0 ]]
+    then
+	git commit --quiet --message="$1" $BACKUP
+    fi
 }
 
 get_lock() {
