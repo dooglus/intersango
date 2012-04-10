@@ -75,8 +75,11 @@ try {
         AND amount > 1000000
         AND status='VERIFY'
         AND curr_type='BTC'
-        AND (users.uid < " . LOWEST_UNTRUSTED_USERID . " OR verified)
     ";
+
+    if (REQUIRE_IDENTIFICATION)
+        $query .= "AND (users.uid < " . LOWEST_UNTRUSTED_USERID . " OR verified)";
+
     $result = do_query($query);
     while ($row = mysql_fetch_assoc($result)) {
         $reqid = $row['reqid'];
