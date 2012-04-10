@@ -1227,9 +1227,11 @@ function check_fiat_balance_limit($uid, $amount)
 {
     $balance = total_fiat_balance($uid);
     $limit = get_fiat_balance_limit_for_user($uid);
-    printf("<p>" . _("Maximum balance is %s and you have %s") . "</p>\n",
-           internal_to_numstr($limit)   . " " . CURRENCY,
-           internal_to_numstr($balance) . " " . CURRENCY);
+
+    if ($limit)
+        printf("<p>" . _("Maximum balance is %s and you have %s") . "</p>\n",
+               internal_to_numstr($limit)   . " " . CURRENCY,
+               internal_to_numstr($balance) . " " . CURRENCY);
 }
 
 function check_fiat_transfer_limit($uid, $amount)
