@@ -35,6 +35,7 @@ function show_links($is_logged_in, $is_admin, $is_verified)
     if ($is_admin)      show_link('bank',        _('Bank'),       _('Show bank statement &amp; pending withdrawals'), 1);
     if ($is_admin)      show_link('freeze',      _('Freeze'),     _('Stop activity on the exchange'),                 1);
     if ($is_admin)      show_link('graph',       _('Charts'),     _('Various admin graphs'),                          1);
+                        show_link('contact',     _('Contact'),    _('Contact us')                                      );
     if ($is_logged_in)  show_link('logout',      _('Logout'),     _('End this session')                                );
 }
 
