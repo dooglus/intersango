@@ -20,12 +20,14 @@ function show_links($is_logged_in, $is_admin, $is_verified)
     }
 
     if (!$is_logged_in) show_link('login',       _('Login'),      _('Begin here')                                      );
+    show_link                    ('welcome',     _('Welcome'),    _('Introduction')                                    );
     show_link                    ('news',        _('News'),       _("What's new?")                                     );
     if ($is_logged_in)  show_link('statement',   _('Statement'),  _('Chronological ledger')                            );
     if ($is_logged_in && !$is_verified)
                         show_link('identity',    _('Identify'),   _('Upload ID to get your account verified')          );
 
-    show_link                    ('welcome',     _('Welcome'),    _('Introduction')                                    );
+    if ($is_admin)      show_link('trade',       _('Trade'),      _('Buy and sell'),                                  1);
+    if ($is_admin)      show_link('orderbook',   _('Orderbook'),  _('Show orders'),                                   1);
     if ($is_admin)      show_link('docs',        _('Docs'),       _('Show docs from unverified users'),               1);
     if ($is_admin)      show_link('users',       _('Users'),      _('Show registered users'),                         1);
     if ($is_admin)      show_link('add_cash',    _('Add cash'),   _('Deposit using bank statement'),                  1);
