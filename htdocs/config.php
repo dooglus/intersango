@@ -1,6 +1,6 @@
 <?php
-define('ABSPATH', '/home/worldbit/programs/intersango');
-define('URLROOT', '/');
+define('ABSPATH', '/home/intersango/intersango');
+define('URLROOT', '/wbx');
 
 if (!file_exists(ABSPATH . "/trade.php")) {
     echo "ABSPATH should point to the intersango directory - the one that contains trade.php, etc.\n";
