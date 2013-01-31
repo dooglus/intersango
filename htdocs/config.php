@@ -73,7 +73,7 @@ define('WARN_HIGH_WALLET_THRESHOLD', 450);
 define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>');
 
 // the name of the site
-define('SITE_NAME',             'World Bitcoin Exchange Claim Site');
+define('SITE_NAME',             'WBX Claim Site');
 
 // a description
 define('SITE_DESCRIPTION',      SITE_NAME . ' exists to collect bitcoin addresses to refund WBX users.');
