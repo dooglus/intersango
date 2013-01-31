@@ -93,7 +93,7 @@ function display_double_entry($curr_a, $curr_b, $base_curr, $uid, $is_admin)
         $rate = clean_sql_numstr($row['rate']);
         $me = $row['me'];
         $uid = $row['uid'];
-        if ($me)
+        if ($me or $is_admin)
             echo "    ", active_table_row("me", "?page=view_order&orderid={$row['orderid']}");
         else
             echo "    ", active_table_row("them", "?page=trade&in=$curr_b&have=$want_amount_i&want=$amount_i&rate=$rate");
