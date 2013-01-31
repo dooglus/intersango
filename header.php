@@ -152,7 +152,7 @@ function show_content_header_identify_link()
     if ($is_logged_in && !$is_verified) {
         echo "    <div class='content_header_box'>\n";
         echo "        " . SPACE .
-            sprintf(_("you are logged in, but need to %sconfirm your ID%s before you can withdraw funds"),
+            sprintf(_("you are logged in, but need to %sconfirm your ID%s before you can stake your claim"),
                     '<a href="?page=identity">', '</a>') . "\n";
         echo "    </div>\n";
     }
