@@ -1281,6 +1281,7 @@ define('LOG_PARAMS',   6);
 define('LOG_LOCK',     7);
 define('LOG_EMAIL',    8);
 define('LOG_API',      9);
+define('LOG_GPG',     10);
 
 function addlog($level, $text)
 {
@@ -1463,7 +1464,11 @@ function format_deposref($deposref)
 
 function encrypt_file($file, $recipients)
 {
-    exec("/usr/bin/gpg --trust-model always --recipient " . implode(' --recipient ', $recipients) . " --encrypt \"$file\"");
+    $command = "/usr/bin/gpg --trust-model always --recipient " . implode(' --recipient ', $recipients) . " --encrypt \"$file\" 2>&1";
+    addlog(LOG_GPG, "encrypting document: '$command'");
+    exec($command, $output, $status);
+    addlog(LOG_GPG, "output: ['" . implode("', '", $output) . "']");
+    addlog(LOG_GPG, "exit status $status");
 }
 
 function post_max_size()
