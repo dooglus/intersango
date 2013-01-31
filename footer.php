@@ -19,8 +19,8 @@ function show_links($is_logged_in, $is_admin, $is_verified)
         $show_duo = !$row['use_duo'];
     }
 
-    if (!$is_logged_in) show_link('login',       _('Login'),      _('Begin here')                                      );
     show_link                    ('welcome',     _('Welcome'),    _('Introduction')                                    );
+    if (!$is_logged_in) show_link('login',       _('Login'),      _('Begin here')                                      );
     show_link                    ('news',        _('News'),       _("What's new?")                                     );
     if ($is_logged_in && $is_verified)
                         show_link('claim',       _('Claim'),      _('Stake your claim')                                );
