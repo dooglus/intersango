@@ -1,0 +1,141 @@
+#!/bin/bash
+
+# bluehost has this going on to make sure user logins use fakefs mounts:
+#
+#   $ ls -l /bin/bash* /bin/sh
+#   lrwxrwxrwx 1 root root        14 Sep 14 02:13 /bin/bash -> /bin/fakeshell
+#   -rwxr-xr-x 5 root root    801528 Jul 21 19:20 /bin/bash.orig
+#   lrwxrwxrwx 2 root root         9 Sep 14 02:13 /bin/sh -> bash.orig
+#
+# changing the #! line to use /bin/bash.orig (hopefully!) allows bitcoind to survive the nightly fakefs rebuild
+
+# alternatively, we could use /bin/sh and turn POSIX mode back off, to get proper bash compatibility:
+#
+# #!/bin/sh
+# set +o posix
+
+. ~/db.intersango.sh
+ROOT=~
+
+BIN=$ROOT/bin
+INTERSANGO=$ROOT/intersango
+CRON=$INTERSANGO/cron
+LOGDIR=$INTERSANGO/logs
+LOGFILE=$LOGDIR/every-minute.txt
+BACKUPDIR=$INTERSANGO/backups
+BACKUP=$BACKUPDIR/db.txt
+LOCKDIR=$INTERSANGO/locks
+LOCKFILE=$LOCKDIR/every-minute.txt
+MAX_LOCK_AGE=10			# maximum amount of time a lock is allowed to survive, in minutes
+
+mkdir -p $LOCKDIR
+
+check_bitcoind() {
+    printf "$(date) : $$   checking bitcoind\n"
+    if ! pgrep -U "$USER" bitcoind > /dev/null
+    then
+	printf "$(date) : starting bitcoind\n" >> $LOGDIR/bitcoind.txt
+	# md5sum ~/.bitcoin/blk* > /dev/null # get block data into disk cache for quicker start
+	$BIN/bitcoind -daemon -keypool=1234
+        mount > ~/cron/mount-after-starting-bitcoind.txt
+	# $BIN/bitcoind -daemon -testnet
+    fi
+}
+
+sync_to_bitcoin() {
+    printf "$(date) : $$   syncing with bitcoin\n"
+    (
+	cd $CRON;
+	php ./sync_to_bitcoin.php > /dev/null
+    )
+}
+
+verify_deposits() {
+    printf "$(date) : $$   verifying deposits\n"
+    (
+	cd $CRON;
+	php ./verify_deposits.php > /dev/null
+    )
+}
+
+verify_withdrawals_bitcoin() {
+    printf "$(date) : $$   verifying bitcoin withdrawals\n"
+    (
+	cd $CRON;
+	php ./verify_withdrawals_bitcoin.php > /dev/null
+    )
+}
+
+process_orders() {
+    printf "$(date) : $$   processing orders\n"
+    mkdir -p $LOGDIR/process_orders
+    (
+	cd $CRON
+	php ./process_orders.php > $LOGDIR/process_orders/$(date +%y.%m.%d-%H.%M.%S) 2>&1
+    )
+
+    # delete small logfiles
+    find $LOGDIR/process_orders '(' -size 484c -o -size 118c ')' -delete
+}
+
+log_process_sizes() {
+    echo; date; echo
+    ps -o '%p %z %c' -u"$USER" | LC_COLLATE=C sort -k 3 | awk '{tot += $2; printf("%5s %6s %8s %s\n", $1, $2, tot ? tot/1024 : "SUM", $3); }'
+}
+
+backup_database() {
+    printf "$(date) : $$   backing up database '$1'\n"
+    mysqldump --extended-insert=false -u"$MYSQL_INTERSANGO_USER" "$MYSQL_INTERSANGO_DBNAME" -p"$MYSQL_INTERSANGO_PW" | sed -e 's/AUTO_INCREMENT=[0-9]* //' -e 's/\(INSERT INTO `api_keys`.*,\)[0-9]*\();\)/\10\2/' | grep -v '^-- Dump completed on' > $BACKUP.tmp
+    mv $BACKUP.tmp $BACKUP
+    cd $BACKUPDIR
+    if [[ $(git diff $BACKUP | wc -l) != 0 ]]
+    then
+	git commit --quiet --message="$1" $BACKUP
+    fi
+}
+
+get_lock() {
+    if [[ -f $LOCKFILE ]]
+    then
+	# if the lock is old, probably a previous incarnation of this script crashed so delete the lock
+	find $LOCKFILE -mmin +$MAX_LOCK_AGE -delete
+
+	if [[ -f $LOCKFILE ]]
+	then
+	    printf "$(date) : $$ locked : $(ls -l $LOCKFILE)\n\n"
+	    exit
+	fi
+
+	printf "$(date) : $$ force unlocked\n"
+    fi
+
+    touch $LOCKFILE
+    printf "$(date) : $$   got lock\n"
+}
+
+release_lock() {
+    rm -f $LOCKFILE
+    printf "$(date) : $$   released lock\n"
+}
+
+run_jobs() {
+    printf "$(date) : $$ start\n"
+    get_lock
+
+ 	check_bitcoind			# check whether bitcoind is running, and if not, run it
+					backup_database "before cron"
+ 	# sync_to_bitcoin;		backup_database "synced bitcoin"		# check for and process new btc deposits
+ 	# verify_deposits;		backup_database "verified deposits"		# check for and process new deposits
+ 	# verify_withdrawals_bitcoin;	backup_database "verified bitcoin withdrawals"	# check for and process new bitcoin withdrawals
+ 	# process_orders;		backup_database "processed orders"		# check for and process new orders
+	log_process_sizes >> $LOGDIR/ps.txt
+
+    release_lock
+    printf "$(date) : $$ end\n\n"
+}
+
+main() {
+    run_jobs >> $LOGFILE
+}
+
+main
