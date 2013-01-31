@@ -40,7 +40,7 @@ if (!isset($_SESSION['creation_time'])) {
 if (isset($_GET['page']))
     $page = htmlspecialchars($_GET['page']);
 else
-    $page = 'trade';
+    $page = 'welcome';
 
 // if the user has been logged in but is idle, log them out unless this is just an ajax request, in which case just act as if they're not logged in
 if (isset($_SESSION['uid']) &&
