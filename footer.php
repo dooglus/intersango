@@ -22,6 +22,8 @@ function show_links($is_logged_in, $is_admin, $is_verified)
     if (!$is_logged_in) show_link('login',       _('Login'),      _('Begin here')                                      );
     show_link                    ('welcome',     _('Welcome'),    _('Introduction')                                    );
     show_link                    ('news',        _('News'),       _("What's new?")                                     );
+    if ($is_logged_in && $is_verified)
+                        show_link('claim',       _('Claim'),      _('Stake your claim')                                );
     if ($is_logged_in)  show_link('statement',   _('Statement'),  _('Chronological ledger')                            );
     if ($is_logged_in && !$is_verified)
                         show_link('identity',    _('Identify'),   _('Upload ID to get your account verified')          );
