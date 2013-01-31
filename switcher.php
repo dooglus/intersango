@@ -27,8 +27,8 @@ function switcher($page)
             // for general consumption
             ////////////////////////////////////////////////////////////////////////
             case '404':
-            case 'help':
             case 'news':
+            case 'welcome':
                 include("$page.php");
                 break;  
 
