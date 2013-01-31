@@ -17,7 +17,7 @@ To stake your claim of part of the WBX funds, please take the following steps:
      echo "<ul>
 <li$current1>1. Use the 'login' link to log in here using the same OpenID account as you used at WBX.
 <li$current2>2. Use the 'identify' link to upload documents that verify your identity if your account is not already verified.
-<li$current3>3. Use the 'claim' link to stake your claim.  You to provide a Bitcoin address and optionally additional notes.
+<li$current3>3. Use the 'claim' link to stake your claim.  Provide a Bitcoin address and optional other details.
 "; ?>
 </ul>
 </div>
