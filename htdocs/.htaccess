@@ -1,26 +1,7 @@
-
 RewriteEngine on
-RewriteCond %{HTTP_HOST} ^progressivesecurity\.com\.au$ [OR]
-RewriteCond %{HTTP_HOST} ^www\.progressivesecurity\.com\.au$
-RewriteRule ^/?$ "http\:\/\/www\.wix\.com\/an6102\/progressivesecurity" [R=301,L]
 
-# Use PHP5 Single php.ini as default
-AddHandler application/x-httpd-php5s .php
-
-# 301 Moved Permanently
-RewriteCond %{HTTP_HOST} ^(www.)?bitaussie.com$                    [OR]
-RewriteCond %{HTTP_HOST} ^(www.)?intersango.com.au$                [OR]
-RewriteCond %{HTTP_HOST} ^(www.)?australianbitcoinexchange.com$    [OR]
-RewriteCond %{HTTP_HOST} ^(www.)?australianbitcoinexchange.com.au$
-RewriteRule ^(.*)$ "https://www.worldbitcoinexchange.com/$1" [R=301,L]
-
-# make sure worldbitcoinexchange.com is using https
+# make sure every page is using https
 RewriteCond %{HTTPS} off
-RewriteCond %{HTTP_HOST} ^www.worldbitcoinexchange.com$
-RewriteRule ^(.*)$ "https://www.worldbitcoinexchange.com/$1" [R=301,L]
-
-# get rid of the www. part
-RewriteCond %{HTTP_HOST} ^worldbitcoinexchange.com$
-RewriteRule ^(.*)$ "https://www.worldbitcoinexchange.com/$1" [R=301,L]
+RewriteRule ^(.*)$ "https://%{HTTP_HOST}/wbx/$1" [R=301,L]
 
 ErrorDocument 404 /?page=404
