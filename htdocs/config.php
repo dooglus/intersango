@@ -70,39 +70,33 @@ define('WARN_HIGH_WALLET_THRESHOLD', 450);
 // `------------------------------------------------------------------------
 
 // address to email if the script discovers a problem
-define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>, Andre Jensen <gorkalitus@gmail.com>');
+define('TECH_EMAIL_ADDRESS',    'Chris Moore <dooglus@gmail.com>');
 
 // the name of the site
-define('SITE_NAME',             'World Bitcoin Exchange');
+define('SITE_NAME',             'World Bitcoin Exchange Claim Site');
 
 // a description
-define('SITE_DESCRIPTION',      SITE_NAME . ' allows you to trade Australian Dollars (AUD) for Bitcoins (BTC) with other users.  We have very low fees and an active market.');
+define('SITE_DESCRIPTION',      SITE_NAME . ' exists to collect bitcoin addresses to refund WBX users.');
 
 // the URL for the site
-define('SITE_URL',              'https://www.worldbitcoinexchange.com/');
+define('SITE_URL',              'https://dooglus.com/wbx/');
 
 // an icon for the site
 define('SITE_IMAGE',            SITE_URL . 'images/logo200.jpg');
 
 // address to send email from
-define('EMAIL_FROM_ADDRESS',    SITE_NAME . ' <support@intersango.com.au>');
+define('EMAIL_FROM_ADDRESS',    SITE_NAME . ' <dooglus@gmail.com>');
 
 // details to show on the help page
-define('CONTACT_EMAIL_ADDRESS', 'support@intersango.com.au');
-define('CONTACT_SKYPE_ADDRESS', 'worldbitcoinexchange');
-define('CONTACT_FACEBOOK_URL',  'http://www.facebook.com/pages/World-Bitcoin-Exchange/227118550652605');
-define('CONTACT_FACEBOOK_NAME', 'worldbitcoinexchange');
-define('CONTACT_TWITTER_NAME',  'worldbitcoinx');
-define('CONTACT_PHONE_NUMBER',  '+617 3102-9666');
-define('CONTACT_OFFICE_HOURS',  'Mon-Fri 9am to 5pm');
-define('CONTACT_TIME_ZONE',     'UTC/GMT +10 hours');
-define('CONTACT_ADDRESS_ETC',   "<b>High Net Worth Property Pty Ltd</b><br/>
-                                 Trading As: World Bitcoin Exchange<br/>
-                                 ACN: 61 131 700 779<br/>
-                                 Gold Coast<br/>
-                                 Queensland<br/>
-                                 Australia<br/>
-                                 4208");
+define('CONTACT_EMAIL_ADDRESS', 'dooglus@gmail.com');
+define('CONTACT_SKYPE_ADDRESS', 'dooglus');
+define('CONTACT_FACEBOOK_URL',  '');
+define('CONTACT_FACEBOOK_NAME', '');
+define('CONTACT_TWITTER_NAME',  '');
+define('CONTACT_PHONE_NUMBER',  '');
+define('CONTACT_OFFICE_HOURS',  '');
+define('CONTACT_TIME_ZONE',     '');
+define('CONTACT_ADDRESS_ETC',   "");
 
 // .------------------------------------------------------------------------
 // |  bank account details for deposits
