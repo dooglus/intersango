@@ -25,7 +25,7 @@ function show_links($is_logged_in, $is_admin, $is_verified)
     if ($is_logged_in && !$is_verified)
                         show_link('identity',    _('Identify'),   _('Upload ID to get your account verified')          );
 
-    show_link                    ('help',        _('Help'),       _('Seek support')                                    );
+    show_link                    ('welcome',     _('Welcome'),    _('Introduction')                                    );
     if ($is_admin)      show_link('docs',        _('Docs'),       _('Show docs from unverified users'),               1);
     if ($is_admin)      show_link('users',       _('Users'),      _('Show registered users'),                         1);
     if ($is_admin)      show_link('add_cash',    _('Add cash'),   _('Deposit using bank statement'),                  1);
