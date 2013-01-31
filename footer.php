@@ -21,19 +21,10 @@ function show_links($is_logged_in, $is_admin, $is_verified)
 
     if (!$is_logged_in) show_link('login',       _('Login'),      _('Begin here')                                      );
     show_link                    ('news',        _('News'),       _("What's new?")                                     );
-    show_link                    ('trade',       _('Trade'),      _('Buy and sell')                                    );
-    if ($is_logged_in)  show_link('profile',     _('Profile'),    _('Dox on you')                                      );
     if ($is_logged_in)  show_link('statement',   _('Statement'),  _('Chronological ledger')                            );
-    if ($is_logged_in)  show_link('deposit',     _('Deposit'),    _('Top up your account')                             );
-    if ($is_logged_in)  show_link('withdraw',    _('Withdraw'),   _('Take out money')                                  );
-    show_link                    ('orderbook',   _('Orderbook'),  _('Show orders')                                     );
-    if ($show_duo)      show_link('turn_on_duo', _('Security'),   _('Use two-factor authentification')                 );
-
     if ($is_logged_in && !$is_verified)
                         show_link('identity',    _('Identify'),   _('Upload ID to get your account verified')          );
 
-    if (CHARTS_PAGE)    printf("<li><a target='_blank' href='%s'>%s</a>%s\n",
-                               CHARTS_PAGE,      _('Charts'),     _('From bitcoincharts.com')                          );
     show_link                    ('help',        _('Help'),       _('Seek support')                                    );
     if ($is_admin)      show_link('docs',        _('Docs'),       _('Show docs from unverified users'),               1);
     if ($is_admin)      show_link('users',       _('Users'),      _('Show registered users'),                         1);
@@ -43,8 +34,6 @@ function show_links($is_logged_in, $is_admin, $is_verified)
     if ($is_admin)      show_link('freeze',      _('Freeze'),     _('Stop activity on the exchange'),                 1);
     if ($is_admin)      show_link('graph',       _('Charts'),     _('Various admin graphs'),                          1);
     if ($is_logged_in)  show_link('logout',      _('Logout'),     _('End this session')                                );
-
-    echo "<br/><g:plusone annotation=\"bubble\" href=\"https://www.worldbitcoinexchange.com/\"></g:plusone>\n";
 }
 
 function show_footer($is_logged_in, $is_admin, $is_verified)
