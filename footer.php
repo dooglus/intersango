@@ -19,7 +19,7 @@ function show_links($is_logged_in, $is_admin, $is_verified)
         $show_duo = !$row['use_duo'];
     }
 
-    show_link                    ('welcome',     _('Welcome'),    _('Introduction')                                    );
+    show_link                    ('welcome',     _('Welcome'),    _('Claim instructions and status')                   );
     if (!$is_logged_in) show_link('login',       _('Login'),      _('Begin here')                                      );
     show_link                    ('news',        _('News'),       _("What's new?")                                     );
     if ($is_logged_in && $is_verified)
