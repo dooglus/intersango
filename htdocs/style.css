@@ -116,6 +116,9 @@ CONTENT
     min-height: 1100px;
     padding: 0;
 }
+li.current {
+    font-weight: bold;
+}
 .content_header {
     width: 750px;
     background-color: #00a462;
