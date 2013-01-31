@@ -185,56 +185,14 @@ try {
                     echo "                        <h3>" . _("Successful login!") . "</h3>\n";
                     echo "                        <p>" . _("Welcome back commander. Welcome back.") . "</p>\n";
                 } else {
-                    // generate random str for deposit reference
-                    $query = "
-                        INSERT INTO users (
-                            oidlogin,
-                            deposref
-                        ) VALUES (
-                            '$oidlogin',
-                            CONCAT(FLOOR(RAND() * 900 + 100),
-                                   LPAD(FLOOR(RAND() * 1000),3,'0'),
-                                   LPAD(FLOOR(RAND() * 1000),3,'0'))
-                        );
-                    ";
-                    do_query($query);
-                    $uid = (string)mysql_insert_id();
-
-                    $free_fiat = numstr_to_internal(FREE_FIAT_ON_SIGNUP);
-                    $free_btc = numstr_to_internal(FREE_BTC_ON_SIGNUP);
-
-                    $query = "
-                        INSERT INTO purses
-                            (uid, amount, type)
-                        VALUES
-                            (LAST_INSERT_ID(), $free_fiat, '" . CURRENCY . "');
-                    ";
-                    do_query($query);
-                    $query = "
-                        INSERT INTO purses
-                            (uid, amount, type)
-                        VALUES
-                            (LAST_INSERT_ID(), $free_btc, 'BTC');
-                    ";
-                    do_query($query);
-
-                    addlog(LOG_LOGIN, sprintf("  new user UID %s (openid %s)", $uid, $oidlogin));
-                    show_header('login', $uid);
+                    addlog(LOG_LOGIN, sprintf("  attempted new signup (openid %s)", $oidlogin));
+                    show_header('login', 0);
 
                     echo "                    <div class='content_box'>\n";
-                    echo "                        <h3>" . _("Successful login!") . "</h3>\n";
-                    echo "                        <p>" . _("Nice to finally see you here, <i>new</i> user.") . "</p>\n";
-                    if (gmp_cmp($free_fiat, 0) > 0 or gmp_cmp($free_btc, 0))
-                        echo "                        <p>" .
-                            sprintf("We've given you %s and %s to test the exchange with.",
-                                    internal_to_numstr($free_btc) . " BTC",
-                                    internal_to_numstr($free_fiat) . " " . CURRENCY) .
-                            "</p>\n";
-                    echo "                        <p>" .
-                        sprintf("Now you may wish to %sdeposit%s funds before continuing.",
-                                '<a href="?page=deposit">',
-                                '</a>') .
-                        "</p>\n";
+                    echo "                        <h3>" . _("Sorry") . "</h3>\n";
+                    echo "                        <p>" . _("Sign-ups are currently disabled.") . "</p>\n";
+                    echo "                        <p>" . _("Please log in with your existing account if you have one.") . "</p>\n";
+                    return;
                 }
 
                 // store for later
