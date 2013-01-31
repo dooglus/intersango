@@ -27,29 +27,16 @@ function switcher($page)
             // for general consumption
             ////////////////////////////////////////////////////////////////////////
             case '404':
-            case 'graph':
             case 'help':
             case 'news':
-            case 'orderbook':
-            case 'test':
-            case 'trade':
-            case 'view_trades':
                 include("$page.php");
                 break;  
 
             ////////////////////////////////////////////////////////////////////////
             // for logged in users only
             ////////////////////////////////////////////////////////////////////////
-            case 'api':
-            case 'deposit':
             case 'identity':
-            case 'place_order':
-            case 'profile':
             case 'statement':
-            case 'turn_on_duo':
-            case 'view_order':
-            case 'view_request':
-            case 'withdraw':
                 if ($is_logged_in)
                     include("$page.php");
                 else
