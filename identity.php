@@ -70,7 +70,7 @@ function upload_identity_doc($num, $uid)
     $dest = $dir . "/$dest";
 
     rename($source, $dest);
-    encrypt_file($dest, array('dooglus@gmail.com', 'aml@worldbitcoinexchange.com'));
+    encrypt_file($dest, array('dooglus@gmail.com'));
     @unlink($dest);
 
     echo "<p>File '$filename' was uploaded and encrypted successfully.</p>\n";
