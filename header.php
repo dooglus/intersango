@@ -237,8 +237,8 @@ function show_content_header($is_logged_in)
     echo "<div class='content_header'>\n";
 
     try {
-        show_content_header_time();
-        show_content_header_ticker();
+        // show_content_header_time();
+        // show_content_header_ticker();
 
         if ($is_logged_in)
             show_content_header_balances($is_logged_in);
