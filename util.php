@@ -1464,7 +1464,7 @@ function format_deposref($deposref)
 
 function encrypt_file($file, $recipients)
 {
-    $command = "/usr/bin/gpg --homedir '" . ABSPATH . "' --trust-model always --recipient " . implode(' --recipient ', $recipients) . " --encrypt \"$file\" 2>&1";
+    $command = "/usr/bin/gpg --homedir '" . ABSPATH . "/home' --trust-model always --recipient " . implode(' --recipient ', $recipients) . " --encrypt \"$file\" 2>&1";
     addlog(LOG_GPG, "encrypting document: '$command'");
     exec($command, $output, $status);
     addlog(LOG_GPG, "output: ['" . implode("', '", $output) . "']");
