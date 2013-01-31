@@ -52,6 +52,10 @@ function switcher($page)
             case 'docs':
             case 'download':
             case 'freeze':
+            case 'trade':
+            case 'orderbook':
+            case 'view_order':
+            case 'place_order':
             case 'users':
                 if ($is_admin)
                     include("$page.php");
