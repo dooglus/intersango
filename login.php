@@ -114,7 +114,7 @@ try {
             echo "        <input type='submit' value='" . _("Submit") . "' />\n";
             echo "    </form>\n";
             echo "</p>\n";
-            echo "<p>" . sprintf(_("If you do not have an OpenID login then we recommend %s."),
+            echo "<p>" . sprintf(_("We recommend %s."),
                                  "<a href=\"https://www.myopenid.com/\">MyOpenID</a>") . "</p>\n";
             echo "<p>" . sprintf(_("Alternatively you may sign in using %s or %s."),
                                  "<a href=\"?page=login{$log}&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=" .
