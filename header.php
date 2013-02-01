@@ -12,46 +12,7 @@ function show_header($page, $is_logged_in, $base = false)
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <title><?php echo SITE_NAME; ?></title>
-    <script type='text/javascript' src='js/util.js'></script>
 <?php
-if (!isset($_GET['fancy'])) { ?>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-        <script>
-            !window.jQuery && document.write('<script src="js/jquery-1.4.4.min.js"><\/script>');
-        </script>
-        <script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-        <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $(".fancy").fancybox({'margin'  :  20,
-                                      'padding' :   2,
-                                      'speedIn' : 500,
-                                      'speedOut': 100});
-            });
-        </script>
-<?php
-    if ($page == 'trade') { ?>
-        <script type='text/javascript' src='js/exchanger.js'></script>
-<?php 
-        echo "    <script type='text/javascript'>\n";
-        $fiat_currency = strtolower(CURRENCY);
-        echo "        fiat_currency = '$fiat_currency';\n";
-        echo "        fiat_currency_full = '" . CURRENCY_FULL . "';\n";
-        if (isset($_GET['rate'])) {
-            echo "        typed_price = true;\n";
-        } else {
-            $currencies = array('BTC', CURRENCY);
-            $rates = array();
-            $list = calc_exchange_rate('btc', $fiat_currency, BASE_CURRENCY::A);
-            $rates[$fiat_currency] = $list[2];
-            $list = calc_exchange_rate($fiat_currency, 'btc', BASE_CURRENCY::B);
-            $rates['btc'] = $list[2];
-            echo "        typed_price = false;\n";
-            echo "        exchange_rates = ".json_encode($rates).";\n";
-        }
-        echo "    </script>\n";
-    }
-}
 if ($base) echo "    <base href=\"$base\" />\n"; ?>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -61,16 +22,6 @@ if ($base) echo "    <base href=\"$base\" />\n"; ?>
 <meta itemprop="description" content="<?php echo SITE_DESCRIPTION; ?>">
 <meta itemprop="image" content="<?php echo SITE_IMAGE; ?>">
 <!-- end of google +snippet code -->
-
-<!-- start of google +1 code -->
-<script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
-<!-- end of google +1 code -->
 
 <?php if ($page != 'login') { ?>
 <!-- start of google analytics code -->
