@@ -194,7 +194,16 @@ input[type=text].voucher {
 #input_address {
     width: 452px;
 }
+.note pre {
+    border: 1px solid #000;
+    background: white;
+    padding: 1em;
+    margin: 0 30px 20px 30px;
+}
 .indent_form input[type=text] {
+    margin-left: 30px;
+}
+.indent_form textarea {
     margin-left: 30px;
 }
 .indent_form input[type=checkbox] {
