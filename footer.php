@@ -57,6 +57,9 @@ function show_footer($is_logged_in, $is_admin, $is_verified)
 <?php show_links($is_logged_in, $is_admin, $is_verified); ?>
         </ul>
     </div>
+    <div id='seal'>
+    <a href="http://www.PositiveSSL.com" style="font-family: arial; font-size: 10px; color: #212121; text-decoration: none;"><img src="images/PossitiveSSL_tl_trans.gif" alt="SSL Cerficate Authority" title="SSL Certificate Authority" border="0" /></a>
+    </div>
     <!--<div id='languages'>
         <a href='google.com'>en</a> &#183; <a href='eo.google.com'>eo</a> &#183; <a href='fff'>fr</a>
     </div>-->
