@@ -2,7 +2,7 @@
 
 <div class='content_box'>
 <h3>...</h3>
-<h4>..:..am ..-Oct-11</h4>
+<h4>..-Feb-13</h4>
 <p>
 ...
 </p>
@@ -11,7 +11,7 @@
 
 <div class='content_box'>
 <h3>Claim Site Up</h3>
-<h4>31-Jan-31</h4>
+<h4>31-Jan-13</h4>
 <p>
 I've put this claim site up by taking the WBX code and removing most of its functionality.  You can still see your statement and balances, but that's about all.  I'll be adding a form where you can provide your Bitcoin address for your refund, and re-enabling the document upload for users who still need to verify their identity.
 </p>
