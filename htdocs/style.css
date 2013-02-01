@@ -39,6 +39,11 @@ input[type=text]:focus {
 input[type=file] {
     font-size: 16px;
 }
+#screenshot {
+    border: 1px solid #000;
+    width: 75%;
+    margin: 10px 80px;
+}
 #exchanger {
     font-size: inherit;
     color: inherit;
