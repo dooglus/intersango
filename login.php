@@ -113,14 +113,8 @@ try {
             }
             echo "        <input type='submit' value='" . _("Submit") . "' />\n";
             echo "    </form>\n";
-            echo "</p>\n";
-            echo "<p>" . sprintf(_("We recommend %s."),
-                                 "<a href=\"https://www.myopenid.com/\">MyOpenID</a>") . "</p>\n";
-            echo "<p>" . sprintf(_("Alternatively you may sign in using %s or %s."),
-                                 "<a href=\"?page=login{$log}&openid_identifier=https://www.google.com/accounts/o8/id&csrf_token=" .
-                                 $_SESSION['csrf_token'] . "\">Google</a>",
-                                 "<a href=\"?page=login{$log}&openid_identifier=me.yahoo.com&csrf_token=" .
-                                 $_SESSION['csrf_token'] . "\">Yahoo</a>") . "</p>\n";
+            echo "<p>" . _("If you don't know your OpenID login, because you used to use the 'google' or 'yahoo' link on WBX to log in, you can find it by logging in to worldbitcoinexchange.com and viewing your profile.  You need to copy/paste the whole OpenID URL into this form.  It's the part highlighted in the screenshot below:") . "</p>\n";
+            echo "<img id='screenshot' src='images/wbx-profile.png'>\n";
         } else if ($openid->mode == 'cancel') {
             setcookie('autologin', FALSE, time() - 60*60*24*365);
             throw new Problem(_("Login Error"), _("Login was cancelled."));
