@@ -309,6 +309,11 @@ LINKS
     min-height: 800px;
 }
 
+#seal {
+    position: absolute;
+    top: 550px;
+    left: 900px;
+}
 #links {
     width: 160px;
     position: absolute;
