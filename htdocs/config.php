@@ -41,7 +41,7 @@ define('CHARTS_PAGE', '');
 define('DEFAULT_STATEMENT_PERIOD', '1 week');
 
 // google analytics account number for visitor tracking
-define('ANALYTICS_ACCOUNT', 'UA-26265923-1');
+define('ANALYTICS_ACCOUNT', 'UA-38159605-1');
 
 // re-show table column headings every so many rows
 define('RESHOW_COLUMN_HEADINGS_AFTER_ROWS', 20);
