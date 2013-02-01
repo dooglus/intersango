@@ -21,4 +21,7 @@ I just checked the site balances.  According to the database, and the the curren
 <p>
 The percentage will also change with the exchange rates.  The exchange rates as of 3:39pm PDT, Monday 11th March 2013 will be used for the final calculation, as discussed in <a href="https://bitcointalk.org/index.php?topic=65867.msg1468678#msg1468678" target="_blank">this forum post</a>.
 </p>
+<p>
+Update: you can now tell me your Bitcoin address and make any additional comments that you need to.  If there's anything I've forgotten, please let me know.  With exchange rates of $20.90 USD/BTC and 0.961544 AUD/USD the base refund goes up to 59%.
+</p>
 </div>
