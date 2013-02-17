@@ -140,8 +140,12 @@ function show_upload_documentation_form()
         echo "<p>The upload form is available below if you need to upload more.</p>\n";
     }
 
-    if (!$is_verified) {
+    if ($is_verified) {
 ?>
+    <p>
+        Your account is already verified.  If you need to upload more documents to support your claim, please use the form below.
+    </p>
+<?php } else { ?>
     <p>
         <b>Please upload both of the following:
         <ul><li>a copy of an international ID document (a current driving license is sufficient) AND</li>
