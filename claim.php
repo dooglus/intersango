@@ -83,6 +83,7 @@ if (!has_results($result)) {
 $row = get_row($result);
 print "<p>Your bitcoin address: " . $row['addy'] . "</p>\n";
 print "<p>Your claim is now complete.  You will receive Bitcoins to your address on Monday 11th March 2013.</p>";
+print "<p>If you need to upload more documents to support your claim, please use the <a href='?page=identity'>document upload form</a>.</p>";
 print "</div>\n";
 
 /* additional notes */
