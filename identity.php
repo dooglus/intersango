@@ -139,6 +139,8 @@ function show_upload_documentation_form()
         echo "</pre>\n";
         echo "<p>The upload form is available below if you need to upload more.</p>\n";
     }
+
+    if (!$is_verified) {
 ?>
     <p>
         <b>Please upload both of the following:
@@ -146,6 +148,7 @@ function show_upload_documentation_form()
             <li>a copy of a recent utility bill (private) or corporate information (company)</li>
         </ul></b>
     </p>
+<?php } ?>
     <p>
         All received documentation is immediately encrytped and held
         on a secure data store.
