@@ -113,7 +113,7 @@ function show_upload_documentation_form()
 {
     global $is_admin, $is_logged_in, $is_verified;
 
-    if ($is_verified && !$is_admin) {
+    if (false) {
 ?>
     <div class='content_box'>
     <h3>Already Verified</h3>
