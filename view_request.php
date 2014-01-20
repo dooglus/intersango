@@ -27,7 +27,7 @@ function display_request_info_fiat($reqid)
     $row = mysql_fetch_assoc($result);
     if (!$row)
         return;
-    echo "<p>PP Account Name: {$row['name']}</p>\n";
+    echo "<p>".CURRENCY." Account Name: {$row['name']}</p>\n";
     // echo "<p>Bank: {$row['bank']}</p>\n";
     // echo "<p>Account number: {$row['acc_num']}</p>\n";
     // echo "<p>Sort code: {$row['sort_code']}</p>\n";

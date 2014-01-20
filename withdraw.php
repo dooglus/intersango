@@ -74,7 +74,7 @@ else {
     <p><?php echo _("We charge no fee for withdrawals."); ?></p>
     <p>
         <form action='' class='indent_form' method='post'>
-            <label for='input_name_holder'><?php echo _("PP Account Name"); ?></label>
+            <label for='input_name_holder'><?php printf(_("%s Account Name"), CURRENCY); ?></label>
             <input type='text' id='input_name_holder' name='name_holder' maxlength='18' />
 
             <label for='input_amount'><?php echo _("Amount"); ?></label>
