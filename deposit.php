@@ -126,7 +126,7 @@ if (ENABLE_LOCAL_VOUCHERS && isset($_POST['code'])) {
 
     <div class='content_box'>
     <h3><?php printf(_("Deposit %s"), CURRENCY); ?></h3>
-    <strong><p>How should the user deposit PP?</p></strong>
+    <strong><p>How should the user deposit <?php echo CURRENCY; ?>?</p></strong>
     <p>Is there an API?  Or should we just have the user fill in a form with:<ul><li>forum username</li><li>forum password</li><li>amount to transfer</li></p>
     <p>
 <?php
